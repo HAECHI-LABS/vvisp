@@ -1,0 +1,24 @@
+export default function(abi, web3) {
+
+  const contractForm = web3.eth.contract(abi);
+
+  return function(_contractAddr = '') {
+    let contract = contractForm.at(_contractAddr);
+
+    return {
+      at: function(_addr) {
+        contract = contractForm.at(_addr);
+      },
+      {{#constantFuncs}}
+      {{name}}: function({{#inputs}}_{{name}}, {{/inputs}}callback) {
+        contract.{{name}}({{#inputs}}_{{name}}, {{/inputs}}callback);
+      },
+      {{/constantFuncs}}
+      {{#nonConstantFuncs}}
+      {{name}}: function({{#inputs}}_{{name}}, {{/inputs}}...args) {
+        contract.{{name}}({{#inputs}}_{{name}}, {{/inputs}}...args);
+      },
+      {{/nonConstantFuncs}}
+    }
+  }
+};
