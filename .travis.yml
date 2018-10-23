@@ -1,0 +1,16 @@
+dist: trusty
+sudo: required
+language: node_js
+
+matrix:
+  fast_finish: true
+  include:
+    - node_js: 8
+
+install:
+  - yarn
+  - cp referenceFiles/test.env .
+  - mv test.env .env
+
+script:
+  - yarn ci

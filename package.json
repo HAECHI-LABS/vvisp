@@ -11,7 +11,8 @@
   "scripts": {
     "precommit": "lint-staged",
     "test": "mocha",
-    "testAll": "mocha $(find ./test -name '*.test.js') --recursive"
+    "testAll": "mocha $(find ./test -name '*.test.js') --recursive",
+    "ci":"./test/test.sh"
   },
   "author": "Jay Choy <jay@haechi.io>",
   "license": "MIT",
