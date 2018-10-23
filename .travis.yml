@@ -9,6 +9,7 @@ matrix:
 
 install:
   - yarn
+  - yarn global add ganache-cli
   - cp referenceFiles/test.env .
   - mv test.env .env
 
