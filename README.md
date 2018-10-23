@@ -1,5 +1,7 @@
 # HAECHI-cli 
 
+[![Build Status](https://travis-ci.org/HAECHI-LABS/HAECHI-CLI.svg?branch=master)](https://travis-ci.org/HAECHI-LABS/HAECHI-CLI)
+
 HAECHI-cli는 스마트컨트랙트를 쉽게 배포하고 업그레이드 할 수 있게 도와주는 커멘드라인 인터페이스 툴 입니다. 구체적으로 다음과 같은 기능이 있습니다
 
 - 프로젝트 폴더 구축(init)
@@ -216,33 +218,33 @@ service.haechi.json은 같은 버전 체계로 관리되어야 하는 스마트 
 
 ```json
 {
-  "serviceName": "Haechi", //1
-  "variables" : { //2
-    "varName": "constant" //3
+  "serviceName": "Haechi", (1
+  "variables" : { (2
+    "varName": "constant" (3
   },
-  "contracts": { //4 
-    "ContractKeyName1": { //5 
-      "upgradeable": true, //6
-      "path": "path/to/your/contract/Contract1_V0.sol", //7
-      "initialize": { //8
-        "functionName": "initialize", //9
-        "arguments": [ //10
+  "contracts": { (4 
+    "ContractKeyName1": { (5 
+      "upgradeable": true, (6
+      "path": "path/to/your/contract/Contract1_V0.sol", (7
+      "initialize": { (8
+        "functionName": "initialize", (9
+        "arguments": [ (10
           "argument1",
           "argument2"
         ]
       }
     },
-    "ContractKeyName2": { //11
+    "ContractKeyName2": { (11
       "upgradeable": true,
       "path": "contracts/Contract2_V1.sol"
     },
     "ContractKeyName3": {
       "path": "path/to/your/contract/Contract.sol",
-      "constructorArguments": [ //12
-        "${contracts.ContractKeyName1.address}", //13
-        "${variables.varName}" //14
+      "constructorArguments": [ (12
+        "${contracts.ContractKeyName1.address}", (13
+        "${variables.varName}" (14
       ],
-      "initialize": { //15
+      "initialize": { (15
         "functionName": "initialize",
         "arguments": [
           "argument1",
