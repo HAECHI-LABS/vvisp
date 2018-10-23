@@ -5,4 +5,4 @@ yarn test test/lib/getWeb3.test.js
 yarn test test/lib/getWeb3.test.js
 yarn test test/lib/mnemonicToPrivateKey.test.js
 yarn test test/lib/privateKeyToAddress.test.js
-yarn test test/deploy-service
+yarn test test/scripts/deploy-service
