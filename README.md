@@ -216,35 +216,35 @@ service.haechi.json은 같은 버전 체계로 관리되어야 하는 스마트 
 
 예시)
 
-```json
+```
 {
-  "serviceName": "Haechi", (1
-  "variables" : { (2
-    "varName": "constant" (3
+  "serviceName": "Haechi", (1)
+  "variables" : { (2)
+    "varName": "constant" (3)
   },
-  "contracts": { (4 
-    "ContractKeyName1": { (5 
-      "upgradeable": true, (6
-      "path": "path/to/your/contract/Contract1_V0.sol", (7
-      "initialize": { (8
-        "functionName": "initialize", (9
-        "arguments": [ (10
+  "contracts": { (4) 
+    "ContractKeyName1": { (5)
+      "upgradeable": true, (6)
+      "path": "path/to/your/contract/Contract1_V0.sol", (7)
+      "initialize": { (8)
+        "functionName": "initialize", (9)
+        "arguments": [ (10)
           "argument1",
           "argument2"
         ]
       }
     },
-    "ContractKeyName2": { (11
+    "ContractKeyName2": { (11)
       "upgradeable": true,
       "path": "contracts/Contract2_V1.sol"
     },
     "ContractKeyName3": {
       "path": "path/to/your/contract/Contract.sol",
-      "constructorArguments": [ (12
-        "${contracts.ContractKeyName1.address}", (13
-        "${variables.varName}" (14
+      "constructorArguments": [ (12)
+        "${contracts.ContractKeyName1.address}", (13)
+        "${variables.varName}" (14)
       ],
-      "initialize": { (15
+      "initialize": { (15)
         "functionName": "initialize",
         "arguments": [
           "argument1",
@@ -319,16 +319,16 @@ _state.haechi.json_
 
 현재 배포된 서비스의 상태를 볼 수 있는 파일입니다.
 
-```json
+```
 {
-  "serviceName": "Haechi", //1
-  "registry": "0x00C...", //2
-  "contracts": { //3
-    "ContractKeyName1": { //4
-      "address": "0x73c...", //5
-      "proxy": "0x8d7...", //6
-      "fileName": "Contract1_V0.sol", //7
-      "upgradeable": true //8
+  "serviceName": "Haechi", (1)
+  "registry": "0x00C...", (2)
+  "contracts": { (3)
+    "ContractKeyName1": { (4)
+      "address": "0x73c...", (5)
+      "proxy": "0x8d7...", (6)
+      "fileName": "Contract1_V0.sol", (7)
+      "upgradeable": true (8)
     },
     "ContractKeyName2": {
       "address": "0x67B...",
