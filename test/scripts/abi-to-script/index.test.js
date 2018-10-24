@@ -7,10 +7,23 @@ const path = require('path');
 const fs = require('fs-extra');
 const abiToScript = require('../../../scripts/abi-to-script');
 
-const CONTRACT1 = path.join('./contracts/test/Attachment.sol');
-const CONTRACT2 = path.join('./contracts/test/Token_V0.sol');
+const {
+  compileAndDeploy,
+  forIn,
+  getWeb3,
+  mnemonicToPrivateKey,
+  privateKeyToAddress
+} = require('../../../lib');
+const web3 = getWeb3();
 
+const CONTRACT1 = 'Attachment';
+const CONTRACT2 = 'Token_V0';
+const CONTRACT_PATH1 = path.join(`./contracts/test/${CONTRACT1}.sol`);
+const CONTRACT_PATH2 = path.join(`./contracts/test/${CONTRACT2}.sol`);
 const ROOT = path.join('./contractApis');
+
+const PRIV_KEY = mnemonicToPrivateKey(process.env.MNEMONIC);
+const SENDER = privateKeyToAddress(PRIV_KEY);
 
 describe('# abi-to-script process test', function() {
   this.timeout(30000);
@@ -23,7 +36,7 @@ describe('# abi-to-script process test', function() {
   describe('# back version', function() {
     describe('# process test', function() {
       before(function() {
-        this.files = [CONTRACT1, CONTRACT2];
+        this.files = [CONTRACT_PATH1, CONTRACT_PATH2];
         this.root = path.join(ROOT, 'back');
         this.abi = path.join(this.root, 'abi');
         this.js = path.join(this.root, 'js');
@@ -82,14 +95,40 @@ describe('# abi-to-script process test', function() {
         hasIndex.should.be.equal(true);
       });
     });
-    // describe('# output test', function() {
-    //
-    // });
+    describe('# output test', function() {
+      before(async function() {
+        this.apis = require('../../../contractApis/back');
+        const txCount = await web3.eth.getTransactionCount(SENDER);
+        this.receipt1 = await compileAndDeploy(CONTRACT_PATH1, PRIV_KEY, [], { silent: true, txCount: txCount });
+        this.receipt2 = await compileAndDeploy(CONTRACT_PATH2, PRIV_KEY, [], { silent: true, txCount: txCount + 1 });
+      });
+      it('should have two constructor functions', function() {
+        forIn(this.apis, Contract => {
+          Contract.should.be.a('function');
+        });
+      });
+      it('should make api instances', function() {
+        console.log(this.apis);
+        this.attachment = new this.apis[CONTRACT1](this.receipt1.contractAddress);
+        this.token = new this.apis[CONTRACT2](this.receipt2.contractAddress);
+        this.attachment.getAddress().should.equal(this.receipt1.contractAddress);
+        this.token.getAddress().should.equal(this.receipt2.contractAddress);
+      });
+      it('should call function', async function() {
+        const txCount = await web3.eth.getTransactionCount(SENDER);
+        await this.attachment.methods.initialize(SENDER).should.be.fulfilled;
+        await this.token.methods.initialize(SENDER, { txCount: txCount + 1}).should.be.fulfilled;
+      });
+      it('should get owner', async function() {
+        (await this.attachment.methods.owner()).should.equal(SENDER);
+        (await this.token.methods.owner()).should.equal(SENDER);
+      });
+    });
   });
   describe('# front version', function() {
     describe('# process test', function() {
       before(function() {
-        this.files = [CONTRACT1, CONTRACT2];
+        this.files = [CONTRACT_PATH1, CONTRACT_PATH2];
         this.name = 'haechi';
         this.root = path.join(ROOT, 'front');
         this.abi = path.join(this.root, 'abi');
