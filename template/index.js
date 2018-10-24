@@ -8,7 +8,7 @@ for (let i = 0; i < files.length; i++) {
     if (files[i] === 'index.js') {
       continue;
     }
-    apis[files[i].slice(0, -3)] = require(`./${files[i].slice(0, -3)}`);
+    apis[files[i].slice(0, -3)] = require(`./js/${files[i].slice(0, -3)}.js`);
   }
 }
 
