@@ -1,0 +1,46 @@
+{
+  "serviceName": "Haechi",
+  "variables" : {
+    "owner" : "0xb5F4E40c8177Ad63B19D4D3a254a5758771f57d0"
+  },
+  "contracts": {
+    "Attachment": {
+      "upgradeable": true,
+      "path": "contracts/test/Attachment.sol",
+      "initialize": {
+        "functionName": "initialize",
+        "arguments": [
+          "${variables.owner}"
+        ]
+      }
+    },
+    "Token": {
+      "upgradeable": true,
+      "path": "contracts/test/Token_V1.sol",
+      "initialize": {
+      }
+    },
+    "Portfolio": {
+      "upgradeable": true,
+      "path": "contracts/test/Portfolio.sol",
+      "initialize": {
+        "functionName": "initialize",
+        "arguments": [
+          "${contracts.Token.address}"
+        ]
+      }
+    },
+    "SecondB": {
+      "upgradeable": true,
+      "path": "contracts/test/SecondB.sol",
+      "initialize": {
+        "functionName": "initialize",
+        "arguments": [
+          "${contracts.Portfolio.address}",
+          "${variables.owner}",
+          "${contracts.Portfolio.address}"
+        ]
+      }
+    }
+  }
+}

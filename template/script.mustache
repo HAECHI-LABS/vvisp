@@ -1,0 +1,33 @@
+const path = require('path');
+const { getWeb3, mnemonicToPrivateKey, sendTx } = require('../utils');
+const web3 = getWeb3();
+const fs = require('fs');
+
+const privateKey = mnemonicToPrivateKey(process.env.MNEMONIC, process.env.PRIV_INDEX);
+
+const abi = fs.readFileSync(path.join(__dirname, '../abi/', '{{name}}.json'), {'encoding': 'utf8'});
+const contract = new web3.eth.Contract(JSON.parse(abi));
+
+module.exports = function(_contractAddr = '') {
+  contract.options.address = _contractAddr;
+  return {
+    at: function(_addr) {
+      contract.options.address = _addr;
+    },
+    {{#constantFuncs}}
+    {{name}}: function({{#inputs}}_{{name}}, {{/inputs}}) {
+      return contract.methods.{{name}}({{#inputs}}_{{name}}, {{/inputs}}).call();
+    },
+    {{/constantFuncs}}
+    {{#nonConstantFuncs}}
+    {{name}}: function({{#inputs}}_{{name}}, {{/inputs}}options) {
+      const txData = contract.methods.{{name}}({{#inputs}}_{{name}}, {{/inputs}}).encodeABI();
+      options = {
+        ...options,
+        data: txData
+      };
+      return sendTx(contract.options.address, options ? options.value : 0, privateKey, options);
+    },
+    {{/nonConstantFuncs}}
+  }
+};

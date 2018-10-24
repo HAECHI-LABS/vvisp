@@ -1,0 +1,24 @@
+{
+  "contracts": {
+    "Attachment": {
+      "upgradeable": true,
+      "address": "0x84a05b970F707115aAdc056f0ccAe04379eB33bc",
+      "fileName": "Attachment.sol",
+      "proxy": "0x5d393a63a19594f58eb7e905afde078b9dbafd76"
+    },
+    "Token": {
+      "upgradeable": true,
+      "address": "0x728E1246bDfb948549083aB0C66Af33989c5F906",
+      "fileName": "Token_V0.sol",
+      "proxy": "0x6c19048e8bd10cc34fe9c5a6fb0407ba4815ace2"
+    },
+    "Portfolio": {
+      "upgradeable": true,
+      "address": "0x431dC8CA25Fe45a155a489f1DFD5D398CE0f79a1",
+      "fileName": "Portfolio.sol",
+      "proxy": "0x4f0092b7939ac397f5be530ca1952b0e47d4e042"
+    }
+  },
+  "serviceName": "Haechi",
+  "registry": "0x3b6e7388f2E313b1C616c08196edED28707543BD"
+}
