@@ -17,6 +17,7 @@ module.exports = async function(name) {
 
     fs.copySync(path.join(__dirname, '../referenceFiles'), path.join('./'));
     fs.renameSync(path.join('./example.env'), path.join('./.env'));
+    fs.renameSync(path.join('./example.service.haechi.json'), path.join('./service.haechi.json'));
 
     const pkg = fs.readJsonSync(path.join('./package.json'));
 
