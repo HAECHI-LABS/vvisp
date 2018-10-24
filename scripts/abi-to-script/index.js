@@ -25,7 +25,7 @@ module.exports = async function(files, options) {
 
     await generateApis(files, abiDir, jsDir, TEMPLATE.backScript, options);
 
-    fs.copySync(TEMPLATE.utils, path.join(rootDir, 'utils'));
+    fs.copySync(TEMPLATE.utils, path.join(rootDir, 'utils')); // TODO: will be changed to haechi-lib
     fs.copySync(TEMPLATE.backIndex, path.join(rootDir, 'index.js'));
 
     printOrSilent('\nGenerate Finished!', options);
