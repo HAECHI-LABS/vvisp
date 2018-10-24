@@ -3,6 +3,7 @@ const assert = chai.assert;
 chai.use(require('chai-as-promised')).should();
 require('dotenv').config();
 
+
 const path = require('path');
 const fs = require('fs-extra');
 const abiToScript = require('../../../scripts/abi-to-script');
