@@ -20,6 +20,7 @@ const CONTRACT1 = 'Attachment';
 const CONTRACT2 = 'Token_V0';
 const CONTRACT_PATH1 = path.join(`./contracts/test/${CONTRACT1}.sol`);
 const CONTRACT_PATH2 = path.join(`./contracts/test/${CONTRACT2}.sol`);
+const FILES = [CONTRACT_PATH1, CONTRACT_PATH2];
 const ROOT = path.join('./contractApis');
 
 const PRIV_KEY = mnemonicToPrivateKey(process.env.MNEMONIC);
@@ -36,7 +37,7 @@ describe('# abi-to-script process test', function() {
   describe('# back version', function() {
     describe('# process test', function() {
       before(function() {
-        this.files = [CONTRACT_PATH1, CONTRACT_PATH2];
+        this.files = FILES;
         this.root = path.join(ROOT, 'back');
         this.abi = path.join(this.root, 'abi');
         this.js = path.join(this.root, 'js');
@@ -108,11 +109,21 @@ describe('# abi-to-script process test', function() {
         });
       });
       it('should make api instances', function() {
-        console.log(this.apis);
         this.attachment = new this.apis[CONTRACT1](this.receipt1.contractAddress);
         this.token = new this.apis[CONTRACT2](this.receipt2.contractAddress);
         this.attachment.getAddress().should.equal(this.receipt1.contractAddress);
         this.token.getAddress().should.equal(this.receipt2.contractAddress);
+      });
+      it('should change address', function() {
+        const tmpAddress = '0x88C22c3Fe7A049e42cF4f3a5507e6820F0EceE61';
+        const address1 = this.attachment.getAddress();
+        const address2 = this.token.getAddress();
+        this.attachment.at(tmpAddress);
+        this.token.at(tmpAddress);
+        this.attachment.getAddress().should.equal(tmpAddress);
+        this.token.getAddress().should.equal(tmpAddress);
+        this.attachment.at(address1);
+        this.token.at(address2);
       });
       it('should call function', async function() {
         const txCount = await web3.eth.getTransactionCount(SENDER);
@@ -128,21 +139,7 @@ describe('# abi-to-script process test', function() {
   describe('# front version', function() {
     describe('# process test', function() {
       before(function() {
-        this.files = [CONTRACT_PATH1, CONTRACT_PATH2];
-        this.name = 'haechi';
-        this.root = path.join(ROOT, 'front');
-        this.abi = path.join(this.root, 'abi');
-        this.js = path.join(this.root, 'js');
-      });
-      it('should get two constructors', function() {
-        console.log(this.apis);
-      });
-    });
-  });
-  describe('# front version', function() {
-    describe('# process test', function() {
-      before(function() {
-        this.files = [CONTRACT1, CONTRACT2];
+        this.files = FILES;
         this.name = 'haechi';
         this.root = path.join(ROOT, 'front');
         this.abi = path.join(this.root, 'abi');
