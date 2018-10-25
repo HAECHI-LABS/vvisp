@@ -4,7 +4,8 @@ module.exports = async function(files, options) {
     getRelativeFilePathsFromRoot,
     getDependencyFiles,
     getSourceCodeWithoutPragma,
-    getMaxVersion
+    getMaxVersion,
+    printOrSilent
   } = require('../lib');
   const process = require('process');
   const path = require('path');
@@ -35,12 +36,12 @@ module.exports = async function(files, options) {
         path.resolve(options.output)
       );
       fs.writeFileSync(outputPath, sourceCode);
-      console.log(`${outputPath} is created`);
+      printOrSilent(`${outputPath} is created`, options);
     } else {
-      console.log(`Print the combined source code!\n${sourceCode}`);
+      printOrSilent(`Print the combined source code!\n${sourceCode}`, options);
     }
 
-    console.log('The flatten is finished!');
+    printOrSilent('The flatten is finished!', options);
   } catch (e) {
     console.error(e);
   }

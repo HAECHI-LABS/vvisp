@@ -1,6 +1,8 @@
-module.exports = async function(name) {
+module.exports = async function(name, options) {
   const path = require('path');
   const fs = require('fs-extra');
+
+  const { printOrSilent } = require('../lib');
 
   try {
     if (fs.readdirSync(path.join('./')).length > 0) {
@@ -17,6 +19,7 @@ module.exports = async function(name) {
 
     fs.copySync(path.join(__dirname, '../referenceFiles'), path.join('./'));
     fs.renameSync(path.join('./example.env'), path.join('./.env'));
+    fs.renameSync(path.join('./example.service.haechi.json'), path.join('./service.haechi.json'));
 
     const pkg = fs.readJsonSync(path.join('./package.json'));
 
@@ -48,5 +51,6 @@ module.exports = async function(name) {
       path.join(__dirname, '../', '.soliumignore'),
       path.join('./.soliumignore')
     );
+    printOrSilent('Finish Initialize Directory!', options);
   }
 };

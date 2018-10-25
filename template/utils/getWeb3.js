@@ -1,5 +1,4 @@
 module.exports = function() {
-  require('dotenv').config();
   const Web3 = require('web3');
 
   let web3;
@@ -16,7 +15,6 @@ module.exports = function() {
             process.env.INFURA_API_KEY
           }`
         )
-        // TODO: env 없으면 만들게 하는 것 => condition check
       );
     }
   }

@@ -1,8 +1,8 @@
-module.exports = async function(file, arguments) {
+module.exports = async function(file, arguments, options) {
   const { checkEnvExist } = require('../bin/error');
   checkEnvExist();
 
-  const { compileAndDeploy, mnemonicToPrivateKey, getWeb3 } = require('../lib');
+  const { compileAndDeploy, mnemonicToPrivateKey, getWeb3, printOrSilent } = require('../lib');
   const web3 = getWeb3();
 
   const privateKey = mnemonicToPrivateKey(
@@ -11,6 +11,7 @@ module.exports = async function(file, arguments) {
   );
 
   const txOptions = {
+    ...options,
     gasPrice: process.env.GAS_PRICE
       ? web3.utils.toHex(process.env.GAS_PRICE)
       : undefined
@@ -18,5 +19,5 @@ module.exports = async function(file, arguments) {
 
   await compileAndDeploy(file, privateKey, arguments, txOptions);
 
-  console.log('Deploying Finished!');
+  printOrSilent('Deploying Finished!', options);
 };
