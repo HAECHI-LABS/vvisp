@@ -10,7 +10,7 @@
   },
   "scripts": {
     "precommit": "lint-staged",
-    "test": "mocha",
+    "test": "mocha --timeout 5000",
     "testAll": "mocha $(find ./test -name '*.test.js') --recursive",
     "ci":"./test/test.sh"
   },
