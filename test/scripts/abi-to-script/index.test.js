@@ -134,6 +134,20 @@ describe('# abi-to-script process test', function() {
         this.abi = path.join(this.root, 'abi');
         this.js = path.join(this.root, 'js');
       });
+      it('should get two constructors', function() {
+        console.log(this.apis);
+      });
+    });
+  });
+  describe('# front version', function() {
+    describe('# process test', function() {
+      before(function() {
+        this.files = [CONTRACT1, CONTRACT2];
+        this.name = 'haechi';
+        this.root = path.join(ROOT, 'front');
+        this.abi = path.join(this.root, 'abi');
+        this.js = path.join(this.root, 'js');
+      });
       it('should be fulfilled', async function() {
         await abiToScript(this.files, { silent: true, front: this.name }).should
           .be.fulfilled;

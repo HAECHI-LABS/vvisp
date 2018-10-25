@@ -4,7 +4,7 @@ module.exports = async function(files, abiDir, jsDir, templatePath, options) {
   const fs = require('fs-extra');
   const { compile } = require('../../lib');
 
-  const output = await compile(files, options ? options.silent : undefined); // TODO: directory면 그 안의 파일 모두 가져오기!
+  const output = await compile(files, options ? options.silent : undefined); // TODO: get all files if it is directory
 
   for (let i = 0; i < files.length; i++) {
     const className = path.parse(files[i]).name;
