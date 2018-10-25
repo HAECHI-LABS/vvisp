@@ -2,6 +2,7 @@ module.exports = async function(_toAddr, _value, _privKey, options) {
   const Tx = require('ethereumjs-tx');
   const web3 = require('./getWeb3')();
   const privateKeyToAddress = require('./privateKeyToAddress');
+  const printOrSilent = require('./printOrSilent');
 
   return main(_toAddr, _value, _privKey, options);
 
@@ -13,7 +14,7 @@ module.exports = async function(_toAddr, _value, _privKey, options) {
     // construct the transaction data
     const txData = {
       nonce: web3.utils.toHex(txCount),
-      gasLimit: options.gasLimit || web3.utils.toHex(4600000), // TODO: config로 빼자!
+      gasLimit: options.gasLimit || web3.utils.toHex(4600000), // TODO: mv to config file
       gasPrice: options.gasPrice || web3.utils.toHex(10e9),
       to: _toAddr,
       from: fromAddr,
@@ -33,7 +34,7 @@ module.exports = async function(_toAddr, _value, _privKey, options) {
     return web3.eth
       .sendSignedTransaction('0x' + serializedTx)
       .on('error', function(error) {
-        console.log('\nsendTx Error: ' + error);
+        printOrSilent(error, options);
       });
   }
 };
