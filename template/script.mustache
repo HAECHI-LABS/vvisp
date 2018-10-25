@@ -12,7 +12,7 @@ module.exports = function(_contractAddr = '') {
   contract.options.address = _contractAddr;
   return {
     at: function(_addr) {
-      this.contract.options.address = _addr;
+      contract.options.address = _addr;
     },
     getAddress: function() {
       return contract.options.address;
