@@ -1,7 +1,13 @@
-import latestTime from './latestTime';
+const { ethGetBlock } = require('./web3');
+
+// Returns the time of the last mined block in seconds
+async function latest() {
+  const block = await ethGetBlock('latest');
+  return block.timestamp;
+}
 
 // Increases ganache time by the passed duration in seconds
-export default function increaseTime(duration) {
+function increase(duration) {
   const id = Date.now();
 
   return new Promise((resolve, reject) => {
@@ -37,17 +43,18 @@ export default function increaseTime(duration) {
  *
  * @param target time in seconds
  */
-export function increaseTimeTo(target) {
-  let now = latestTime();
+async function increaseTo(target) {
+  const now = await latest();
+
   if (target < now)
     throw Error(
       `Cannot increase current time(${now}) to a moment in the past(${target})`
     );
-  let diff = target - now;
-  return increaseTime(diff);
+  const diff = target - now;
+  return increase(diff);
 }
 
-export const duration = {
+const duration = {
   seconds: function(val) {
     return val;
   },
@@ -66,4 +73,11 @@ export const duration = {
   years: function(val) {
     return val * this.days(365);
   }
+};
+
+module.exports = {
+  latest,
+  increase,
+  increaseTo,
+  duration
 };
