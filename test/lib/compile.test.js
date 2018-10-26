@@ -8,15 +8,15 @@ const path = require('path');
 
 const ERROR_CONTRACT = path.join(
   __dirname,
-  '../contracts/test/ErrorContract.sol'
+  '../../contracts/test/ErrorContract.sol'
 );
 const RIGHT_CONTRACT1 = path.join(
   __dirname,
-  '../contracts/test/DependencyA.sol'
+  '../../contracts/test/DependencyA.sol'
 );
 const RIGHT_CONTRACT2 = path.join(
   __dirname,
-  '../contracts/test/DependencyB.sol'
+  '../../contracts/test/DependencyB.sol'
 );
 
 describe('# compile test', function() {
