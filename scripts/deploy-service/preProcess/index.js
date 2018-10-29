@@ -6,8 +6,9 @@ module.exports = async function(deployState, options) {
   let stateClone = deployState.getState();
   const config = fs.readJsonSync(SERVICE_PATH);
 
+  let processState;
   if (!fs.existsSync(STATE_PATH)) {
-    printOrSilent(`\nStart Deploying ${config.serviceName}...\n`, options);
+    processState = 'Deploying';
     stateClone.notUpgrading = true;
     stateClone.contracts = {};
     stateClone.serviceName = config.serviceName;
@@ -17,11 +18,17 @@ module.exports = async function(deployState, options) {
       stateClone[name] = object;
     });
     if (stateClone.paused) {
-      printOrSilent(`\nResuming ${config.serviceName}...\n`, options);
+      processState = 'Resuming';
     } else {
-      printOrSilent(`\nStart Upgrading ${config.serviceName}...\n`, options);
+      processState = 'Upgrading';
     }
   }
+  printOrSilent(
+    chalk.head(
+      `\nStart ${processState} ${chalk.keyWord(config.serviceName)}...\n`
+    ),
+    options
+  );
 
   deployState[VARIABLES] = config[VARIABLES];
 
@@ -29,6 +36,11 @@ module.exports = async function(deployState, options) {
     config.contracts,
     stateClone
   );
+
+  if (Object.keys(targets).length === 0) {
+    printOrSilent(chalk.head('Nothing to upgrade'), options);
+    process.exit();
+  }
 
   const compileOutput = await require('./compileAll')(targets, options);
   require('./checkError')(targets, compileOutput, options);

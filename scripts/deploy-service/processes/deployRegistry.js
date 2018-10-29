@@ -16,7 +16,12 @@ module.exports = async function(deployState, options) {
     { ...options, ...TX_OPTIONS }
   );
   printOrSilent(`Registry Created!`, options);
-  printOrSilent(`Contract Address: ${receipt.contractAddress}\n`, options);
+  printOrSilent(
+    `${chalk.success('Done')} Contract Address: ${chalk.address(
+      receipt.contractAddress
+    )}\n`,
+    options
+  );
   stateClone.registry = receipt.contractAddress;
   deployState.updateState(stateClone);
 };

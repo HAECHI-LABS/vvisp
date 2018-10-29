@@ -63,7 +63,7 @@ module.exports = async function(deployState, options) {
     .upgradeToAndCalls(_proxies, _implements, _data, _length)
     .encodeABI();
   printOrSilent(
-    `\tNow Connect Upgradeable Contracts with Registry...`,
+    chalk.head(`\tNow Connect Upgradeable Contracts with Registry...`),
     options
   );
 
@@ -72,5 +72,10 @@ module.exports = async function(deployState, options) {
     txCount: await getTxCount(PRIVATE_KEY),
     data: txData
   });
-  printOrSilent('Done! txHash: ' + receipt.transactionHash + '\n', options);
+  printOrSilent(
+    `${chalk.success('Done')} Transaction Hash: ${chalk.tx(
+      receipt.transactionHash
+    )}\n`,
+    options
+  );
 };

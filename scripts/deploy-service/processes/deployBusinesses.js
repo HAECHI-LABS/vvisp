@@ -26,8 +26,8 @@ module.exports = async function(deployState, options) {
     stateClone = deployState.updateState(stateClone).getState();
   }
 
-  printOrSilent('\tUpgradeable Contracts', options);
-  printOrSilent('Deploying Business Contracts...\n', options);
+  printOrSilent(chalk.head('\tUpgradeable Contracts'), options);
+  printOrSilent(chalk.head('Deploying Business Contracts...\n'), options);
 
   let i = 0;
   await forInAsync(contracts, async (contract, name) => {
@@ -50,7 +50,12 @@ module.exports = async function(deployState, options) {
     stateClone.contracts[name].fileName = contractName + '.sol';
     stateClone = deployState.updateState(stateClone).getState();
     printOrSilent(contractName + ' Contract Created!', options);
-    printOrSilent(`Contract Address: ${receipt.contractAddress}\n`, options);
+    printOrSilent(
+      `${chalk.success('Done')} Contract Address: ${chalk.address(
+        receipt.contractAddress
+      )}\n`,
+      options
+    );
     i++;
   });
 };

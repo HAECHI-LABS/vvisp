@@ -1,13 +1,29 @@
 {
   "name": "haechi-cli",
-  "version": "1.0.0",
-  "description": "script for upgrading smart contracts",
+  "version": "0.1.0",
+  "description": "Command Line Interface for the upgradeable smart contract framework",
+  "author": "Jay Choy <jay@haechi.io>",
+  "license": "MIT",
+  "homepage": "https://haechi.io",
+  "repository": "github:HAECHI-LABS/HAECHI-CLI",
   "directories": {
     "test": "test"
   },
   "bin": {
     "haechi": "bin/haechi-cli.js"
   },
+  "keywords": [
+    "ethereum",
+    "smart-contracts",
+    "blockchain",
+    "dapps",
+    "javascript",
+    "tooling",
+    "task-runner",
+    "solidity",
+    "upgradeable",
+    "cli"
+  ],
   "scripts": {
     "precommit": "lint-staged",
     "test": "nyc --reporter=html --reporter=text mocha",
@@ -15,8 +31,6 @@
     "ci": "./test/test.sh",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
-  "author": "Jay Choy <jay@haechi.io>",
-  "license": "MIT",
   "dependencies": {
     "babel-core": "^6.26.3",
     "babel-plugin-transform-class-properties": "^6.24.1",

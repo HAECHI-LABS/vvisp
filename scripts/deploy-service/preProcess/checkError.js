@@ -9,7 +9,7 @@ module.exports = function(targets, compileOutput, options) {
   const { hasConstructArgs, hasInitArgs, getVar } = require('../utils/index');
   const { INITIALIZE, CONSTRUCTOR, UPGRADEABLE } = require('../constants');
 
-  printOrSilent('Check Arguments...', options);
+  printOrSilent(chalk.head('Check Arguments...'), options);
 
   forIn(targets, (contract, name) => {
     const filePath = path.join('./', contract.path);
@@ -80,9 +80,9 @@ module.exports = function(targets, compileOutput, options) {
       }
     }
   });
-  printOrSilent('Done\n', options);
+  printOrSilent(chalk.success('Done\n'), options);
 
-  printOrSilent('Check Dependencies...', options);
+  printOrSilent(chalk.head('Check Dependencies...'), options);
   const dependencyGraph = {};
   forIn(targets, (contract, name) => {
     if (contract[UPGRADEABLE] === true) {
@@ -108,5 +108,5 @@ module.exports = function(targets, compileOutput, options) {
   if (result) {
     throw new Error('Cyclic Dependency Detection: ' + JSON.stringify(result));
   }
-  printOrSilent('Done\n', options);
+  printOrSilent(chalk.success('Done\n'), options);
 };
