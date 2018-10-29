@@ -180,7 +180,7 @@ contracts/
 
 __deploy-contract__ <_file_> [_arguments..._]
 
-> 대상 컨트랙트를 배포합니다.
+> 대상 컨트랙트를 배포합니다
 
 _Examples_
 
