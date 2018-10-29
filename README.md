@@ -1,6 +1,6 @@
 # HAECHI-cli 
 
-[![Build Status](https://travis-ci.org/HAECHI-LABS/HAECHI-CLI.svg?branch=master)](https://travis-ci.org/HAECHI-LABS/HAECHI-CLI)
+[![Build Status](https://travis-ci.org/HAECHI-LABS/HAECHI-CLI.svg?branch=master)](https://travis-ci.org/HAECHI-LABS/HAECHI-CLI) [![Coverage Status](https://coveralls.io/repos/github/HAECHI-LABS/HAECHI-CLI/badge.svg?branch=dev)](https://coveralls.io/github/HAECHI-LABS/HAECHI-CLI?branch=dev)
 
 HAECHI-cli는 스마트컨트랙트를 쉽게 배포하고 업그레이드 할 수 있게 도와주는 커멘드라인 인터페이스 툴 입니다. 구체적으로 다음과 같은 기능이 있습니다
 
