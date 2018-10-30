@@ -29,7 +29,8 @@
     "test": "nyc --reporter=html --reporter=text mocha",
     "testAll": "nyc --reporter=html --reporter=text mocha $(find ./test -name '*.test.js') --recursive",
     "ci": "./test/test.sh",
-    "coverage": "nyc report --reporter=text-lcov | coveralls"
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "commitmsg": "commitlint -E GIT_PARAMS"
   },
   "dependencies": {
     "babel-core": "^6.26.3",
@@ -62,6 +63,9 @@
     "web3": "^1.0.0-beta.35"
   },
   "devDependencies": {
+    "@commitlint/cli": "^7.2.1",
+    "@commitlint/config-conventional": "^7.1.2",
+    "@commitlint/travis-cli": "^7.2.1",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "coveralls": "^3.0.2",
