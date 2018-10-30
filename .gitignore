@@ -43,3 +43,5 @@ state.haechi.json
 service.haechi.json
 example.json
 example
+
+.nyc_output
