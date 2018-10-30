@@ -36,7 +36,7 @@ module.exports = async function(deployState, options) {
     stateClone = deployState.updateState(stateClone).getState();
   }
 
-  printOrSilent('Deploying Proxy Contracts...\n', options);
+  printOrSilent(chalk.head('Deploying Proxy Contracts...\n'), options);
 
   let i = 0;
   await forInAsync(deployState.targets, async (contract, name) => {
@@ -67,7 +67,12 @@ module.exports = async function(deployState, options) {
     };
     stateClone = deployState.updateState(stateClone).getState();
     printOrSilent(`${contractName} Proxy Created!`, options);
-    printOrSilent(`Contract Address: ${contractAddress}\n`, options);
+    printOrSilent(
+      `${chalk.success('Done')} Contract Address: ${chalk.address(
+        contractAddress
+      )}\n`,
+      options
+    );
     i++;
   });
 };

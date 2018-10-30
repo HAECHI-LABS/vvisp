@@ -28,7 +28,10 @@ module.exports = async function(deployState, options) {
     return;
   }
 
-  printOrSilent('\tStart Initialize NonUpgradeable Contracts...', options);
+  printOrSilent(
+    chalk.head('\tStart Initialize NonUpgradeable Contracts...'),
+    options
+  );
 
   const startCount = await getTxCount(PRIVATE_KEY);
   let txCount = startCount;
@@ -53,7 +56,12 @@ module.exports = async function(deployState, options) {
         data: initData
       });
       txCount++;
-      printOrSilent(`Done! txHash: ${receipt.transactionHash}\n`, options);
+      printOrSilent(
+        `${chalk.success('Done')} Transaction Hash: ${chalk.tx(
+          receipt.transactionHash
+        )}\n`,
+        options
+      );
     }
     delete stateContract.pending;
     stateClone = deployState.updateState(stateClone).getState();

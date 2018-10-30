@@ -1,6 +1,6 @@
 module.exports = function(configContracts, stateClone) {
   const path = require('path');
-  const { forIn } = require('../../../lib/index');
+  const { forIn, printOrSilent } = require('../../../lib/index');
 
   const { PENDING_STATE } = require('../constants');
   const targets = {};
@@ -45,11 +45,5 @@ module.exports = function(configContracts, stateClone) {
       }
     });
   }
-
-  if (Object.keys(targets).length === 0) {
-    console.log('Nothing to upgrade');
-    process.exit();
-  }
-
   return targets;
 };

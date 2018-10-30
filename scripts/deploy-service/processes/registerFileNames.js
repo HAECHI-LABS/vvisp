@@ -43,7 +43,7 @@ module.exports = async function(deployState, options) {
     .updateFileNames(_proxies, _fileNames, _fileNameLength)
     .encodeABI();
   printOrSilent(
-    "\tRegister Upgradeable Contracts' Information åt Registry...",
+    chalk.head("\tRegister Upgradeable Contracts' Information åt Registry..."),
     options
   );
 
@@ -53,7 +53,12 @@ module.exports = async function(deployState, options) {
     txCount: await getTxCount(PRIVATE_KEY),
     data: txData
   });
-  printOrSilent('Done! txHash: ' + receipt.transactionHash + '\n', options);
+  printOrSilent(
+    `${chalk.success('Done')} Transaction Hash: ${chalk.tx(
+      receipt.transactionHash
+    )}\n`,
+    options
+  );
 
   for (let i = 0; i < upgradeables.length; i++) {
     delete upgradeables[i].pending;

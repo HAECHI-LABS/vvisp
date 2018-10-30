@@ -44,8 +44,8 @@ module.exports = async function(deployState, options) {
     return;
   }
 
-  printOrSilent('\tNonUpgradeable Contracts', options);
-  printOrSilent('Deploying Contracts...\n', options);
+  printOrSilent(chalk.head('\tNonUpgradeable Contracts'), options);
+  printOrSilent(chalk.head('Deploying Contracts...\n'), options);
 
   const txCount = await getTxCount(PRIVATE_KEY);
   let deployCount = 0;
@@ -103,7 +103,12 @@ module.exports = async function(deployState, options) {
 
       stateClone = deployState.updateState(stateClone).getState();
       printOrSilent(contractName + ' Contract Created!', options);
-      printOrSilent(`Contract Address: ${receipt.contractAddress}\n`, options);
+      printOrSilent(
+        `${chalk.success('Done')} Contract Address: ${chalk.address(
+          receipt.contractAddress
+        )}\n`,
+        options
+      );
       deployCount++;
       tolerance = 0;
     }
@@ -136,7 +141,9 @@ module.exports = async function(deployState, options) {
     )
     .encodeABI();
   printOrSilent(
-    "\tRegister NonUpgradeable Contracts' Information åt Registry...",
+    chalk.head(
+      "\tRegister NonUpgradeable Contracts' Information åt Registry..."
+    ),
     options
   );
 
@@ -146,5 +153,10 @@ module.exports = async function(deployState, options) {
     txCount: await getTxCount(PRIVATE_KEY),
     data: txData
   });
-  printOrSilent('Done! txHash: ' + receipt.transactionHash + '\n', options);
+  printOrSilent(
+    `${chalk.success('Done')} Transaction Hash: ${chalk.tx(
+      receipt.transactionHash
+    )}\n`,
+    options
+  );
 };
