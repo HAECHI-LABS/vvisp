@@ -1,5 +1,5 @@
 {
-  "name": "haechi-cli",
+  "name": "@haechi-labs/haechi-cli",
   "version": "0.1.0",
   "description": "Command Line Interface for the upgradeable smart contract framework",
   "author": "Jay Choy <jay@haechi.io>",

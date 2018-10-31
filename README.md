@@ -33,11 +33,11 @@ If you want more information about the Upgradeable Smart Contract Framework, you
 Install [Node.js](http://nodejs.org/) first.
 Then, install [npm](https://npmjs.com/) and
 ```sh
-$ npm install --global haechi-cli
+$ npm install --global @haechi-labs/haechi-cli
 ```
 or install [yarn](https://yarnpkg.com) and
 ```sh
-$ yarn global add haechi-cli
+$ yarn global add @haechi-labs/haechi-cli
 ```
 
 ## Usage
