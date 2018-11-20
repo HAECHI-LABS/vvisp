@@ -1,7 +1,6 @@
 # HAECHI-CLI (haechi-cli) 
 
-[![CircleCI](https://circleci.com/gh/HAECHI-LABS/HAECHI-CLI/tree/dev.svg?style=svg)](https://circleci.com/gh/HAECHI-LABS/HAECHI-CLI/tree/dev)
-[![Coverage Status](https://coveralls.io/repos/github/HAECHI-LABS/HAECHI-CLI/badge.svg?branch=dev)](https://coveralls.io/github/HAECHI-LABS/HAECHI-CLI?branch=dev)
+[![CircleCI](https://circleci.com/gh/HAECHI-LABS/haechi-cli.svg?style=svg)](https://circleci.com/gh/HAECHI-LABS/haechi-cli)[![Coverage Status](https://coveralls.io/repos/github/HAECHI-LABS/HAECHI-CLI/badge.svg?branch=dev)](https://coveralls.io/github/HAECHI-LABS/HAECHI-CLI?branch=dev)
 [![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 
