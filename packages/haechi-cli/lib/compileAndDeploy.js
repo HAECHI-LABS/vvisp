@@ -4,7 +4,7 @@ module.exports = async function(filePath, privateKey, arguments, options) {
   const printOrSilent = require('./printOrSilent');
   const path = require('path');
 
-  const output = await compile(filePath, options? options.silent : undefined);
+  const output = await compile(filePath, options ? options.silent : undefined);
   const name = path.parse(filePath).name;
 
   const deployTarget = output.contracts[filePath + ':' + name];

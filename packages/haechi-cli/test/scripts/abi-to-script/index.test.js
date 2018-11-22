@@ -100,8 +100,14 @@ describe('# abi-to-script process test', function() {
       before(async function() {
         this.apis = require('../../../contractApis/back');
         const txCount = await web3.eth.getTransactionCount(SENDER);
-        this.receipt1 = await compileAndDeploy(CONTRACT_PATH1, PRIV_KEY, [], { silent: true, txCount: txCount });
-        this.receipt2 = await compileAndDeploy(CONTRACT_PATH2, PRIV_KEY, [], { silent: true, txCount: txCount + 1 });
+        this.receipt1 = await compileAndDeploy(CONTRACT_PATH1, PRIV_KEY, [], {
+          silent: true,
+          txCount: txCount
+        });
+        this.receipt2 = await compileAndDeploy(CONTRACT_PATH2, PRIV_KEY, [], {
+          silent: true,
+          txCount: txCount + 1
+        });
       });
       it('should have two constructor functions', function() {
         forIn(this.apis, Contract => {
@@ -109,9 +115,13 @@ describe('# abi-to-script process test', function() {
         });
       });
       it('should make api instances', function() {
-        this.attachment = new this.apis[CONTRACT1](this.receipt1.contractAddress);
+        this.attachment = new this.apis[CONTRACT1](
+          this.receipt1.contractAddress
+        );
         this.token = new this.apis[CONTRACT2](this.receipt2.contractAddress);
-        this.attachment.getAddress().should.equal(this.receipt1.contractAddress);
+        this.attachment
+          .getAddress()
+          .should.equal(this.receipt1.contractAddress);
         this.token.getAddress().should.equal(this.receipt2.contractAddress);
       });
       it('should change address', function() {
@@ -128,7 +138,8 @@ describe('# abi-to-script process test', function() {
       it('should call function', async function() {
         const txCount = await web3.eth.getTransactionCount(SENDER);
         await this.attachment.methods.initialize(SENDER).should.be.fulfilled;
-        await this.token.methods.initialize(SENDER, { txCount: txCount + 1}).should.be.fulfilled;
+        await this.token.methods.initialize(SENDER, { txCount: txCount + 1 })
+          .should.be.fulfilled;
       });
       it('should get owner', async function() {
         (await this.attachment.methods.owner()).should.equal(SENDER);

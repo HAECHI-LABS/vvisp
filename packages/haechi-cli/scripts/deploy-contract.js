@@ -2,7 +2,12 @@ module.exports = async function(file, arguments, options) {
   const { checkEnvExist } = require('../bin/error');
   checkEnvExist();
 
-  const { compileAndDeploy, mnemonicToPrivateKey, getWeb3, printOrSilent } = require('../lib');
+  const {
+    compileAndDeploy,
+    mnemonicToPrivateKey,
+    getWeb3,
+    printOrSilent
+  } = require('../lib');
   const web3 = getWeb3();
 
   const privateKey = mnemonicToPrivateKey(
