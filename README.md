@@ -51,7 +51,7 @@ $ haechi init
 You don't have to do `` $ npm init `` or ``$ truffle init``.
 We supports environment for [truffle](https://truffleframework.com/truffle).
 
-_[See details](./commands/README.md#init)_ for ``$ haechi init``.
+_[See details](./packages/haechi-cli/commands/README.md#init)_ for ``$ haechi init``.
 
 Then, install node modules according to ``package.json``.
 ```sh
@@ -76,12 +76,12 @@ Run `$ haechi --help` for more details about functions of haechi-cli.
 ## Commands
 
 Please see linked documentation below:
-- [init](./commands/README.md#init): Initialize project directory
-- [compile](./commands/README.md#compile): Compile solidity contract files
-- [deploy-contract](./commands/README.md#deploy-contract): Deploy contract
-- [deploy-service](./commands/README.md#deploy-service): Deploy service according to Upgradeable Smart Contract Framework
-- [abi-to-script](./commands/README.md#abi-to-script): Generate javascript APIs interacting with smart contract on blockchain
-- [flatten](./commands/README.md#flatten): Flatten several contract files in one file
+- [init](./packages/haechi-cli/commands/README.md#init): Initialize project directory
+- [compile](./packages/haechi-cli/commands/README.md#compile): Compile solidity contract files
+- [deploy-contract](./packages/haechi-cli/commands/README.md#deploy-contract): Deploy contract
+- [deploy-service](./packages/haechi-cli/commands/README.md#deploy-service): Deploy service according to Upgradeable Smart Contract Framework
+- [abi-to-script](./packages/haechi-cli/commands/README.md#abi-to-script): Generate javascript APIs interacting with smart contract on blockchain
+- [flatten](./packages/haechi-cli/commands/README.md#flatten): Flatten several contract files in one file
 
 ## Contributing
 

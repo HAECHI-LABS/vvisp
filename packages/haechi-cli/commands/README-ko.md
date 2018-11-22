@@ -45,7 +45,7 @@ root/
 > - `contracts` 폴더가 생성됩니다. Contract code는 이곳에서 작업해 주시기 바랍니다.
 > - `contracts/upgradeable` 과 `contracts/libs` 폴더 내에 upgradeable smart contract framework에 필요한 라이브러리들이 복사됩니다. 수정을 추천드리지 않습니다.
 > - `.babelrc` 파일이 생성됩니다. ES6 문법을 지원합니다.
-> - `.env` 파일이 생성됩니다. 이 곳에서 환경 변수를 설정하십시오. [참고](../CONFIGURATION-ko.md#env)
+> - `.env` 파일이 생성됩니다. 이 곳에서 환경 변수를 설정하십시오. [참고](../../../CONFIGURATION-ko.md#env)
 > - solidity를 위한 교정 도구인 [solium](https://github.com/duaraghav8/Solium)을 위한 파일인 `.soliumignore`, `.solcover.js`, `.soliumrc.json`이 생성됩니다.
 > - `scripts/test.sh`가 생성되고 `$ npm run test` 스크립트가 `package.json`에 추가됩니다. truffle의 contract testing을 할 때 유용합니다.
 > - `truffle-config.js`가 생성됩니다. truffle을 사용할 때 필요하며 관련 설정 정보가 담겨 있습니다.
@@ -114,7 +114,7 @@ Contract Address : 0xcfb...
 
 **특별한 경우가 아니면 `state.haechi.json`의 변경은 추천드리지 않습니다.**
 
-`service.haechi.json`의 작성은 [이곳](../CONFIGURATION-ko.md#service)을 참고하십시오.
+`service.haechi.json`의 작성은 [이곳](../../../CONFIGURATION-ko.md#service)을 참고하십시오.
 
 __Example__
 

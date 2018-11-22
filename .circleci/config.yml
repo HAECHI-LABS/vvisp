@@ -8,13 +8,13 @@ jobs:
     docker:
       # specify the version you desire here
       - image: circleci/node:8.12.0
-      
+
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
       # - image: circleci/mongo:3.4.4
 
-    working_directory: ~/HEACHI-CLI
+    working_directory: ~/haechi-cli
 
     steps:
       - checkout
@@ -27,14 +27,15 @@ jobs:
           - v1-dependencies-
 
       - run: yarn
-      - run: yarn global add ganache-cli
-      - run: cp test/dummy/test.env .
-      - run: mv test.env .env
+      - run: yarn --version
+      - run: yarn global add ganache-cli@6.1.8
+      - run: yarn global add lerna
+      - run: yarn bootstrap
 
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-        
+
       # run tests!
       - run: yarn ci

@@ -1,66 +1,13 @@
 {
-  "name": "haechi-cli",
-  "version": "0.1.0",
-  "description": "Command Line Interface for the upgradeable smart contract framework",
-  "author": "Jay Choy <jay@haechi.io>",
-  "license": "MIT",
-  "homepage": "https://haechi.io",
-  "repository": "github:HAECHI-LABS/HAECHI-CLI",
-  "directories": {
-    "test": "test"
-  },
-  "bin": {
-    "haechi": "bin/haechi-cli.js"
-  },
-  "keywords": [
-    "ethereum",
-    "smart-contracts",
-    "blockchain",
-    "dapps",
-    "javascript",
-    "tooling",
-    "task-runner",
-    "solidity",
-    "upgradeable",
-    "cli"
-  ],
+  "private": true,
   "scripts": {
+    "lerna:bootstrap": "lerna bootstrap",
+    "bootstrap": "npm run lerna:bootstrap",
     "precommit": "lint-staged",
-    "test": "nyc --reporter=html --reporter=text mocha",
-    "testAll": "nyc --reporter=html --reporter=text mocha $(find ./test -name '*.test.js') --recursive",
-    "ci": "./test/test.sh",
-    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "test": "./scripts/test.sh",
+    "coverage": "./scripts/coverage.sh",
+    "ci": "npm run test && npm run coverage",
     "commitmsg": "commitlint -E GIT_PARAMS"
-  },
-  "dependencies": {
-    "babel-core": "^6.26.3",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-polyfill": "^6.23.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-es2015": "^6.18.0",
-    "babel-preset-stage-2": "^6.18.0",
-    "babel-preset-stage-3": "^6.17.0",
-    "babel-register": "^6.23.0",
-    "bip39": "^2.5.0",
-    "chalk": "^2.4.1",
-    "commander": "^2.17.1",
-    "dotenv": "^5.0.1",
-    "ethereumjs-tx": "^1.3.7",
-    "ethereumjs-wallet": "^0.6.2",
-    "find-up": "^3.0.0",
-    "fs-extra": "^7.0.0",
-    "lodash": "^4.17.10",
-    "mustache": "^2.3.2",
-    "node-find-folder": "^0.1.32",
-    "rollup": "^0.65.0",
-    "rollup-plugin-babel": "^3.0.7",
-    "rollup-plugin-regenerator": "^0.6.0",
-    "semver": "^5.5.1",
-    "solc": "^0.4.24",
-    "solidity-parser-antlr": "^0.3.2",
-    "tsort": "0.0.1",
-    "web3": "^1.0.0-beta.35"
   },
   "devDependencies": {
     "@commitlint/cli": "^7.2.1",
@@ -69,17 +16,19 @@
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "coveralls": "^3.0.2",
-    "eth-gas-reporter": "^0.1.7",
-    "ethereumjs-util": "^5.1.2",
-    "ethjs-abi": "^0.2.1",
     "husky": "^0.14.3",
     "jest": "^23.6.0",
+    "lerna": "^3.4.3",
     "lint-staged": "^7.2.2",
-    "mitm": "^1.4.0",
     "mocha": "^5.2.0",
     "mocha-lcov-reporter": "^1.3.0",
     "nyc": "^13.1.0",
     "prettier": "1.14.2"
+  },
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
   },
   "lint-staged": {
     "**/*.js": [

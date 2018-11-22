@@ -46,7 +46,7 @@ root/
 > - The `contracts` folder is created. Contract code, please work here.
 > - The necessary libraries for the upgradeable smart contract framework are copied into the `contracts/upgradeable` and` contracts/libs` folders. We do not recommend revision.
 > - A `.babelrc` file is created. Supports ES6 grammar.
-> - The `.env` file is created. Set environment variables here. [See details](../CONFIGURATION.md#env).
+> - The `.env` file is created. Set environment variables here. [See details](../../../CONFIGURATION.md#env).
 > - `.soliumignore`,` .solcover.js`, and `.soliumrc.json` files for [solium](https://github.com/duaraghav8/Solium), a proofing tool for solidity, are created.
 > - `scripts/test.sh` is created and the` $ npm run test` script is added to `package.json`. This is useful for truffle contract testing.
 > - `truffle-config.js` will be created. Required when using truffle and contains relevant configuration information.
@@ -119,7 +119,7 @@ If deployment fails due to an unexpected problem during deployment, re-enter the
 
 **It is not recommended to change `state.haechi.json` unless it is a special case.**
 
-To create `service.haechi.json`, see [here](../CONFIGURATION.md#service).
+To create `service.haechi.json`, see [here](../../../CONFIGURATION.md#service).
 
 __Example__
 
