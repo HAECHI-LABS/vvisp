@@ -3,21 +3,12 @@ const expect = chai.expect;
 chai.use(require('chai-as-promised')).should();
 const dotenv = require('dotenv');
 
-const { compile, getCompiledContracts } = require('../../lib');
+const { compile, getCompiledContracts } = require('../src');
 const path = require('path');
 
-const ERROR_CONTRACT = path.join(
-  __dirname,
-  '../../contracts/test/ErrorContract.sol'
-);
-const RIGHT_CONTRACT1 = path.join(
-  __dirname,
-  '../../contracts/test/DependencyA.sol'
-);
-const RIGHT_CONTRACT2 = path.join(
-  __dirname,
-  '../../contracts/test/DependencyB.sol'
-);
+const ERROR_CONTRACT = path.join(__dirname, '../contracts/ErrorContract.sol');
+const RIGHT_CONTRACT1 = path.join(__dirname, '../contracts/DependencyA.sol');
+const RIGHT_CONTRACT2 = path.join(__dirname, '../contracts/DependencyB.sol');
 
 describe('# compile test', function() {
   this.timeout(50000);
@@ -56,7 +47,7 @@ describe('# compile test', function() {
   });
   describe('# result value', function() {
     before(async function() {
-      this.dummyPath = path.join(__dirname, '../contracts/test/Attachment.sol');
+      this.dummyPath = path.join(__dirname, '../contracts/Attachment.sol');
       this.optimization = await compile(this.dummyPath, true).should.be
         .fulfilled;
       process.env.SOLC_OPTIMIZATION = 'false';

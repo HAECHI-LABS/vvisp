@@ -28,7 +28,7 @@ jobs:
 
       - run: yarn
       - run: yarn --version
-      - run: yarn global add ganache-cli@6.1.8
+      - run: yarn global add ganache-cli@6.1.8 # TODO: The latest version of ganache-cli doesn't work, change if it becomes stable
       - run: yarn global add lerna
       - run: yarn bootstrap
 

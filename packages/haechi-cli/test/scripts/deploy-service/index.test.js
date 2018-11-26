@@ -16,7 +16,7 @@ const {
   getWeb3,
   mnemonicToPrivateKey,
   privateKeyToAddress
-} = require('../../../lib');
+} = require('@haechi-labs/haechi-utils');
 const web3 = getWeb3();
 const path = require('path');
 const fs = require('fs-extra');

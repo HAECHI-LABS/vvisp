@@ -1,5 +1,5 @@
 module.exports = async function(contracts, options) {
-  const { compile, forIn } = require('../../../lib/index');
+  const { compile, forIn } = require('@haechi-labs/haechi-utils');
   const path = require('path');
   const { PROXY_PATH, REGISTRY_PATH } = require('../constants');
 

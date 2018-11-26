@@ -1,6 +1,6 @@
 module.exports = function(deployState, options) {
   const { CONSTRUCTOR, INITIALIZE } = require('../constants');
-  const { forIn } = require('../../../lib/index');
+  const { forIn } = require('@haechi-labs/haechi-utils');
   const { writeState } = require('../utils/index');
 
   const stateClone = deployState.getState();

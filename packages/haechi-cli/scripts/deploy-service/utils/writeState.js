@@ -1,6 +1,6 @@
 module.exports = function(state, options) {
   const fs = require('fs');
-  const { printOrSilent } = require('../../../lib');
+  const { printOrSilent } = require('@haechi-labs/haechi-utils');
   const { STATE_PATH } = require('../constants');
 
   const stateString = JSON.stringify(state, null, '  ');

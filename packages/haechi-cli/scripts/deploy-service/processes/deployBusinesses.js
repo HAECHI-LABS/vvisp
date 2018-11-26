@@ -1,14 +1,14 @@
 module.exports = async function(deployState, options) {
   const path = require('path');
-  const { printOrSilent } = require('../../../lib/index');
   const { PRIVATE_KEY, TX_OPTIONS, UPGRADEABLE } = require('../constants');
   const {
     deploy,
     forIn,
     forInAsync,
     getCompiledContracts,
-    getTxCount
-  } = require('../../../lib/index');
+    getTxCount,
+    printOrSilent
+  } = require('@haechi-labs/haechi-utils');
 
   const compileOutput = deployState.compileOutput;
   const contracts = deployState.targets;

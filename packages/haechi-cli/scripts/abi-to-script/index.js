@@ -2,12 +2,11 @@ module.exports = async function(files, options) {
   const path = require('path');
   const fs = require('fs-extra');
 
-  const { printOrSilent } = require('../../lib');
+  const { printOrSilent } = require('@haechi-labs/haechi-utils');
   const { getJsApis, render, rollingUp } = require('./utils');
   const generateApis = require('./generateApis');
 
   const TEMPLATE = {
-    utils: path.join(__dirname, '../../template/utils'),
     backScript: path.join(__dirname, '../../template/script.mustache'),
     backIndex: path.join(__dirname, '../../template/index.js'),
     frontScript: path.join(__dirname, '../../template/front.mustache'),
@@ -25,7 +24,6 @@ module.exports = async function(files, options) {
 
     await generateApis(files, abiDir, jsDir, TEMPLATE.backScript, options);
 
-    fs.copySync(TEMPLATE.utils, path.join(rootDir, 'utils')); // TODO: will be changed to haechi-lib
     fs.copySync(TEMPLATE.backIndex, path.join(rootDir, 'index.js'));
 
     printOrSilent('\nGenerate Finished!', options);

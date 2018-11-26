@@ -3,7 +3,7 @@ module.exports = async function(options) {
   checkEnvExist();
   checkConfigExist();
 
-  const { printOrSilent } = require('../../lib');
+  const { printOrSilent } = require('@haechi-labs/haechi-utils');
   const { writeState } = require('./utils');
   const DeployState = require('./DeployState');
   const preProcess = require('./preProcess');

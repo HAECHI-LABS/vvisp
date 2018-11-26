@@ -11,7 +11,7 @@ module.exports = async function(deployState, options) {
     getTxCount,
     printOrSilent,
     sendTx
-  } = require('../../../lib/index');
+  } = require('@haechi-labs/haechi-utils');
   const { pathToInstance } = require('../utils/index');
 
   const { compileOutput, targets } = deployState;

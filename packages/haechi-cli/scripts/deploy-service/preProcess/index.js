@@ -1,7 +1,7 @@
 module.exports = async function(deployState, options) {
   const fs = require('fs-extra');
   const { SERVICE_PATH, STATE_PATH, VARIABLES } = require('../constants');
-  const { forIn, printOrSilent } = require('../../../lib');
+  const { forIn, printOrSilent } = require('@haechi-labs/haechi-utils');
 
   let stateClone = deployState.getState();
   const config = fs.readJsonSync(SERVICE_PATH);
