@@ -3,6 +3,7 @@
 [![CircleCI](https://circleci.com/gh/HAECHI-LABS/haechi-cli.svg?style=svg)](https://circleci.com/gh/HAECHI-LABS/haechi-cli)[![Coverage Status](https://coveralls.io/repos/github/HAECHI-LABS/HAECHI-CLI/badge.svg?branch=dev)](https://coveralls.io/github/HAECHI-LABS/HAECHI-CLI?branch=dev)
 [![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
+[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lernajs.io/)
 
 > Command Line Interface for the upgradeable smart contract framework. 
 
