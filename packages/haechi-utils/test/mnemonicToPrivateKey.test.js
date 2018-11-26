@@ -2,7 +2,7 @@ const chai = require('chai');
 const expect = chai.expect;
 chai.should();
 
-const { mnemonicToPrivateKey } = require('../../lib');
+const { mnemonicToPrivateKey } = require('../src');
 
 const MNEMONIC =
   'away clutch still element short tooth spy hood army split stomach sail';

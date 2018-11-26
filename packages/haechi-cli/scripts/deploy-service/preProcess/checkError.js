@@ -5,7 +5,7 @@ module.exports = function(targets, compileOutput, options) {
     getCompiledContracts,
     getCycle,
     printOrSilent
-  } = require('../../../lib/index');
+  } = require('@haechi-labs/haechi-utils');
   const { hasConstructArgs, hasInitArgs, getVar } = require('../utils/index');
   const { INITIALIZE, CONSTRUCTOR, UPGRADEABLE } = require('../constants');
 

@@ -3,7 +3,7 @@ module.exports = async function(name, options) {
   const fs = require('fs-extra');
   const chalk = require('chalk');
 
-  const { printOrSilent } = require('../lib');
+  const { printOrSilent } = require('@haechi-labs/haechi-utils');
 
   const PACKAGE_JSON = path.join(__dirname, '../package.json');
 

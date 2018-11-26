@@ -14,7 +14,7 @@ module.exports = async function(deployState, options) {
     getTxCount,
     printOrSilent,
     sendTx
-  } = require('../../../lib/index');
+  } = require('@haechi-labs/haechi-utils');
 
   const compileOutput = deployState.compileOutput;
   let stateClone = deployState.getState();

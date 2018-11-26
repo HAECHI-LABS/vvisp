@@ -1,6 +1,6 @@
 module.exports = function(configContracts, stateClone) {
   const path = require('path');
-  const { forIn, printOrSilent } = require('../../../lib/index');
+  const { forIn, printOrSilent } = require('@haechi-labs/haechi-utils');
 
   const { PENDING_STATE } = require('../constants');
   const targets = {};

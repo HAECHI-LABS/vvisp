@@ -7,7 +7,7 @@ module.exports = async function(file, arguments, options) {
     mnemonicToPrivateKey,
     getWeb3,
     printOrSilent
-  } = require('../lib');
+  } = require('@haechi-labs/haechi-utils');
   const web3 = getWeb3();
 
   const privateKey = mnemonicToPrivateKey(

@@ -1,6 +1,9 @@
 module.exports = (function() {
   const path = require('path');
-  const { getWeb3, mnemonicToPrivateKey } = require('../../lib');
+  const {
+    getWeb3,
+    mnemonicToPrivateKey
+  } = require('@haechi-labs/haechi-utils');
   const web3 = getWeb3();
 
   return {

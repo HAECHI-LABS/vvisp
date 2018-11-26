@@ -4,7 +4,7 @@ module.exports = async function(deployState, options) {
     deploy,
     getCompiledContracts,
     printOrSilent
-  } = require('../../../lib/index');
+  } = require('@haechi-labs/haechi-utils');
 
   printOrSilent('Registry Deploying...', options);
   const compileOutput = deployState.compileOutput;

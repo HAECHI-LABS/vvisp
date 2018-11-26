@@ -1,7 +1,11 @@
 module.exports = async function(files, options) {
   const path = require('path');
   const fs = require('fs-extra');
-  const { compile, getAllFiles, printOrSilent } = require('../lib');
+  const {
+    compile,
+    getAllFiles,
+    printOrSilent
+  } = require('@haechi-labs/haechi-utils');
 
   fs.ensureDirSync(path.join('./', 'build'));
   fs.ensureDirSync(path.join('build', 'contracts'));

@@ -13,7 +13,7 @@ const {
   getWeb3,
   mnemonicToPrivateKey,
   privateKeyToAddress
-} = require('../../../lib');
+} = require('@haechi-labs/haechi-utils');
 const web3 = getWeb3();
 
 const CONTRACT1 = 'Attachment';
@@ -41,7 +41,6 @@ describe('# abi-to-script process test', function() {
         this.root = path.join(ROOT, 'back');
         this.abi = path.join(this.root, 'abi');
         this.js = path.join(this.root, 'js');
-        this.utils = path.join(this.root, 'utils');
       });
       it('should be fulfilled', async function() {
         await abiToScript(this.files, { silent: true }).should.be.fulfilled;
@@ -57,9 +56,6 @@ describe('# abi-to-script process test', function() {
           .isDirectory()
           .should.be.equal(true);
         fs.lstatSync(this.js)
-          .isDirectory()
-          .should.be.equal(true);
-        fs.lstatSync(this.utils)
           .isDirectory()
           .should.be.equal(true);
       });
@@ -81,19 +77,6 @@ describe('# abi-to-script process test', function() {
         for (let i = 0; i < files.length; i++) {
           path.parse(files[i]).ext.should.be.equal('.js');
         }
-      });
-      it('should make util files', function() {
-        const files = fs.readdirSync(this.utils);
-        assert.isAbove(files.length, 1);
-        let hasIndex = false;
-        for (let i = 0; i < files.length; i++) {
-          const parses = path.parse(files[i]);
-          parses.ext.should.be.equal('.js');
-          if (parses.name === 'index') {
-            hasIndex = true;
-          }
-        }
-        hasIndex.should.be.equal(true);
       });
     });
     describe('# output test', function() {
