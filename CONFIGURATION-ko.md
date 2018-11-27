@@ -5,9 +5,9 @@ English version: [CONFIGURATION.md](./CONFIGURATION.md)
 
 ## <a name="env"></a>.env
 
-haechi-cli는 `.env` file에 작성된 환경 변수들을 [`process.env`](https://nodejs.org/docs/latest/api/process.html#process_process_env)로 불러오는 [dotenv](https://github.com/motdotla/dotenv)를 사용합니다.
+vvisp는 `.env` file에 작성된 환경 변수들을 [`process.env`](https://nodejs.org/docs/latest/api/process.html#process_process_env)로 불러오는 [dotenv](https://github.com/motdotla/dotenv)를 사용합니다.
 
-> `.env`는 환경변수를 설정해주는 file입니다. 해당 파일이 없으면 haechi-cli의 일부 기능은 ```.env file does not exist```라는 에러 메세지를 띄우며 더이상 작동하지 않습니다. 
+> `.env`는 환경변수를 설정해주는 file입니다. 해당 파일이 없으면 vvisp의 일부 기능은 ```.env file does not exist```라는 에러 메세지를 띄우며 더이상 작동하지 않습니다. 
 
 - `NETWORK`: 연결하고자 하는 네트워크의 이름입니다. local을 제외하고, [infura](https://infura.io/)를 통합니다. [local, mainnet, ropsten, kovan, rinkeby] 중 하나를 고르십시오. ***REQUIRED***
 - `PORT`: local 선택시, 연결하고자 하는 포트 번호입니다.
@@ -15,7 +15,7 @@ haechi-cli는 `.env` file에 작성된 환경 변수들을 [`process.env`](https
 - `MNEMONIC`: 트랜잭션을 생성할 대상의 mnemonic key입니다. ***REQUIRED***
 - `PRIV_INDEX`: MNEMONIC으로 생성될 private key의 index입니다. 기본 값은 0입니다.
 - `GAS_PRICE`: 트랙잭션 발생시 설정하고자 하는 gas price입니다. 기본값은 10Gwei이며, 입력 단위는 wei입니다. 
-- `SOLC_VERSION`: 사용하고자 하는 컴파일러 버전을 입력합니다. 특정 버전 입력시 네트워크와의 통신이 필요하며, 입력 값이 없을 경우 haechi-cli에 내장된 로컬 solc를 사용합니다. 
+- `SOLC_VERSION`: 사용하고자 하는 컴파일러 버전을 입력합니다. 특정 버전 입력시 네트워크와의 통신이 필요하며, 입력 값이 없을 경우 vvisp에 내장된 로컬 solc를 사용합니다. 
 - `SOLC_OPTIMIZATION`: compile 최적화를 원하지 않는다면 false를 입력하십시오. 기본 값은 true입니다.
 
 ### Examples
@@ -30,9 +30,9 @@ SOLC_VERSION=                   // 내장된 컴파일러를 사용합니다.
 SOLC_OPTIMIZATION=              // 최적화를 사용합니다.
 ```
 
-## <a name="service"></a>service.haechi.json
+## <a name="service"></a>service.vvisp.json
 
-`service.haechi.json`은 같은 버전 체계로 관리되어야 하는 스마트 컨트랙트의 묶음인 service를 정의하는 설정 파일입니다. 
+`service.vvisp.json`은 같은 버전 체계로 관리되어야 하는 스마트 컨트랙트의 묶음인 service를 정의하는 설정 파일입니다. 
 
 예시)
 
@@ -79,7 +79,7 @@ SOLC_OPTIMIZATION=              // 최적화를 사용합니다.
 
 1) service의 이름을 정의합니다.
 
-2) `service.haechi.json`에서 사용할 값을 설정하는 곳 입니다. 반복적으로 사용할 상수 값의 경우 이곳에서 정의하는 것을 추천 드립니다.
+2) `service.vvisp.json`에서 사용할 값을 설정하는 곳 입니다. 반복적으로 사용할 상수 값의 경우 이곳에서 정의하는 것을 추천 드립니다.
 
 3) key-value pair로 상수를 지정합니다.
 

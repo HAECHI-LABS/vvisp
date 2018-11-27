@@ -1,10 +1,10 @@
 
 
-# Contributing to haechi-cli
+# Contributing to vvisp
 
 Korean version: [CONTRIBUTING-ko.md](./CONTRIBUTING-ko.md)
 
- We welcome all developers who would like to contribute to haechi-cli. We need a lot of help for haechi-cli, which is better than today. This is a guideline for contributing to haechi-cli.
+ We welcome all developers who would like to contribute to vvisp. We need a lot of help for vvisp, which is better than today. This is a guideline for contributing to vvisp.
  - [Question or Problem?](#question)
  - [Issues and Bugs](#issue)
  - [Submission Guidelines](#submit)
@@ -12,8 +12,7 @@ Korean version: [CONTRIBUTING-ko.md](./CONTRIBUTING-ko.md)
 
 ## <a name="question"></a>Question or Problem?
 
- Do not open issues for general support questions as we want to keep GitHub issues for bug reports and feature requests. We have not yet defined the name of the Command Line Interface (CLI). We will create a question channel by opening Stack Overflow and Gitter. Until then, please ask questions about hello@haechi.io.
-If you have a good name for CLI, please suggest us. :) 
+ Do not open issues for general support questions as we want to keep GitHub issues for bug reports and feature requests.
 
 ## <a name="issue"></a> Issues and Bugs?
 
@@ -35,14 +34,14 @@ Issue category is as follows.
 
 We want to fix all the issues as soon as possible, but before fixing a bug we need to reproduce and confirm it. In order to reproduce bugs, we will systematically ask you to provide a minimal reproduction scenario. 
 
-You can file new issues by filling out our [Issue Form](https://github.com/HAECHI-LABS/HAECHI-CLI/issues/new).
+You can file new issues by filling out our [Issue Form](https://github.com/HAECHI-LABS/vvisp/issues/new).
 
 ### <a name="submit-pr"></a> Submitting a Pull Request (PR)
 
 Before you submit your Pull Request (PR) consider the following guidelines:
 
-1. Search [Github PR list]((https://github.com/HAECHI-LABS/HAECHI-CLI/pulls)) for an open or closed PR that relates to your submission. You don't want to duplicate effort.
-1. Fork the HAECHI-CLI/HAECHI-CLI repo.
+1. Search [Github PR list]((https://github.com/HAECHI-LABS/vvisp/pulls)) for an open or closed PR that relates to your submission. You don't want to duplicate effort.
+1. Fork the HAECHI-LABS/vvisp repo.
 1. Make your changes in a new git branch and create your patch.
 
      ```shell
@@ -62,7 +61,7 @@ Before you submit your Pull Request (PR) consider the following guidelines:
     git push origin new-branch
     ```
 
-1. In GitHub, send a pull request to `HAECHI-CLI:dev`. Rebase your branch and force push to your GitHub repository (this will update your Pull Request).
+1. In GitHub, send a pull request to `vvisp:dev`. Rebase your branch and force push to your GitHub repository (this will update your Pull Request).
 
     ```shell
     git rebase master -i

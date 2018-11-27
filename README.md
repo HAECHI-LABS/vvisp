@@ -1,13 +1,14 @@
-# HAECHI-CLI (haechi-cli) 
+# vvisp
 
-[![CircleCI](https://circleci.com/gh/HAECHI-LABS/haechi-cli.svg?style=svg)](https://circleci.com/gh/HAECHI-LABS/haechi-cli)[![Coverage Status](https://coveralls.io/repos/github/HAECHI-LABS/HAECHI-CLI/badge.svg?branch=dev)](https://coveralls.io/github/HAECHI-LABS/HAECHI-CLI?branch=dev)
+[![CircleCI](https://circleci.com/gh/HAECHI-LABS/vvisp.svg?style=svg)](https://circleci.com/gh/HAECHI-LABS/vvisp)
+[![Coverage Status](https://coveralls.io/repos/github/HAECHI-LABS/vvisp/badge.svg?branch=dev)](https://coveralls.io/github/HAECHI-LABS/vvisp?branch=dev)
 [![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lernajs.io/)
 
 > Command Line Interface for the upgradeable smart contract framework. 
 
-HAECHI-CLI is a new Command Line Interface tool created to help developers easily develop better DApps by providing an upgradeable smart contract framework as well as new development tools.
+vvisp is a new Command Line Interface tool created to help developers easily develop better DApps by providing an upgradeable smart contract framework as well as new development tools.
 
 Upgradeable Smart Contract helps to easily fix bugs and update business logics for the Dapp service.
 It also provides a high-quality user experience while maintaining the same entry point for users and updating smart contracts atomically.
@@ -33,11 +34,11 @@ If you want more information about the Upgradeable Smart Contract Framework, you
 Install [Node.js](http://nodejs.org/) first.
 Then, install [npm](https://npmjs.com/) and
 ```sh
-$ npm install --global @haechi-labs/haechi-cli
+$ npm install --global @haechi-labs/vvisp
 ```
 or install [yarn](https://yarnpkg.com) and
 ```sh
-$ yarn global add @haechi-labs/haechi-cli
+$ yarn global add @haechi-labs/vvisp
 ```
 
 ## Usage
@@ -46,12 +47,12 @@ For a default set of files, run the following within an empty project directory:
 ```sh
 $ mkdir my-project
 $ cd my-project
-$ haechi init
+$ vvisp init
 ```
 You don't have to do `` $ npm init `` or ``$ truffle init``.
 We supports environment for [truffle](https://truffleframework.com/truffle).
 
-_[See details](./packages/haechi-cli/commands/README.md#init)_ for ``$ haechi init``.
+_[See details](./packages/vvisp/commands/README.md#init)_ for ``$ vvisp init``.
 
 Then, install node modules according to ``package.json``.
 ```sh
@@ -67,21 +68,21 @@ We recommend to use [ganache](https://truffleframework.com/ganache) for test.
 Next, you have to write:
 
  - ``.env`` : General settings for your project 
- - ``service.haechi.json`` : Settings for your Dapp service
+ - ``service.vvisp.json`` : Settings for your Dapp service
  
 Please see [CONFIGURATION.md](./CONFIGURATION.md) to configure your project.
 
-Run `$ haechi --help` for more details about functions of haechi-cli.
+Run `$ vvisp --help` for more details about functions of vvisp.
 
 ## Commands
 
 Please see linked documentation below:
-- [init](./packages/haechi-cli/commands/README.md#init): Initialize project directory
-- [compile](./packages/haechi-cli/commands/README.md#compile): Compile solidity contract files
-- [deploy-contract](./packages/haechi-cli/commands/README.md#deploy-contract): Deploy contract
-- [deploy-service](./packages/haechi-cli/commands/README.md#deploy-service): Deploy service according to Upgradeable Smart Contract Framework
-- [abi-to-script](./packages/haechi-cli/commands/README.md#abi-to-script): Generate javascript APIs interacting with smart contract on blockchain
-- [flatten](./packages/haechi-cli/commands/README.md#flatten): Flatten several contract files in one file
+- [init](./packages/vvisp/commands/README.md#init): Initialize project directory
+- [compile](./packages/vvisp/commands/README.md#compile): Compile solidity contract files
+- [deploy-contract](./packages/vvisp/commands/README.md#deploy-contract): Deploy contract
+- [deploy-service](./packages/vvisp/commands/README.md#deploy-service): Deploy service according to Upgradeable Smart Contract Framework
+- [abi-to-script](./packages/vvisp/commands/README.md#abi-to-script): Generate javascript APIs interacting with smart contract on blockchain
+- [flatten](./packages/vvisp/commands/README.md#flatten): Flatten several contract files in one file
 
 ## Contributing
 
