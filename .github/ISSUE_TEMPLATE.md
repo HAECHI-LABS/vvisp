@@ -35,8 +35,8 @@ For bug reports please provide the *STEPS TO REPRODUCE* and if possible a *MINIM
 ## Environment
 
 <pre><code>
-haechi-cli version: X.Y.Z
-<!-- Check whether this is still an issue in the most recent haechi-cli version -->
+vvisp version: X.Y.Z
+<!-- Check whether this is still an issue in the most recent vvisp version -->
 
 Environment:
 - Node version:

@@ -11,14 +11,14 @@ Korean version: [README-ko.md](./README-ko.md)
 
 
 ## init
-> haechi init [options]
+> vvisp init [options]
 
 Start the project through this command.
 
 __Examples__
 
 ```shell
-$ haechi init
+$ vvisp init
 ```
 
 __Outputs__
@@ -39,7 +39,7 @@ root/
 ├── .soliumignore
 ├── .soliumrc.json
 ├── .package.json
-├── service.haechi.json
+├── service.vvisp.json
 └── truffle-config.json
 ```
 > - `package.json` is created. Several libraries used by HEACHI LABS have been added.
@@ -54,18 +54,18 @@ root/
 > - `test` folder will be created. Please create testcode for truffle test here. 
 > - For information about truffle, see [truffle documentation](https://truffleframework.com/docs/truffle/overview).
 > - The useful libraries provided by HAECHI LABS for contract testing are created in the `test/helpers` folder.
-> - The `service.haechi.json` file is created. Before you run `$ haechi deploy-service`, set the variables in the file. [See details](../CONFIGURATION-ko.md#service).
+> - The `service.vvisp.json` file is created. Before you run `$ vvisp deploy-service`, set the variables in the file. [See details](../CONFIGURATION-ko.md#service).
 
 
 ## compile
-> haechi compile [_files..._] [options]
+> vvisp compile [_files..._] [options]
 
 Compile solidity source code.
 
 __Examples__
 
 ```shell
-$ haechi compile contracts/Proxy.sol contracts/UpgradeabilityProxy.sol
+$ vvisp compile contracts/Proxy.sol contracts/UpgradeabilityProxy.sol
 ```
 
 __Outputs__ (Created at `build` folder)
@@ -85,14 +85,14 @@ build/contracts/
 
 ## deploy-contract
 
-> haechi deploy-contract <_file_> [_arguments..._] [options]
+> vvisp deploy-contract <_file_> [_arguments..._] [options]
 
 Deploy the target contract.
 
 __Examples__
 
 ```shell
-$ haechi deploy-contract contracts/ContractA.sol input1 input2
+$ vvisp deploy-contract contracts/ContractA.sol input1 input2
 ```
 __Outputs__ 
 
@@ -106,25 +106,25 @@ Contract Address : 0xcfb...
 
 ## deploy-service
 
-> haechi deploy-service [options]
+> vvisp deploy-service [options]
 
-Deploy the service described in `service.haechi.json`.
-First, we make sure that `service.haechi.json` is defined.
+Deploy the service described in `service.vvisp.json`.
+First, we make sure that `service.vvisp.json` is defined.
 If it is defined, we deploy the proxy contract corresponding to the contract and the registry contract corresponding to the service.
-When it is first deployed, `state.haechi.json` is created to save the deployment status.
-If you upgrade to another version later, you can change `service.haechi.json` and deploy again.
-The service will be upgraded to the state defined in modified `service.haechi.json`.
+When it is first deployed, `state.vvisp.json` is created to save the deployment status.
+If you upgrade to another version later, you can change `service.vvisp.json` and deploy again.
+The service will be upgraded to the state defined in modified `service.vvisp.json`.
 
 If deployment fails due to an unexpected problem during deployment, re-enter the command and redeploy it from the point of interruption.
 
-**It is not recommended to change `state.haechi.json` unless it is a special case.**
+**It is not recommended to change `state.vvisp.json` unless it is a special case.**
 
-To create `service.haechi.json`, see [here](../../../CONFIGURATION.md#service).
+To create `service.vvisp.json`, see [here](../../../CONFIGURATION.md#service).
 
 __Example__
 
 ```
-$ haechi deploy-service
+$ vvisp deploy-service
 ```
 
 __Process__
@@ -150,7 +150,7 @@ The deployment sequence is as follows. If there is no target to deploy, skip tha
 
 __Outputs__
 
-__`state.haechi.json`__
+__`state.vvisp.json`__
 
 This is the file where you can view the status of the currently deployed service.
 
@@ -201,7 +201,7 @@ For nonUpgradeable contract, there is no such property.
 
 ## abi-to-script
 
-> haechi abi-to-script <_files..._> [options]
+> vvisp abi-to-script <_files..._> [options]
 
 Automatically generate JavaScript source code to interact with the deployed contracts.
 
@@ -212,8 +212,8 @@ __Options__
 __Examples__
 
 ```shell
-$ haechi abi-to-script contracts/OwnedUpgradeabilityProxy.sol...
-$ haechi abi-to-script -f service contracts/OwnedUpgradeabilityProxy.sol...
+$ vvisp abi-to-script contracts/OwnedUpgradeabilityProxy.sol...
+$ vvisp abi-to-script -f service contracts/OwnedUpgradeabilityProxy.sol...
 ```
 
 __Outputs__
@@ -254,7 +254,7 @@ In the case of the front API, it is set to [web3 old version](https://github.com
 
 
 ## flatten
-> haechi flatten <_files..._> [options]
+> vvisp flatten <_files..._> [options]
 
 It bundles target contracts and imported contracts into one file. 
 
@@ -265,7 +265,7 @@ __Options__
 __Examples__
 
 ```shell
-$ haechi flatten contracts/ContractA.sol -o Output.sol
+$ vvisp flatten contracts/ContractA.sol -o Output.sol
 ```
 __Outputs__ 
 > It bundles the target contracts and all the files that depend on each contract into a single console window.

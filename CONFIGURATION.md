@@ -7,7 +7,7 @@ Korean version: [CONFIGURATION-ko.md](./CONFIGURATION-ko.md)
 
 We use [dotenv](https://github.com/motdotla/dotenv) that loads environment variables from a `.env` file into [`process.env`](https://nodejs.org/docs/latest/api/process.html#process_process_env).
 
-> `.env` is a file to set environment variables. If there is no `.env` file in root directory, some functions of haechi-cli don't work and print ```.env file does not exist``` error message.
+> `.env` is a file to set environment variables. If there is no `.env` file in root directory, some functions of vvisp don't work and print ```.env file does not exist``` error message.
 
 - `NETWORK`: The name of network you want to connect to. We use [infura](https://infura.io/) except local network. Choose one of [local, mainnet, ropsten, kovan, rinkeby]. ***REQUIRED***
 - `PORT`: The port number you want to connect to when local network is chosen.
@@ -15,7 +15,7 @@ We use [dotenv](https://github.com/motdotla/dotenv) that loads environment varia
 - `MNEMONIC`: The mnemonic key of an account to make transaction. ***REQUIRED***
 - `PRIV_INDEX`: The index of private key generated from MNEMONIC. Default is 0.
 - `GAS_PRICE`: The gas price to pay for transactions Default is 10Gwei and unit is wei. 
-- `SOLC_VERSION`: The version of solc compiler version you want to use and it needs network communication. You can keep it empty to use local compiler in haechi-cli. 
+- `SOLC_VERSION`: The version of solc compiler version you want to use and it needs network communication. You can keep it empty to use local compiler in vvisp. 
 - `SOLC_OPTIMIZATION`: If you don't want to optimize compile, set this false. Default is true.
 
 ### Example
@@ -31,9 +31,9 @@ SOLC_OPTIMIZATION=              // Use optimization
 ```
 
 
-## <a name="service"></a>service.haechi.json
+## <a name="service"></a>service.vvisp.json
 
-`service.haechi.json` is a configuration file that defines a service, a bundle of smart contracts that must be managed with the same versioning scheme. 
+`service.vvisp.json` is a configuration file that defines a service, a bundle of smart contracts that must be managed with the same versioning scheme. 
 
 ### Example
 
@@ -80,7 +80,7 @@ SOLC_OPTIMIZATION=              // Use optimization
 
 1) Define the name of service.
 
-2) Set some constant variables in`service.haechi.json`. We recommend defining constant values ​​to be used repeatedly in here.
+2) Set some constant variables in`service.vvisp.json`. We recommend defining constant values ​​to be used repeatedly in here.
 
 3) Define a constant variable as a key-value pair.
 
@@ -106,4 +106,4 @@ SOLC_OPTIMIZATION=              // Use optimization
 
 14) The value specified by `${variables.varName}` is replaced with `constant` by 3). 
 
-15) You can also specify `initialize` for a nonUpgradeable contract. haechi-cli calls the function after deployment.
+15) You can also specify `initialize` for a nonUpgradeable contract. vvisp calls the function after deployment.

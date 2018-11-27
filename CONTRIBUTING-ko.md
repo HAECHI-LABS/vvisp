@@ -1,10 +1,10 @@
 
 
-# Contributing to haechi-cli
+# Contributing to vvisp
 
 English version: [CONTRIBUTING.md](./CONFIGURATION.md)
 
- haechi-cli에 기여하시려는 모든 개발자분들을 환영합니다. 오늘 보다 더 나은 haechi-cli를 위해 여러분의 많은 도움이 필요합니다. haechi-cli에 기여하기위한 가이드라인을 제공합니다.
+ vvisp에 기여하시려는 모든 개발자분들을 환영합니다. 오늘 보다 더 나은 vvisp을 위해 여러분의 많은 도움이 필요합니다. vvisp에 기여하기위한 가이드라인을 제공합니다.
  - [Question or Problem?](#question)
  - [Issues and Bugs](#issue)
  - [Submission Guidelines](#submit)
@@ -12,8 +12,7 @@ English version: [CONTRIBUTING.md](./CONFIGURATION.md)
 
 ## <a name="question"></a>Question or Problem?
 
-Github Issue는 버그 리포트와 기능 요청에 사용합니다. 따라서 단순한 질문이나 코드에 대한 궁금증을 위해 Issue를 오픈하는 것은 삼가해주세요. 아직 Command Line Interface(CLI)의 이름을 정하지 못했습니다. 이름이 정해진 이후 Stack Overflow 와 Gitter 등을 열어 질문 채널을 만들 예정입니다. 그전까지는 hello@haechi.io로 궁금하신 부분들을 여쭤봐주세요.
-혹시 CLI를 위한 좋은 이름이 있다면 저희에게 제안해주세요 :) 
+Github Issue는 버그 리포트와 기능 요청에 사용합니다. 따라서 단순한 질문이나 코드에 대한 궁금증을 위해 Issue를 오픈하는 것은 삼가해주세요.
 
 ## <a name="issue"></a> Issues and Bugs?
 
@@ -35,14 +34,14 @@ Issue 카테고리는 다음과 같습니다.
 
 만약 버그에 대한 이슈를 생성하신다면 최소한의 재현 경로를 포함해주세요. 여러분의 작은 노력의 저희가 더 좋은 개발 도구를 만들기 위해 큰 도움이 됩니다. 이슈를 생성해주시면 최대한 빠른 시일내에 답변을 하고 개선점을 찾도록 하겠습니다. 
 
-새로운 이슈를 생성하기 위해서 [Issue Form](https://github.com/HAECHI-LABS/HAECHI-CLI/issues/new)을 채워주세요.
+새로운 이슈를 생성하기 위해서 [Issue Form](https://github.com/HAECHI-LABS/vvisp/issues/new)을 채워주세요.
 
 ### <a name="submit-pr"></a> Submitting a Pull Request (PR)
 
 아래의 가이드라인에 맞춰 PR을 생성해주세요.
 
-1. [Github PR 목록]((https://github.com/HAECHI-LABS/HAECHI-CLI/pulls))에서 중복되는 PR이 있는지 확인해주세요. Open/Closed PR 모두를 참고해주세요.
-1. HAECHI-CLI/HAECHI-CLI 저장소를 fork 하세요.
+1. [Github PR 목록]((https://github.com/HAECHI-LABS/vvisp/pulls))에서 중복되는 PR이 있는지 확인해주세요. Open/Closed PR 모두를 참고해주세요.
+1. HAECHI-LABS/vvisp 저장소를 fork 하세요.
 1. 새로운 git branch를 만들고 코드를 추가 및 수정하세요.
 
      ```shell
@@ -62,7 +61,7 @@ Issue 카테고리는 다음과 같습니다.
     git push origin new-branch
     ```
 
-1. GitHub 에서 `HAECHI-CLI:dev`로 pull request를 보내주세요. pull request 를 보내기 전에 브랜치를 rebase하고 force push해주세요.
+1. GitHub 에서 `vvisp:dev`로 pull request를 보내주세요. pull request 를 보내기 전에 브랜치를 rebase하고 force push해주세요.
     ```shell
     git rebase master -i
     git push -f
@@ -71,7 +70,7 @@ Issue 카테고리는 다음과 같습니다.
 ## <a name="commit"></a> Commit Message Guidelines
 
 잘 정돈된 커밋 메세지는 가독성을 올려주고 여러 오픈 소스 개발자들 코드의 변경사항을 쉽게 이해할 수 있게 도와줍니다. 또한, 컨벤션에 맞춰진 커밋 메세지로 새로운 버전 배포시 변경 로그 문서를 자동으로 생성할 수 있습니다.
-haechi-cli의 커밋 메세지는 [conventional commits](https://www.conventionalcommits.org/en/v1.0.0-beta.2/)를 따릅니다. 
+vvisp의 커밋 메세지는 [conventional commits](https://www.conventionalcommits.org/en/v1.0.0-beta.2/)를 따릅니다. 
 
 ### Commit Message Format
 ```bash

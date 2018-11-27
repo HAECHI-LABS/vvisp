@@ -10,14 +10,14 @@ English version: [README.md](./README.md)
 - [flatten](#flatten): 여러 컨트랙트들을 하나의 파일로 병합
 
 ## init
-> haechi init [options]
+> vvisp init [options]
 
 해당 명령어를 통해 프로젝트를 시작합니다.
 
 __Examples__
 
 ```shell
-$ haechi init
+$ vvisp init
 ```
 
 __Outputs__
@@ -38,7 +38,7 @@ root/
 ├── .soliumignore
 ├── .soliumrc.json
 ├── .package.json
-├── service.haechi.json
+├── service.vvisp.json
 └── truffle-config.json
 ```
 > - `package.json`이 생성됩니다. HEACHI LABS에서 사용하는 여러 library들이 추가되어 있습니다.
@@ -53,17 +53,17 @@ root/
 > - `test` 폴더가 생성됩니다. truffle test를 위한 testcode들을 여기서 생성해 주십시오. 
 > - truffle 관련 정보는 [truffle documentation](https://truffleframework.com/docs/truffle/overview)을 참고하시길 바랍니다.
 > - `test/helpers` 폴더에 HAECHI LABS가 contract testing을 위해 제공하는 유용한 library들이 생성됩니다.
-> - `service.haechi.json` 파일이 생성됩니다. `$ haechi deploy-service` 실행 전 해당 파일에 변수들을 설정해 주십시오. [참고](../CONFIGURATION-ko.md#service)
+> - `service.vvisp.json` 파일이 생성됩니다. `$ vvisp deploy-service` 실행 전 해당 파일에 변수들을 설정해 주십시오. [참고](../CONFIGURATION-ko.md#service)
 
 ## compile
-> haechi compile [_files..._] [options]
+> vvisp compile [_files..._] [options]
 
 solidity 소스 코드를 컴파일 합니다. 
 
 __Examples__
 
 ```shell
-$ haechi compile contracts/Proxy.sol contracts/UpgradeabilityProxy.sol
+$ vvisp compile contracts/Proxy.sol contracts/UpgradeabilityProxy.sol
 ```
 
 __Outputs__ (`build` 폴더에 저장됩니다)
@@ -83,14 +83,14 @@ build/contracts/
 
 ## deploy-contract
 
-> haechi deploy-contract <_file_> [_arguments..._] [options]
+> vvisp deploy-contract <_file_> [_arguments..._] [options]
 
 대상 컨트랙트를 배포합니다.
 
 __Examples__
 
 ```shell
-$ haechi deploy-contract contracts/ContractA.sol input1 input2
+$ vvisp deploy-contract contracts/ContractA.sol input1 input2
 ```
 __Outputs__ 
 
@@ -104,22 +104,23 @@ Contract Address : 0xcfb...
 
 ## deploy-service
 
-> haechi deploy-service [options]
+> vvisp deploy-service [options]
 
-`service.haechi.json`에 기술된 서비스를 배포합니다.
-우선 `service.haechi.json`이 정의되어 있는지 확인하며, 정의되어있다면 해당 컨트랙트에 대응하는 proxy 컨트랙트들과 서비스에 대응하는 registry 컨트랙트를 같이 배포합니다.
-처음 배포될 때에는 배포 상태를 저장하는 `state.haechi.json`이 생성되며, 추후에 다른 버전으로 업그레이드 할 때에는 `service.haechi.json`을 변경한 후 다시 deploy를 하면 기존에 배포된 서비스가 `service.haechi.json`에 정의된 상태로 업그레이드가 됩니다.
+`service.vvisp.json`에 기술된 서비스를 배포합니다.
+우선 `service.vvisp.json`이 정의되어 있는지 확인하며, 정의되어있다면 해당 컨트랙트에 대응하는 proxy 컨트랙트들과 서비스에 대응하는 registry 컨트랙트를 같이 배포합니다.
+처음 배포될 때에는 배포 상태를 저장하는 `state.vvisp.json`이 생성되며, 추후에 다른 버전으로 업그레이드 할 때에는 `service.vvisp.json`을 변경한 후 다시 deploy를 하면 기존에 배포된
+ 서비스가 `service.vvisp.json`에 정의된 상태로 업그레이드가 됩니다.
 
 배포 도중 예상치 못한 문제로인해 배포가 실패할 경우, 해당 명령어를 재입력하면 중단된 시점부터 재배포합니다.
 
-**특별한 경우가 아니면 `state.haechi.json`의 변경은 추천드리지 않습니다.**
+**특별한 경우가 아니면 `state.vvisp.json`의 변경은 추천드리지 않습니다.**
 
-`service.haechi.json`의 작성은 [이곳](../../../CONFIGURATION-ko.md#service)을 참고하십시오.
+`service.vvisp.json`의 작성은 [이곳](../../../CONFIGURATION-ko.md#service)을 참고하십시오.
 
 __Example__
 
 ```
-$ haechi deploy-service
+$ vvisp deploy-service
 ```
 
 __Process__
@@ -144,7 +145,7 @@ __Process__
 
 __Outputs__
 
-__`state.haechi.json`__
+__`state.vvisp.json`__
 
 현재 배포된 서비스의 상태를 볼 수 있는 파일입니다.
 
@@ -195,7 +196,7 @@ nonUpgradeable contract의 경우 해당 속성이 없습니다.
 
 ## abi-to-script
 
-> haechi abi-to-script <_files..._> [options]
+> vvisp abi-to-script <_files..._> [options]
 
 해당 컨트랙트가 배포됐을 때 컨트랙트와 상호작용 할 수 있는 자바스크립트 소스코드를 자동으로 생성합니다.
 
@@ -206,8 +207,8 @@ __Options__
 __Examples__
 
 ```shell
-$ haechi abi-to-script contracts/OwnedUpgradeabilityProxy.sol...
-$ haechi abi-to-script -f service contracts/OwnedUpgradeabilityProxy.sol...
+$ vvisp abi-to-script contracts/OwnedUpgradeabilityProxy.sol...
+$ vvisp abi-to-script -f service contracts/OwnedUpgradeabilityProxy.sol...
 ```
 
 __Outputs__
@@ -248,7 +249,7 @@ front api의 경우, 메타마스크와 연동을 위해 [web3 구버전](https:
 
 
 ## flatten
-> haechi flatten <_files..._> [options]
+> vvisp flatten <_files..._> [options]
 
 대상 컨트랙트들과 import된 컨트랙트들을 하나의 파일로 묶습니다. 
 
@@ -259,7 +260,7 @@ __Options__
 __Examples__
 
 ```shell
-$ haechi flatten contracts/ContractA.sol -o Output.sol
+$ vvisp flatten contracts/ContractA.sol -o Output.sol
 ```
 __Outputs__ 
 > 대상 컨트랙트들과 각 컨트랙트에 dependency가 걸려 있는 모든 파일들을 하나로 묶어 콘솔 창에 출력합니다.
