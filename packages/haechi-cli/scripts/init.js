@@ -83,19 +83,6 @@ module.exports = async function(name, options) {
       path.join(__dirname, '../', 'contracts/libs'),
       path.join('./', 'contracts', 'libs')
     );
-
-    fs.copySync(
-      path.join(__dirname, '../', '.solcover.js'),
-      path.join('./.solcover.js')
-    );
-    fs.copySync(
-      path.join(__dirname, '../', '.soliumrc.json'),
-      path.join('./.soliumrc.json')
-    );
-    fs.copySync(
-      path.join(__dirname, '../', '.soliumignore'),
-      path.join('./.soliumignore')
-    );
   }
 
   function printEndMsg(options) {
@@ -109,7 +96,7 @@ module.exports = async function(name, options) {
       options
     );
     printOrSilent(
-      `  Visit ${chalk.bold(packageJson.repository)} for ${chalk.green(
+      `  Clone ${chalk.bold(packageJson.repository.url)} for ${chalk.green(
         'Contributing!'
       )}`,
       options
