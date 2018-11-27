@@ -27,7 +27,7 @@ module.exports = function(deployState) {
     for (let i = 0; i < _arguments.length; i++) {
       const variable = getVar(_arguments[i]);
       if (!variable) {
-        return;
+        continue;
       }
       const splits = variable.split('.');
       if (splits[0] === 'contracts' && splits[2] === 'address') {

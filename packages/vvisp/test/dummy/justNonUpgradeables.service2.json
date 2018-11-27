@@ -15,6 +15,7 @@
     "DependencyB": {
       "path": "contracts/test/DependencyB.sol",
       "constructorArguments": [
+        3,
         "${contracts.DependencyD.address}",
         "${variables.owner}"
       ]
@@ -27,6 +28,7 @@
     "DependencyD": {
       "path": "contracts/test/DependencyD.sol",
       "constructorArguments": [
+        [1,2,3],
         "${variables.owner}"
       ]
     },
