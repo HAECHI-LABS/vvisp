@@ -1,6 +1,6 @@
 {
   "name": "@haechi-labs/vvisp",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Command Line Interface for the Upgradeable Smart Contract Framework",
   "author": "HAECHI LABS",
   "authors": [
@@ -17,7 +17,7 @@
     "url": "https://github.com/HAECHI-LABS/vvisp.git"
   },
   "bin": {
-    "haechi": "bin/vvisp.js"
+    "vvisp": "bin/vvisp.js"
   },
   "scripts": {
     "test": "NO_BUILD=true mocha",
