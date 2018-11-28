@@ -5,10 +5,24 @@
 English version: [CONTRIBUTING.md](./CONFIGURATION.md)
 
  vvisp에 기여하시려는 모든 개발자분들을 환영합니다. 오늘 보다 더 나은 vvisp을 위해 여러분의 많은 도움이 필요합니다. vvisp에 기여하기위한 가이드라인을 제공합니다.
+ - [Prerequisites](#prerequisites)
  - [Question or Problem?](#question)
  - [Issues and Bugs](#issue)
  - [Submission Guidelines](#submit)
  - [Commit Message Guidelines](#commit)
+
+## Prerequisites
+Install lerna:
+```bash
+$ npm install -g yarn
+$ npm install -g lerna
+```
+
+Install modules:
+```bash
+$ cd vvisp
+$ yarn bootstrap
+```
 
 ## <a name="question"></a>Question or Problem?
 
