@@ -5,10 +5,24 @@
 Korean version: [CONTRIBUTING-ko.md](./CONTRIBUTING-ko.md)
 
  We welcome all developers who would like to contribute to vvisp. We need a lot of help for vvisp, which is better than today. This is a guideline for contributing to vvisp.
+ - [Prerequisites](#prerequisites)
  - [Question or Problem?](#question)
  - [Issues and Bugs](#issue)
  - [Submission Guidelines](#submit)
  - [Commit Message Guidelines](#commit)
+
+## Prerequisites
+Install lerna:
+```bash
+$ npm install -g yarn
+$ npm install -g lerna
+```
+
+Install modules:
+```bash
+$ cd vvisp
+$ yarn bootstrap
+```
 
 ## <a name="question"></a>Question or Problem?
 

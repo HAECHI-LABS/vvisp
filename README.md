@@ -10,12 +10,12 @@
 
 vvisp is a new Command Line Interface tool created to help developers easily develop better DApps by providing an upgradeable smart contract framework as well as new development tools.
 
-Upgradeable Smart Contract helps to easily fix bugs and update business logics for the Dapp service.
+Upgradeable Smart Contract helps to easily fix bugs and update business logics for the DApp service.
 It also provides a high-quality user experience while maintaining the same entry point for users and updating smart contracts atomically.
 
-It helps to develop, upgrade, test, compile and control the user’s current version of the Dapp service.
+It helps to develop, upgrade, test, compile and control the user’s current version of the DApp service.
 
-If you want more information about the Upgradeable Smart Contract Framework, you can take a look at the HAECHI-LABS [pdf file](https://drive.google.com/file/d/1xbvd3TeuOPXbMcDs-RhEFdqwxhLNXtNC/view?usp=sharing).
+If you want more information about the Upgradeable Smart Contract Framework, you can take a look at the HAECHI-LABS [pdf file](https://drive.google.com/file/d/1H9gtmpiZ5zwIFwgHGOOvz9Oa8SAlpM5h/view?usp=sharing).
 
 | **Contributors**: Please see the [Contributing](#contributing) section of this README. |
 | --- |
@@ -43,7 +43,9 @@ $ yarn global add @haechi-labs/vvisp
 
 ## Usage
 
-For a default set of files, run the following within an empty project directory:
+If you want to see sample repository and demo, see [here](https://github.com/HAECHI-LABS/vvisp-sample).
+
+**1. Initialize your directory**
 ```sh
 $ mkdir my-project
 $ cd my-project
@@ -54,22 +56,23 @@ We supports environment for [truffle](https://truffleframework.com/truffle).
 
 _[See details](./packages/vvisp/commands/README.md#init)_ for ``$ vvisp init``.
 
-Then, install node modules according to ``package.json``.
-```sh
-$ npm install
-```
-or
-```sh
-$ yarn install
-```
+**2. Make your Contracts at `contracts/`**
 
-We recommend to use [ganache](https://truffleframework.com/ganache) for test.
+We do not recommend generated contracts by `$ vvisp init`.
+Now, you can use `abi-to-script`, `compile` and `flatten` commands.
 
-Next, you have to write:
+**3. Set `.env` file**
 
- - ``.env`` : General settings for your project 
- - ``service.vvisp.json`` : Settings for your Dapp service
- 
+Please set environment variables in `.env` file.
+See [here](https://github.com/HAECHI-LABS/vvisp/blob/dev/CONFIGURATION.md#env) for more information about `.env`.
+Now you can use `deploy-contract` command.
+
+**4. Set `service.vvisp.json` file**
+
+Please set information about your DApp service in `service.vvisp.json`.
+See [here](https://github.com/HAECHI-LABS/vvisp/blob/dev/CONFIGURATION.md#service) for more information about `service.vvisp.json`.
+Now you can use `deploy-service` command.
+
 Please see [CONFIGURATION.md](./CONFIGURATION.md) to configure your project.
 
 Run `$ vvisp --help` for more details about functions of vvisp.
