@@ -32,6 +32,7 @@ root/
 ├──── helpers/
 ├────── advanceToBlock.js
 ├────── ...
+├──── Example.test.js
 ├── .babelrc
 ├── .env
 ├── .solcover.js
@@ -53,6 +54,7 @@ root/
 > - `test` 폴더가 생성됩니다. truffle test를 위한 testcode들을 여기서 생성해 주십시오. 
 > - truffle 관련 정보는 [truffle documentation](https://truffleframework.com/docs/truffle/overview)을 참고하시길 바랍니다.
 > - `test/helpers` 폴더에 HAECHI LABS가 contract testing을 위해 제공하는 유용한 library들이 생성됩니다.
+> - `test` 폴더에 예제 테스트 파일인 `Example.test.js`이 생성됩니다. 
 > - `service.vvisp.json` 파일이 생성됩니다. `$ vvisp deploy-service` 실행 전 해당 파일에 변수들을 설정해 주십시오. [참고](../CONFIGURATION-ko.md#service)
 
 ## compile

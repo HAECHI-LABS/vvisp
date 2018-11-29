@@ -33,6 +33,7 @@ root/
 ├──── helpers/
 ├────── advanceToBlock.js
 ├────── ...
+├──── Example.test.js
 ├── .babelrc
 ├── .env
 ├── .solcover.js
@@ -54,6 +55,7 @@ root/
 > - `test` folder will be created. Please create testcode for truffle test here. 
 > - For information about truffle, see [truffle documentation](https://truffleframework.com/docs/truffle/overview).
 > - The useful libraries provided by HAECHI LABS for contract testing are created in the `test/helpers` folder.
+> - A sample test file, `Example.test.js` is created in `test/` directory.
 > - The `service.vvisp.json` file is created. Before you run `$ vvisp deploy-service`, set the variables in the file. [See details](../CONFIGURATION-ko.md#service).
 
 
