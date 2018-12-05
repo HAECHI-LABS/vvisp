@@ -6,8 +6,18 @@
   "authors": [
     {
       "name": "Jay Choy",
-      "email": "jchoyeclipse@gmail.com",
+      "email": "jay@haechi.io",
       "url": "https://github.com/JhChoy"
+    },
+    {
+      "name": "Robbie Oh",
+      "email": "robbieoh@haechi.io",
+      "url": "https://github.com/cloudinertia"
+    },
+    {
+      "name": "Jason Kim",
+      "email": "jasonkim@haechi.io",
+      "url": "https://github.com/jasonkim-tech"
     }
   ],
   "license": "MIT",
