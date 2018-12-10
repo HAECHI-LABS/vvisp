@@ -4,7 +4,10 @@
   "description": "",
   "main": "truffle-config.js",
   "scripts": {
-    "test": "scripts/test.sh"
+    "test": "scripts/test.sh",
+    "precommit": "lint-staged",
+    "lint:sol": "solium -d .",
+    "lint:sol:fix": "solium -d . --fix"
   },
   "author": "",
   "license": "ISC",
@@ -24,12 +27,26 @@
     "ethereumjs-util": "^5.1.2",
     "ethjs-abi": "^0.2.1",
     "ganache-cli": "6.1.0",
+    "husky": "^1.2.0",
+    "lint-staged": "^8.1.0",
     "openzeppelin-solidity": "^1.12.0",
+    "prettier": "^1.15.3",
     "solc": "^0.4.24",
     "solidity-coverage": "^0.5.0",
     "solium": "^1.1.6",
     "truffle": "^4.1.12",
     "truffle-hdwallet-provider": "0.0.5",
     "web3": "^1.0.0-beta.35"
+  },
+  "lint-staged": {
+    "**/*.js": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "prettier": {
+    "singleQuote": true,
+    "tabWidth": 2,
+    "printWidth": 80
   }
 }
