@@ -24,10 +24,12 @@ __Outputs__
 ```
 root/
 ├── contracts/
+├──── Migrations.sol
 ├── migrations/
 ├──── 1_initial_migration.js
 ├── scripts/
 ├──── test.sh
+├──── coverage.sh
 ├── test/
 ├──── helpers/
 ├────── advanceToBlock.js
@@ -44,11 +46,13 @@ root/
 ```
 > - `package.json`이 생성됩니다. HEACHI LABS에서 사용하는 여러 library들이 추가되어 있습니다.
 > - `contracts` 폴더가 생성됩니다. Contract code는 이곳에서 작업해 주시기 바랍니다.
+> - `contracts/Migrations.sol` 파일이 생성됩니다. 해당 파일은 truffle의 일부 기능을 위해 필요한 컨트랙트입니다.
 > - `contracts/upgradeable` 과 `contracts/libs` 폴더 내에 upgradeable smart contract framework에 필요한 라이브러리들이 복사됩니다. 수정을 추천드리지 않습니다.
 > - `.babelrc` 파일이 생성됩니다. ES6 문법을 지원합니다.
 > - `.env` 파일이 생성됩니다. 이 곳에서 환경 변수를 설정하십시오. [참고](../../../CONFIGURATION-ko.md#env)
 > - solidity를 위한 교정 도구인 [solium](https://github.com/duaraghav8/Solium)을 위한 파일인 `.soliumignore`, `.solcover.js`, `.soliumrc.json`이 생성됩니다.
 > - `scripts/test.sh`가 생성되고 `$ npm run test` 스크립트가 `package.json`에 추가됩니다. truffle의 contract testing을 할 때 유용합니다.
+> - `scripts/coverage.sh`가 생성되고 ` $ npm run coverage` 스크립트가 `package.json`에 추가됩니다. 컨트랙트 테스트 코드의 커버리지를 보여줍니다.
 > - `truffle-config.js`가 생성됩니다. truffle을 사용할 때 필요하며 관련 설정 정보가 담겨 있습니다.
 > - `migrations/1_initial_migration.js`이 생성됩니다. truffle test를 위해 필요합니다.
 > - `test` 폴더가 생성됩니다. truffle test를 위한 testcode들을 여기서 생성해 주십시오. 

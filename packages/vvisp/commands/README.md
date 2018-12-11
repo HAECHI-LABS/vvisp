@@ -25,10 +25,12 @@ __Outputs__
 ```
 root/
 ├── contracts/
+├──── Migrations.sol
 ├── migrations/
 ├──── 1_initial_migration.js
 ├── scripts/
 ├──── test.sh
+├──── coverage.sh
 ├── test/
 ├──── helpers/
 ├────── advanceToBlock.js
@@ -45,11 +47,13 @@ root/
 ```
 > - `package.json` is created. Several libraries used by HEACHI LABS have been added.
 > - The `contracts` folder is created. Contract code, please work here.
+> - The `contracts/Migrations.sol` file is created. This Contract is necessary for using truffle.
 > - The necessary libraries for the upgradeable smart contract framework are copied into the `contracts/upgradeable` and` contracts/libs` folders. We do not recommend revision.
 > - A `.babelrc` file is created. Supports ES6 grammar.
 > - The `.env` file is created. Set environment variables here. [See details](../../../CONFIGURATION.md#env).
 > - `.soliumignore`,` .solcover.js`, and `.soliumrc.json` files for [solium](https://github.com/duaraghav8/Solium), a proofing tool for solidity, are created.
 > - `scripts/test.sh` is created and the` $ npm run test` script is added to `package.json`. This is useful for truffle contract testing.
+> - `scripts/coverage.sh` is created and the` $ npm run coverage` script is added to `package.json`. This shows the coverage of test codes about your contracts.
 > - `truffle-config.js` will be created. Required when using truffle and contains relevant configuration information.
 > - `migrations/1_initial_migration.js` will be created. Required for truffle testing.
 > - `test` folder will be created. Please create testcode for truffle test here. 
