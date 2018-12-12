@@ -1,5 +1,6 @@
 pragma solidity ^0.4.23;
 
+
 contract SecondC {
     address addressB;
     address addressC;

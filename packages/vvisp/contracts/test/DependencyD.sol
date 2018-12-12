@@ -1,5 +1,6 @@
 pragma solidity ^0.4.23;
 
+
 contract DependencyD {
     uint[] integers;
     address token;

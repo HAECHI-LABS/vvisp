@@ -1,7 +1,7 @@
 pragma solidity ^0.4.23;
 
-import '../libs/Ownable.sol';
-import '../libs/SafeMath.sol';
+import "../libs/Ownable.sol";
+import "../libs/SafeMath.sol";
 
 
 /**

@@ -1,9 +1,9 @@
 pragma solidity ^0.4.23;
 
-import '../libs/Ownable.sol';
-import '../libs/SafeMath.sol';
-import '../libs/BytesLib.sol';
-import './OwnedUpgradeabilityProxy.sol';
+import "../libs/Ownable.sol";
+import "../libs/SafeMath.sol";
+import "../libs/BytesLib.sol";
+import "./OwnedUpgradeabilityProxy.sol";
 
 
 contract Registry is Ownable {

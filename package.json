@@ -6,6 +6,8 @@
     "precommit": "lint-staged",
     "test": "./scripts/test.sh",
     "ci": "./scripts/ci.sh",
+    "lint:sol": "solium -d .",
+    "lint:sol:fix": "solium -d . --fix",
     "commitmsg": "commitlint -E GIT_PARAMS"
   },
   "devDependencies": {

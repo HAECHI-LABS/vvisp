@@ -1,7 +1,7 @@
 pragma solidity ^0.4.23;
 
-import '../libs/Ownable.sol';
-import '../libs/SafeMath.sol';
+import "../libs/Ownable.sol";
+import "../libs/SafeMath.sol";
 
 
 /**
@@ -97,7 +97,8 @@ contract Loan is Ownable {
         string _detailHTML,
         uint256 _stateCode,
         uint256 _registrationDate)
-    public onlyOwner {
+    public onlyOwner
+    {
         require(_loanHash != 0);
 
         upsertLoanName(_loanHash, _loanName);

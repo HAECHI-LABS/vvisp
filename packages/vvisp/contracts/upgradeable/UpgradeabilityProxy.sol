@@ -1,6 +1,6 @@
 pragma solidity ^0.4.23;
 
-import './Proxy.sol';
+import "./Proxy.sol";
 
 
 /**
@@ -15,7 +15,7 @@ contract UpgradeabilityProxy is Proxy {
     event Upgraded(address indexed implementation);
 
     // Storage position of the address of the current implementation
-    bytes32 private constant implementationPosition = keccak256('io.haechi.proxy.implementation');
+    bytes32 private constant implementationPosition = keccak256("io.haechi.proxy.implementation");
 
     /**
      * @dev Tells the address of the current implementation

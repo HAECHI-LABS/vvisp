@@ -1,7 +1,7 @@
 pragma solidity ^0.4.23;
 
-import '../libs/Ownable.sol';
-import '../libs/SafeMath.sol';
+import "../libs/Ownable.sol";
+import "../libs/SafeMath.sol";
 
 
 /**
@@ -34,7 +34,8 @@ contract Attachment is Ownable {
         bytes32 _fileHash,
         string _fileType,
         string _fileName,
-        uint256 _registrationDate) public onlyOwner {
+        uint256 _registrationDate) public onlyOwner
+    {
         require(_fileHash != 0);
 
         upsertFileType(_fileHash, _fileType);
