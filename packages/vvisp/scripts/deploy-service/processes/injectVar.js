@@ -23,8 +23,19 @@ module.exports = function(deployState) {
       _type === CONSTRUCTOR
         ? _contract[CONSTRUCTOR]
         : _contract[INITIALIZE].arguments;
+    const _path = `${_name}/${_type}`;
 
+    _injecting(_variables, _stateClone, _path, _arguments, _contract);
+  }
+
+  function _injecting(_variables, _stateClone, _path, _arguments, _contract) {
+    const [name, type] = _path.split('/');
     for (let i = 0; i < _arguments.length; i++) {
+      const newPath = `${_path}/${i}`;
+      if (Array.isArray(_arguments[i])) {
+        _injecting(_variables, _stateClone, newPath, _arguments[i], _contract);
+        continue;
+      }
       const variable = getVar(_arguments[i]);
       if (!variable) {
         continue;
@@ -39,8 +50,8 @@ module.exports = function(deployState) {
           if (!dependency['childNode']) {
             dependency['childNode'] = [];
           }
-          dependency['childNode'].push(`${_name}/${_type}/${i}`);
-          if (_type === CONSTRUCTOR) {
+          dependency['childNode'].push(newPath);
+          if (type === CONSTRUCTOR) {
             if (!_contract['parentNode']) {
               _contract['parentNode'] = [];
             }
@@ -56,7 +67,7 @@ module.exports = function(deployState) {
         // Inject Variable
         _arguments[i] = _variables[splits[1]];
       } else {
-        throw new Error(`Wrong Expression at ${_name}, ${_arguments[i]}`);
+        throw new Error(`Wrong Expression at ${name}, ${_arguments[i]}`);
       }
     }
   }

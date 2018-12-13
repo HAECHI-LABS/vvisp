@@ -83,14 +83,14 @@
       "constructorArguments": [
         "${contracts.SecondB.address}",
         "${contracts.DependencyD.address}",
-        "${contracts.SecondC.address}"
+        ["${contracts.SecondC.address}", "${variables.owner}"]
       ],
       "initialize": {
         "functionName": "initialize",
         "arguments": [
           "${contracts.SecondD.address}",
           "${variables.owner}",
-          "${contracts.SecondB.address}"
+          ["${contracts.SecondC.address}", "${variables.owner}"]
         ]
       }
     },
