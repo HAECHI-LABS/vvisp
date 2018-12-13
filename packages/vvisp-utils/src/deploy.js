@@ -17,8 +17,12 @@ module.exports = async function(
   for (let i = 0; i < abi.length; i++) {
     if (abi[i].type === 'constructor') {
       const inputs = abi[i].inputs;
-      if (inputs.length > 0 && arguments === undefined) {
-        throw new Error(`Needs ${inputs.length}, but got 0`);
+      if (arguments === undefined) {
+        if (inputs.length > 0) {
+          throw new Error(`Needs ${inputs.length}, but got 0`);
+        } else {
+          break;
+        }
       }
       if (inputs.length !== arguments.length) {
         throw new Error(`Needs ${inputs.length}, but got ${arguments.length}`);
