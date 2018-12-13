@@ -26,6 +26,9 @@ module.exports = async function(_toAddr, _value, _privKey, options) {
   }
 
   async function sendSigned(txData, privKey) {
+    if (typeof privKey === 'string' && privKey.slice(0, 2) === '0x') {
+      privKey = privKey.slice(2);
+    }
     const privateKey = new Buffer(privKey, 'hex');
     const transaction = new Tx(txData);
     transaction.sign(privateKey);
