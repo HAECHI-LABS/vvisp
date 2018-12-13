@@ -1,7 +1,8 @@
 {
   "serviceName": "Haechi",
   "variables" : {
-    "owner" : "0xb5F4E40c8177Ad63B19D4D3a254a5758771f57d0"
+    "owner" : "0xb5F4E40c8177Ad63B19D4D3a254a5758771f57d0",
+    "value1": 1
   },
   "contracts": {
     "DependencyA": {
@@ -28,7 +29,7 @@
     "DependencyD": {
       "path": "contracts/test/DependencyD.sol",
       "constructorArguments": [
-        [1,2,3],
+        ["${variables.value1}",2,3],
         "${variables.owner}"
       ]
     }

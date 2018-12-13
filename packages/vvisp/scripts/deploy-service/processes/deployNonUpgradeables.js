@@ -84,11 +84,11 @@ module.exports = async function(deployState, options) {
         for (let j = 0; j < contract.childNode.length; j++) {
           const childNodePath = contract.childNode[j].split('/');
           const childNode = stateClone.contracts[childNodePath[0]];
-          const arguments =
+          let arguments =
             childNodePath[1] === CONSTRUCTOR
               ? childNode[childNodePath[1]]
               : childNode[childNodePath[1]].arguments;
-          arguments[childNodePath[2]] = receipt.contractAddress;
+          injectAddress(arguments, childNodePath, 2, receipt.contractAddress);
           let notRemoved = true;
           _.remove(childNode.parentNode, function(parent) {
             const result = notRemoved && parent === name;
@@ -159,4 +159,18 @@ module.exports = async function(deployState, options) {
     )}\n`,
     options
   );
+
+  function injectAddress(_arguments, _path, _index, contractAddress) {
+    const argumentIndex = _path[_index];
+    if (Array.isArray(_arguments[argumentIndex])) {
+      injectAddress(
+        _arguments[argumentIndex],
+        _path,
+        _index + 1,
+        contractAddress
+      );
+    } else {
+      _arguments[argumentIndex] = contractAddress;
+    }
+  }
 };
