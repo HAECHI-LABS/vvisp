@@ -70,6 +70,16 @@ describe('# deploy test', function() {
     });
   });
 
+  describe('# work process', function() {
+    it('should deploy contracts properly', async function() {
+      await deploy(this.dependencyA, PRIV_KEY, [SENDER, SENDER, SENDER]).should
+        .be.fulfilled;
+      await deploy(this.dependencyD, PRIV_KEY, [[1, 2, 3], SENDER]).should.be
+        .fulfilled;
+      await deploy(this.secondB, PRIV_KEY).should.be.fulfilled;
+    });
+  });
+
   describe('# result value', function() {
     it('should have contract address in receipt', async function() {
       const receipt = await deploy(this.secondB, PRIV_KEY, {

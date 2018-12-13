@@ -17,15 +17,17 @@ module.exports = async function(
   for (let i = 0; i < abi.length; i++) {
     if (abi[i].type === 'constructor') {
       const inputs = abi[i].inputs;
+      if (inputs.length > 0 && arguments === undefined) {
+        throw new Error(`Needs ${inputs.length}, but got 0`);
+      }
       if (inputs.length !== arguments.length) {
-        throw new Error(
-          `Wrong input arguments length, needed ${inputs.length} but received ${
-            arguments.length
-          }`
-        );
+        throw new Error(`Needs ${inputs.length}, but got ${arguments.length}`);
       }
       for (let j = 0; j < inputs.length; j++) {
-        if (inputs[j].type.slice(-2) === '[]') {
+        if (
+          inputs[j].type.slice(-2) === '[]' &&
+          typeof arguments[j] === 'string'
+        ) {
           arguments[j] = JSON.parse(arguments[j]);
         }
       }
