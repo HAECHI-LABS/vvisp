@@ -12,7 +12,7 @@ module.exports = async function(files, options) {
   const fs = require('fs');
 
   try {
-    const configRootPath = await getConfigRoot('service.haechi.json');
+    const configRootPath = await getConfigRoot('service.vvisp.json');
     const relativeFilePaths = await getRelativeFilePathsFromRoot(
       configRootPath,
       files
