@@ -67,6 +67,7 @@ module.exports = async function(name, options) {
       path.join('./example.service.vvisp.json'),
       path.join('./service.vvisp.json')
     );
+    fs.renameSync(path.join('./example.gitignore'), path.join('./.gitignore'));
 
     const pkg = fs.readJsonSync(path.join('./package.json'));
 
@@ -89,12 +90,10 @@ module.exports = async function(name, options) {
 
   function printEndMsg(options) {
     const packageJson = fs.readJsonSync(PACKAGE_JSON);
-    printOrSilent(`${chalk.green('Success')} Initializing Directory!`, options);
+    printOrSilent(`Initializing Directory ${chalk.green('Success')}!`, options);
     printOrSilent('', options);
     printOrSilent(
-      `  Run ${chalk.bold.cyan(
-        'vvisp -h'
-      )} for more information on specific commands.`,
+      `  Run ${chalk.bold.cyan('vvisp -h')} for more information`,
       options
     );
     printOrSilent(
