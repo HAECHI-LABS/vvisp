@@ -5,7 +5,6 @@
   "main": "truffle-config.js",
   "scripts": {
     "test": "scripts/test.sh",
-    "precommit": "lint-staged",
     "lint:sol": "solium -d .",
     "lint:sol:fix": "solium -d . --fix",
     "coverage": "scripts/coverage.sh"
@@ -28,9 +27,9 @@
     "ethereumjs-util": "^5.1.2",
     "ethjs-abi": "^0.2.1",
     "ganache-cli": "6.1.0",
-    "husky": "^1.2.0",
+    "husky": "^1.2.1",
     "lint-staged": "^8.1.0",
-    "openzeppelin-solidity": "^1.12.0",
+    "openzeppelin-solidity": "^2.0.0",
     "prettier": "^1.15.3",
     "solc": "^0.4.24",
     "solidity-coverage": "^0.5.0",
@@ -44,6 +43,11 @@
       "prettier --write",
       "git add"
     ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "prettier": {
     "singleQuote": true,
