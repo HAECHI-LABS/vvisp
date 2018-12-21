@@ -33,16 +33,17 @@ module.exports = async function(name, options) {
   function printLogo(options) {
     printOrSilent('', options);
     printOrSilent(
-      chalk.hex('#267cce')(
+      chalk.hex('#19b4ff')(
         `
-   ___      ___ ___      ___ ___  ________  ________   
-  |\\  \\    /  /|\\  \\    /  /|\\  \\|\\   ____\\|\\   __  \\  
-  \\ \\  \\  /  / | \\  \\  /  / | \\  \\ \\  \\___|\\ \\  \\|\\  \\ 
-   \\ \\  \\/  / / \\ \\  \\/  / / \\ \\  \\ \\_____  \\ \\   ____\\
-    \\ \\    / /   \\ \\    / /   \\ \\  \\|____|\\  \\ \\  \\___|
-     \\ \\__/ /     \\ \\__/ /     \\ \\__\\____\\_\\  \\ \\__\\   
-      \\|__|/       \\|__|/       \\|__|\\_________\\|__|   
-                                    \\|_________|    
+                                                       
+    \`7MMF'   \`7MF'\`7MMF'   \`7MF'\`7MMF' .M"""bgd \`7MM"""Mq. 
+      \`MA     ,V    \`MA     ,V    MM  ,MI    "Y   MM   \`MM.
+       VM:   ,V      VM:   ,V     MM  \`MMb.       MM   ,M9 
+        MM.  M'       MM.  M'     MM    \`YMMNq.   MMmmdM9  
+        \`MM A'        \`MM A'      MM  .     \`MM   MM       
+         :MM;          :MM;       MM  Mb     dM   MM       
+          VF            VF      .JMML.P"Ybmmd"  .JMML.     
+
         `
       ),
       options
@@ -99,7 +100,7 @@ module.exports = async function(name, options) {
 
   function printEndMsg(options) {
     const packageJson = fs.readJsonSync(PACKAGE_JSON);
-    printOrSilent(`Initializing Directory ${chalk.green('Success')}!`, options);
+    printOrSilent(`${chalk.green('Success')}!`, options);
     printOrSilent('', options);
     printOrSilent(
       `  Run ${chalk.bold.cyan('vvisp -h')} for more information`,
