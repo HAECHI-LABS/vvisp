@@ -7,22 +7,25 @@ module.exports = async function(name, options) {
 
   const PACKAGE_JSON = path.join(__dirname, '../package.json');
 
-  try {
-    if (fs.readdirSync(path.join('./')).length > 0) {
-      throw new Error(
-        'There are some files in directory. Please call vvisp init at empty directory.'
-      );
-    }
-    main();
-  } catch (e) {
-    console.log(e);
+  let rootDir = path.join('./');
+  if (options && options.directory) {
+    rootDir = path.join(options.directory);
   }
-  function main() {
+
+  if (fs.readdirSync(rootDir).length > 0) {
+    throw new Error(
+      'There are some files in directory. Please call vvisp init at empty directory.'
+    );
+  } else {
+    main(rootDir);
+  }
+
+  function main(rootDir) {
     printLogo(options);
 
     printInitialMsg(options);
 
-    initializeDirectory();
+    initializeDirectory(options, rootDir);
 
     printEndMsg(options);
   }
@@ -58,33 +61,39 @@ module.exports = async function(name, options) {
     printOrSilent(`Initializing Directory...`, options);
   }
 
-  function initializeDirectory() {
-    fs.ensureDirSync(path.join('./', 'contracts'));
+  function initializeDirectory(options, rootDir) {
+    fs.ensureDirSync(path.join(rootDir, 'contracts'));
 
-    fs.copySync(path.join(__dirname, '../referenceFiles'), path.join('./'));
-    fs.renameSync(path.join('./example.env'), path.join('./.env'));
+    fs.copySync(path.join(__dirname, '../referenceFiles'), rootDir);
     fs.renameSync(
-      path.join('./example.service.vvisp.json'),
-      path.join('./service.vvisp.json')
+      path.join(rootDir, 'example.env'),
+      path.join(rootDir, '.env')
     );
-    fs.renameSync(path.join('./example.gitignore'), path.join('./.gitignore'));
+    fs.renameSync(
+      path.join(rootDir, 'example.service.vvisp.json'),
+      path.join(rootDir, 'service.vvisp.json')
+    );
+    fs.renameSync(
+      path.join(rootDir, 'example.gitignore'),
+      path.join(rootDir, '.gitignore')
+    );
 
-    const pkg = fs.readJsonSync(path.join('./package.json'));
+    const pkg = fs.readJsonSync(path.join(rootDir, 'package.json'));
 
-    pkg.name = name ? name : path.parse(path.resolve('./')).name;
+    pkg.name = name ? name : path.parse(path.resolve(rootDir)).name;
     fs.writeFileSync(
-      path.join('./package.json'),
+      path.join(rootDir, 'package.json'),
       JSON.stringify(pkg, null, '  '),
       'utf8'
     );
 
     fs.copySync(
       path.join(__dirname, '../', 'contracts/upgradeable'),
-      path.join('./', 'contracts', 'upgradeable')
+      path.join(rootDir, 'contracts', 'upgradeable')
     );
     fs.copySync(
       path.join(__dirname, '../', 'contracts/libs'),
-      path.join('./', 'contracts', 'libs')
+      path.join(rootDir, 'contracts', 'libs')
     );
   }
 
