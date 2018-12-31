@@ -32,25 +32,28 @@ module.exports = async function(deployState, options) {
 
   deployState[VARIABLES] = config[VARIABLES];
 
-  const targets = require('./compareConfigAndState')(
+  const compileInformation = require('./compareConfigAndState')(
     config.contracts,
     stateClone
   );
 
-  if (Object.keys(targets).length === 0) {
+  if (Object.keys(compileInformation.targets).length === 0) {
     printOrSilent(chalk.head('Nothing to upgrade'), options);
     process.exit();
   }
 
-  const compileOutput = await require('./compileAll')(targets, options);
-  require('./checkError')(targets, compileOutput, options);
+  const compileOutput = await require('./compileAll')(
+    compileInformation,
+    options
+  );
+  require('./checkError')(compileInformation.targets, compileOutput, options);
 
   if (!stateClone.paused) {
     stateClone.paused = {};
     stateClone.paused.stage = 'deployRegistry';
   }
   deployState.compileOutput = compileOutput;
-  deployState.targets = targets;
+  deployState.targets = compileInformation.targets;
 
   deployState.updateState(stateClone);
 };
