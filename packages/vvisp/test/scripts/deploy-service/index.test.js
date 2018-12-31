@@ -127,12 +127,15 @@ function getWaitingTxNum() {
     });
   }
 
-  const targets = compareConfigAndState(config.contracts, stateClone);
+  const compileInformation = compareConfigAndState(
+    config.contracts,
+    stateClone
+  );
 
   let nonUpgradeableExists = false;
   let upgradeableExists = false;
 
-  forIn(targets, contract => {
+  forIn(compileInformation.targets, contract => {
     if (contract.pending === PENDING_STATE[0]) {
       if (contract.upgradeable === true) {
         if (!upgradeableExists) {
