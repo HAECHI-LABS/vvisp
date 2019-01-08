@@ -3,7 +3,7 @@ module.exports = async function(options) {
   checkEnvExist();
   checkConfigExist();
 
-  const { printOrSilent } = require('@haechi-labs/vvisp-utils');
+  const { printOrSilent, getWeb3 } = require('@haechi-labs/vvisp-utils');
   const { writeState } = require('./utils');
   const DeployState = require('./DeployState');
   const preProcess = require('./preProcess');
@@ -26,8 +26,10 @@ module.exports = async function(options) {
     head: chk.bold,
     error: chk.red.bold,
     keyWord: chk.blue.bold,
-    notImportant: chk.gray
+    notImportant: chk.gray,
+    warning: chk.yellow
   };
+  global.web3 = getWeb3();
 
   await main();
 
@@ -40,10 +42,7 @@ module.exports = async function(options) {
       {
         name: 'deployRegistry',
         process: async function() {
-          const stateClone = deployState.getState();
-          if (stateClone.notUpgrading) {
-            await deployRegistry(deployState, options);
-          }
+          await deployRegistry(deployState, options);
         }
       },
       {

@@ -6,9 +6,16 @@ module.exports = async function(deployState, options) {
     printOrSilent
   } = require('@haechi-labs/vvisp-utils');
 
+  const stateClone = deployState.getState();
+  if (
+    stateClone.registry === 'noRegistry' ||
+    stateClone.notUpgrading !== true
+  ) {
+    return;
+  }
+
   printOrSilent('Registry Deploying...', options);
   const compileOutput = deployState.compileOutput;
-  const stateClone = deployState.getState();
 
   const receipt = await deploy(
     getCompiledContracts(compileOutput, REGISTRY_PATH),

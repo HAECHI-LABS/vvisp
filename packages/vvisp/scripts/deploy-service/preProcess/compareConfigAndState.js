@@ -65,11 +65,12 @@ module.exports = function(configContracts, stateClone) {
   // Check if there is no upgradeable contract.
   // If so, we don't have to compile proxy contract.
   let noProxy = true;
-  forIn(targets.contracts, contract => {
+  forIn(targets, contract => {
     if (contract.upgradeable === true) {
       noProxy = false;
     }
   });
+  stateClone.noProxy = noProxy;
 
   return {
     targets: targets,

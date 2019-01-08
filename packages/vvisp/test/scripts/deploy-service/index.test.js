@@ -32,6 +32,9 @@ const NU_STATE1 = path.join('./test/dummy/justNonUpgradeables.state1.json');
 const U_SERVICE1 = path.join('./test/dummy/justUpgradeables.service1.json');
 const U_SERVICE2 = path.join('./test/dummy/justUpgradeables.service2.json');
 const U_STATE1 = path.join('./test/dummy/justUpgradeables.state1.json');
+const N_R_SERVICE1 = path.join('./test/dummy/noRegistry.service1.json');
+const N_R_SERVICE2 = path.join('./test/dummy/noRegistry.service2.json');
+const N_R_STATE1 = path.join('./test/dummy/noRegistry.state1.json');
 
 fs.removeSync(SERVICE_PATH);
 fs.removeSync(STATE_PATH);
@@ -50,21 +53,34 @@ const { deploy: uDeployNum, upgrade: uUpgradeNum } = getTxcount(
   U_SERVICE2,
   U_STATE1
 );
+const { deploy: nrDeployNum, upgrade: nrUpgradeNum } = getTxcount(
+  N_R_SERVICE1,
+  N_R_SERVICE2,
+  N_R_STATE1
+);
 
 describe('# deploy-service process test', function() {
   this.timeout(50000);
+
   describe('# whole process test', function() {
     afterEach(function() {
       checkRightState();
     });
+
     describe('# just nonUpgradeables case', function() {
       setWholeProcess(NU_SERVICE1, NU_SERVICE2);
     });
+
     describe('# just upgradeables case', function() {
       setWholeProcess(U_SERVICE1, U_SERVICE2);
     });
+
     describe('# mixed case', function() {
       setWholeProcess(SERVICE1, SERVICE2);
+    });
+
+    describe('# no registry case', function() {
+      setWholeProcess(N_R_SERVICE1, N_R_SERVICE2);
     });
   });
 
@@ -74,14 +90,21 @@ describe('# deploy-service process test', function() {
       fs.removeSync(SERVICE_PATH);
       fs.removeSync(STATE_PATH);
     });
+
     describe('# just nonUpgradeables case', function() {
       setResumingProcess(NU_SERVICE1, NU_SERVICE2, nuDeployNum, nuUpgradeNum);
     });
+
     describe('# just upgradeables case', function() {
       setResumingProcess(U_SERVICE1, U_SERVICE2, uDeployNum, uUpgradeNum);
     });
+
     describe('# mixed case', function() {
       setResumingProcess(SERVICE1, SERVICE2, deployNum, upgradeNum);
+    });
+
+    describe('# no registry case', function() {
+      setResumingProcess(N_R_SERVICE1, N_R_SERVICE2, nrDeployNum, nrUpgradeNum);
     });
   });
 });
@@ -92,7 +115,10 @@ function checkRightState() {
 
   Object.keys(state).should.have.lengthOf(3);
   state.serviceName.should.be.equal(service.serviceName);
-  web3.utils.isAddress(state.registry).should.equal(true);
+
+  (
+    web3.utils.isAddress(state.registry) || state.registry === 'noRegistry'
+  ).should.equal(true);
 
   const contracts = state.contracts;
   forIn(contracts, (contract, name) => {
@@ -119,7 +145,11 @@ function getWaitingTxNum() {
     stateClone.notUpgrading = true;
     stateClone.contracts = {};
     stateClone.serviceName = config.serviceName;
-    resultNumber++; // register
+    if (config.registry === false) {
+      stateClone.registry = 'noRegistry';
+    } else {
+      resultNumber++; // registry
+    }
   } else {
     const file = fs.readJsonSync(STATE_PATH);
     forIn(file, (object, name) => {
@@ -159,7 +189,7 @@ function getWaitingTxNum() {
   if (upgradeableExists) {
     resultNumber += 2; // upgradeAll, registerFileNames
   }
-  if (nonUpgradeableExists) {
+  if (nonUpgradeableExists && stateClone.registry !== 'noRegistry') {
     resultNumber++; // registerNonUpgradeables
   }
   return resultNumber;
@@ -189,12 +219,14 @@ function setWholeProcess(service1, service2) {
     fs.copySync(service1, SERVICE_PATH);
     this.waitingTxNum = getWaitingTxNum();
   });
+
   it('should success deploy process', async function() {
     const startTxCount = await web3.eth.getTransactionCount(SENDER);
     await deployService({ silent: true });
     const endTxCount = await web3.eth.getTransactionCount(SENDER);
     (endTxCount - startTxCount).should.equal(this.waitingTxNum);
   });
+
   it('should success upgrade process', async function() {
     fs.copySync(service2, SERVICE_PATH);
     this.waitingTxNum = getWaitingTxNum();
@@ -203,6 +235,7 @@ function setWholeProcess(service1, service2) {
     const endTxCount = await web3.eth.getTransactionCount(SENDER);
     (endTxCount - startTxCount).should.equal(this.waitingTxNum);
   });
+
   after(function() {
     fs.removeSync(SERVICE_PATH);
     fs.removeSync(STATE_PATH);
@@ -225,6 +258,7 @@ function setResumingProcess(service1, service2, deployTxCount, upgradeTxCount) {
     beforeEach(function() {
       fs.copySync(service1, SERVICE_PATH);
     });
+
     for (let i = 1; i < deployTxCount; i++) {
       it(`should resume when paused after ${i} txs`, async function() {
         runTxStopper(i, deployTxCount);
@@ -234,12 +268,14 @@ function setResumingProcess(service1, service2, deployTxCount, upgradeTxCount) {
       });
     }
   });
+
   describe('# upgrade process', function() {
     beforeEach(async function() {
       fs.copySync(service1, SERVICE_PATH);
       await deployService({ silent: true });
       fs.copySync(service2, SERVICE_PATH);
     });
+
     for (let i = 1; i < upgradeTxCount; i++) {
       it(`should resume when paused after ${i} txs`, async function() {
         runTxStopper(i, deployTxCount);
