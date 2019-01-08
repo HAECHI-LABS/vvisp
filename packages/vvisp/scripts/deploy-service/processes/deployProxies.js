@@ -19,6 +19,10 @@ module.exports = async function(deployState, options) {
   const compileOutput = deployState.compileOutput;
   let stateClone = deployState.getState();
 
+  if (stateClone.noProxy === true) {
+    return;
+  }
+
   const txCount = await getTxCount(PRIVATE_KEY);
   const registryInstance = pathToInstance(compileOutput, REGISTRY_PATH);
   registryInstance.options.address = stateClone.registry;

@@ -14,6 +14,10 @@ module.exports = async function(deployState, options) {
   const contracts = deployState.targets;
   let stateClone = deployState.getState();
 
+  if (stateClone.noProxy === true) {
+    return;
+  }
+
   const txCount = await getTxCount(PRIVATE_KEY);
   if (!stateClone.paused.details) {
     stateClone.paused.details = {};

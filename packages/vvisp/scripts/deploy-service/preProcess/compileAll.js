@@ -7,7 +7,9 @@ module.exports = async function(compileInformation, options) {
   if (compileInformation.noProxy !== true) {
     compileFiles.push(PROXY_PATH);
   }
-  compileFiles.push(REGISTRY_PATH);
+  if (compileInformation.noRegistry !== true) {
+    compileFiles.push(REGISTRY_PATH);
+  }
 
   forIn(compileInformation.targets, contract => {
     if (contract.path) {

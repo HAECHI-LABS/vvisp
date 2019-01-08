@@ -14,5 +14,6 @@ module.exports = function(deployState, options) {
   });
   delete stateClone.paused;
   delete stateClone.notUpgrading;
+  delete stateClone.noProxy;
   writeState(stateClone, options);
 };

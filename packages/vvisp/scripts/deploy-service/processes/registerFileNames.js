@@ -16,6 +16,10 @@ module.exports = async function(deployState, options) {
   const { compileOutput, targets } = deployState;
   let stateClone = deployState.getState();
 
+  if (stateClone.registry === 'noRegistry' || stateClone.noProxy === true) {
+    return;
+  }
+
   const upgradeables = [];
   forIn(targets, (contract, name) => {
     if (contract[UPGRADEABLE] === true) {
