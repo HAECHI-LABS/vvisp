@@ -43,29 +43,30 @@ SOLC_OPTIMIZATION=              // Use optimization
   "variables" : { (2)
     "varName": "constant" (3)
   },
-  "contracts": { (4) 
-    "ContractKeyName1": { (5)
-      "upgradeable": true, (6)
-      "path": "path/to/your/contract/Contract1_V0.sol", (7)
-      "initialize": { (8)
-        "functionName": "initialize", (9)
-        "arguments": [ (10)
+  "registry" : true, (4)
+  "contracts": { (5) 
+    "ContractKeyName1": { (6)
+      "upgradeable": true, (7)
+      "path": "path/to/your/contract/Contract1_V0.sol", (8)
+      "initialize": { (9)
+        "functionName": "initialize", (10)
+        "arguments": [ (11)
           "argument1",
           "argument2"
         ]
       }
     },
-    "ContractKeyName2": { (11)
+    "ContractKeyName2": { (12)
       "upgradeable": true,
       "path": "contracts/Contract2_V1.sol"
     },
     "ContractKeyName3": {
       "path": "path/to/your/contract/Contract.sol",
-      "constructorArguments": [ (12)
-        "${contracts.ContractKeyName1.address}", (13)
-        "${variables.varName}" (14)
+      "constructorArguments": [ (13)
+        "${contracts.ContractKeyName1.address}", (14)
+        "${variables.varName}" (15)
       ],
-      "initialize": { (15)
+      "initialize": { (16)
         "functionName": "initialize",
         "arguments": [
           "argument1",
@@ -80,30 +81,34 @@ SOLC_OPTIMIZATION=              // Use optimization
 
 1) Define the name of service.
 
-2) Set some constant variables in`service.vvisp.json`. We recommend defining constant values ​​to be used repeatedly in here.
+1) Set some constant variables in`service.vvisp.json`. We recommend defining constant values ​​to be used repeatedly in here.
 
-3) Define a constant variable as a key-value pair.
+1) Define a constant variable as a key-value pair.
 
-4) Define the information of contracts as the json format.
+1) If you don't have any upgradeable contracts, you can omit registry.
+If you want, set `registry` property `false`.
+Default is `true`.
 
-5) Define the name of the contract.
+1) Define the information of contracts as the json format.
 
-6) If you want an upgradeable contract, set `upgradeable` property `true`.
+1) Define the name of the contract.
 
-7) Set the path to the source code of this contract file. 
+1) If you want an upgradeable contract, set `upgradeable` property `true`.
 
-8) Define the information of initializing this contract. In the case of an upgradeable smart contract, instead of using the constructor, you need to place a separate method, such as `initialize`, to perform the initialization logic here.
+1) Set the path to the source code of this contract file. 
 
-9) Write the name of the method responsible for the initialization function. We recommend using an intuitively understandable method name such as `initialize`.
+1) Define the information of initializing this contract. In the case of an upgradeable smart contract, instead of using the constructor, you need to place a separate method, such as `initialize`, to perform the initialization logic here.
 
-10) Write an array of arguments to initialize.
+1) Write the name of the method responsible for the initialization function. We recommend using an intuitively understandable method name such as `initialize`.
 
-11) If you do not have an argument to initialize, you can omit this.
+1) Write an array of arguments to initialize.
 
-12) For a nonUpgradeable contract, you can use a constructor. For that attribute, enter constructor arguments. If it does not exist, it can be left as an empty array.
+1) If you do not have an argument to initialize, you can omit this.
 
-13) You can refer to the address of the contract that is being deployed or deployed. For an upgradeable contract, the address of the proxy is entered. **Please note cyclic dependency** 
+1) For a nonUpgradeable contract, you can use a constructor. For that attribute, enter constructor arguments. If it does not exist, it can be left as an empty array.
 
-14) The value specified by `${variables.varName}` is replaced with `constant` by 3). 
+1) You can refer to the address of the contract that is being deployed or deployed. For an upgradeable contract, the address of the proxy is entered. **Please note cyclic dependency** 
 
-15) You can also specify `initialize` for a nonUpgradeable contract. vvisp calls the function after deployment.
+1) The value specified by `${variables.varName}` is replaced with `constant` by 3). 
+
+1) You can also specify `initialize` for a nonUpgradeable contract. vvisp calls the function after deployment.
