@@ -24,7 +24,8 @@ module.exports = async function(files, options) {
     contractContents[i].contractName = contractName;
     fs.writeJsonSync(
       path.join('./build/contracts/', contractName + '.json'),
-      JSON.stringify(contractContents[i], null, '  ')
+      contractContents[i],
+      { spaces: '  ' }
     );
   }
   printOrSilent('Compiling Finished!', options);
