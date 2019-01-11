@@ -24,4 +24,12 @@ commander
     )
   );
 
+commander.on('command:*', function() {
+  console.error(
+    'Invalid command: %s\nSee --help for a list of available commands.',
+    commander.args.join(' ')
+  );
+  process.exit(1);
+});
+
 module.exports = commander;
