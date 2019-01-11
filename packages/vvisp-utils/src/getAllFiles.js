@@ -1,4 +1,4 @@
-module.exports = function(_dir) {
+module.exports = function(_dir, _filter) {
   const fs = require('fs');
   const path = require('path');
 
@@ -12,7 +12,10 @@ module.exports = function(_dir) {
 
       if (fs.lstatSync(elementPath).isDirectory()) {
         recursive(fileArr, elementPath);
-      } else {
+      } else if (
+        typeof _filter !== 'function' ||
+        _filter(elementPath) === true
+      ) {
         fileArr.push(elementPath);
       }
     }
