@@ -9,6 +9,7 @@ const path = require('path');
 const ERROR_CONTRACT = path.join(__dirname, '../contracts/ErrorContract.sol');
 const RIGHT_CONTRACT1 = path.join(__dirname, '../contracts/DependencyA.sol');
 const RIGHT_CONTRACT2 = path.join(__dirname, '../contracts/DependencyB.sol');
+const VERSION5 = path.join(__dirname, '../contracts/Version5.sol');
 
 describe('# compile test', function() {
   this.timeout(50000);
@@ -43,6 +44,11 @@ describe('# compile test', function() {
     it('should be fulfilled with nonOptimization', async function() {
       process.env.SOLC_OPTIMIZATION = 'false';
       await compile(RIGHT_CONTRACT1, true).should.be.fulfilled;
+    });
+    it('should be fulfilled with solidity version 5', async function() {
+      process.env.SOLC_VERSION = '0.5.1';
+      await compile(VERSION5, true).should.be.fulfilled;
+      process.env.SOLC_VERSION = '';
     });
   });
   describe('# result value', function() {
