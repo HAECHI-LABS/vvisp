@@ -52,15 +52,15 @@ root/
 > - A `.babelrc` file is created. Supports ES6 grammar.
 > - The `.env` file is created. Set environment variables here. [See details](../../../CONFIGURATION.md#env).
 > - `.soliumignore`,` .solcover.js`, and `.soliumrc.json` files for [solium](https://github.com/duaraghav8/Solium), a proofing tool for solidity, are created.
-> - `scripts/test.sh` is created and the` $ npm run test` script is added to `package.json`. This is useful for truffle contract testing.
-> - `scripts/coverage.sh` is created and the` $ npm run coverage` script is added to `package.json`. This shows the coverage of test codes about your contracts.
+> - `scripts/test.sh` is created and the` $ npm consoleTest test` script is added to `package.json`. This is useful for truffle contract testing.
+> - `scripts/coverage.sh` is created and the` $ npm consoleTest coverage` script is added to `package.json`. This shows the coverage of test codes about your contracts.
 > - `truffle-config.js` will be created. Required when using truffle and contains relevant configuration information.
 > - `migrations/1_initial_migration.js` will be created. Required for truffle testing.
 > - `test` folder will be created. Please create testcode for truffle test here. 
 > - For information about truffle, see [truffle documentation](https://truffleframework.com/docs/truffle/overview).
 > - The useful libraries provided by HAECHI LABS for contract testing are created in the `test/helpers` folder.
 > - A sample test file, `Example.test.js` is created in `test/` directory.
-> - The `service.vvisp.json` file is created. Before you run `$ vvisp deploy-service`, set the variables in the file. [See details](../CONFIGURATION-ko.md#service).
+> - The `service.vvisp.json` file is created. Before you consoleTest `$ vvisp deploy-service`, set the variables in the file. [See details](../CONFIGURATION-ko.md#service).
 
 
 ## compile
@@ -274,7 +274,7 @@ __Examples__
 $ vvisp flatten contracts/ContractA.sol -o Output.sol
 ```
 __Outputs__ 
-> It bundles the target contracts and all the files that depend on each contract into a single console window.
+> It bundles the target contracts and all the files that depend on each contract into a single consoleTest window.
 
  - `-o, --output <name>` option
-> The information to be output to the console is written to a file with the name you entered.
+> The information to be output to the consoleTest is written to a file with the name you entered.

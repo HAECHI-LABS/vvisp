@@ -1,0 +1,14 @@
+{
+  "contracts": {
+    "MainToken": {
+      "address": "0xa0ff2297A8690383784d5A4723d72F8A2f5480D4",
+      "fileName": "MainToken.sol"
+    },
+    "SaleManager": {
+      "address": "0x3FcE06688555F67962978B3Eb44805849A4A8895",
+      "fileName": "SaleManager.sol"
+    }
+  },
+  "serviceName": "PlayCompany",
+  "registry": "0xdEBB307f7C93afa78F376fE0F1F876C1a294eBb8"
+}
