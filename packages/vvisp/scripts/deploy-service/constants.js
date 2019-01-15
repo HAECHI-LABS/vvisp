@@ -14,6 +14,9 @@ module.exports = (function() {
     TX_OPTIONS: {
       gasPrice: process.env.GAS_PRICE
         ? web3.utils.toHex(process.env.GAS_PRICE)
+        : undefined,
+      gasLimit: process.env.GAS_LIMIT
+        ? web3.utils.toHex(process.env.GAS_LIMIT)
         : undefined
     },
     PRIVATE_KEY: mnemonicToPrivateKey(

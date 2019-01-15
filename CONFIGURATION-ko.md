@@ -15,6 +15,7 @@ vvisp는 `.env` file에 작성된 환경 변수들을 [`process.env`](https://no
 - `MNEMONIC`: 트랜잭션을 생성할 대상의 mnemonic key입니다. ***REQUIRED***
 - `PRIV_INDEX`: MNEMONIC으로 생성될 private key의 index입니다. 기본 값은 0입니다.
 - `GAS_PRICE`: 트랙잭션 발생시 설정하고자 하는 gas price입니다. 기본값은 10Gwei이며, 입력 단위는 wei입니다. 
+- `GAS_LIMIT`: 트랙잭션 발생시 설정하고자 하는 gas limit입니다. 기본값은 4600000입니다.
 - `SOLC_VERSION`: 사용하고자 하는 컴파일러 버전을 입력합니다. 특정 버전 입력시 네트워크와의 통신이 필요하며, 입력 값이 없을 경우 vvisp에 내장된 로컬 solc를 사용합니다. 
 - `SOLC_OPTIMIZATION`: compile 최적화를 원하지 않는다면 false를 입력하십시오. 기본 값은 true입니다.
 
@@ -26,6 +27,7 @@ PORT= '7545'                    // local 네트워크 포트 번호
 INFURA_API_KEY=                 // 연결 네트워크가 local일 경우 필요하지 않습니다.
 MNEMONIC= "royal pact globe..." // 이더리움 월렛 private key에 대한 mnemonic key
 GAS_PRICE= 20000000000          // 20Gwei
+GAS_LIMIT= 5000000              // 500만
 SOLC_VERSION=                   // 내장된 컴파일러를 사용합니다.
 SOLC_OPTIMIZATION=              // 최적화를 사용합니다.
 ```

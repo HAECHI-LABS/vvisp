@@ -14,7 +14,8 @@ We use [dotenv](https://github.com/motdotla/dotenv) that loads environment varia
 - `INFURA_API_KEY`: It is the api key required connect to an external network. You can sign in and get key at [infura](https://infura.io/).
 - `MNEMONIC`: The mnemonic key of an account to make transaction. ***REQUIRED***
 - `PRIV_INDEX`: The index of private key generated from MNEMONIC. Default is 0.
-- `GAS_PRICE`: The gas price to pay for transactions Default is 10Gwei and unit is wei. 
+- `GAS_PRICE`: The gas price to pay for transactions. Default is 10Gwei and unit is wei. 
+- `GAS_LIMIT`: The gas limit to pay for transactions. Default is 4600000.
 - `SOLC_VERSION`: The version of solc compiler version you want to use and it needs network communication. You can keep it empty to use local compiler in vvisp. 
 - `SOLC_OPTIMIZATION`: If you don't want to optimize compile, set this false. Default is true.
 
@@ -26,6 +27,7 @@ PORT= '7545'                    // Port number of local network
 INFURA_API_KEY=                 // Not required in local network 
 MNEMONIC= "royal pact globe..." // Mnemonic key words for private key of ethereum wallet
 GAS_PRICE= 20000000000          // 20Gwei
+GAS_LIMIT= 5000000              // 5 million
 SOLC_VERSION=                   // Use local compiler
 SOLC_OPTIMIZATION=              // Use optimization
 ```

@@ -19,6 +19,9 @@ module.exports = async function(file, arguments, options) {
     ...options,
     gasPrice: process.env.GAS_PRICE
       ? web3.utils.toHex(process.env.GAS_PRICE)
+      : undefined,
+    gasLimit: process.env.GAS_LIMIT
+      ? web3.utils.toHex(process.env.GAS_LIMIT)
       : undefined
   };
 
