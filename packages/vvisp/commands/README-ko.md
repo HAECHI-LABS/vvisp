@@ -7,6 +7,7 @@ English version: [README.md](./README.md)
 - [deploy-contract](#deploy-contract): 특정 컨트랙트를 배포
 - [deploy-service](#deploy-service): Upgradeable Smart Contract Framework에 따라 service를 배포
 - [abi-to-script](#abi-to-script): 블록체인 위 스마트 컨트랙트와 상호작용하는 자바스크립트 API들을 생성
+- [console](#console): 손쉽게 SmartContract의 api를 호출할 수 있는 console 환경을 제공
 - [flatten](#flatten): 여러 컨트랙트들을 하나의 파일로 병합
 
 ## init
@@ -181,7 +182,7 @@ __`state.vvisp.json`__
 ```
 
 1) 설정된 service의 이름입니다.
- 
+
 2) 배포된 registry의 address를 나타냅니다.
 
 3) 배포된 contract들의 정보를 json 형식으로 정의합니다.
@@ -199,59 +200,278 @@ nonUpgradeable contract의 경우 해당 속성이 없습니다.
 
 8) upgradeable contract를 나타내는 속성입니다.
 
-
 ## abi-to-script
 
 > vvisp abi-to-script <_files..._> [options]
 
-해당 컨트랙트가 배포됐을 때 컨트랙트와 상호작용 할 수 있는 자바스크립트 소스코드를 자동으로 생성합니다.
+The `abi-to-script` is a command that automatically creates a javascript library to help you easily call deployed smart contracts. The repository used in the tutorial is as follows.(https://github.com/HAECHI-LABS/vvisp-sample)
 
-__Options__
+#### Usage
+
+`vvisp abi-to-script <contract-files...> [options]` 
+
+#### options
 
 `-f, --front <name>`: front-end(브라우저)에서 실행 가능한 자바스크립트 소스코드로 생성합니다.
 
-__Examples__
 
-```shell
-$ vvisp abi-to-script contracts/OwnedUpgradeabilityProxy.sol...
-$ vvisp abi-to-script -f service contracts/OwnedUpgradeabilityProxy.sol...
+
+#### Example
+
+```bash
+$ vvisp abi-to-script contracts/HaechiV1.sol
+Compiling...
+compile contracts/HaechiV1.sol...
+
+Generate Finished!
+
+$ vvisp abi-to-script -f contracts/HaechiV1.sol
+Compiling...
+compile contracts/HaechiV1.sol...
+
+Generate Finished!
 ```
 
-__Outputs__
+
+
+#### Output
+
+When you run `abi-to-script`, the `contractApis` folder is created in the directory you have run.
+
+```bash
+$ ls
+README.md           contracts           node_modules        package.json        service.vvisp.json  test                contractApis        migrations          package-lock.json   scripts             service2.vvisp.json truffle-config.js
+```
+
+ The structure of the generated `contractApi` folder is as follows.
 
 ```
 contractApis/
 ├── back/
 ├──── abi/
-├────── Contract1.json
+├────── HaechiV1.json
 ├────── ...
 ├──── js/
-├────── Contract1.js
+├────── HaechiV1.js
 ├────── ...
-├──── utils/
-├──── index.js
 ├── front/
 ├──── abi/
-├────── Contract1.json
+├────── HaechiV1.json
 ├────── ...
 ├──── js/
-├────── name.js
-├────── Contract1.js
+├────── HaechiV1.js
 ├────── ...
-├──── name.es.js
-└──── name.js
+└──── index.js
 ```
 
 > - `contractApis/back/abi/`에 컨트랙트들의 abi 파일들이 저장됩니다.
 > - `contractApis/back/js/`에 api들이 저장됩니다.
 > - `contractApis/back/utils/`에 api들에 필요한 library들이 저장됩니다.
 
- - `-f, --front <name>` option의 경우
+- `-f, --front <name>` option의 경우
+
 > - `contractApis/front/abi/`에 컨트랙트들의 abi 파일이 저장됩니다.
 > - `contractApis/front/js/`에 api들이 저장됩니다. **(not needed)** 
 > - `contractApis/front/name.js`에 번들링된 api들이 저장됩니다. (파일명은 입력한 name을 따라 갑니다)
 
 front api의 경우, 메타마스크와 연동을 위해 [web3 구버전](https://github.com/ethereum/wiki/wiki/JavaScript-API)에 맞춰져 있습니다.
+
+
+
+#### 자동 생성된 ContractApis 사용방법
+
+자동 생성된 `contractApis/`를 활용하여 smart contract의 api를 호출 할 수 있습닏다.
+
+```javascript
+// Set the environment variable in the .env file.
+require('dotenv').config();
+
+/*
+HaechiV1 has following methods
+
+velocities: function(_input1) 
+haechiIds: function(_input1) 
+distances: function(_input1) 
+gym: function()
+makeNewHaechi: function(__id, options)
+increaseVelocity: function(__haechiId, __diff, options)
+run: function(options)
+initialize: function(__gym, options)
+
+*/
+const { HaechiV1 } = require('../contractApis/back');
+
+main();
+
+async function main() {
+  // HaechiV1_ADDRESS is a address of HaechiV1 contract
+  const haechiV1 = new HaechiV1(HaechiV1_ADDRESS);
+
+  // call the run method in the HaechiV1 contract
+  const receipt = await haechiV1.methods.run();
+  console.log(receipt);
+}
+```
+
+
+
+## console
+
+> vvisp console <_contract-apis_> [options]
+
+abi-to-script에 의해 생성된 contractApis를 사용하여 smart contract의 api를 쉽고, 상호작용하며 호출할 수 있는 `console` 환경을 제공합니다. 해당 문서에서 사용된 예제 repository는 다음과 같습니다.(https://github.com/HAECHI-LABS/vvisp-sample)
+
+**console을 시작하기 전에, contractApis가 반드시 생성되어 있어야 하고 호출한 smart contract가 deploy되어 있어야 합니다.**
+
+
+
+#### Usage
+
+`vvisp console <contract-apis>` 
+
+만약 `<contract-apis>`를 일력하지 않는다면, 자동으로 현재폴더에 있는 `<contract-apis>`를 찾고 `console`을 실행시킵니다.
+
+
+
+#### Example
+
+```bash
+$ vvisp console
+Available contract contracts:
+
+Index				Contract				Address
+[0]				HaechiGym				0x5c06aa41561Ef806dA109B1e9c6271208e203758
+[1]				HaechiV1				0xc95663de3398D74972c16Ad34aCd0c31baa6859e
+[2]				SampleToken				0x8C894a56e0B036Af7308A01B5d8EE0F718B03554
+
+
+If you are wondering how to use it, type help command.
+Use exit or Ctrl-c to exit
+>>
+```
+
+vvisp console을 시작하게 된다면, deploy된 smart contract를 vvisp console command를 활용하여 쉽게 호출할 수 있습니다.
+
+#### Command
+
+vvisp console에서 사용가능한 command는 다음과 같습니다: call, show, list, help, exit.
+
+- help
+
+  ```
+  >> help
+  Usage: <command> [<args...>]
+  
+  where <command> is one of: call, show, list, help
+  
+  Commands:
+  
+  list                                 - list the available smart contracts
+  
+  show <Contract>                      - show the available method of a smart contract
+  
+  call <Contract> <Method> [Params...] - call a smart contract api method
+  ```
+
+  `Help` 는 사용 가능한 command의 목록과 사용법을 보여줍니다.
+
+	
+
+- list
+
+  ```
+  >> list
+  Index			Contract				Address
+  [0]			HaechiGym				0x5c06aa41561Ef806dA109B1e9c6271208e203758
+  [1]			HaechiV1				0xc95663de3398D74972c16Ad34aCd0c31baa6859e
+  [2]			SampleToken				0x8C894a56e0B036Af7308A01B5d8EE0F718B03554
+  
+  ```
+
+  `list` 는 호출 가능한 contract와 address를 보여줍니다.
+
+
+
+- show <Contract>
+
+  ```
+  >> show HaechiV1
+  
+  [Method]				[Args]
+  velocities                              [_input1]
+  haechiIds                               [_input1]
+  distances                               [_input1]
+  gym                                     []
+  makeNewHaechi                           [__id, options]
+  increaseVelocity                        [__haechiId, __diff, options]
+  run                                     [options]
+  initialize                              [__gym, options]
+  ```
+
+  `show` 는 해당하는 contract에서 호출할 수 있는 method의 목록을 보여줍니다.
+
+
+
+- call <Contract> <Method>
+
+  ```
+  >> call HaechiV1 run
+  { transactionHash: '0xeb16014e4cfe6129ebfd66cb4577e864d3f79ceb087a590595872bde45822b7f',
+    transactionIndex: 0,
+    blockHash: '0xd21bdcbee4f797446afef49c7a63231168cc7f7410a59e1e98b09aba5c00a9e0',
+    blockNumber: 11,
+    from: '0x9f2a369f37f20a5c8d1ca7a2aaae216bc57c3b1f',
+    to: '0xc95663de3398d74972c16ad34acd0c31baa6859e',
+    gasUsed: 28800,
+    cumulativeGasUsed: 28800,
+    contractAddress: null,
+    logs:
+     [ { logIndex: 0,
+         transactionIndex: 0,
+         transactionHash: '0xeb16014e4cfe6129ebfd66cb4577e864d3f79ceb087a590595872bde45822b7f',
+         blockHash: '0xd21bdcbee4f797446afef49c7a63231168cc7f7410a59e1e98b09aba5c00a9e0',
+         blockNumber: 11,
+         address: '0xc95663de3398D74972c16Ad34aCd0c31baa6859e',
+         data: '0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
+         topics: [Array],
+         type: 'mined',
+         id: 'log_17beff72' } ],
+    status: true,
+    logsBloom: '0x00000000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
+    v: '0x1b',
+    r: '0x91f248cc00b8e65f4f0bdb2f9e97e2b9d4dfe34428b81402b6719b605c1f40a1',
+    s: '0x5aab1c8bdbd1acb14397928fe951a906b1420ed7c287fa6db39b706513d93f85' }
+  ```
+
+  `call`은 해당 contract의 method를 호출합니다.
+
+
+#### Tips
+
+1. `state.vvisp.json`과 `contractApis/`사이의 불일치가 발생하면 안됩니다. (ex state.vvisp.json에는 3개의 contract가 있지만  contractApis는 2개의 contract만 존재)
+
+2. 만약 `contractApis/`는 존재하지만 `state.vvisp.json`파일이 존재하지 않는다면 stdin을 통해 contract의 주소를 아래와 같이 등록해주어야 합니다.
+
+   ```bash
+   $ vvisp console
+   'state.vvisp.json' does not existing in current path(/Users/jun/workspace/haechi/vvisp-sample)
+   
+   Run 'vvisp deploy-service' command to create state.vvisp.json and rerun 'vvisp console' again,
+   or enter the address of the currently registered contract
+   
+   Available contract contracts:
+   HaechiGym
+   HaechiV1
+   SampleToken
+   
+   Enter the address of HaechiGym: 0x5c06aa41561Ef806dA109B1e9c6271208e203758
+   
+   Enter the address of HaechiV1: 0xc95663de3398D74972c16Ad34aCd0c31baa6859e
+   
+   Enter the address of SampleToken: 
+   ```
+
+3. `abi-to-script`에 의해 자동생성된 script파일(예를 들어  `HaechiV1.js` 와 `HaechiGym.js` in contractApis/back/js)의 이름은 반드시 state.vvisp.json의 contract 파일 이름과 동일해야 합니다.
 
 
 ## flatten
