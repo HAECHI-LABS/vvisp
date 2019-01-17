@@ -1,0 +1,10 @@
+{
+  "contracts": {
+    "HaechiV1": {
+      "address": "0x688555B34d5A480D4796723d72F8A9A4A889578F",
+      "fileName": "HaechiV1.sol"
+    }
+  },
+  "serviceName": "Haechi",
+  "registry": "0xf7C93afa7C1a294eBb8dEBB3078F376fE0F1F876"
+}
