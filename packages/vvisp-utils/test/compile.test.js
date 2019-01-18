@@ -10,6 +10,7 @@ const ERROR_CONTRACT = path.join(__dirname, '../contracts/ErrorContract.sol');
 const RIGHT_CONTRACT1 = path.join(__dirname, '../contracts/DependencyA.sol');
 const RIGHT_CONTRACT2 = path.join(__dirname, '../contracts/DependencyB.sol');
 const VERSION5 = path.join(__dirname, '../contracts/Version5.sol');
+const OPEN_NFT = path.join(__dirname, '../contracts/MyNFT.sol');
 
 describe('# compile test', function() {
   this.timeout(50000);
@@ -48,6 +49,11 @@ describe('# compile test', function() {
     it('should be fulfilled with solidity version 5', async function() {
       process.env.SOLC_VERSION = '0.5.1';
       await compile(VERSION5, true).should.be.fulfilled;
+      process.env.SOLC_VERSION = '';
+    });
+    it('should be fulfilled with external solidity library', async function() {
+      process.env.SOLC_VERSION = '0.4.24';
+      await compile(OPEN_NFT, false).should.be.fulfilled;
       process.env.SOLC_VERSION = '';
     });
   });
