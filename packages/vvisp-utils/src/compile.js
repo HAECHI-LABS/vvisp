@@ -4,9 +4,10 @@ module.exports = async function(filePath, silent) {
   const fs = require('fs');
   const path = require('path');
   const solc = await getSolc();
-  const ff = require('node-find-folder');
   const chalk = require('chalk');
   const printOrSilent = require('./printOrSilent');
+  const ff = require('node-find-folder');
+  const findNodeModules = require('find-node-modules');
 
   printOrSilent(chalk.bold('Compiling...'), { silent });
 
@@ -61,13 +62,24 @@ module.exports = async function(filePath, silent) {
   return fiveToFour(compileOutput);
 
   function findImports(filePath) {
+    // find recursively to find .sol file
     const fileName = `${path.parse(filePath).name}.sol`;
-    return {
-      contents: fs.readFileSync(
-        path.join('./', `${new ff(fileName)[0]}`),
-        'utf8'
-      )
-    };
+    const fileFound = new ff(fileName);
+    if (fileFound.length > 0) {
+      return {
+        contents: fs.readFileSync(path.join('./', `${fileFound[0]}`), 'utf8')
+      };
+    } else {
+      // find .sol file from node_modules
+      const nodeModules = findNodeModules();
+      for (let modulePath of nodeModules) {
+        if (fs.existsSync(path.join(modulePath, filePath)))
+          return {
+            contents: fs.readFileSync(path.join(modulePath, filePath), 'utf8')
+          };
+      }
+      throw 'module not found';
+    }
   }
 
   function fiveToFour(compileOutputV5) {
