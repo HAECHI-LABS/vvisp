@@ -31,7 +31,7 @@ describe('# deploy contract process test', function() {
     await deployContract(DUMMMY_FILE, [], { silent: true }).should.be.rejected;
   });
 
-  it('should reject flattend contract', async () => {
+  it('should reject when contract name and file name are different', async () => {
     await deployContract(CONTRACT_FLATTENED_PATH, [], { silent: true }).should
       .be.rejected;
   });
