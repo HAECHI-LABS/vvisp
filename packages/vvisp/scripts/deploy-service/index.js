@@ -1,6 +1,6 @@
 module.exports = async function(options) {
-  const { checkConfigExist, checkEnvExist } = require('../../bin/error');
-  checkEnvExist();
+  const { checkConfigExist, checkEnv } = require('../../bin/error');
+  checkEnv();
   checkConfigExist();
 
   const { printOrSilent, getWeb3 } = require('@haechi-labs/vvisp-utils');

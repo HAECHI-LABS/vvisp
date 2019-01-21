@@ -9,7 +9,8 @@ We use [dotenv](https://github.com/motdotla/dotenv) that loads environment varia
 
 > `.env` is a file to set environment variables. If there is no `.env` file in root directory, some functions of vvisp don't work and print ```.env file does not exist``` error message.
 
-- `NETWORK`: The name of network you want to connect to. We use [infura](https://infura.io/) except local network. Choose one of [local, mainnet, ropsten, kovan, rinkeby]. ***REQUIRED***
+- `NETWORK`: The name of network you want to connect to. We use [infura](https://infura.io/) except local network. Choose one of [local, mainnet, ropsten, kovan, rinkeby, custom]. ***REQUIRED***
+- `URL`: the URL address required to access the custom blockchain.
 - `PORT`: The port number you want to connect to when local network is chosen.
 - `INFURA_API_KEY`: It is the api key required connect to an external network. You can sign in and get key at [infura](https://infura.io/).
 - `MNEMONIC`: The mnemonic key of an account to make transaction. ***REQUIRED***
@@ -23,8 +24,9 @@ We use [dotenv](https://github.com/motdotla/dotenv) that loads environment varia
 
 ```.dotenv
 NETWORK= 'local'                // Network you want to connect to
+URL=                            // Required in custom network.
 PORT= '7545'                    // Port number of local network
-INFURA_API_KEY=                 // Not required in local network 
+INFURA_API_KEY=                 // Not required in local or custom network 
 MNEMONIC= "royal pact globe..." // Mnemonic key words for private key of ethereum wallet
 GAS_PRICE= 20000000000          // 20Gwei
 GAS_LIMIT= 5000000              // 5 million

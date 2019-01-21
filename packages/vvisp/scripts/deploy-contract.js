@@ -1,6 +1,6 @@
 module.exports = async function(file, arguments, options) {
-  const { checkEnvExist } = require('../bin/error');
-  checkEnvExist();
+  const { checkEnv } = require('../bin/error');
+  checkEnv();
 
   const {
     compileAndDeploy,
