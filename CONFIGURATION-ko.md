@@ -9,7 +9,8 @@ vvisp는 `.env` file에 작성된 환경 변수들을 [`process.env`](https://no
 
 > `.env`는 환경변수를 설정해주는 file입니다. 해당 파일이 없으면 vvisp의 일부 기능은 ```.env file does not exist```라는 에러 메세지를 띄우며 더이상 작동하지 않습니다. 
 
-- `NETWORK`: 연결하고자 하는 네트워크의 이름입니다. local을 제외하고, [infura](https://infura.io/)를 통합니다. [local, mainnet, ropsten, kovan, rinkeby] 중 하나를 고르십시오. ***REQUIRED***
+- `NETWORK`: 연결하고자 하는 네트워크의 이름입니다. local을 제외하고, [infura](https://infura.io/)를 통합니다. [local, mainnet, ropsten, kovan, rinkeby, custom] 중 하나를 고르십시오. ***REQUIRED***
+- `URL`: custom 블록체인에 접근하기 위해 필요한 URL 주소입니다.
 - `PORT`: local 선택시, 연결하고자 하는 포트 번호입니다.
 - `INFURA_API_KEY`: 외부 네트워크 연결시 필요한 infura api key입니다.
 - `MNEMONIC`: 트랜잭션을 생성할 대상의 mnemonic key입니다. ***REQUIRED***
@@ -23,8 +24,9 @@ vvisp는 `.env` file에 작성된 환경 변수들을 [`process.env`](https://no
 
 ```.dotenv
 NETWORK= 'local'                // 연결하고자 하는 네트워크의 종류 
+URL=                            // 연결 네트워크가 custom일 경우만 필요합니다.
 PORT= '7545'                    // local 네트워크 포트 번호
-INFURA_API_KEY=                 // 연결 네트워크가 local일 경우 필요하지 않습니다.
+INFURA_API_KEY=                 // 연결 네트워크가 local 혹은 custom일 경우 필요하지 않습니다.
 MNEMONIC= "royal pact globe..." // 이더리움 월렛 private key에 대한 mnemonic key
 GAS_PRICE= 20000000000          // 20Gwei
 GAS_LIMIT= 5000000              // 500만
