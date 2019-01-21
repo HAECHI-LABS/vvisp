@@ -2,6 +2,7 @@ const deployContract = require('../../scripts/deploy-contract');
 const path = require('path');
 
 describe('# deploy contract process test', function() {
+  this.timeout(50000);
   const CONTRACT_PATH = path.join('./contracts', 'libs', 'Ownable.sol');
   const CONTRACT_INHERITED_PATH = path.join(
     './contracts',
