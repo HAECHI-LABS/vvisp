@@ -217,9 +217,13 @@ async function call(args, apis) {
     return;
   }
 
-  const contract = new apis[contractName](apis[contractName]['address']);
-  const receipt = await contract.methods[methodName](params);
-  console.log(receipt);
+  try {
+    const contract = new apis[contractName](apis[contractName]['address']);
+    const receipt = await contract.methods[methodName].apply(undefined, params);
+    console.log(receipt);
+  } catch (e) {
+    console.error(e);
+  }
 }
 
 /**
@@ -294,8 +298,14 @@ function setApiAddress(apis, stateFilePath) {
   }
 
   for (const key of Object.keys(contracts)) {
-    if (apis[key]) {
-      apis[key]['address'] = contracts[key]['address'];
+    const filePath = contracts[key]['fileName'];
+    if (!filePath) {
+      throw new Error('fileName does not exist in state.vvisp.json');
+    }
+
+    const fileName = path.parse(filePath).name;
+    if (apis[fileName]) {
+      apis[fileName]['address'] = contracts[key]['address'];
     } else {
       // mismatch occurred between vvisp.state and apis
       throw new Error(
