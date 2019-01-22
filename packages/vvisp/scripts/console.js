@@ -45,6 +45,14 @@ module.exports = async function(scriptPath, options) {
 
   const apiCommander = new ApiCommander(apis);
   apiCommander.add(
+    new Command(
+      'register',
+      '',
+      'register the address of smart contracts',
+      register
+    )
+  );
+  apiCommander.add(
     new Command('list', '', 'list the available smart contracts', list)
   );
   apiCommander.add(
@@ -111,7 +119,7 @@ function ApiCommander(apis) {
               msg =
                 msg +
                 '\t{0} {1}{2}\n\n'.format(
-                  chalk.bold(command.name),
+                  chalk.bold(command.name.padEnd(8)),
                   chalk.bold(command.options.padEnd(60)),
                   command.description
                 );
@@ -129,7 +137,14 @@ function ApiCommander(apis) {
         }
 
         // run command
-        await this.commands[args[0]].run(args.slice(1, args.length), this.apis);
+        try {
+          await this.commands[args[0]].run(
+            args.slice(1, args.length),
+            this.apis
+          );
+        } catch (e) {
+          console.log(e);
+        }
       }
     }
   };
@@ -193,6 +208,32 @@ function getArgs(func) {
       // Ensure no undefined values are added.
       return arg;
     });
+}
+
+async function register() {
+  console.log(
+    'To dynamically register a contract to the console, write the contract name, address, and filename.'
+  );
+
+  process.stdout.write('Enter the name of contract: ');
+  const contractName = await readLine();
+
+  const questions = ['address', 'fileName'];
+  const contract = {};
+  for (const key in questions) {
+    process.stdout.write('Enter the {0} of contract: '.format(questions[key]));
+    contract[questions[key]] = await readLine();
+  }
+
+  const f = fs.readFileSync(defaultStateFile, { encoding: 'utf8' });
+  const state = JSON.parse(f);
+  const contracts = state['contracts'];
+  contracts[contractName] = contract;
+  fs.writeFileSync(defaultStateFile, JSON.stringify(state, null, 2));
+
+  console.log(
+    'The address and filename information of the contract has been successfully saved to state.vvisp.json.'
+  );
 }
 
 /**
