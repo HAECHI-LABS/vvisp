@@ -1,6 +1,6 @@
 module.exports = (function() {
   const path = require('path');
-  const { getWeb3, mnemonicToPrivateKey } = require('@haechi-labs/vvisp-utils');
+  const { getWeb3, getPrivateKey } = require('@haechi-labs/vvisp-utils');
   const web3 = getWeb3();
 
   return {
@@ -19,10 +19,7 @@ module.exports = (function() {
         ? web3.utils.toHex(process.env.GAS_LIMIT)
         : undefined
     },
-    PRIVATE_KEY: mnemonicToPrivateKey(
-      process.env.MNEMONIC,
-      process.env.PRIV_INDEX
-    ),
+    PRIVATE_KEY: getPrivateKey(process.env.MNEMONIC, process.env.PRIV_INDEX),
 
     // service contract property name
     VARIABLES: 'variables',

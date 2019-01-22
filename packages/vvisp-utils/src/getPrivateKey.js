@@ -1,4 +1,9 @@
 module.exports = function(mnemonic, index) {
+  if (process.env.PRIVATE_KEY) {
+    if (process.env.PRIVATE_KEY.slice(0, 2) === '0x')
+      return process.env.PRIVATE_KEY.slice(2);
+    else return process.env.PRIVATE_KEY;
+  }
   if (!index) {
     index = 0;
   }

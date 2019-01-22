@@ -11,7 +11,7 @@ const {
   compileAndDeploy,
   forIn,
   getWeb3,
-  mnemonicToPrivateKey,
+  getPrivateKey,
   privateKeyToAddress
 } = require('@haechi-labs/vvisp-utils');
 const web3 = getWeb3();
@@ -23,7 +23,7 @@ const CONTRACT_PATH2 = path.join(`./contracts/test/${CONTRACT2}.sol`);
 const FILES = [CONTRACT_PATH1, CONTRACT_PATH2];
 const ROOT = path.join('./contractApis');
 
-const PRIV_KEY = mnemonicToPrivateKey(process.env.MNEMONIC);
+const PRIV_KEY = getPrivateKey(process.env.MNEMONIC);
 const SENDER = privateKeyToAddress(PRIV_KEY);
 
 describe('# abi-to-script process test', function() {

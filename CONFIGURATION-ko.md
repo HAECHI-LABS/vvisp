@@ -19,6 +19,7 @@ vvisp는 `.env` file에 작성된 환경 변수들을 [`process.env`](https://no
 - `GAS_LIMIT`: 트랙잭션 발생시 설정하고자 하는 gas limit입니다. 기본값은 4600000입니다.
 - `SOLC_VERSION`: 사용하고자 하는 컴파일러 버전을 입력합니다. 특정 버전 입력시 네트워크와의 통신이 필요하며, 입력 값이 없을 경우 vvisp에 내장된 로컬 solc를 사용합니다. 
 - `SOLC_OPTIMIZATION`: compile 최적화를 원하지 않는다면 false를 입력하십시오. 기본 값은 true입니다.
+- `PRIVATE_KEY`: private key *주의: 이 옵션은 MNEMONIC 옵션을 덮어씁니다*
 
 ### Examples
 
@@ -32,6 +33,7 @@ GAS_PRICE= 20000000000          // 20Gwei
 GAS_LIMIT= 5000000              // 500만
 SOLC_VERSION=                   // 내장된 컴파일러를 사용합니다.
 SOLC_OPTIMIZATION=              // 최적화를 사용합니다.
+PRIVATE_KEY=                    // private key
 ```
 
 ## <a name="service"></a>service.vvisp.json

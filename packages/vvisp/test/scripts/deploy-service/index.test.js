@@ -14,7 +14,7 @@ const { hasInitArgs } = require('../../../scripts/deploy-service/utils');
 const {
   forIn,
   getWeb3,
-  mnemonicToPrivateKey,
+  getPrivateKey,
   privateKeyToAddress
 } = require('@haechi-labs/vvisp-utils');
 const web3 = getWeb3();
@@ -22,7 +22,7 @@ const path = require('path');
 const fs = require('fs-extra');
 const Mitm = require('mitm');
 
-const SENDER = privateKeyToAddress(mnemonicToPrivateKey(process.env.MNEMONIC));
+const SENDER = privateKeyToAddress(getPrivateKey(process.env.MNEMONIC));
 const SERVICE1 = path.join('./test/dummy/service1.json');
 const SERVICE2 = path.join('./test/dummy/service2.json');
 const STATE1 = path.join('./test/dummy/state1.json');

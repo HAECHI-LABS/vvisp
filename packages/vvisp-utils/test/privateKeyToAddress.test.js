@@ -1,14 +1,14 @@
 const chai = require('chai');
 chai.should();
 
-const { privateKeyToAddress, mnemonicToPrivateKey } = require('../src');
+const { privateKeyToAddress, getPrivateKey } = require('../src');
 
 const MNEMONIC =
   'away clutch still element short tooth spy hood army split stomach sail';
 
 describe('# privateKeyToAddress test', function() {
   before(function() {
-    this.privateKey = mnemonicToPrivateKey(MNEMONIC);
+    this.privateKey = getPrivateKey(MNEMONIC);
   });
   describe('# return value', function() {
     it('should be a string type', function() {
@@ -34,7 +34,7 @@ describe('# privateKeyToAddress test', function() {
       const MNEMONIC2 =
         'away clutch still element short sail spy hood army split stomach sail';
       const return1 = privateKeyToAddress(this.privateKey);
-      const return2 = privateKeyToAddress(mnemonicToPrivateKey(MNEMONIC2));
+      const return2 = privateKeyToAddress(getPrivateKey(MNEMONIC2));
       return1.should.not.equal(return2);
     });
   });

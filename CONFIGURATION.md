@@ -19,6 +19,7 @@ We use [dotenv](https://github.com/motdotla/dotenv) that loads environment varia
 - `GAS_LIMIT`: The gas limit to pay for transactions. Default is 4600000.
 - `SOLC_VERSION`: The version of solc compiler version you want to use and it needs network communication. You can keep it empty to use local compiler in vvisp. 
 - `SOLC_OPTIMIZATION`: If you don't want to optimize compile, set this false. Default is true.
+- PRIVATE_KEY: private key for specific account. *IT OVERRIDES MNEMONIC OPTIONS!!!*
 
 ### Example
 
@@ -32,6 +33,7 @@ GAS_PRICE= 20000000000          // 20Gwei
 GAS_LIMIT= 5000000              // 5 million
 SOLC_VERSION=                   // Use local compiler
 SOLC_OPTIMIZATION=              // Use optimization
+PRIVATE_KEY=                    // private key
 ```
 
 

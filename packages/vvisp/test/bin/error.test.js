@@ -193,7 +193,7 @@ describe('# error test', function() {
         it('should throw error when MNEMONIC is not set', function() {
           delete process.env.MNEMONIC;
           expect(() => checkEnv()).to.throw(
-            'You should set MNEMONIC in .env file'
+            'You should set MNEMONIC or PRIVATE_KEY in .env file'
           );
         });
       });

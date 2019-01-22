@@ -4,13 +4,13 @@ module.exports = async function(file, arguments, options) {
 
   const {
     compileAndDeploy,
-    mnemonicToPrivateKey,
+    getPrivateKey,
     getWeb3,
     printOrSilent
   } = require('@haechi-labs/vvisp-utils');
   const web3 = getWeb3();
 
-  const privateKey = mnemonicToPrivateKey(
+  const privateKey = getPrivateKey(
     process.env.MNEMONIC,
     process.env.PRIV_INDEX
   );
