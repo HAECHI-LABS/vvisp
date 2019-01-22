@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const chalk = require('chalk');
 const stringArgv = require('string-argv');
+const { parseLog } = require('ethereum-event-logs');
 
 if (!String.prototype.format) {
   String.prototype.format = function() {
@@ -33,7 +34,7 @@ const defaultStateFile = 'state.vvisp.json';
  */
 
 module.exports = async function(scriptPath, options) {
-  let apis = extractContractsApi(scriptPath);
+  let apis = setApi(scriptPath);
   if (fs.existsSync(defaultStateFile)) {
     apis = setApiAddress(apis, defaultStateFile);
   } else {
@@ -240,13 +241,33 @@ async function call(args, apis) {
     return param;
   });
 
+  const receiptFilter = [
+    'transactionHash',
+    'transactionIndex',
+    'blockNumber',
+    'from',
+    'to',
+    'gasUsed',
+    'logs',
+    'name',
+    'args'
+  ];
+  const contract = new apis[contractName](apis[contractName]['address']);
+  const receipt = await contract.methods[methodName].apply(undefined, params);
+
   try {
-    const contract = new apis[contractName](apis[contractName]['address']);
-    const receipt = await contract.methods[methodName].apply(undefined, params);
-    console.log(receipt);
-  } catch (e) {
-    console.error(e);
-  }
+    const events = parseLog(receipt.logs, apis[contractName]['abi']);
+    const logs = [];
+    for (const key in events) {
+      logs.push({
+        transactionHash: events[key].transactionHash,
+        name: events[key].name,
+        args: events[key].args
+      });
+    }
+    receipt.logs = logs;
+  } catch (e) {}
+  console.log(JSON.stringify(receipt, receiptFilter, 2));
 }
 
 /**
@@ -290,18 +311,29 @@ function getApiInfo(apis) {
 
 /**
  *
- * Get the script api of a smart contract from contractApis
+ * Get the script api and abi of a smart contract from contractApis
  * @param {string} scriptPath is a path to contractApi which is generated
  *  from vvisp abi-to-script command
  * @return {object} object has an api of smart contracts
  */
-function extractContractsApi(scriptPath) {
+function setApi(scriptPath) {
   const defaultScriptPath = process.cwd() + '/contractApis';
   if (scriptPath === undefined || scriptPath === '') {
     scriptPath = defaultScriptPath;
   }
 
-  return require(path.join(scriptPath, 'back') + '/index.js');
+  // set script api
+  const apis = require(path.join(scriptPath, 'back') + '/index.js');
+
+  // set abi
+  for (const key of Object.keys(apis)) {
+    apis[key]['abi'] = require(path.join(scriptPath, 'back', 'abi') +
+      '/' +
+      key +
+      '.json');
+  }
+
+  return apis;
 }
 
 /**
