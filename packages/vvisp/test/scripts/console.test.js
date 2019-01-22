@@ -34,8 +34,8 @@ describe('# console script test', async function() {
     });
   });
 
-  describe('extractContractsApi', function() {
-    const extractContractsApi = consoleTest.__get__('extractContractsApi');
+  describe('setApi', function() {
+    const setApi = consoleTest.__get__('setApi');
 
     before('create apis', function() {
       const testScriptPath = path.join(
@@ -44,7 +44,7 @@ describe('# console script test', async function() {
         'dummy',
         'testContractApis'
       );
-      this.apis = extractContractsApi(testScriptPath);
+      this.apis = setApi(testScriptPath);
     });
 
     it('should have contract functions', function() {
@@ -64,6 +64,13 @@ describe('# console script test', async function() {
 
     it('should have right number of contracts', function() {
       Object.keys(this.apis).length.should.be.equal(1);
+    });
+
+    it('should have abi', function() {
+      for (const key of Object.keys(this.apis)) {
+        this.apis[key]['abi'].should.not.be.undefined;
+        this.apis[key]['abi'].length.should.be.equal(11);
+      }
     });
   });
 
@@ -257,7 +264,7 @@ describe('# console script test', async function() {
   });
 
   describe('show', function() {
-    const extractContractsApi = consoleTest.__get__('extractContractsApi');
+    const setApi = consoleTest.__get__('setApi');
     const show = consoleTest.__get__('show');
 
     before('create apis', function() {
@@ -267,7 +274,7 @@ describe('# console script test', async function() {
         'dummy',
         'testContractApis'
       );
-      this.apis = extractContractsApi(testScriptPath);
+      this.apis = setApi(testScriptPath);
     });
 
     it('should print api method and args', async function() {
