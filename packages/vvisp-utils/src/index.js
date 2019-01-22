@@ -8,7 +8,7 @@ const getCompiledContracts = require('./getCompiledContracts');
 const getCycle = require('./getCycle');
 const getTxCount = require('./getTxCount');
 const getWeb3 = require('./getWeb3');
-const mnemonicToPrivateKey = require('./mnemonicToPrivateKey');
+const getPrivateKey = require('./getPrivateKey');
 const printOrSilent = require('./printOrSilent');
 const privateKeyToAddress = require('./privateKeyToAddress');
 const sendTx = require('./sendTx');
@@ -29,7 +29,7 @@ module.exports = {
   getCycle,
   getTxCount,
   getWeb3,
-  mnemonicToPrivateKey,
+  getPrivateKey,
   printOrSilent,
   privateKeyToAddress,
   sendTx,

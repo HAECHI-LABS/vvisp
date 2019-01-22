@@ -7,7 +7,7 @@ const {
   deploy,
   getCompiledContracts,
   getWeb3,
-  mnemonicToPrivateKey,
+  getPrivateKey,
   privateKeyToAddress
 } = require('../src');
 const web3 = getWeb3();
@@ -19,7 +19,7 @@ const ARRAY_INPUT_CONTRACT = path.join(
   '../contracts/DependencyD.sol'
 );
 const NO_INPUT_CONTRACT = path.join(__dirname, '../contracts/SecondB.sol');
-const PRIV_KEY = mnemonicToPrivateKey(process.env.MNEMONIC);
+const PRIV_KEY = getPrivateKey(process.env.MNEMONIC);
 const SENDER = privateKeyToAddress(PRIV_KEY);
 
 describe('# deploy test', function() {

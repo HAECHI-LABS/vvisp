@@ -3,12 +3,12 @@ const expect = chai.expect;
 chai.should();
 require('dotenv').config();
 
-const { mnemonicToPrivateKey } = require('../../src');
+const { getPrivateKey } = require('../../src');
 const filterPrivateKey = require('../../src/utils/filterPrivateKey');
 
 describe('# privateKeyToAddress test', function() {
   before(function() {
-    this.privateKey = mnemonicToPrivateKey(process.env.MNEMONIC);
+    this.privateKey = getPrivateKey(process.env.MNEMONIC);
   });
   describe('# input arguments', function() {
     it('should reject when private is wrong type', function() {

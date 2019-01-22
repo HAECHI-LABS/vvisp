@@ -56,8 +56,8 @@ function checkEnv() {
     }
   }
 
-  if (!process.env.MNEMONIC) {
-    throw new Error('You should set MNEMONIC in .env file');
+  if (!process.env.MNEMONIC && !process.env.PRIVATE_KEY) {
+    throw new Error('You should set MNEMONIC or PRIVATE_KEY in .env file');
   }
 }
 
