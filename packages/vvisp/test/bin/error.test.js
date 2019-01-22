@@ -14,6 +14,19 @@ const { NETWORKS, SERVICE_PATH, ENV_PATH } = constants;
 describe('# error test', function() {
   this.timeout(50000);
 
+  before(function() {
+    delete process.env.NETWORK;
+    delete process.env.URL;
+    delete process.env.PORT;
+    delete process.env.INFURA_API_KEY;
+    delete process.env.MNEMONIC;
+    delete process.env.PRIV_INDEX;
+    delete process.env.GAS_PRICE;
+    delete process.env.GAS_LIMIT;
+    delete process.env.SOLC_VERSION;
+    delete process.env.SOLC_OPTIMIZATION;
+  });
+
   after(function() {
     delete process.env.NETWORK;
     delete process.env.URL;
@@ -30,7 +43,7 @@ describe('# error test', function() {
 
   describe('checkConfigExist()', function() {
     beforeEach(function() {
-      fs.remove(path.join(SERVICE_PATH));
+      fs.removeSync(path.join(SERVICE_PATH));
     });
 
     it('should throw error when service.vvisp.json file does not exist', function() {
@@ -42,7 +55,7 @@ describe('# error test', function() {
     it('should not throw error when service.vvisp.json exists', function() {
       fs.writeJsonSync(SERVICE_PATH, { serviceName: 'test' });
       expect(() => checkConfigExist()).to.not.throw();
-      fs.remove(path.join(SERVICE_PATH));
+      fs.removeSync(path.join(SERVICE_PATH));
     });
   });
 
@@ -50,7 +63,6 @@ describe('# error test', function() {
     const tmpENV = path.join('./', 'tmp.env');
 
     before(function() {
-      dotenv();
       fs.moveSync(ENV_PATH, tmpENV, { overwrite: true });
     });
 
@@ -65,6 +77,10 @@ describe('# error test', function() {
     describe('when .env exists', function() {
       before(function() {
         fs.copyFileSync(tmpENV, ENV_PATH);
+      });
+
+      beforeEach(function() {
+        setMockEnv();
       });
 
       describe('NETWORK', function() {
@@ -99,13 +115,8 @@ describe('# error test', function() {
         });
 
         describe('should throw error when INFURA_API_KEY is not set in other NETWORK', function() {
-          const INFURA_API_KEY = process.env.INFURA_API_KEY;
-          before(function() {
+          beforeEach(function() {
             delete process.env.INFURA_API_KEY;
-          });
-
-          after(function() {
-            process.env.INFURA_API_KEY = INFURA_API_KEY;
           });
 
           it(NETWORKS.kovan, function() {
@@ -189,3 +200,17 @@ describe('# error test', function() {
     });
   });
 });
+
+function setMockEnv() {
+  process.env.NETWORK = NETWORKS.local;
+  process.env.URL = 'sample/link';
+  process.env.PORT = '8545';
+  process.env.INFURA_API_KEY = 'samplekey';
+  process.env.MNEMONIC =
+    'piano garage flag neglect spare title drill basic strong aware enforce fury';
+  process.env.PRIV_INDEX = '0';
+  process.env.GAS_PRICE = '20000000000';
+  process.env.GAS_LIMIT = '6000000';
+  process.env.SOLC_VERSION = '0.4.24';
+  process.env.SOLC_OPTIMIZATION = 'true';
+}

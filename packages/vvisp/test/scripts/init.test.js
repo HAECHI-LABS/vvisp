@@ -8,11 +8,13 @@ const fs = require('fs-extra');
 describe('# init script test', function() {
   this.timeout(50000);
   const directoryName = 'a8feya73db';
+
   before(function() {
     fs.ensureDirSync(path.join('./', directoryName));
   });
+
   after(function() {
-    fs.remove(path.join('./', directoryName));
+    fs.removeSync(path.join('./', directoryName));
   });
 
   it('should disallow to initialize in non-empty directory', async function() {
