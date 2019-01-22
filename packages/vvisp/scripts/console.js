@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const chalk = require('chalk');
+const stringArgv = require('string-argv');
 
 if (!String.prototype.format) {
   String.prototype.format = function() {
@@ -92,7 +93,7 @@ function ApiCommander(apis) {
         const prompt = '>> ';
         process.stdout.write(prompt);
         const line = await readLine();
-        const args = parseArgs(line);
+        const args = stringArgv(line);
 
         if (args.length === 0) {
           continue;
@@ -211,11 +212,26 @@ async function call(args, apis) {
 
   const contractName = args[0];
   const methodName = args[1];
-  const params = args.slice(2, args.length);
+
   if (apis[contractName] === undefined) {
     console.log('no {0} contract is exist'.format(args[0]));
     return;
   }
+
+  const params = args.slice(2, args.length).map(param => {
+    // convert array string to array
+    // "[0x123, 0x234]" to ["0x123", "0x234"]
+    if (param.startsWith('[') && param.endsWith(']')) {
+      return param
+        .slice(1, param.length - 1)
+        .split(/\s*,\s*/)
+        .map(v => {
+          // remove empty space for each element
+          return v.trim();
+        });
+    }
+    return param;
+  });
 
   try {
     const contract = new apis[contractName](apis[contractName]['address']);
