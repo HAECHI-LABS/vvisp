@@ -128,7 +128,14 @@ function ApiCommander(apis) {
         }
 
         // run command
-        await this.commands[args[0]].run(args.slice(1, args.length), this.apis);
+        try {
+          await this.commands[args[0]].run(
+            args.slice(1, args.length),
+            this.apis
+          );
+        } catch (e) {
+          console.log(e);
+        }
       }
     }
   };
@@ -180,7 +187,7 @@ async function show(args, apis) {
 
 function getArgs(func) {
   // First match everything inside the function argument parens.
-  const args = func.toString().match(/function\s.*?\(([^)]*)\)/)[1];
+  const args = func.toString().match(/function.*?\(([^)]*)\)/)[1];
   // Split the arguments string into an array comma delimited.
   return args
     .split(',')
