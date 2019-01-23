@@ -1,6 +1,6 @@
 {
   "name": "@haechi-labs/vvisp-utils",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Javascript Library for the Developing vvisp",
   "author": "HAECHI LABS",
   "authors": [
@@ -55,9 +55,9 @@
     "web3": "^1.0.0-beta.35"
   },
   "devDependencies": {
-    "openzeppelin-solidity": "2.0.0",
     "dotenv": "^5.0.1",
     "mocha": "^5.2.0",
-    "nyc": "^13.1.0"
+    "nyc": "^13.1.0",
+    "openzeppelin-solidity": "2.0.0"
   }
 }
