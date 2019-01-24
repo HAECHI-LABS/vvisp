@@ -9,29 +9,38 @@ const MNEMONIC =
 
 describe('# getPrivateKey test', function() {
   describe('# input arguments', function() {
-    it('should reject when mnemonic is not string', function() {
-      expect(() => getPrivateKey(undefined)).to.throw(TypeError);
-      expect(() => getPrivateKey(null)).to.throw(TypeError);
-      expect(() => getPrivateKey(123)).to.throw(TypeError);
-      expect(() => getPrivateKey({ a: 1 })).to.throw(TypeError);
-      expect(() => getPrivateKey(['hello', 'there'])).to.throw(TypeError);
+    describe('mnemonic', function() {
+      it('should reject when mnemonic is not string', function() {
+        expect(() => getPrivateKey(undefined)).to.throw(TypeError);
+        expect(() => getPrivateKey(null)).to.throw(TypeError);
+        expect(() => getPrivateKey(123)).to.throw(TypeError);
+        expect(() => getPrivateKey({ a: 1 })).to.throw(TypeError);
+        expect(() => getPrivateKey(['hello', 'there'])).to.throw(TypeError);
+      });
+
+      it('should reject when length of mnemonic is not 12', function() {
+        const mnemonic11 =
+          'away clutch still element short tooth spy hood army split stomach';
+        const mnemonic13 =
+          'away clutch still element short tooth spy hood army split stomach sail still';
+        expect(() => getPrivateKey('')).to.throw(TypeError);
+        expect(() => getPrivateKey(mnemonic11)).to.throw(TypeError);
+        expect(() => getPrivateKey(mnemonic13)).to.throw(TypeError);
+      });
     });
-    it('should reject when length of mnemonic is not 12', function() {
-      const mnemonic11 =
-        'away clutch still element short tooth spy hood army split stomach';
-      const mnemonic13 =
-        'away clutch still element short tooth spy hood army split stomach sail still';
-      expect(() => getPrivateKey('')).to.throw(TypeError);
-      expect(() => getPrivateKey(mnemonic11)).to.throw(TypeError);
-      expect(() => getPrivateKey(mnemonic13)).to.throw(TypeError);
-    });
-    it('should reject when index is not number except undefined and null', function() {
-      expect(() => getPrivateKey(MNEMONIC, '123')).to.throw(TypeError);
+
+    it('should reject with invalid type: JSON or array', function() {
       expect(() => getPrivateKey(MNEMONIC, { a: 1 })).to.throw(TypeError);
       expect(() => getPrivateKey(MNEMONIC, ['hello', 'there'])).to.throw(
         TypeError
       );
     });
+
+    it('should success getPrivateKey with number or number string', function() {
+      expect(() => getPrivateKey(MNEMONIC, '123')).to.not.throw();
+      expect(() => getPrivateKey(MNEMONIC, 123)).to.not.throw();
+    });
+
     it('should set 0 when index is undefined or null', function() {
       const nullIndex = getPrivateKey(MNEMONIC, null);
       const undefinedIndex = getPrivateKey(MNEMONIC, undefined);
@@ -42,27 +51,38 @@ describe('# getPrivateKey test', function() {
       noIndex.should.equal(normalIndex);
     });
   });
+
   describe('# return value', function() {
     it('should be a string', function() {
       const result = getPrivateKey(MNEMONIC);
       result.should.a('string');
     });
+
     it('should have 64 length', function() {
       const result = getPrivateKey(MNEMONIC);
       result.should.have.lengthOf(64);
     });
+
     it('should be different when indexes are different', function() {
       const result0 = getPrivateKey(MNEMONIC, 0);
       const result1 = getPrivateKey(MNEMONIC, 1);
       result0.should.not.equal(result1);
     });
+
+    it('should be same with string index and number index', function() {
+      getPrivateKey(MNEMONIC, '123').should.be.equal(
+        getPrivateKey(MNEMONIC, 123)
+      );
+    });
   });
+
   describe('private key enable', function() {
     const privateKey = process.env.PRIVATE_KEY;
     before(function() {
       process.env.PRIVATE_KEY =
         '9741fa712a6912b862c9043f8752ffae513cb01895985998c61620da5aaf2d2d';
     });
+
     after(function() {
       process.env.PRIVATE_KEY = privateKey;
       if (
@@ -71,10 +91,12 @@ describe('# getPrivateKey test', function() {
       )
         delete process.env.PRIVATE_KEY;
     });
+
     it('should pass when private key given', function() {
       const result = getPrivateKey();
       result.should.equal(process.env.PRIVATE_KEY);
     });
+
     it('should return private key instead of mnemonic', function() {
       const result = getPrivateKey(MNEMONIC, 3);
       result.should.equal(process.env.PRIVATE_KEY);

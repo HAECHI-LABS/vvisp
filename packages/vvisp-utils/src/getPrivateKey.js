@@ -1,12 +1,16 @@
 module.exports = function(mnemonic, index) {
   if (process.env.PRIVATE_KEY) {
-    if (process.env.PRIVATE_KEY.slice(0, 2) === '0x')
+    if (process.env.PRIVATE_KEY.slice(0, 2) === '0x') {
       return process.env.PRIVATE_KEY.slice(2);
-    else return process.env.PRIVATE_KEY;
+    } else {
+      return process.env.PRIVATE_KEY;
+    }
   }
+
   if (!index) {
     index = 0;
   }
+
   checkInputs(mnemonic, index);
 
   const bip39 = require('bip39');
@@ -35,8 +39,19 @@ module.exports = function(mnemonic, index) {
           }
         }
     }
-    if (typeof index !== typeof 1) {
-      throw new TypeError('Input index should be number');
+    switch (index) {
+      case undefined || null:
+        throw new TypeError(`Input index is ${index}`);
+      default:
+        if (typeof index !== typeof 1) {
+          if (typeof index === 'string') {
+            if (isNaN(parseInt(index))) {
+              throw new TypeError(`Invalid index, ${index}`);
+            }
+          } else {
+            throw new TypeError('Input index should be number');
+          }
+        }
     }
   }
 };
