@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
+set -o errexit
+
 ganache-cli --account="0x9741fa712a6912b862c9043f8752ffae513cb01895985998c61620da5aaf2d2d,100000000000000000000000"  > /dev/null &
 
-set -e
 lerna exec --scope @haechi-labs/vvisp -- npm run ci --stream --exit
 lerna exec --scope @haechi-labs/vvisp-utils -- npm run ci --stream --exit
