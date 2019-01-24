@@ -53,7 +53,7 @@ describe('# compile test', function() {
     });
     it('should be fulfilled with external solidity library', async function() {
       process.env.SOLC_VERSION = '0.4.24';
-      await compile(OPEN_NFT, false).should.be.fulfilled;
+      await compile(OPEN_NFT, true).should.be.fulfilled;
       process.env.SOLC_VERSION = '';
     });
   });

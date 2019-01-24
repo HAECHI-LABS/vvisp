@@ -27,7 +27,7 @@ const PRIV_KEY = getPrivateKey(process.env.MNEMONIC);
 const SENDER = privateKeyToAddress(PRIV_KEY);
 
 describe('# abi-to-script process test', function() {
-  this.timeout(30000);
+  this.timeout(50000);
   before(function() {
     fs.removeSync(ROOT);
   });
