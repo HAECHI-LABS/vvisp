@@ -204,7 +204,7 @@ nonUpgradeable contract의 경우 해당 속성이 없습니다.
 
 > vvisp abi-to-script <_files..._> [options]
 
-The `abi-to-script` is a command that automatically creates a javascript library to help you easily call deployed smart contracts. The repository used in the tutorial is as follows.(https://github.com/HAECHI-LABS/vvisp-sample)
+`abi-to-script`는 배포된 스마트 컨트랙트를 쉽게 호출 할 수 있는 자바 스크립트 라이브러리를 자동으로 생성하는 명령입니다. 튜토리얼에 사용 된 저장소는 [다음](https://github.com/HAECHI-LABS/vvisp-sample)과 같습니다.
 
 #### Usage
 
@@ -236,14 +236,14 @@ Generate Finished!
 
 #### Output
 
-When you run `abi-to-script`, the `contractApis` folder is created in the directory you have run.
+`vvisp abi-to-script`를 실행하면 `contractApis/` 폴더가 생성됩니다.
 
 ```bash
 $ ls
 README.md           contracts           node_modules        package.json        service.vvisp.json  test                contractApis        migrations          package-lock.json   scripts             service2.vvisp.json truffle-config.js
 ```
 
- The structure of the generated `contractApi` folder is as follows.
+생성 된`contractApis/` 폴더의 구조는 다음과 같습니다.
 
 ```
 contractApis/
