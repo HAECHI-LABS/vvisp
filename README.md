@@ -85,7 +85,7 @@ Please see linked documentation below:
 - [deploy-contract](./packages/vvisp/commands/README.md#deploy-contract): Deploy contract
 - [deploy-service](./packages/vvisp/commands/README.md#deploy-service): Deploy service according to Upgradeable Smart Contract Framework
 - [abi-to-script](./packages/vvisp/commands/README.md#abi-to-script): Generate javascript APIs interacting with smart contract on blockchain
-- [console](./commands/README.md#console): Provides a console environment that can invoke contracts interactively.
+- [console](./packages/vvisp/commands/README.md#console): Provides a console environment that can invoke contracts interactively
 - [flatten](./packages/vvisp/commands/README.md#flatten): Flatten several contract files in one file
 
 ## Contributing

@@ -33,11 +33,7 @@ root/
 ├──── test.sh
 ├──── coverage.sh
 ├── test/
-├──── helpers/
-├────── advanceToBlock.js
-├────── ...
 ├──── Example.test.js
-├── .babelrc
 ├── .env
 ├── .solcover.js
 ├── .soliumignore
@@ -50,7 +46,6 @@ root/
 > - The `contracts` folder is created. Contract code, please work here.
 > - The `contracts/Migrations.sol` file is created. This Contract is necessary for using truffle.
 > - The necessary libraries for the upgradeable smart contract framework are copied into the `contracts/upgradeable` and` contracts/libs` folders. We do not recommend revision.
-> - A `.babelrc` file is created. Supports ES6 grammar.
 > - The `.env` file is created. Set environment variables here. [See details](../../../CONFIGURATION.md#env).
 > - `.soliumignore`,` .solcover.js`, and `.soliumrc.json` files for [solium](https://github.com/duaraghav8/Solium), a proofing tool for solidity, are created.
 > - `scripts/test.sh` is created and the` $ npm run test` script is added to `package.json`. This is useful for truffle contract testing.
@@ -59,7 +54,7 @@ root/
 > - `migrations/1_initial_migration.js` will be created. Required for truffle testing.
 > - `test` folder will be created. Please create testcode for truffle test here. 
 > - For information about truffle, see [truffle documentation](https://truffleframework.com/docs/truffle/overview).
-> - The useful libraries provided by HAECHI LABS for contract testing are created in the `test/helpers` folder.
+> - You can use [openzeppelin-test-helpers](https://github.com/OpenZeppelin/openzeppelin-test-helpers) to help you create test cases.
 > - A sample test file, `Example.test.js` is created in `test/` directory.
 > - The `service.vvisp.json` file is created. Before you run `$ vvisp deploy-service`, set the variables in the file. [See details](../CONFIGURATION-ko.md#service).
 

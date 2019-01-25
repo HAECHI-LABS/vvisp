@@ -32,11 +32,7 @@ root/
 ├──── test.sh
 ├──── coverage.sh
 ├── test/
-├──── helpers/
-├────── advanceToBlock.js
-├────── ...
 ├──── Example.test.js
-├── .babelrc
 ├── .env
 ├── .solcover.js
 ├── .soliumignore
@@ -49,7 +45,6 @@ root/
 > - `contracts` 폴더가 생성됩니다. Contract code는 이곳에서 작업해 주시기 바랍니다.
 > - `contracts/Migrations.sol` 파일이 생성됩니다. 해당 파일은 truffle의 일부 기능을 위해 필요한 컨트랙트입니다.
 > - `contracts/upgradeable` 과 `contracts/libs` 폴더 내에 upgradeable smart contract framework에 필요한 라이브러리들이 복사됩니다. 수정을 추천드리지 않습니다.
-> - `.babelrc` 파일이 생성됩니다. ES6 문법을 지원합니다.
 > - `.env` 파일이 생성됩니다. 이 곳에서 환경 변수를 설정하십시오. [참고](../../../CONFIGURATION-ko.md#env)
 > - solidity를 위한 교정 도구인 [solium](https://github.com/duaraghav8/Solium)을 위한 파일인 `.soliumignore`, `.solcover.js`, `.soliumrc.json`이 생성됩니다.
 > - `scripts/test.sh`가 생성되고 `$ npm run test` 스크립트가 `package.json`에 추가됩니다. truffle의 contract testing을 할 때 유용합니다.
@@ -58,7 +53,7 @@ root/
 > - `migrations/1_initial_migration.js`이 생성됩니다. truffle test를 위해 필요합니다.
 > - `test` 폴더가 생성됩니다. truffle test를 위한 testcode들을 여기서 생성해 주십시오. 
 > - truffle 관련 정보는 [truffle documentation](https://truffleframework.com/docs/truffle/overview)을 참고하시길 바랍니다.
-> - `test/helpers` 폴더에 HAECHI LABS가 contract testing을 위해 제공하는 유용한 library들이 생성됩니다.
+> - Test case 작성을 도와주는 [openzeppelin-test-helpers](https://github.com/OpenZeppelin/openzeppelin-test-helpers)를 이용할 수 있습니다.
 > - `test` 폴더에 예제 테스트 파일인 `Example.test.js`이 생성됩니다. 
 > - `service.vvisp.json` 파일이 생성됩니다. `$ vvisp deploy-service` 실행 전 해당 파일에 변수들을 설정해 주십시오. [참고](../CONFIGURATION-ko.md#service)
 
@@ -204,7 +199,7 @@ nonUpgradeable contract의 경우 해당 속성이 없습니다.
 
 > vvisp abi-to-script <_files..._> [options]
 
-The `abi-to-script` is a command that automatically creates a javascript library to help you easily call deployed smart contracts. The repository used in the tutorial is as follows.(https://github.com/HAECHI-LABS/vvisp-sample)
+`abi-to-script`는 배포된 스마트 컨트랙트를 쉽게 호출 할 수 있는 자바 스크립트 라이브러리를 자동으로 생성하는 명령입니다. 튜토리얼에 사용 된 저장소는 [다음](https://github.com/HAECHI-LABS/vvisp-sample)과 같습니다.
 
 #### Usage
 
@@ -236,14 +231,14 @@ Generate Finished!
 
 #### Output
 
-When you run `abi-to-script`, the `contractApis` folder is created in the directory you have run.
+`vvisp abi-to-script`를 실행하면 `contractApis/` 폴더가 생성됩니다.
 
 ```bash
 $ ls
 README.md           contracts           node_modules        package.json        service.vvisp.json  test                contractApis        migrations          package-lock.json   scripts             service2.vvisp.json truffle-config.js
 ```
 
- The structure of the generated `contractApi` folder is as follows.
+생성 된`contractApis/` 폴더의 구조는 다음과 같습니다.
 
 ```
 contractApis/

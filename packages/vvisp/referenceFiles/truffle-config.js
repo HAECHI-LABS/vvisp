@@ -1,6 +1,4 @@
 require('dotenv').config();
-require('babel-register');
-require('babel-polyfill');
 
 // http://truffleframework.com/tutorials/using-infura-custom-provider
 const HDWalletProvider = require('truffle-hdwallet-provider');
@@ -41,10 +39,17 @@ module.exports = {
       network_id: '*' // eslint-disable-line camelcase
     }
   },
-  solc: {
-    optimizer: {
-      enabled: true,
-      runs: 200
+  compilers: {
+    solc: {
+      version: '0.4.24', // Fetch exact version from solc-bin (default: truffle's version)
+      settings: {
+        // See the solidity docs for advice about optimization and evmVersion
+        optimizer: {
+          enabled: false,
+          runs: 200
+        },
+        evmVersion: 'byzantium'
+      }
     }
   },
   mocha: {
