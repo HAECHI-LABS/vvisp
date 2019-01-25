@@ -1,14 +1,14 @@
 const chai = require('chai');
 chai.should();
 
-const { privateKeyToAddress, getPrivateKey } = require('../src');
+const { privateKeyToAddress } = require('../src');
 
-const MNEMONIC =
-  'away clutch still element short tooth spy hood army split stomach sail';
+const SAMPLE_PRIVATE_KEY =
+  '8bb0722ff8cb8161da257dc2d3712a17db1753d1de2d8b6b27b0e4636d9899f6';
 
 describe('# privateKeyToAddress test', function() {
   before(function() {
-    this.privateKey = getPrivateKey(MNEMONIC);
+    this.privateKey = SAMPLE_PRIVATE_KEY;
   });
 
   describe('# return value', function() {
@@ -35,10 +35,10 @@ describe('# privateKeyToAddress test', function() {
     });
 
     it('should return different outputs with different inputs', function() {
-      const MNEMONIC2 =
-        'away clutch still element short sail spy hood army split stomach sail';
+      const DIFFERENT_PRIVATE_KEY =
+        '8bb0722ff8cb8161da257dc2d3712a17db1753d1de2d8b6b27b0e4636d9899f7';
       const return1 = privateKeyToAddress(this.privateKey);
-      const return2 = privateKeyToAddress(getPrivateKey(MNEMONIC2));
+      const return2 = privateKeyToAddress(DIFFERENT_PRIVATE_KEY);
       return1.should.not.equal(return2);
     });
   });

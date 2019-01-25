@@ -1,14 +1,15 @@
 const chai = require('chai');
 const expect = chai.expect;
 chai.should();
-require('dotenv').config();
 
-const { getPrivateKey } = require('../../src');
 const filterPrivateKey = require('../../src/utils/filterPrivateKey');
+
+const SAMPLE_PRIVATE_KEY =
+  '8bb0722ff8cb8161da257dc2d3712a17db1753d1de2d8b6b27b0e4636d9899f6';
 
 describe('# filterPrivateKey test', function() {
   before(function() {
-    this.privateKey = getPrivateKey(process.env.MNEMONIC);
+    this.privateKey = SAMPLE_PRIVATE_KEY;
   });
 
   describe('# input arguments', function() {
