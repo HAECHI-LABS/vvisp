@@ -1,5 +1,5 @@
 module.exports = async function(filePath, silent) {
-  DEFAULT_COMPILER_VERSION = '0.4.23';
+  const DEFAULT_COMPILER_VERSION = '0.4.23';
 
   const fs = require('fs');
   const path = require('path');
@@ -75,7 +75,7 @@ module.exports = async function(filePath, silent) {
             contents: fs.readFileSync(path.join(modulePath, filePath), 'utf8')
           };
       }
-      throw 'module not found';
+      throw new Error('Module not found');
     }
   }
 
@@ -111,7 +111,6 @@ module.exports = async function(filePath, silent) {
         ? process.env.SOLC_VERSION
         : DEFAULT_COMPILER_VERSION
     });
-    const sol = await supplier.load();
-    return sol;
+    return supplier.load();
   }
 };
