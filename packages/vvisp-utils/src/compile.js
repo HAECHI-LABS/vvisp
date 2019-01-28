@@ -75,7 +75,7 @@ module.exports = async function(filePath, silent) {
             contents: fs.readFileSync(path.join(modulePath, filePath), 'utf8')
           };
       }
-      throw new Error('Module not found');
+      throw new Error(`Module path, ${filePath} is not found`);
     }
   }
 
