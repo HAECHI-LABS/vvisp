@@ -25,6 +25,8 @@ __Outputs__
 ```
 root/
 ├── contracts/
+├──── upgradeable/
+├────── VvispRegistry.sol
 ├──── Migrations.sol
 ├── migrations/
 ├──── 1_initial_migration.js
@@ -48,7 +50,7 @@ root/
 > - `package.json`이 생성됩니다. HEACHI LABS에서 사용하는 여러 library들이 추가되어 있습니다.
 > - `contracts` 폴더가 생성됩니다. Contract code는 이곳에서 작업해 주시기 바랍니다.
 > - `contracts/Migrations.sol` 파일이 생성됩니다. 해당 파일은 truffle의 일부 기능을 위해 필요한 컨트랙트입니다.
-> - `contracts/upgradeable` 과 `contracts/libs` 폴더 내에 upgradeable smart contract framework에 필요한 라이브러리들이 복사됩니다. 수정을 추천드리지 않습니다.
+> - `contracts/upgradeable` 폴더 내에 upgradeable smart contract framework에 필요한 `VvispRegistry.sol` file이 생성됩니다.
 > - `.babelrc` 파일이 생성됩니다. ES6 문법을 지원합니다.
 > - `.env` 파일이 생성됩니다. 이 곳에서 환경 변수를 설정하십시오. [참고](../../../CONFIGURATION-ko.md#env)
 > - solidity를 위한 교정 도구인 [solium](https://github.com/duaraghav8/Solium)을 위한 파일인 `.soliumignore`, `.solcover.js`, `.soliumrc.json`이 생성됩니다.
@@ -60,7 +62,7 @@ root/
 > - truffle 관련 정보는 [truffle documentation](https://truffleframework.com/docs/truffle/overview)을 참고하시길 바랍니다.
 > - `test/helpers` 폴더에 HAECHI LABS가 contract testing을 위해 제공하는 유용한 library들이 생성됩니다.
 > - `test` 폴더에 예제 테스트 파일인 `Example.test.js`이 생성됩니다. 
-> - `service.vvisp.json` 파일이 생성됩니다. `$ vvisp deploy-service` 실행 전 해당 파일에 변수들을 설정해 주십시오. [참고](../CONFIGURATION-ko.md#service)
+> - `service.vvisp.json` 파일이 생성됩니다. `$ vvisp deploy-service` 실행 전 해당 파일에 변수들을 설정해 주십시오. [참고](../../../CONFIGURATION-ko.md#service)
 
 ## compile
 > vvisp compile [_files..._] [options]
