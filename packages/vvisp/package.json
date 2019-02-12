@@ -74,11 +74,10 @@
     "rollup-plugin-babel": "^3.0.7",
     "rollup-plugin-regenerator": "^0.6.0",
     "semver": "^5.5.1",
-    "solc": "^0.5.0",
     "solidity-parser-antlr": "^0.3.2",
     "string-argv": "^0.1.1",
     "tsort": "0.0.1",
-    "web3": "^1.0.0-beta.35"
+    "web3": "1.0.0-beta.37"
   },
   "devDependencies": {
     "bdd-stdin": "^0.2.0",
@@ -86,9 +85,8 @@
     "ethereumjs-util": "^5.1.2",
     "ethjs-abi": "^0.2.1",
     "mitm": "^1.4.0",
-    "mocha": "^5.2.0",
-    "nyc": "^13.1.0",
     "rewire": "^4.0.1",
-    "std-mocks": "^1.0.1"
+    "std-mocks": "^1.0.1",
+    "openzeppelin-solidity": "2.0.0"
   }
 }
