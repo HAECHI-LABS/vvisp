@@ -1,9 +1,10 @@
-pragma solidity ^0.4.23;
+pragma solidity ^0.4.24;
 
 
 /**
  * @title Proxy
  * @dev Gives the possibility to delegate any call to a foreign implementation.
+ * source: https://github.com/zeppelinos/labs/blob/master/upgradeability_using_unstructured_storage/contracts/UpgradeabilityProxy.sol
  */
 contract Proxy {
     /**
