@@ -6,11 +6,7 @@ module.exports = (function() {
   return {
     SERVICE_PATH: path.join('./', 'service.vvisp.json'),
     STATE_PATH: path.join('./', 'state.vvisp.json'),
-    REGISTRY_PATH: path.join('./', 'contracts/upgradeable/Registry.sol'),
-    PROXY_PATH: path.join(
-      './',
-      'contracts/upgradeable/OwnedUpgradeabilityProxy.sol'
-    ),
+    REGISTRY_PATH: path.join('./', 'contracts/upgradeable/VvispRegistry.sol'),
     TX_OPTIONS: {
       gasPrice: process.env.GAS_PRICE
         ? web3.utils.toHex(process.env.GAS_PRICE)

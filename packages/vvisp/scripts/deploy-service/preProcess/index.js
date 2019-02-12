@@ -45,6 +45,7 @@ module.exports = async function(deployState, options) {
   // Check whether this process needs Registry
   // Event occurs when user sets config.registry false
   if (config.registry === false) {
+    // User cannot use upgradeable patterns without registry
     if (compileInformation.noProxy !== true) {
       throw new Error(
         `No Registry with upgradeable contracts is not allowed, change 'registry' from false to true in 'service.vvisp.json'`
