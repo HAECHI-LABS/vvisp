@@ -6,7 +6,7 @@ chai.use(require('chai-as-promised')).should();
 
 describe('# deploy contract process test', function() {
   this.timeout(50000);
-  const CONTRACT_PATH = path.join('./contracts', 'libs', 'Ownable.sol');
+  const CONTRACT_PATH = path.join('./contracts', 'test', 'DependencyC.sol');
   const CONTRACT_INHERITED_PATH = path.join(
     './contracts',
     'test',
