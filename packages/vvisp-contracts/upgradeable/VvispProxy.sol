@@ -1,13 +1,14 @@
-pragma solidity ^0.4.23;
+pragma solidity ^0.4.24;
 
 import "./UpgradeabilityProxy.sol";
 
 
 /**
- * @title OwnedUpgradeabilityProxy
+ * @title VvispProxy
  * @dev This contract combines an upgradeability proxy with basic authorization control functionalities
+ * source: https://github.com/zeppelinos/labs/blob/master/upgradeability_using_unstructured_storage/contracts/OwnedUpgradeabilityProxy.sol
  */
-contract OwnedUpgradeabilityProxy is UpgradeabilityProxy {
+contract VvispProxy is UpgradeabilityProxy {
     /**
     * @dev Event to show ownership has been transferred
     * @param previousOwner representing the address of the previous owner

@@ -1,7 +1,7 @@
 pragma solidity ^0.4.21;
 
-import "../libs/Ownable.sol";
-import "../libs/SafeMath.sol";
+import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
+import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 
 
 /**
@@ -21,7 +21,7 @@ contract Token_V0 is Ownable {
 
     function initialize(address owner) public {
         require(!_initialized);
-        setOwner(owner);
+        _transferOwnership(owner);
         _initialized = true;
     }
 

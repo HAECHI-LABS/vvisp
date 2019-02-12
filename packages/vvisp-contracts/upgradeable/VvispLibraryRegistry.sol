@@ -1,12 +1,12 @@
-pragma solidity ^0.4.23;
+pragma solidity ^0.4.24;
 
-import "../libs/Ownable.sol";
-import "../libs/SafeMath.sol";
+import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
+import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "../libs/BytesLib.sol";
-import "./OwnedUpgradeabilityProxy.sol";
+import "./VvispProxy.sol";
 
 
-contract Registry is Ownable {
+contract VvispLibraryRegistry is Ownable {
     using SafeMath for uint256;
     using BytesLib for bytes;
 
@@ -27,16 +27,12 @@ contract Registry is Ownable {
         string name;
     }
 
-    // 이거는 나중에 state.json 이 사라졌을 때 복원하기 위한 장치로 저장만 해둔다.
+    // Key addresses for restoring state.vvisp.json
     address[] public upgradeableKeyAddresses;
     address[] public nonUpgradeableKeyAddresses;
 
     mapping(address => UpgradeableSet) public upgradeableSets;
     mapping(address => NonUpgradeableSet) public nonUpgradeableSets;
-
-    constructor() public {
-        setOwner(msg.sender);
-    }
 
     function setNonUpgradeables(address[] _addresses, string _names, uint256[] _nameLength, string _fileNames, uint256[] _fileNameLength) public onlyOwner {
         require(_addresses.length != 0);
@@ -80,7 +76,7 @@ contract Registry is Ownable {
     }
 
     function createProxy(string name) public onlyOwner {
-        OwnedUpgradeabilityProxy proxy = new OwnedUpgradeabilityProxy();
+        VvispProxy proxy = new VvispProxy();
         upgradeableKeyAddresses.push(address(proxy));
         upgradeableSets[address(proxy)].name = name;
         emit ProxyCreated(address(proxy), name);
@@ -94,7 +90,7 @@ contract Registry is Ownable {
         uint256 index = 0;
 
         for (uint8 i = 0; i < _proxies.length; i++) {
-            OwnedUpgradeabilityProxy proxy = OwnedUpgradeabilityProxy(_proxies[i]);
+            VvispProxy proxy = VvispProxy(_proxies[i]);
 
             if (_length[i] == 0) {
                 proxy.upgradeTo(_business[i]);
