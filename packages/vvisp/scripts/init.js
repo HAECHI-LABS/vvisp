@@ -92,10 +92,6 @@ module.exports = async function(name, options) {
       path.join(__dirname, '../', 'contracts/upgradeable'),
       path.join(rootDir, 'contracts', 'upgradeable')
     );
-    fs.copySync(
-      path.join(__dirname, '../', 'contracts/libs'),
-      path.join(rootDir, 'contracts', 'libs')
-    );
   }
 
   function printEndMsg(options) {

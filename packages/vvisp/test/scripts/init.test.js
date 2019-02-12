@@ -29,9 +29,6 @@ describe('# init script test', function() {
   it('should have right directories', function() {
     fs.existsSync(path.join(directoryName, 'contracts')).should.be.equal(true);
     fs.existsSync(
-      path.join(directoryName, 'contracts', 'libs')
-    ).should.be.equal(true);
-    fs.existsSync(
       path.join(directoryName, 'contracts', 'upgradeable')
     ).should.be.equal(true);
     fs.existsSync(path.join(directoryName, 'migrations')).should.be.equal(true);
@@ -65,35 +62,7 @@ describe('# init script test', function() {
       path.join(directoryName, 'contracts', 'Migrations.sol')
     ).should.be.equal(true);
     fs.existsSync(
-      path.join(directoryName, 'contracts', 'libs', 'BytesLib.sol')
-    ).should.be.equal(true);
-    fs.existsSync(
-      path.join(directoryName, 'contracts', 'libs', 'Ownable.sol')
-    ).should.be.equal(true);
-    fs.existsSync(
-      path.join(directoryName, 'contracts', 'libs', 'SafeMath.sol')
-    ).should.be.equal(true);
-    fs.existsSync(
-      path.join(
-        directoryName,
-        'contracts',
-        'upgradeable',
-        'OwnedUpgradeabilityProxy.sol'
-      )
-    ).should.be.equal(true);
-    fs.existsSync(
-      path.join(directoryName, 'contracts', 'upgradeable', 'Proxy.sol')
-    ).should.be.equal(true);
-    fs.existsSync(
-      path.join(directoryName, 'contracts', 'upgradeable', 'Registry.sol')
-    ).should.be.equal(true);
-    fs.existsSync(
-      path.join(
-        directoryName,
-        'contracts',
-        'upgradeable',
-        'UpgradeabilityProxy.sol'
-      )
+      path.join(directoryName, 'contracts', 'upgradeable', 'VvispRegistry.sol')
     ).should.be.equal(true);
   });
 });
