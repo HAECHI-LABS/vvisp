@@ -28,7 +28,7 @@ describe('# deploy test', function() {
   before(async function() {
     const compileOutput = await compile(
       [RIGHT_CONTRACT, ARRAY_INPUT_CONTRACT, NO_INPUT_CONTRACT],
-      true
+      { silent: true }
     ).should.be.fulfilled;
     this.dependencyA = getCompiledContracts(compileOutput, RIGHT_CONTRACT);
     this.dependencyD = getCompiledContracts(

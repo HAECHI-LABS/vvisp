@@ -17,5 +17,5 @@ module.exports = async function(compileInformation, options) {
     }
   });
 
-  return compile(compileFiles, options ? options.silent : undefined);
+  return compile(compileFiles, options);
 };

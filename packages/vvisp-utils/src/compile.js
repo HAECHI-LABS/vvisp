@@ -1,4 +1,4 @@
-module.exports = async function(filePath, silent) {
+module.exports = async function(filePath, options) {
   const DEFAULT_COMPILER_VERSION = '0.4.23';
 
   const fs = require('fs');
@@ -8,19 +8,19 @@ module.exports = async function(filePath, silent) {
   const printOrSilent = require('./printOrSilent');
   const findNodeModules = require('find-node-modules');
 
-  printOrSilent(chalk.bold('Compiling...'), { silent });
+  printOrSilent(chalk.bold('Compiling...'), options);
 
   let input = {};
 
   if (Array.isArray(filePath)) {
     for (let i = 0; i < filePath.length; i++) {
-      printOrSilent(`compile ${filePath[i]}...`, { silent });
+      printOrSilent(`compile ${filePath[i]}...`, options);
       input = Object.assign(input, {
         [filePath[i]]: { content: fs.readFileSync(filePath[i], 'utf8') }
       });
     }
   } else if (typeof filePath === 'string') {
-    printOrSilent(`build ${filePath}...`, { silent });
+    printOrSilent(`build ${filePath}...`, options);
     input = Object.assign(input, {
       [filePath]: { content: fs.readFileSync(filePath, 'utf8') }
     });
@@ -44,11 +44,9 @@ module.exports = async function(filePath, silent) {
     )
   );
   if (compileOutput.errors) {
-    if (!silent) {
-      console.log('\n');
-      for (let i = 0; i < compileOutput.errors.length; i++) {
-        console.log(compileOutput.errors[i]);
-      }
+    printOrSilent('\n', options);
+    for (let i = 0; i < compileOutput.errors.length; i++) {
+      printOrSilent(compileOutput.errors[i], options);
     }
 
     if (
