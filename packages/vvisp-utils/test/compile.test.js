@@ -19,20 +19,24 @@ describe('# compile test', function() {
   });
   describe('# input arguments', function() {
     it('should reject wrong input type', async function() {
-      await compile(1123, true).should.be.rejectedWith(TypeError);
-      await compile({ a: 1, b: 2 }, true).should.be.rejectedWith(TypeError);
+      await compile(1123, { silent: true }).should.be.rejectedWith(TypeError);
+      await compile({ a: 1, b: 2 }, { silent: true }).should.be.rejectedWith(
+        TypeError
+      );
     });
     it('should reject wrong path input', async function() {
-      await compile('hi', true).should.be.rejected;
-      await compile(['hi', 'hello'], true).should.be.rejected;
+      await compile('hi', { silent: true }).should.be.rejected;
+      await compile(['hi', 'hello'], { silent: true }).should.be.rejected;
     });
   });
   describe('# work process', function() {
     it('should reject error contract', async function() {
-      await compile(ERROR_CONTRACT, true).should.be.rejectedWith(Error);
+      await compile(ERROR_CONTRACT, { silent: true }).should.be.rejectedWith(
+        Error
+      );
     });
     it('should be fulfilled with right contract', async function() {
-      await compile(RIGHT_CONTRACT1, true).should.be.fulfilled;
+      await compile(RIGHT_CONTRACT1, { silent: true }).should.be.fulfilled;
     });
     it('should be fulfilled with multi contracts', async function() {
       const files = [RIGHT_CONTRACT1, RIGHT_CONTRACT2];
@@ -40,32 +44,31 @@ describe('# compile test', function() {
     });
     it('should be fulfilled with other solc version', async function() {
       process.env.SOLC_VERSION = 'v0.4.24+commit.e67f0147';
-      await compile(RIGHT_CONTRACT1, true).should.be.fulfilled;
+      await compile(RIGHT_CONTRACT1, { silent: true }).should.be.fulfilled;
     });
     it('should be fulfilled with nonOptimization', async function() {
       process.env.SOLC_OPTIMIZATION = 'false';
-      await compile(RIGHT_CONTRACT1, true).should.be.fulfilled;
+      await compile(RIGHT_CONTRACT1, { silent: true }).should.be.fulfilled;
     });
     it('should be fulfilled with solidity version 5', async function() {
       process.env.SOLC_VERSION = '0.5.1';
-      await compile(VERSION5, true).should.be.fulfilled;
+      await compile(VERSION5, { silent: true }).should.be.fulfilled;
       process.env.SOLC_VERSION = '';
     });
     it('should be fulfilled with external solidity library', async function() {
       process.env.SOLC_VERSION = '0.4.24';
-      await compile(OPEN_NFT, true).should.be.fulfilled;
+      await compile(OPEN_NFT, { silent: true }).should.be.fulfilled;
       process.env.SOLC_VERSION = '';
     });
   });
   describe('# result value', function() {
-    before(async function() {
-      this.dummyPath = path.join(__dirname, '../contracts/Attachment.sol');
-      this.optimization = await compile(this.dummyPath, true).should.be
-        .fulfilled;
-      process.env.SOLC_OPTIMIZATION = 'false';
-      this.noOptimization = await compile(this.dummyPath, true).should.be
-        .fulfilled;
-    });
+    // before(async function() {
+    //   this.optimization = await compile(RIGHT_CONTRACT1, { silent: true }).should.be
+    //     .fulfilled;
+    //   process.env.SOLC_OPTIMIZATION = 'false';
+    //   this.noOptimization = await compile(RIGHT_CONTRACT1, { silent: true }).should.be
+    //     .fulfilled;
+    // });
     // TODO: optimization is not working, needs to find way
     // it('should return different values depending on optimization', async function() {
     //   const optByteCode = getCompiledContracts(this.optimization, this.dummyPath).bytecode;

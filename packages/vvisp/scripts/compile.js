@@ -16,7 +16,7 @@ module.exports = async function(files, options) {
     });
   }
 
-  const output = await compile(files, options ? options.silent : undefined);
+  const output = await compile(files, options);
 
   const contractNames = Object.keys(output.contracts);
   const contractContents = Object.values(output.contracts);

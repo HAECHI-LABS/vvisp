@@ -15,7 +15,7 @@ module.exports = async function(file, arguments, options) {
     process.env.PRIV_INDEX
   );
 
-  const txOptions = {
+  options = {
     ...options,
     gasPrice: process.env.GAS_PRICE
       ? web3.utils.toHex(process.env.GAS_PRICE)
@@ -25,7 +25,7 @@ module.exports = async function(file, arguments, options) {
       : undefined
   };
 
-  await compileAndDeploy(file, privateKey, arguments, txOptions);
+  await compileAndDeploy(file, privateKey, arguments, options);
 
   printOrSilent('Deploying Finished!', options);
 };

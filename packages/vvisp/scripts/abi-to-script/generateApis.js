@@ -4,7 +4,7 @@ module.exports = async function(files, abiDir, jsDir, templatePath, options) {
   const fs = require('fs-extra');
   const { compile } = require('@haechi-labs/vvisp-utils');
 
-  const output = await compile(files, options ? options.silent : undefined); // TODO: get all files if it is directory
+  const output = await compile(files, options); // TODO: get all files if it is directory
 
   for (let i = 0; i < files.length; i++) {
     const className = path.parse(files[i]).name;
