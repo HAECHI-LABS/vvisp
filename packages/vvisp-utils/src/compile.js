@@ -103,8 +103,8 @@ module.exports = async function(filePath, options) {
   }
 
   async function getSolc() {
-    const compilerSupplier = require('./utils/compilerSupplier');
-    const supplier = new compilerSupplier({
+    const CompilerSupplier = require('./utils/compilerSupplier');
+    const supplier = new CompilerSupplier({
       version: process.env.SOLC_VERSION
         ? process.env.SOLC_VERSION
         : DEFAULT_COMPILER_VERSION
