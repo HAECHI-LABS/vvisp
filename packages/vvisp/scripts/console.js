@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const chalk = require('chalk');
 const stringArgv = require('string-argv');
-const { parseLog } = require('ethereum-event-logs');
+const { parseLogs } = require('@haechi-labs/vvisp-utils');
 
 if (!String.prototype.format) {
   String.prototype.format = function() {
@@ -287,9 +287,9 @@ async function call(args, apis) {
     'args'
   ];
   const contract = new apis[contractName](apis[contractName]['address']);
-  const receipt = await contract.methods[methodName].apply(undefined, params);
   try {
-    const events = parseLog(receipt.logs, apis[contractName]['abi']);
+    const receipt = await contract.methods[methodName].apply(undefined, params);
+    const events = parseLogs(receipt.logs, apis[contractName]['abi']);
     const logs = [];
     for (const key in events) {
       logs.push({
@@ -298,9 +298,11 @@ async function call(args, apis) {
         args: events[key].args
       });
     }
-    receipt.logs = logs;
+    receipt.logs = undefined;
+    const result = JSON.parse(JSON.stringify(receipt, receiptFilter));
+    result.logs = logs;
+    console.log(JSON.stringify(result, undefined, 2));
   } catch (e) {}
-  console.log(JSON.stringify(receipt, receiptFilter, 2));
 }
 
 /**

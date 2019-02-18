@@ -17,6 +17,7 @@ const getRelativeFilePathsFromRoot = require('./getRelativeFilePathsFromRoot');
 const getDependencyFiles = require('./getDependencyFiles');
 const getSourceCodeWithoutPragma = require('./getSourceCodeWithoutPragma');
 const getMaxVersion = require('./getPragmaMaxVersion');
+const parseLogs = require('./parseLogs');
 
 module.exports = {
   compile,
@@ -37,5 +38,6 @@ module.exports = {
   getRelativeFilePathsFromRoot,
   getDependencyFiles,
   getSourceCodeWithoutPragma,
-  getMaxVersion
+  getMaxVersion,
+  parseLogs
 };
