@@ -123,6 +123,24 @@ describe('# console script test', async function() {
       }
     });
 
+    it('should set correct proxy address', function() {
+      const stateFile = path.join(
+        __dirname,
+        '..',
+        'dummy',
+        'test.proxy.state.vvisp.json'
+      );
+      const dummy_api = {
+        HaechiV1: {}
+      };
+      const expectedAddress = {
+        HaechiV1: '0xb3d76b17ed24d32c2b335f4b94d734e94eff03c4'
+      };
+
+      const state = setApiAddress(dummy_api, stateFile);
+      state['HaechiV1']['address'].should.be.equal(expectedAddress['HaechiV1']);
+    });
+
     it('should throw an error when mismatched contracts exists in the state file.', function() {
       const stateFile = path.join(
         __dirname,
