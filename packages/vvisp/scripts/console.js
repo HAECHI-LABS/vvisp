@@ -288,7 +288,6 @@ async function call(args, apis) {
   ];
   const contract = new apis[contractName](apis[contractName]['address']);
   const receipt = await contract.methods[methodName].apply(undefined, params);
-
   try {
     const events = parseLog(receipt.logs, apis[contractName]['abi']);
     const logs = [];
@@ -394,7 +393,14 @@ function setApiAddress(apis, stateFilePath) {
 
     const fileName = path.parse(filePath).name;
     if (apis[fileName]) {
-      apis[fileName]['address'] = contracts[key]['address'];
+      if (
+        contracts[key]['upgradeable'] &&
+        contracts[key]['upgradeable'] === true
+      ) {
+        apis[fileName]['address'] = contracts[key]['proxy'];
+      } else {
+        apis[fileName]['address'] = contracts[key]['address'];
+      }
     } else {
       // mismatch occurred between vvisp.state and apis
       throw new Error(
