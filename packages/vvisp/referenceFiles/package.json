@@ -13,7 +13,8 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@haechi-labs/vvisp-utils": "^0.1.7",
+    "@haechi-labs/vvisp-utils": "^0.1.10",
+    "@haechi-labs/vvisp-contracts": "^0.1.1",
     "coveralls": "^3.0.1",
     "dotenv": "^5.0.1",
     "eth-gas-reporter": "^0.1.7",
@@ -24,7 +25,7 @@
     "lint-staged": "^8.1.0",
     "openzeppelin-solidity": "2.0.0",
     "prettier": "^1.15.3",
-    "solidity-coverage": "https://github.com:rotcivegaf/solidity-coverage.git#5875f5b7bc74d447f3312c9c0e9fc7814b482477",
+    "solidity-coverage": "git+https://github.com/rotcivegaf/solidity-coverage.git#5875f5b7bc74d447f3312c9c0e9fc7814b482477",
     "solium": "^1.1.6",
     "truffle": "^5.0.0",
     "truffle-hdwallet-provider": "0.0.5",
