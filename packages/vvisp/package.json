@@ -1,6 +1,6 @@
 {
   "name": "@haechi-labs/vvisp",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "Command Line Interface for the Upgradeable Smart Contract Framework",
   "author": "HAECHI LABS",
   "authors": [
@@ -47,8 +47,8 @@
     "cli"
   ],
   "dependencies": {
-    "@haechi-labs/vvisp-utils": "^0.1.8",
-    "@haechi-labs/vvisp-contracts": "^0.1.0",
+    "@haechi-labs/vvisp-contracts": "^0.1.1",
+    "@haechi-labs/vvisp-utils": "^0.1.10",
     "babel-core": "^6.26.3",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
@@ -70,6 +70,7 @@
     "lodash": "^4.17.10",
     "mustache": "^2.3.2",
     "node-find-folder": "^0.1.32",
+    "openzeppelin-solidity": "2.0.0",
     "rollup": "^0.65.0",
     "rollup-plugin-babel": "^3.0.7",
     "rollup-plugin-regenerator": "^0.6.0",
@@ -77,8 +78,7 @@
     "solidity-parser-antlr": "^0.3.2",
     "string-argv": "^0.1.1",
     "tsort": "0.0.1",
-    "web3": "1.0.0-beta.37",
-    "openzeppelin-solidity": "2.0.0"
+    "web3": "1.0.0-beta.37"
   },
   "devDependencies": {
     "bdd-stdin": "^0.2.0",

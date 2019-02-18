@@ -1,6 +1,6 @@
 {
   "name": "@haechi-labs/vvisp-contracts",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Contract library for vvisp",
   "author": "HAECHI LABS",
   "authors": [
@@ -16,8 +16,7 @@
     "type": "git",
     "url": "https://github.com/HAECHI-LABS/vvisp.git"
   },
-  "scripts": {
-  },
+  "scripts": {},
   "keywords": [
     "ethereum",
     "smart-contracts",
