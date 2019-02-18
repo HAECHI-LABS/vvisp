@@ -77,7 +77,8 @@
     "solidity-parser-antlr": "^0.3.2",
     "string-argv": "^0.1.1",
     "tsort": "0.0.1",
-    "web3": "1.0.0-beta.37"
+    "web3": "1.0.0-beta.37",
+    "openzeppelin-solidity": "2.0.0"
   },
   "devDependencies": {
     "bdd-stdin": "^0.2.0",
@@ -86,7 +87,6 @@
     "ethjs-abi": "^0.2.1",
     "mitm": "^1.4.0",
     "rewire": "^4.0.1",
-    "std-mocks": "^1.0.1",
-    "openzeppelin-solidity": "2.0.0"
+    "std-mocks": "^1.0.1"
   }
 }
