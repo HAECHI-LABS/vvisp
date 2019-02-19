@@ -13,7 +13,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@haechi-labs/vvisp-utils": "^0.1.10",
+    "@haechi-labs/vvisp-utils": "^0.2.0",
     "@haechi-labs/vvisp-contracts": "^0.1.1",
     "coveralls": "^3.0.1",
     "dotenv": "^5.0.1",
