@@ -4,7 +4,7 @@ module.exports = async function(
   arguments,
   options
 ) {
-  const filterPrivateKey = require('./utils/filterPrivateKey');
+  const filterPrivateKey = require('./filterPrivateKey');
   privateKey = filterPrivateKey(privateKey);
 
   if (arguments && arguments.length === undefined) {

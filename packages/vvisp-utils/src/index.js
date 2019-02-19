@@ -1,6 +1,8 @@
 const compile = require('./compile');
 const compileAndDeploy = require('./compileAndDeploy');
+const compilerSupplier = require('./compilerSupplier');
 const deploy = require('./deploy');
+const filterPrivateKey = require('./filterPrivateKey');
 const forIn = require('./forIn');
 const forInAsync = require('./forInAsync');
 const getAllFiles = require('./getAllFiles');
@@ -22,7 +24,9 @@ const parseLogs = require('./parseLogs');
 module.exports = {
   compile,
   compileAndDeploy,
+  compilerSupplier,
   deploy,
+  filterPrivateKey,
   forIn,
   forInAsync,
   getAllFiles,
