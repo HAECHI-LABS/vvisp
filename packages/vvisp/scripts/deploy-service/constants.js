@@ -4,8 +4,6 @@ module.exports = (function() {
   const web3 = getWeb3();
 
   return {
-    SERVICE_PATH: path.join('./', 'service.vvisp.json'),
-    STATE_PATH: path.join('./', 'state.vvisp.json'),
     REGISTRY_PATH: path.join('./', 'contracts/upgradeable/VvispRegistry.sol'),
     TX_OPTIONS: {
       gasPrice: process.env.GAS_PRICE

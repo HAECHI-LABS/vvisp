@@ -5,11 +5,8 @@ require('dotenv').config();
 
 const deployService = require('../../../scripts/deploy-service/');
 const compareConfigAndState = require('../../../scripts/deploy-service/preProcess/compareConfigAndState');
-const {
-  PENDING_STATE,
-  SERVICE_PATH,
-  STATE_PATH
-} = require('../../../scripts/deploy-service/constants');
+const { PENDING_STATE } = require('../../../scripts/deploy-service/constants');
+const { SERVICE_PATH, STATE_PATH } = require('../../../config/Constant');
 const { hasInitArgs } = require('../../../scripts/deploy-service/utils');
 const {
   forIn,
