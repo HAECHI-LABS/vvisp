@@ -2,6 +2,8 @@ const fs = require('fs');
 const path = require('path');
 const _ = require('lodash');
 
+const { SERVICE_PATH, SERVICE_FILE } = require('../config/Constant');
+
 const NETWORKS = {
   local: 'local',
   mainnet: 'mainnet',
@@ -11,12 +13,11 @@ const NETWORKS = {
   custom: 'custom'
 };
 
-const SERVICE_PATH = path.join('./', 'service.vvisp.json');
 const ENV_PATH = path.join('./', '.env');
 
 function checkConfigExist() {
   if (!fs.existsSync(SERVICE_PATH)) {
-    throw new Error('service.vvisp.json file does not exist');
+    throw new Error(`${SERVICE_FILE} file does not exist`);
   }
 }
 
@@ -66,7 +67,6 @@ module.exports = {
   checkEnv,
   constants: {
     NETWORKS,
-    SERVICE_PATH,
     ENV_PATH
   }
 };

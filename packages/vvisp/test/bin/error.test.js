@@ -8,8 +8,9 @@ const _ = require('lodash');
 const dotenv = require('dotenv').config;
 
 const { checkConfigExist, checkEnv, constants } = require('../../bin/error');
+const { SERVICE_PATH, SERVICE_FILE } = require('../../config/Constant');
 
-const { NETWORKS, SERVICE_PATH, ENV_PATH } = constants;
+const { NETWORKS, ENV_PATH } = constants;
 
 describe('# error test', function() {
   this.timeout(50000);
@@ -46,13 +47,13 @@ describe('# error test', function() {
       fs.removeSync(path.join(SERVICE_PATH));
     });
 
-    it('should throw error when service.vvisp.json file does not exist', function() {
+    it(`should throw error when ${SERVICE_FILE} file does not exist`, function() {
       expect(() => checkConfigExist()).to.throw(
-        'service.vvisp.json file does not exist'
+        `${SERVICE_FILE} file does not exist`
       );
     });
 
-    it('should not throw error when service.vvisp.json exists', function() {
+    it(`should not throw error when ${SERVICE_FILE} exists`, function() {
       fs.writeJsonSync(SERVICE_PATH, { serviceName: 'test' });
       expect(() => checkConfigExist()).to.not.throw();
       fs.removeSync(path.join(SERVICE_PATH));
@@ -70,7 +71,7 @@ describe('# error test', function() {
       fs.moveSync(tmpENV, ENV_PATH, { overwrite: true });
     });
 
-    it('should throw error when service.vvisp.json file does not exist', function() {
+    it(`should throw error when ${SERVICE_FILE} file does not exist`, function() {
       expect(() => checkEnv()).to.throw('.env file does not exist');
     });
 

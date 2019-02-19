@@ -11,8 +11,10 @@ module.exports = async function(files, options) {
   const path = require('path');
   const fs = require('fs');
 
+  const { SERVICE_FILE } = require('../config/Constant');
+
   try {
-    const configRootPath = await getConfigRoot('service.vvisp.json');
+    const configRootPath = await getConfigRoot(SERVICE_FILE);
     const relativeFilePaths = await getRelativeFilePathsFromRoot(
       configRootPath,
       files
