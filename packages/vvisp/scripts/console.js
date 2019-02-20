@@ -302,7 +302,9 @@ async function call(args, apis) {
     const result = JSON.parse(JSON.stringify(receipt, receiptFilter));
     result.logs = logs;
     console.log(JSON.stringify(result, undefined, 2));
-  } catch (e) {}
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 /**

@@ -18,7 +18,7 @@ const cachedParsers = new WeakMap();
 
 const Abi = require('web3-eth-abi');
 
-module.exports = function(logs, eventAbis, filter = {}) {
+module.exports = function(logs = [], eventAbis, filter = {}) {
   const filteredAbis = eventAbis.filter(({ anonymous }) => !anonymous);
 
   const parsers = filteredAbis.map(thisAbi => {
