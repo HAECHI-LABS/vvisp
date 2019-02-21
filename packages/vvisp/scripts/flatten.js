@@ -14,7 +14,7 @@ module.exports = async function(files, options) {
   const { SERVICE_FILE } = require('../config/Constant');
 
   try {
-    const configRootPath = await getConfigRoot(SERVICE_FILE);
+    const configRootPath = getConfigRoot(SERVICE_FILE);
     const relativeFilePaths = await getRelativeFilePathsFromRoot(
       configRootPath,
       files
