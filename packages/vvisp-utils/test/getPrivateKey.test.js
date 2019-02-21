@@ -18,14 +18,8 @@ describe('# getPrivateKey test', function() {
         expect(() => getPrivateKey(['hello', 'there'])).to.throw(TypeError);
       });
 
-      it('should reject when length of mnemonic is not 12', function() {
-        const mnemonic11 =
-          'away clutch still element short tooth spy hood army split stomach';
-        const mnemonic13 =
-          'away clutch still element short tooth spy hood army split stomach sail still';
-        expect(() => getPrivateKey('')).to.throw(TypeError);
-        expect(() => getPrivateKey(mnemonic11)).to.throw(TypeError);
-        expect(() => getPrivateKey(mnemonic13)).to.throw(TypeError);
+      it('should receive one word', function() {
+        expect(() => getPrivateKey('hello')).to.not.throw();
       });
     });
 
