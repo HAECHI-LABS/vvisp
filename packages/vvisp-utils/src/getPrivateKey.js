@@ -26,18 +26,10 @@ module.exports = function(mnemonic, index) {
     .toString('hex');
 
   function checkInputs(mnemonic, index) {
-    switch (mnemonic) {
-      case undefined || null:
-        throw new TypeError(`Input mnemonic is ${mnemonic}`);
-      default:
-        if (typeof mnemonic !== 'string') {
-          throw new TypeError('Input 12 words in string type');
-        } else {
-          const wordsNumber = mnemonic.split(' ').length;
-          if (wordsNumber !== 12) {
-            throw new TypeError('Input 12 words, not ' + wordsNumber);
-          }
-        }
+    if (typeof mnemonic !== 'string') {
+      throw new TypeError(
+        `Input mnemonic is ${mnemonic}, it should be string type`
+      );
     }
     switch (index) {
       case undefined || null:
