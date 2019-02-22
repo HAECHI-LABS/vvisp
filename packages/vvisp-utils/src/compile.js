@@ -1,5 +1,5 @@
 module.exports = async function(filePath, options) {
-  const DEFAULT_COMPILER_VERSION = '0.4.24';
+  const DEFAULT_COMPILER_VERSION = '0.5.0';
 
   const fs = require('fs');
   const path = require('path');

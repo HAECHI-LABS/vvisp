@@ -1,4 +1,4 @@
-pragma solidity ^0.4.21;
+pragma solidity >=0.5.0 <0.6.0;
 
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
@@ -82,6 +82,6 @@ contract Token_V0 is Ownable {
     function mint(address to, uint256 value) public onlyOwner {
         _balances[to] = _balances[to].add(value);
         _totalSupply = _totalSupply.add(value);
-        emit Transfer(0x0, to, value);
+        emit Transfer(address(0), to, value);
     }
 }

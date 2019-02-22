@@ -43,7 +43,7 @@ describe('# compile test', function() {
       await compile(files, true).should.be.fulfilled;
     });
     it('should be fulfilled with other solc version', async function() {
-      process.env.SOLC_VERSION = 'v0.4.24+commit.e67f0147';
+      process.env.SOLC_VERSION = 'v0.5.0+commit.1d4f565a';
       await compile(RIGHT_CONTRACT1, { silent: true }).should.be.fulfilled;
     });
     it('should be fulfilled with nonOptimization', async function() {
@@ -56,7 +56,7 @@ describe('# compile test', function() {
       process.env.SOLC_VERSION = '';
     });
     it('should be fulfilled with external solidity library', async function() {
-      process.env.SOLC_VERSION = '0.4.24';
+      process.env.SOLC_VERSION = '0.5.0';
       await compile(OPEN_NFT, { silent: true }).should.be.fulfilled;
       process.env.SOLC_VERSION = '';
     });

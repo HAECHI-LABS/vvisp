@@ -55,6 +55,6 @@
   },
   "devDependencies": {
     "dotenv": "^5.0.1",
-    "openzeppelin-solidity": "2.0.0"
+    "openzeppelin-solidity": "^2.1.0"
   }
 }

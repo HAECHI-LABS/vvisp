@@ -1,4 +1,4 @@
-pragma solidity ^0.4.23;
+pragma solidity >=0.5.0 <0.6.0;
 
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
@@ -29,11 +29,11 @@ contract Portfolio is Ownable {
         _initialized = true;
     }
 
-    function loanHash(bytes32 _portfolioHash) view public returns (bytes32[] _loanHash) {
+    function loanHash(bytes32 _portfolioHash) public view returns (bytes32[] memory _loanHash) {
         return _loanHashs[_portfolioHash];
     }
 
-    function upsertPortfolio(bytes32 _portfolioHash, bytes32[] _loanHash, uint256 _registrationDate) public onlyOwner {
+    function upsertPortfolio(bytes32 _portfolioHash, bytes32[] memory _loanHash, uint256 _registrationDate) public onlyOwner {
         require(_portfolioHash != 0);
 
         upsertLoanHash(_portfolioHash, _loanHash);
@@ -51,11 +51,11 @@ contract Portfolio is Ownable {
         emit RemovePortfolio(_portfolioHash, beforeLoanHash, beforeRegistrationDate);
     }
 
-    function upsertLoanHash(bytes32 _portfolioHash, bytes32[] _loanHash) internal {
+    function upsertLoanHash(bytes32 _portfolioHash, bytes32[] memory _loanHash) internal {
         _loanHashs[_portfolioHash] = _loanHash;
     }
 
-    function removeLoanHash(bytes32 _portfolioHash) internal returns (bytes32[] _before) {
+    function removeLoanHash(bytes32 _portfolioHash) internal returns (bytes32[] memory _before) {
         _before = _loanHashs[_portfolioHash];
         delete _loanHashs[_portfolioHash];
     }
