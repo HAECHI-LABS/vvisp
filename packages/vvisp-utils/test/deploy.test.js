@@ -1,17 +1,17 @@
 const chai = require('chai');
 chai.use(require('chai-as-promised')).should();
-require('dotenv').config();
 
 const {
   compile,
   deploy,
   getCompiledContracts,
-  getWeb3,
+  web3Store,
   getPrivateKey,
   privateKeyToAddress
 } = require('../src');
-const web3 = getWeb3();
 const path = require('path');
+const fs = require('fs-extra');
+const testEnv = fs.readJsonSync(path.join(__dirname, 'test.env.json'));
 
 const RIGHT_CONTRACT = path.join(__dirname, '../contracts/DependencyA.sol');
 const ARRAY_INPUT_CONTRACT = path.join(
@@ -19,13 +19,18 @@ const ARRAY_INPUT_CONTRACT = path.join(
   '../contracts/DependencyD.sol'
 );
 const NO_INPUT_CONTRACT = path.join(__dirname, '../contracts/SecondB.sol');
-const PRIV_KEY = getPrivateKey(process.env.MNEMONIC);
+const PRIV_KEY = getPrivateKey(testEnv.mnemonic);
 const SENDER = privateKeyToAddress(PRIV_KEY);
 
 describe('# deploy test', function() {
   this.timeout(50000);
 
+  let web3;
+
   before(async function() {
+    web3Store.setWithURL(testEnv.url);
+    web3 = web3Store.get();
+
     const compileOutput = await compile(
       [RIGHT_CONTRACT, ARRAY_INPUT_CONTRACT, NO_INPUT_CONTRACT],
       { silent: true }
@@ -36,6 +41,10 @@ describe('# deploy test', function() {
       ARRAY_INPUT_CONTRACT
     );
     this.secondB = getCompiledContracts(compileOutput, NO_INPUT_CONTRACT);
+  });
+
+  after(function() {
+    web3Store.delete();
   });
 
   describe('# input arguments', function() {
