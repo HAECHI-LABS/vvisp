@@ -355,6 +355,7 @@ describe('# Config test', function() {
       });
 
       describe('#gasLimit', function() {
+        const TEST_NETWORK = 'coverage';
         it('should not set directly', function() {
           expect(() => {
             config.gasLimit = 8000000;
@@ -366,25 +367,26 @@ describe('# Config test', function() {
         });
 
         it('should return right gasLimit', function() {
-          config.network = DEVELOPMENT;
+          config.network = TEST_NETWORK;
           expect(config.gasLimit).to.equal(
-            sampleConfig.networks[DEVELOPMENT].gasLimit
+            sampleConfig.networks[TEST_NETWORK].gasLimit
           );
         });
 
         it('should allow to receive gas also instead of gasLimit', function() {
           const tmpConfig = _.cloneDeep(sampleConfig);
-          delete tmpConfig.networks[DEVELOPMENT].gasLimit;
+          delete tmpConfig.networks[TEST_NETWORK].gasLimit;
           const sampleGas = 123123;
-          tmpConfig.networks[DEVELOPMENT].gas = sampleGas;
+          tmpConfig.networks[TEST_NETWORK].gas = sampleGas;
 
           config.networks = tmpConfig.networks;
-          config.network = DEVELOPMENT;
+          config.network = TEST_NETWORK;
           expect(config.gasLimit).to.equal(sampleGas);
         });
       });
 
       describe('#gasPrice', function() {
+        const TEST_NETWORK = 'coverage';
         it('should not set directly', function() {
           expect(() => {
             config.gasPrice = 10000000000;
@@ -396,9 +398,9 @@ describe('# Config test', function() {
         });
 
         it('should return right gas', function() {
-          config.network = DEVELOPMENT;
+          config.network = TEST_NETWORK;
           expect(config.gasPrice).to.equal(
-            sampleConfig.networks[DEVELOPMENT].gasPrice
+            sampleConfig.networks[TEST_NETWORK].gasPrice
           );
         });
       });

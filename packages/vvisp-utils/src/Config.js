@@ -215,7 +215,6 @@ Config.load = options => {
   const config = new Config();
 
   const fileConfig = require(file);
-  // TODO: file 읽지 않고 load/store 할 수 있도록
   config.merge(fileConfig);
   config.merge(options);
 

@@ -13,11 +13,6 @@ const consoleTest = rewire('../../scripts/console.js');
 describe('# console script test', async function() {
   this.timeout(50000);
 
-  before('set ganache env', function() {
-    process.env.MNEMONIC =
-      'piano garage flag neglect spare title drill basic strong aware enforce fury';
-  });
-
   describe('parseArgs', function() {
     const parseArgs = consoleTest.__get__('parseArgs');
 
