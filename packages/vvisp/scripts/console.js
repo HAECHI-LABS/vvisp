@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const chalk = require('chalk');
 const stringArgv = require('string-argv');
+const _ = require('lodash');
 const { parseLogs } = require('@haechi-labs/vvisp-utils');
 
 if (!String.prototype.format) {
@@ -34,6 +35,8 @@ const defaultStateFile = 'state.vvisp.json';
  */
 
 module.exports = async function(scriptPath, options) {
+  options = require('./utils/injectConfig')(options);
+
   let apis = setApi(scriptPath);
   if (fs.existsSync(defaultStateFile)) {
     apis = setApiAddress(apis, defaultStateFile);
@@ -360,7 +363,11 @@ function setApi(scriptPath) {
   }
 
   // set script api
-  const apis = require(path.join(scriptPath, 'back') + '/index.js');
+  // omit configuration functions
+  const apis = _.omit(require(path.join(scriptPath, 'back') + '/index.js')(), [
+    'config',
+    'setWeb3'
+  ]);
 
   // set abi
   for (const key of Object.keys(apis)) {

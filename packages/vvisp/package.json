@@ -90,7 +90,8 @@
   "nyc": {
     "exclude": [
       "contractApis",
-      "test/dummy"
+      "test",
+      "*-config.js"
     ]
   }
 }

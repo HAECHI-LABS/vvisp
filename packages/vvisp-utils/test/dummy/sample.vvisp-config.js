@@ -3,19 +3,19 @@ module.exports = {
     development: {
       host: 'localhost',
       port: 8545,
-      network_id: '*', // eslint-disable-line camelcase
-      gasLimit: 123123,
-      gasPrice: 10000000000
+      network_id: '*' // eslint-disable-line camelcase
     },
     coverage: {
       host: 'localhost',
       port: 8545,
-      network_id: '*' // eslint-disable-line camelcase
+      network_id: '*', // eslint-disable-line camelcase
+      gasLimit: 123123,
+      gasPrice: 10000000000
     }
   },
   compilers: {
     solc: {
-      version: '0.4.25', // Fetch exact version from solc-bin (default: truffle's version)
+      version: '0.4.25', // Fetch exact version from solc-bin
       settings: {
         // See the solidity docs for advice about optimization and evmVersion
         optimizer: {
@@ -27,7 +27,8 @@ module.exports = {
     }
   },
   from: {
-    mnemonic: 'hello',
+    mnemonic:
+      'piano garage flag neglect spare title drill basic strong aware enforce fury',
     index: 0
   }
 };
