@@ -1,6 +1,5 @@
 #! /usr/bin/env node
 
-require('dotenv').config(); // TODO: will change to configuration file
 const commander = require('./commander');
 
 try {

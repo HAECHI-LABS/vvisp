@@ -55,7 +55,6 @@
     "web3": "1.0.0-beta.37"
   },
   "devDependencies": {
-    "dotenv": "^5.0.1",
     "openzeppelin-solidity": "2.0.0"
   }
 }
