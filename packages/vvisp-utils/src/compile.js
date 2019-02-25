@@ -1,9 +1,11 @@
 module.exports = async function(filePath, options) {
   const DEFAULT_COMPILER_VERSION = '0.4.24';
 
+  const compilerOption = extractCompilerOption(options);
+
   const fs = require('fs');
   const path = require('path');
-  const solc = await getSolc();
+  const solc = await getSolc(compilerOption);
   const chalk = require('chalk');
   const printOrSilent = require('./printOrSilent');
   const findNodeModules = require('find-node-modules');
@@ -33,6 +35,8 @@ module.exports = async function(filePath, options) {
         language: 'Solidity',
         sources: input,
         settings: {
+          evmVersion: compilerOption.settings.evmVersion,
+          optimizer: compilerOption.settings.optimizer,
           outputSelection: {
             '*': {
               '*': ['*']
@@ -102,13 +106,30 @@ module.exports = async function(filePath, options) {
     return result;
   }
 
-  async function getSolc() {
+  async function getSolc(compilerOption) {
     const CompilerSupplier = require('./compilerSupplier');
     const supplier = new CompilerSupplier({
-      version: process.env.SOLC_VERSION
-        ? process.env.SOLC_VERSION
-        : DEFAULT_COMPILER_VERSION
+      version: compilerOption.version
     });
     return supplier.load();
+  }
+
+  function extractCompilerOption(options) {
+    let compilers;
+    try {
+      compilers = options.config.compilers.solc || {};
+    } catch (e) {
+      compilers = {};
+    }
+
+    if (!compilers.version) {
+      compilers.version = DEFAULT_COMPILER_VERSION;
+    }
+
+    if (!compilers.settings) {
+      compilers.settings = {};
+    }
+
+    return compilers;
   }
 };
