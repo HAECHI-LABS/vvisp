@@ -1,20 +1,20 @@
 const chai = require('chai');
 const assert = chai.assert;
 chai.use(require('chai-as-promised')).should();
-require('dotenv').config();
 
 const path = require('path');
 const fs = require('fs-extra');
 const abiToScript = require('../../../scripts/abi-to-script');
+const _ = require('lodash');
 
 const {
   compileAndDeploy,
+  Config,
   forIn,
-  getWeb3,
-  getPrivateKey,
+  web3Store,
   privateKeyToAddress
 } = require('@haechi-labs/vvisp-utils');
-const web3 = getWeb3();
+const { TEST } = require('../../../config/Constant');
 
 const CONTRACT1 = 'Attachment';
 const CONTRACT2 = 'Token_V0';
@@ -23,17 +23,28 @@ const CONTRACT_PATH2 = path.join(`./contracts/test/${CONTRACT2}.sol`);
 const FILES = [CONTRACT_PATH1, CONTRACT_PATH2];
 const ROOT = path.join('./contractApis');
 
-const PRIV_KEY = getPrivateKey(process.env.MNEMONIC);
+const config = Config.get();
+
+const PRIV_KEY = config.from;
 const SENDER = privateKeyToAddress(PRIV_KEY);
 
 describe('# abi-to-script process test', function() {
   this.timeout(50000);
+  let web3;
+
   before(function() {
+    web3Store.setWithURL(TEST.URL);
+    web3 = web3Store.get();
+    Config.delete();
     fs.removeSync(ROOT);
   });
+
   after(function() {
     fs.removeSync(ROOT);
+    Config.delete();
+    web3Store.delete();
   });
+
   describe('# back version', function() {
     describe('# process test', function() {
       before(function() {
