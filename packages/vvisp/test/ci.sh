@@ -2,8 +2,6 @@
 
 set -o errexit
 
-cp test/dummy/test.env .
-mv test.env .env
 cp test/dummy/sample.vvisp-config.js .
 mv sample.vvisp-config.js vvisp-config.js
 

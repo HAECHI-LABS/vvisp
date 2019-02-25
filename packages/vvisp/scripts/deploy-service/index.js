@@ -1,7 +1,7 @@
 module.exports = async function(options) {
-  const { checkConfigExist, checkEnv } = require('../../bin/error');
-  checkEnv();
-  checkConfigExist();
+  options = require('../utils/injectConfig')(options);
+  const { checkServiceFileExist } = require('../../bin/error');
+  checkServiceFileExist();
 
   const { printOrSilent } = require('@haechi-labs/vvisp-utils');
   const { writeState } = require('./utils');
