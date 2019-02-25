@@ -1,6 +1,7 @@
 const compile = require('./compile');
 const compileAndDeploy = require('./compileAndDeploy');
 const compilerSupplier = require('./compilerSupplier');
+const Config = require('./Config');
 const deploy = require('./deploy');
 const filterPrivateKey = require('./filterPrivateKey');
 const forIn = require('./forIn');
@@ -25,6 +26,7 @@ module.exports = {
   compile,
   compileAndDeploy,
   compilerSupplier,
+  Config,
   deploy,
   filterPrivateKey,
   forIn,
