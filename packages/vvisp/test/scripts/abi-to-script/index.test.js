@@ -53,9 +53,11 @@ describe('# abi-to-script process test', function() {
         this.abi = path.join(this.root, 'abi');
         this.js = path.join(this.root, 'js');
       });
+
       it('should be fulfilled', async function() {
         await abiToScript(this.files, { silent: true }).should.be.fulfilled;
       });
+
       it('should make all directories', function() {
         fs.lstatSync(ROOT)
           .isDirectory()
@@ -70,11 +72,13 @@ describe('# abi-to-script process test', function() {
           .isDirectory()
           .should.be.equal(true);
       });
+
       it('should make index files', function() {
         fs.lstatSync(path.join(this.root, 'index.js'))
           .isFile()
           .should.be.equal(true);
       });
+
       it('should make all abi files', function() {
         const files = fs.readdirSync(this.abi);
         files.length.should.be.equal(this.files.length);
@@ -82,6 +86,7 @@ describe('# abi-to-script process test', function() {
           path.parse(files[i]).ext.should.be.equal('.json');
         }
       });
+
       it('should make all js files', function() {
         const files = fs.readdirSync(this.js);
         files.length.should.be.equal(this.files.length);
@@ -90,9 +95,19 @@ describe('# abi-to-script process test', function() {
         }
       });
     });
+
     describe('# output test', function() {
       before(async function() {
-        this.apis = require('../../../contractApis/back');
+        const configSetting = {
+          from: PRIV_KEY
+        };
+
+        const web3Setting = TEST.URL;
+
+        this.apis = _.omit(
+          require('../../../contractApis/back')(configSetting, web3Setting),
+          ['config', 'setWeb3']
+        );
         const txCount = await web3.eth.getTransactionCount(SENDER);
         this.receipt1 = await compileAndDeploy(CONTRACT_PATH1, PRIV_KEY, [], {
           silent: true,
@@ -103,11 +118,13 @@ describe('# abi-to-script process test', function() {
           txCount: txCount + 1
         });
       });
+
       it('should have two constructor functions', function() {
         forIn(this.apis, Contract => {
           Contract.should.be.a('function');
         });
       });
+
       it('should make api instances', function() {
         this.attachment = new this.apis[CONTRACT1](
           this.receipt1.contractAddress
@@ -118,6 +135,7 @@ describe('# abi-to-script process test', function() {
           .should.equal(this.receipt1.contractAddress);
         this.token.getAddress().should.equal(this.receipt2.contractAddress);
       });
+
       it('should change address', function() {
         const tmpAddress = '0x88C22c3Fe7A049e42cF4f3a5507e6820F0EceE61';
         const address1 = this.attachment.getAddress();
@@ -129,18 +147,21 @@ describe('# abi-to-script process test', function() {
         this.attachment.at(address1);
         this.token.at(address2);
       });
+
       it('should call function', async function() {
         const txCount = await web3.eth.getTransactionCount(SENDER);
         await this.attachment.methods.initialize(SENDER).should.be.fulfilled;
         await this.token.methods.initialize(SENDER, { txCount: txCount + 1 })
           .should.be.fulfilled;
       });
+
       it('should get owner', async function() {
         (await this.attachment.methods.owner()).should.equal(SENDER);
         (await this.token.methods.owner()).should.equal(SENDER);
       });
     });
   });
+
   describe('# front version', function() {
     describe('# process test', function() {
       before(function() {
@@ -150,10 +171,12 @@ describe('# abi-to-script process test', function() {
         this.abi = path.join(this.root, 'abi');
         this.js = path.join(this.root, 'js');
       });
+
       it('should be fulfilled', async function() {
         await abiToScript(this.files, { silent: true, front: this.name }).should
           .be.fulfilled;
       });
+
       it('should make all directories', function() {
         fs.lstatSync(ROOT)
           .isDirectory()
@@ -168,6 +191,7 @@ describe('# abi-to-script process test', function() {
           .isDirectory()
           .should.be.equal(true);
       });
+
       it('should make all abi files', function() {
         const files = fs.readdirSync(this.abi);
         files.length.should.be.equal(this.files.length);
@@ -175,6 +199,7 @@ describe('# abi-to-script process test', function() {
           path.parse(files[i]).ext.should.be.equal('.json');
         }
       });
+
       it('should make all js files', function() {
         const files = fs.readdirSync(this.js);
         files.length.should.be.equal(this.files.length + 1); // with index file
@@ -188,6 +213,7 @@ describe('# abi-to-script process test', function() {
         }
         hasIndex.should.be.equal(true);
       });
+
       it('should make rollup files', function() {
         fs.lstatSync(path.join(this.root, 'vvisp.js'))
           .isFile()
