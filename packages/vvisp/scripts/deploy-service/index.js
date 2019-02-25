@@ -3,7 +3,7 @@ module.exports = async function(options) {
   checkEnv();
   checkConfigExist();
 
-  const { printOrSilent, getWeb3 } = require('@haechi-labs/vvisp-utils');
+  const { printOrSilent } = require('@haechi-labs/vvisp-utils');
   const { writeState } = require('./utils');
   const DeployState = require('./DeployState');
   const preProcess = require('./preProcess');
@@ -30,7 +30,6 @@ module.exports = async function(options) {
     notImportant: chk.gray,
     warning: chk.yellow
   };
-  global.web3 = getWeb3();
 
   await main();
 

@@ -10,7 +10,7 @@ const getAllFiles = require('./getAllFiles');
 const getCompiledContracts = require('./getCompiledContracts');
 const getCycle = require('./getCycle');
 const getTxCount = require('./getTxCount');
-const getWeb3 = require('./getWeb3');
+const web3Store = require('./web3Store');
 const getPrivateKey = require('./getPrivateKey');
 const printOrSilent = require('./printOrSilent');
 const privateKeyToAddress = require('./privateKeyToAddress');
@@ -35,7 +35,7 @@ module.exports = {
   getCompiledContracts,
   getCycle,
   getTxCount,
-  getWeb3,
+  web3Store,
   getPrivateKey,
   printOrSilent,
   privateKeyToAddress,

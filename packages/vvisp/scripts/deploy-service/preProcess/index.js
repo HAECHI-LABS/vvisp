@@ -3,6 +3,7 @@ module.exports = async function(deployState, options) {
   const { SERVICE_PATH, STATE_PATH } = require('../../../config/Constant');
   const { VARIABLES } = require('../constants');
   const { forIn, printOrSilent } = require('@haechi-labs/vvisp-utils');
+  const web3 = options.web3;
 
   let stateClone = deployState.getState();
 

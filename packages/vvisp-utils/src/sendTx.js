@@ -1,8 +1,11 @@
 module.exports = async function(_toAddr, _value, _privKey, options) {
   const Tx = require('ethereumjs-tx');
-  const web3 = require('./getWeb3')();
+  const web3 = require('./web3Store').get();
   const privateKeyToAddress = require('./privateKeyToAddress');
   const printOrSilent = require('./printOrSilent');
+
+  const DEFAULT_GAS_LIMIT = web3.utils.toHex(4600000);
+  const DEFAULT_GAS_PRICE = web3.utils.toHex(10e9);
 
   return main(_toAddr, _value, _privKey, options);
 
@@ -14,8 +17,8 @@ module.exports = async function(_toAddr, _value, _privKey, options) {
     // construct the transaction data
     const txData = {
       nonce: web3.utils.toHex(txCount),
-      gasLimit: options.gasLimit || web3.utils.toHex(4600000), // TODO: mv to config file
-      gasPrice: options.gasPrice || web3.utils.toHex(10e9),
+      gasLimit: options.gasLimit || DEFAULT_GAS_LIMIT,
+      gasPrice: options.gasPrice || DEFAULT_GAS_PRICE,
       to: _toAddr,
       from: fromAddr,
       value: _value || '0x',
