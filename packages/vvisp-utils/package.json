@@ -56,5 +56,11 @@
   },
   "devDependencies": {
     "openzeppelin-solidity": "2.0.0"
+  },
+  "nyc": {
+    "exclude": [
+      "test",
+      "*-config.js"
+    ]
   }
 }

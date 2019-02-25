@@ -3467,11 +3467,6 @@ dot-prop@^4.2.0:
   dependencies:
     is-obj "^1.0.0"
 
-dotenv@^5.0.1:
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-5.0.1.tgz#a5317459bd3d79ab88cff6e44057a6a3fbb1fcef"
-  integrity sha512-4As8uPrjfwb7VXC+WnLCbXK7y+Ueb2B3zgNCePYfhxS1PYeaO1YTeplffTEcbfLhvFNGLAz90VvJs9yomG7bow==
-
 drbg.js@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/drbg.js/-/drbg.js-1.0.1.tgz#3e36b6c42b37043823cdbc332d58f31e2445480b"
@@ -9910,6 +9905,19 @@ trim@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/trim/-/trim-0.0.1.tgz#5858547f6b290757ee95cccc666fb50084c460dd"
   integrity sha1-WFhUf2spB1fulczMZm+1AITEYN0=
+
+truffle-error@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/truffle-error/-/truffle-error-0.0.4.tgz#c3ff027570c26ae1f20db78637902497857f898f"
+  integrity sha512-hER0TNR4alBIhUp7SNrZRRiZtM/MBx+xBdM9qXP0tC3YASFmhNAxPuOyB8JDHFRNbDx12K7nvaqmyYGsI5c8BQ==
+
+truffle-provider@^0.1.4:
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/truffle-provider/-/truffle-provider-0.1.4.tgz#0f445c40734a63077ddada50a6cbeff1eae57fb7"
+  integrity sha512-BE/3yhtarBqv5/o43UpwZ1ym2lQuF37cCpTBcHhb814T9iv5qXr8AsuwRhJSm/9x+Nu4wOvdd8TWzZeltjVdZQ==
+  dependencies:
+    truffle-error "^0.0.4"
+    web3 "1.0.0-beta.37"
 
 tslib@^1.9.0:
   version "1.9.3"
