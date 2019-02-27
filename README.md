@@ -62,10 +62,10 @@ _[See details](./packages/vvisp/commands/README.md#init)_ for ``$ vvisp init``.
 We do not recommend generated contracts by `$ vvisp init`.
 Now, you can use `abi-to-script`, `compile` and `flatten` commands.
 
-**3. Set `.env` file**
+**3. Set `vvisp-config.js` file**
 
-Please set environment variables in `.env` file.
-See [here](https://github.com/HAECHI-LABS/vvisp/blob/dev/CONFIGURATION.md#env) for more information about `.env`.
+Please set environment variables in `vvisp-config.js` file.
+See [here](https://github.com/HAECHI-LABS/vvisp/blob/dev/CONFIGURATION.md#config) for more information about `vvisp-config.js`.
 Now you can use `deploy-contract` command.
 
 **4. Set `service.vvisp.json` file**
@@ -127,7 +127,7 @@ vvisp communicates with main-net, test-net through rpc, and helps to develop, up
 
   - configuration
 
-    These are the configuration files needed for vvisp to work and test such as `.env`, `service.vvisp.json`, `state.vvisp.json`, `truffle-config.js`
+    These are the configuration files needed for vvisp to work and test such as `vvisp-config.js`, `service.vvisp.json`, `state.vvisp.json`, `truffle-config.js`
 
   - test
 
