@@ -1,10 +1,10 @@
-pragma solidity ^0.4.23;
+pragma solidity >=0.5.0 <0.6.0;
 
 
 contract DependencyD {
     uint[] integers;
     address token;
-    constructor(uint[] _integers, address _token) public {
+    constructor(uint[] memory _integers, address _token) public {
         integers = _integers;
         token = _token;
     }

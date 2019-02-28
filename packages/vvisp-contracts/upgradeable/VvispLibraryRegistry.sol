@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity >=0.5.0 <0.6.0;
 
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
@@ -11,7 +11,7 @@ contract VvispLibraryRegistry is Ownable {
     using BytesLib for bytes;
 
     event ProxyCreated(address _proxy, string _name);
-    event UpgradeAll(address[] _proxies, address[] _implementations);
+    event UpgradeAll(address payable[] _proxies, address[] _implementations);
     event UpgradeToAndCallData(bytes _data, uint256 _index, uint256 _length);
     event SetNonUpgradeable(address _address, string _name, string _fileName);
     event SetFileName(address _address, string _fileName);
@@ -34,7 +34,15 @@ contract VvispLibraryRegistry is Ownable {
     mapping(address => UpgradeableSet) public upgradeableSets;
     mapping(address => NonUpgradeableSet) public nonUpgradeableSets;
 
-    function setNonUpgradeables(address[] _addresses, string _names, uint256[] _nameLength, string _fileNames, uint256[] _fileNameLength) public onlyOwner {
+    function setNonUpgradeables(
+        address[] memory _addresses,
+        string memory _names,
+        uint256[] memory _nameLength,
+        string memory _fileNames,
+        uint256[] memory _fileNameLength
+    )
+        public onlyOwner
+    {
         require(_addresses.length != 0);
         require(_addresses.length == _nameLength.length);
         require(_addresses.length == _fileNameLength.length);
@@ -56,7 +64,7 @@ contract VvispLibraryRegistry is Ownable {
         }
     }
 
-    function updateFileNames(address[] _keyAddresses, string _fileNames, uint256[] _fileNameLength) public onlyOwner {
+    function updateFileNames(address[] memory _keyAddresses, string memory _fileNames, uint256[] memory _fileNameLength) public onlyOwner {
         require(_keyAddresses.length != 0);
         require(_keyAddresses.length == _fileNameLength.length);
 
@@ -75,14 +83,21 @@ contract VvispLibraryRegistry is Ownable {
         }
     }
 
-    function createProxy(string name) public onlyOwner {
+    function createProxy(string memory name) public onlyOwner {
         VvispProxy proxy = new VvispProxy();
         upgradeableKeyAddresses.push(address(proxy));
         upgradeableSets[address(proxy)].name = name;
         emit ProxyCreated(address(proxy), name);
     }
 
-    function upgradeToAndCalls(address[] _proxies, address[] _business, bytes _data, uint256[] _length) public onlyOwner {
+    function upgradeToAndCalls(
+        address payable[] memory _proxies,
+        address[] memory _business,
+        bytes memory _data,
+        uint256[] memory _length
+    )
+        public onlyOwner
+    {
         require(_proxies.length != 0);
         require(_proxies.length == _business.length);
         require(_proxies.length == _length.length);

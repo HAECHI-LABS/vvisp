@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity >=0.5.0 <0.6.0;
 
 
 /**
@@ -11,7 +11,7 @@ contract Proxy {
     * @dev Fallback function allowing to perform a delegatecall to the given implementation.
     * This function will return whatever the implementation call returns
     */
-    function() payable public {
+    function() external payable {
         address _impl = implementation();
         require(_impl != address(0));
 

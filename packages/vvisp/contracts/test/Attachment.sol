@@ -1,4 +1,4 @@
-pragma solidity ^0.4.23;
+pragma solidity >=0.5.0 <0.6.0;
 
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
@@ -32,8 +32,8 @@ contract Attachment is Ownable {
 
     function upsertAttachment(
         bytes32 _fileHash,
-        string _fileType,
-        string _fileName,
+        string memory _fileType,
+        string memory _fileName,
         uint256 _registrationDate) public onlyOwner
     {
         require(_fileHash != 0);
@@ -55,20 +55,20 @@ contract Attachment is Ownable {
         emit RemoveAttachment(_fileHash, beforeFileTypes, beforeFileNames, beforeRegistrationDate);
     }
 
-    function upsertFileType(bytes32 _fileHash, string _fileType) internal {
+    function upsertFileType(bytes32 _fileHash, string memory _fileType) internal {
         fileTypes[_fileHash] = _fileType;
     }
 
-    function removeFileType(bytes32 _fileHash) internal returns (string before) {
+    function removeFileType(bytes32 _fileHash) internal returns (string memory before) {
         before = fileTypes[_fileHash];
         delete fileTypes[_fileHash];
     }
 
-    function upsertFileName(bytes32 _fileHash, string _fileName) internal {
+    function upsertFileName(bytes32 _fileHash, string memory _fileName) internal {
         fileNames[_fileHash] = _fileName;
     }
 
-    function removeFileName(bytes32 _fileHash) internal returns (string before) {
+    function removeFileName(bytes32 _fileHash) internal returns (string memory before) {
         before = fileNames[_fileHash];
         delete fileNames[_fileHash];
     }

@@ -1,4 +1,4 @@
-pragma solidity ^0.4.23;
+pragma solidity >=0.5.0 <0.6.0;
 
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
@@ -85,16 +85,16 @@ contract Loan is Ownable {
     */
     function upsertLoan(
         bytes32 _loanHash,
-        string _loanName,
+        string memory _loanName,
         uint256 _loanTypeCode,
         uint256 _loanAmount,
-        uint256[3] _rate,
+        uint256[3] memory _rate,
         uint256 _repaymentMethodCode,
-        uint256[2] _fundStartEndTime,
-        uint256[2] _loanStartEndDate,
+        uint256[2] memory _fundStartEndTime,
+        uint256[2] memory _loanStartEndDate,
         uint256 _repaymentNumber,
-        string _loanSummary,
-        string _detailHTML,
+        string memory _loanSummary,
+        string memory _detailHTML,
         uint256 _stateCode,
         uint256 _registrationDate)
     public onlyOwner
@@ -186,11 +186,11 @@ contract Loan is Ownable {
             beforeRegistrationDate);
     }
 
-    function upsertLoanName(bytes32 _loanHash, string _loanName) internal {
+    function upsertLoanName(bytes32 _loanHash, string memory _loanName) internal {
         loanNames[_loanHash] = _loanName;
     }
 
-    function removeLoanName(bytes32 _loanHash) internal returns (string before) {
+    function removeLoanName(bytes32 _loanHash) internal returns (string memory before) {
         before = loanNames[_loanHash];
         delete loanNames[_loanHash];
     }
@@ -294,20 +294,20 @@ contract Loan is Ownable {
         delete repaymentNumbers[_loanHash];
     }
 
-    function upsertLoanSummary(bytes32 _loanHash, string _loanSummary) internal {
+    function upsertLoanSummary(bytes32 _loanHash, string memory _loanSummary) internal {
         loanSummaries[_loanHash] = _loanSummary;
     }
 
-    function removeLoanSummary(bytes32 _loanHash) internal returns (string before) {
+    function removeLoanSummary(bytes32 _loanHash) internal returns (string memory before) {
         before = loanSummaries[_loanHash];
         delete loanSummaries[_loanHash];
     }
 
-    function upsertDetailHTML(bytes32 _loanHash, string _detailHTML) internal {
+    function upsertDetailHTML(bytes32 _loanHash, string memory _detailHTML) internal {
         detailHTMLs[_loanHash] = _detailHTML;
     }
 
-    function removeDetailHTML(bytes32 _loanHash) internal returns (string before) {
+    function removeDetailHTML(bytes32 _loanHash) internal returns (string memory before) {
         before = detailHTMLs[_loanHash];
         delete detailHTMLs[_loanHash];
     }
