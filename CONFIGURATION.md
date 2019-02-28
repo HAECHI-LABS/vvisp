@@ -3,37 +3,67 @@
 
 Korean version: [CONFIGURATION-ko.md](./CONFIGURATION-ko.md)
 
-## <a name="env"></a>.env
+## <a name="config"></a>vvisp-config.js
 
-We use [dotenv](https://github.com/motdotla/dotenv) that loads environment variables from a `.env` file into [`process.env`](https://nodejs.org/docs/latest/api/process.html#process_process_env).
+> `vvisp-config.js` is a file to set environment variables. If there is no config file in root directory, some functions of vvisp don't work and print ```vvisp-config.js file does not exist``` error message.
 
-> `.env` is a file to set environment variables. If there is no `.env` file in root directory, some functions of vvisp don't work and print ```.env file does not exist``` error message.
+- `network`: The information of network you want to connect to. You can choose one of the networks below. Default is development.
 
-- `NETWORK`: The name of network you want to connect to. We use [infura](https://infura.io/) except local network. Choose one of [local, mainnet, ropsten, kovan, rinkeby, custom]. ***REQUIRED***
-- `URL`: the URL address required to access the custom blockchain.
-- `PORT`: The port number you want to connect to when local network is chosen.
-- `INFURA_API_KEY`: It is the api key required connect to an external network. You can sign in and get key at [infura](https://infura.io/).
-- `MNEMONIC`: The mnemonic key of an account to make transaction. ***REQUIRED***
-- `PRIV_INDEX`: The index of private key generated from MNEMONIC. Default is 0.
-- `GAS_PRICE`: The gas price to pay for transactions. Default is 10Gwei and unit is wei. 
-- `GAS_LIMIT`: The gas limit to pay for transactions. Default is 4600000.
-- `SOLC_VERSION`: The version of solc compiler version you want to use and it needs network communication. You can keep it empty to use local compiler in vvisp. 
-- `SOLC_OPTIMIZATION`: If you don't want to optimize compile, set this false. Default is true.
-- `PRIVATE_KEY`: Private key for specific account. *IT OVERRIDES MNEMONIC OPTIONS*
+- `networks`: The detail informaion of networks.
+&nbsp;- `host`: The host name required to access the custom blockchain. To connect to a specific testnet, just enter the URL. 
+&nbsp;- `port`: The port number required to access the custom blockchain. 
+&nbsp;- `network_id`: The id of the network. Default is * and this means that it can match any network id.
+&nbsp;- `gasLimit`: The gas limit to pay for transactions. Default is 4600000.
+&nbsp;- `gasPrice`: The gas price to pay for transactions. Default is 10Gwei and unit is wei. 
+
+- `compilers`: The detail informaion of networks. 
+&nbsp;- `version`: The version of solc compiler version you want to use and it needs network communication. You can keep it empty to use solc 0.5.0. 
+&nbsp;- `settings`: The settings of the compiler. 
+&nbsp; &nbsp;- `optimizer.enabled`: If you don't want to optimize compile, set this false.
+&nbsp; &nbsp;- `optimizer.run`: The number of times you intend to run the code for the optimization.
+&nbsp; &nbsp;- `evmVersion`: The version of EVM to use.
+
+- `from`: The detail information of transaction.
+&nbsp;- `mnemonic`: The mnemonic key of an account to make transaction.
+&nbsp;- `index`: The index of private key generated from MNEMONIC. Default is 0.
 
 ### Example
 
-```.dotenv
-NETWORK= 'local'                // Network you want to connect to
-URL=                            // Required in custom network.
-PORT= '7545'                    // Port number of local network
-INFURA_API_KEY=                 // Not required in local or custom network 
-MNEMONIC= "royal pact globe..." // Mnemonic key words for private key of ethereum wallet
-GAS_PRICE= 20000000000          // 20Gwei
-GAS_LIMIT= 5000000              // 5 million
-SOLC_VERSION=                   // Use local compiler
-SOLC_OPTIMIZATION=              // Use optimization
-PRIVATE_KEY=                    // Private key
+```vvisp-config.js
+module.exports = {
+  network: "development",
+  networks: {
+    development: {
+      host: 'localhost',
+      port: 8545,
+      network_id: '*'
+    },
+    coverage: {
+      host: 'localhost',
+      port: 8545,
+      network_id: '*', 
+      gasLimit: 123123,
+      gasPrice: 10000000000
+    }
+  },
+  compilers: {
+    solc: {
+      version: '0.4.25', 
+      settings: {
+        optimizer: {
+          enabled: false,
+          runs: 200
+        },
+        evmVersion: 'byzantium'
+      }
+    }
+  },
+  from: {
+    mnemonic:
+      'piano garage flag neglect spare title drill basic strong aware enforce fury',
+    index: 0
+  }
+};
 ```
 
 
