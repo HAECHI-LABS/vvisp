@@ -77,9 +77,8 @@ describe('# compile test', function() {
 
     it('should be fulfilled with other solc version', async function() {
       const config = _.cloneDeep(configWrapper);
-      config.compilers.solc.version = 'v0.4.25+commit.59dbf8f1';
-      await compile(RIGHT_CONTRACT1, { silent: true, config: config }).should.be
-        .fulfilled;
+      process.env.SOLC_VERSION = 'v0.5.0+commit.1d4f565a';
+      await compile(RIGHT_CONTRACT1, { silent: true, config: config }).should.be.fulfilled;
     });
 
     it('should be fulfilled with optimization', async function() {
@@ -101,9 +100,9 @@ describe('# compile test', function() {
 
     it('should be fulfilled with external solidity library', async function() {
       const config = _.cloneDeep(configWrapper);
-      config.compilers.solc.version = '0.4.24';
-      await compile(OPEN_NFT, { silent: true, config: config }).should.be
-        .fulfilled;
+      process.env.SOLC_VERSION = '0.5.0';
+      await compile(OPEN_NFT, { silent: true, config: config }).should.be.fulfilled;
+      process.env.SOLC_VERSION = '';
     });
   });
 

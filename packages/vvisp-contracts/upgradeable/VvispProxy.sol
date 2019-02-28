@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity >=0.5.0 <0.6.0;
 
 import "./UpgradeabilityProxy.sol";
 
@@ -70,10 +70,11 @@ contract VvispProxy is UpgradeabilityProxy {
      * @param data represents the msg.data to bet sent in the low level call. This parameter may include the function
      * signature of the implementation to be called with the needed payload
      */
-    function upgradeToAndCall(address implementation, bytes data) payable public onlyProxyOwner {
+    function upgradeToAndCall(address implementation, bytes memory data) public payable onlyProxyOwner {
         upgradeTo(implementation);
-        // solium-disable-next-line security/no-call-value
-        require(address(this).call.value(msg.value)(data));
+        // solium-disable-next-line security/no-low-level-calls
+        (bool success, ) = implementation.delegatecall(data);
+        require(success);
     }
 
     /**
