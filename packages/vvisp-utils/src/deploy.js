@@ -4,7 +4,7 @@ module.exports = async function(
   arguments,
   options
 ) {
-  const filterPrivateKey = require('./utils/filterPrivateKey');
+  const filterPrivateKey = require('./filterPrivateKey');
   privateKey = filterPrivateKey(privateKey);
 
   if (arguments && arguments.length === undefined) {
@@ -40,7 +40,7 @@ module.exports = async function(
   }
 
   const sendTx = require('./sendTx');
-  const web3 = require('./getWeb3')();
+  const web3 = require('./web3Store').get();
 
   const inputs = { data: '0x' + bytecode, arguments };
   const deployData = new web3.eth.Contract(abi).deploy(inputs).encodeABI();

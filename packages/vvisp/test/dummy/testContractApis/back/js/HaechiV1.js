@@ -1,9 +1,10 @@
 const path = require('path');
-const { getWeb3, getPrivateKey, sendTx } = require('@haechi-labs/vvisp-utils');
-const web3 = getWeb3();
+const { Config, web3Store, sendTx } = require('@haechi-labs/vvisp-utils');
+const config = Config.get();
+const web3 = web3Store.get();
 const fs = require('fs');
 
-const privateKey = getPrivateKey(process.env.MNEMONIC, process.env.PRIV_INDEX);
+const privateKey = config.from;
 
 const abi = fs.readFileSync(path.join(__dirname, '../abi/', 'HaechiV1.json'), {
   encoding: 'utf8'

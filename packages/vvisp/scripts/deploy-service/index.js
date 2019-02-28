@@ -1,12 +1,13 @@
 module.exports = async function(options) {
-  const { checkConfigExist, checkEnv } = require('../../bin/error');
-  checkEnv();
-  checkConfigExist();
+  options = require('../utils/injectConfig')(options);
+  const { checkServiceFileExist } = require('../../bin/error');
+  checkServiceFileExist();
 
-  const { printOrSilent, getWeb3 } = require('@haechi-labs/vvisp-utils');
+  const { printOrSilent } = require('@haechi-labs/vvisp-utils');
   const { writeState } = require('./utils');
   const DeployState = require('./DeployState');
   const preProcess = require('./preProcess');
+  const { PROJECT_NAME, SERVICE_FILE } = require('../../config/Constant');
   const {
     deployBusinesses,
     deployNonUpgradeables,
@@ -29,7 +30,6 @@ module.exports = async function(options) {
     notImportant: chk.gray,
     warning: chk.yellow
   };
-  global.web3 = getWeb3();
 
   await main();
 
@@ -116,7 +116,7 @@ module.exports = async function(options) {
             options
           );
           printOrSilent(
-            `You can see result in ${chalk.keyWord('state.haechi.json')}`,
+            `You can see result in ${chalk.keyWord(SERVICE_FILE)}`,
             options
           );
         } else {
@@ -138,7 +138,7 @@ module.exports = async function(options) {
     printOrSilent(chalk.error(`Service State Paused!`), options);
     printOrSilent(
       `Resume Process by Running ${chalk.keyWord(
-        'vvisp deploy-service'
+        `${PROJECT_NAME} deploy-service`
       )} Again.`,
       options
     );

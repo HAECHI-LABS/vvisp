@@ -1,9 +1,12 @@
 module.exports = async function(deployState, options) {
   const fs = require('fs-extra');
-  const { SERVICE_PATH, STATE_PATH, VARIABLES } = require('../constants');
+  const { SERVICE_PATH, STATE_PATH } = require('../../../config/Constant');
+  const { VARIABLES } = require('../constants');
   const { forIn, printOrSilent } = require('@haechi-labs/vvisp-utils');
+  const web3 = options.web3;
 
   let stateClone = deployState.getState();
+
   const config = fs.readJsonSync(SERVICE_PATH);
 
   let processState;

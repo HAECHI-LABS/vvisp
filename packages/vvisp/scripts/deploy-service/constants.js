@@ -1,21 +1,15 @@
 module.exports = (function() {
   const path = require('path');
-  const { getWeb3, getPrivateKey } = require('@haechi-labs/vvisp-utils');
-  const web3 = getWeb3();
+  const { Config } = require('@haechi-labs/vvisp-utils');
+  const config = Config.get();
 
   return {
-    SERVICE_PATH: path.join('./', 'service.vvisp.json'),
-    STATE_PATH: path.join('./', 'state.vvisp.json'),
     REGISTRY_PATH: path.join('./', 'contracts/upgradeable/VvispRegistry.sol'),
     TX_OPTIONS: {
-      gasPrice: process.env.GAS_PRICE
-        ? web3.utils.toHex(process.env.GAS_PRICE)
-        : undefined,
-      gasLimit: process.env.GAS_LIMIT
-        ? web3.utils.toHex(process.env.GAS_LIMIT)
-        : undefined
+      gasPrice: config.gasPrice,
+      gasLimit: config.gasLimit
     },
-    PRIVATE_KEY: getPrivateKey(process.env.MNEMONIC, process.env.PRIV_INDEX),
+    PRIVATE_KEY: config.from,
 
     // service contract property name
     VARIABLES: 'variables',

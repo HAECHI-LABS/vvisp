@@ -1,6 +1,5 @@
 const deployContract = require('../../scripts/deploy-contract');
 const path = require('path');
-require('dotenv').config();
 const chai = require('chai');
 chai.use(require('chai-as-promised')).should();
 

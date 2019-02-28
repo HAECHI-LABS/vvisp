@@ -41,6 +41,7 @@ package-lock.json
 contractApis
 state.vvisp.json
 service.vvisp.json
+vvisp-config.js
 example.json
 example
 

@@ -1,28 +1,25 @@
 const chai = require('chai');
 const assert = chai.assert;
 chai.use(require('chai-as-promised')).should();
-require('dotenv').config();
 
 const deployService = require('../../../scripts/deploy-service/');
 const compareConfigAndState = require('../../../scripts/deploy-service/preProcess/compareConfigAndState');
-const {
-  PENDING_STATE,
-  SERVICE_PATH,
-  STATE_PATH
-} = require('../../../scripts/deploy-service/constants');
+const { PENDING_STATE } = require('../../../scripts/deploy-service/constants');
+const { SERVICE_PATH, STATE_PATH, TEST } = require('../../../config/Constant');
 const { hasInitArgs } = require('../../../scripts/deploy-service/utils');
 const {
+  Config,
   forIn,
-  getWeb3,
-  getPrivateKey,
+  web3Store,
   privateKeyToAddress
 } = require('@haechi-labs/vvisp-utils');
-const web3 = getWeb3();
 const path = require('path');
 const fs = require('fs-extra');
 const Mitm = require('mitm');
 
-const SENDER = privateKeyToAddress(getPrivateKey(process.env.MNEMONIC));
+const config = Config.get();
+
+const SENDER = privateKeyToAddress(config.from);
 const SERVICE1 = path.join('./test/dummy/service1.json');
 const SERVICE2 = path.join('./test/dummy/service2.json');
 const STATE1 = path.join('./test/dummy/state1.json');
@@ -59,8 +56,26 @@ const { deploy: nrDeployNum, upgrade: nrUpgradeNum } = getTxcount(
   N_R_STATE1
 );
 
+let web3;
+
 describe('# deploy-service process test', function() {
   this.timeout(50000);
+  before(function() {
+    web3Store.setWithURL(TEST.URL);
+    web3 = web3Store.get();
+    web3Store.delete();
+    Config.delete();
+  });
+
+  beforeEach(function() {
+    web3Store.delete();
+    Config.delete();
+  });
+
+  after(function() {
+    web3Store.delete();
+    Config.delete();
+  });
 
   describe('# whole process test', function() {
     afterEach(function() {
