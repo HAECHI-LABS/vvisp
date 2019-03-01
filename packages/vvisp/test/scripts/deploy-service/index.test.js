@@ -160,7 +160,7 @@ function getWaitingTxNum() {
     stateClone.notUpgrading = true;
     stateClone.contracts = {};
     stateClone.serviceName = config.serviceName;
-    if (config.registry === false) {
+    if (!config.registry) {
       stateClone.registry = 'noRegistry';
     } else {
       resultNumber++; // registry

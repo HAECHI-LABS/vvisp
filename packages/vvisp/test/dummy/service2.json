@@ -1,5 +1,6 @@
 {
   "serviceName": "Haechi",
+  "registry": true,
   "variables" : {
     "owner" : "0xb5F4E40c8177Ad63B19D4D3a254a5758771f57d0"
   },
