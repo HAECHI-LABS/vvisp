@@ -16,7 +16,7 @@ function Config() {
 
   const defaultTxOptions = {
     gasLimit: 6721975,
-    gasPrice: 20000000000 // 20 gwei,
+    gasPrice: 10000000000 // 10 gwei,
   };
 
   this._deepCopy = ['networks', 'compilers'];
@@ -32,7 +32,7 @@ function Config() {
       solc: {
         settings: {
           optimizer: {
-            enabled: false,
+            enabled: true,
             runs: 200
           },
           evmVersion: 'byzantium'

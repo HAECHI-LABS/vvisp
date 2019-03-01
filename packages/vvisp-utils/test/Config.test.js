@@ -12,7 +12,7 @@ const Provider = require('truffle-provider');
 
 const DEFAULT_TX_OPTIONS = {
   gasLimit: 6721975,
-  gasPrice: 20000000000 // 20 gwei,
+  gasPrice: 10000000000 // 10 gwei,
 };
 const DEFAULT_NETWORK = 'development';
 
