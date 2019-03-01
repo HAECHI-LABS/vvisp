@@ -44,21 +44,33 @@ root/
 ├── service.vvisp.json
 └── truffle-config.json
 ```
-> - `package.json` is created. Several libraries used by HEACHI LABS have been added.
-> - The `contracts` folder is created. Contract code, please work here.
-> - The `contracts/Migrations.sol` file is created. This Contract is necessary for using truffle.
-> - The `VvispRegistry.sol` file for the upgradeable smart contract framework are copied in the `contracts/upgradeable` folder.
-> - The `.env` file is created. Set environment variables here. [See details](../../../CONFIGURATION.md#env).
-> - `.soliumignore`,` .solcover.js`, and `.soliumrc.json` files for [solium](https://github.com/duaraghav8/Solium), a proofing tool for solidity, are created.
-> - `scripts/test.sh` is created and the` $ npm run test` script is added to `package.json`. This is useful for truffle contract testing.
-> - `scripts/coverage.sh` is created and the` $ npm run coverage` script is added to `package.json`. This shows the coverage of test codes about your contracts.
-> - `truffle-config.js` will be created. Required when using truffle and contains relevant configuration information.
-> - `migrations/1_initial_migration.js` will be created. Required for truffle testing.
-> - `test` folder will be created. Please create testcode for truffle test here. 
+> - `package.json` will be created.
+Several libraries used by HEACHI LABS have been added.
+> - The `contracts` folder will be created.
+Contract code, please work here.
+> - The `contracts/Migrations.sol` file will be created.
+This Contract is necessary for using truffle.
+> - The `VvispRegistry.sol` file for the upgradeable smart contract framework will be created in the `contracts/upgradeable` folder.
+> - The `vvisp-config.js` file will be created.
+Set environment variables here.
+[See details](../../../CONFIGURATION.md#config).
+> - `.soliumignore`,` .solcover.js`, and `.soliumrc.json` files for [solium](https://github.com/duaraghav8/Solium), a proofing tool for solidity, will be created.
+> - `scripts/test.sh` will be created and the` $ npm run test` script will be added to `package.json`.
+This is useful for truffle contract testing.
+> - `scripts/coverage.sh` will be created and the` $ npm run coverage` script will be added to `package.json`.
+This shows the coverage of test codes about your contracts.
+> - `truffle-config.js` will be created.
+Required when using truffle and contains relevant configuration information.
+> - `migrations/1_initial_migration.js` will be created.
+Required for truffle testing.
+> - `test` folder will be created.
+Please create testcode for truffle test here. 
 > - For information about truffle, see [truffle documentation](https://truffleframework.com/docs/truffle/overview).
 > - You can use [openzeppelin-test-helpers](https://github.com/OpenZeppelin/openzeppelin-test-helpers) to help you create test cases.
-> - A sample test file, `Example.test.js` is created in `test/` directory.
-> - The `service.vvisp.json` file is created. Before you run `$ vvisp deploy-service`, set the variables in the file. [See details](../../../CONFIGURATION-ko.md#service).
+> - A sample test file, `Example.test.js` will be created in `test/` directory.
+> - The `service.vvisp.json` file will be created.
+Before you run `$ vvisp deploy-service`, set the variables in the file.
+[See details](../../../CONFIGURATION.md#service).
 
 
 ## compile
@@ -134,9 +146,10 @@ $ vvisp deploy-service
 __Process__
 
 
-The deployment sequence is as follows. If there is no target to deploy, skip that task.
+The deployment sequence is as follows.
+If there is no target to deploy, skip that task.
 
-1) Deploy the registry. (Not deployed during upgrade)
+1) Deploy the registry. (Not deployed again during upgrade)
 
 2) Deploy business contracts of upgradeable contracts.
 
@@ -146,7 +159,8 @@ The deployment sequence is as follows. If there is no target to deploy, skip tha
 
 5) Save the information of nonUpgradeable contracts to the registry.
 
-6) Connect upgradeable contracts with the registry. This is a real upgrade, and it happens atomically in one transaction.
+6) Connect upgradeable contracts with the registry.
+This is a real upgrade, and it happens atomically in one transaction.
 
 7) Save additional information of upgradeable contracts to the Registry.
 
@@ -163,44 +177,38 @@ This is the file where you can view the status of the currently deployed service
   "serviceName": "Haechi", (1)
   "registry": "0x00C...", (2)
   "contracts": { (3)
-    "ContractKeyName1": { (4)
-      "address": "0x73c...", (5)
-      "proxy": "0x8d7...", (6)
-      "fileName": "Contract1_V0.sol", (7)
+    "ContractKeyName3": { (4)
+      "address": "0x863...", (5)
+      "fileName": "Contract.sol" (6)
+    },
+    "ContractKeyName1": {
+      "address": "0x73c...",
+      "proxy": "0x8d7...", (7)
+      "fileName": "Contract1_V0.sol",
       "upgradeable": true (8)
-    },
-    "ContractKeyName2": {
-      "address": "0x67B...",
-      "proxy": "0xcf2...",
-      "fileName": "Contract2_V1.sol",
-      "upgradeable": true
-    },
-    "ContractKeyName3": {
-      "address": "0x863...",
-      "fileName": "Contract.sol"
     }
   }
 }
 ```
 
-1) The name of the configured service.
+1. The name of the configured service.
 
-2) Indicates the address of the deployed registry.
+1. Indicates the address of the deployed registry.
+If you defined not to use, it will be written as `noRegistry`.
 
-3) Define the information of contracts deployed in json format.
+1. Json format of the information of deployed contracts.
 
-4) Indicates the name of the name of the deployed contract.
+1. Indicates the name of the name of the deployed contract.
 
-5) Represents the address of deployed contract.
-The entry point for a nonUpgradeable contract.
+1. Represents the address of deployed contract.
 
-6) Represents the proxy address of deployed upgradeable contract.
+1. Represents the file name (contract name) of the currently deployed contract version.
+
+1. Represents the proxy address of deployed upgradeable contract.
 For an upgradeable contract, proxy is the entry point.
 For nonUpgradeable contract, there is no such property.
 
-7) Represents the file name (contract name) of the currently deployed contract version.
-
-8) This property represents upgradeable contract.
+1. This property represents upgradeable contract.
 
 ## abi-to-script
 
@@ -238,14 +246,16 @@ Generate Finished!
 
 #### Output
 
-When you run `abi-to-script`, the `contractApis` folder is created in the directory you have run.
+When you run `abi-to-script`, the `contractApis/` folder is created in the directory you have run.
 
 ```bash
 $ ls
-README.md           contracts           node_modules        package.json        service.vvisp.json  test                contractApis        migrations          package-lock.json   scripts             service2.vvisp.json truffle-config.js
+README.md           contracts           node_modules        package.json
+service.vvisp.json  test                contractApis        migrations
+package-lock.json   scripts             service2.vvisp.json truffle-config.js
 ```
 
- The structure of the generated `contractApi` folder is as follows.
+The structure of the generated `contractApis/` folder is as follows:
 
 ```
 contractApis/
@@ -270,13 +280,13 @@ contractApis/
 > - The APIs are created in `contractApis/back/js/`.
 
 
-
 - `-f, --front <name>` option
 
-> - The abi files of the contracts are created in `contractApis / front / abi /`.
-> - The APIs are created in `contractApis/front/js/`. **(not needed)**
-> - The APIs are bundled in `contractApis/front/name.js`. (The file name follows the name you entered)
-
+> - The abi files of the contracts are created in `contractApis/front/abi/`.
+> - The APIs are created in `contractApis/front/js/`.
+**(not needed)**
+> - The APIs are bundled in `contractApis/front/name.js`.
+(The file name follows the name you entered)
 
 
 In the case of the front API, it is set to [web3 old version](https://github.com/ethereum/wiki/wiki/wiki/JavaScript-API) for interacting with the Metamask.
@@ -288,9 +298,6 @@ In the case of the front API, it is set to [web3 old version](https://github.com
 You can easily implement the function of invoking contract using the generated contractApis file.
 
 ```javascript
-// Set the environment variable in the .env file.
-require('dotenv').config();
-
 /*
 HaechiV1 has following methods
 
@@ -304,7 +311,16 @@ run: function(options)
 initialize: function(__gym, options)
 
 */
-const { HaechiV1 } = require('../contractApis/back');
+// You can give configuration arguments like below.
+// If you described vvisp-config.json already, you don't have to give arguments.
+const config = {
+  from: PRIVATE_KEY,
+  gasPrice: GAS_PRICE,
+  gasLimit: GAS_LIMIT
+};
+// Write url or make provider object
+const webSetter = 'URL_OR_PROVIDER';
+const { HaechiV1 } = require('../contractApis/back')(config, webSetter);
 
 main();
 
@@ -324,7 +340,9 @@ async function main() {
 
 > vvisp console <_contract-apis_> [options]
 
-The `console` is a command providing an interactive and easy-to-use shell environment for contractApis generated by abi-to-script. The repository used in the tutorial is as follows.(https://github.com/HAECHI-LABS/vvisp-sample)
+The `console` is a command providing an interactive and easy-to-use shell environment for contractApis generated by `abi-to-script`.
+The repository used in the tutorial is as follows.
+(https://github.com/HAECHI-LABS/vvisp-sample)
 
 **Before starting console, contractApis must be created and contract used to create contractApis must be deployed.**
 
@@ -334,7 +352,7 @@ The `console` is a command providing an interactive and easy-to-use shell enviro
 
 `vvisp console <contract-apis>` 
 
-If you do not enter a `<contract-apis>` value, it will automatically find contractApis in the current folder and run console.
+If you do not enter a `<contract-apis>` value, it will automatically find `contractApis/` in the current folder and run console.
 
 
 
@@ -478,7 +496,7 @@ The commands available in the vvisp console are call, show list help exit.
    Enter the address of SampleToken: 
    ```
 
-3. The name of automatically generated js files(such as `HaechiV1.js` and `HaechiGym.js` in contractApis/back/js) by `abi-to-script` must be the same as the contracts in state.vvisp.json.
+3. The name of automatically generated js files(such as `HaechiV1.js` and `HaechiGym.js` in `contractApis/back/js`) by `abi-to-script` must be the same as the contracts in `state.vvisp.json`.
 
 
 ## flatten

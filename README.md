@@ -6,22 +6,18 @@
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lernajs.io/)
 
-> Command Line Interface for the upgradeable smart contract framework. 
+> The most convenient smart contract development framework and command line interface on EVM based blockchain. 
 
-vvisp is a new Command Line Interface tool created to help developers easily develop better DApps by providing an upgradeable smart contract framework as well as new development tools.
+**Simple and fast smart contract deployment and execution with a single command line**
 
-Upgradeable Smart Contract helps to easily fix bugs and update business logics for the DApp service.
-It also provides a high-quality user experience while maintaining the same entry point for users and updating smart contracts atomically.
-
-It helps to develop, upgrade, test, compile and control the user’s current version of the DApp service.
-
-If you want more information about the Upgradeable Smart Contract Framework, you can take a look at the HAECHI-LABS [pdf file](https://drive.google.com/file/d/1H9gtmpiZ5zwIFwgHGOOvz9Oa8SAlpM5h/view?usp=sharing).
-
-| **Contributors**: Please see the [Contributing](#contributing) section of this README. |
-| --- |
+###Key Benefits
+ - Improving Blockchain Service Development Environment
+ - Shortening Operating Time of Blockchain Service Development 
+ - Shortening the Running Curve of Global Developers Who Are Not Familiar with Blockchain
 
 ## Table of Contents
 
+- [Description](#description)
 - [Install](#install)
 - [Usage](#usage)
 - [Commands](#commands)
@@ -29,6 +25,35 @@ If you want more information about the Upgradeable Smart Contract Framework, you
 - [Architecture](#architecture)
 - [Contact](#contact)
 - [License](#license)
+
+## Description
+**CLI tools that are easy to use for developers who are not familiar with blockchain.**
+
+: Smart contracts of the blockchain are unfamiliar development areas.
+There are a lot of things that developers are unfamiliar with DApp development.
+Even if you create a contract by referring to several references, there is a barrier to how to deploy it and how to use it.
+vvisp is a command line interface (CLI) tool designed to reduce this inconvenience. 
+
+**(1) Deploying a contract with one command line**
+
+: Deploying smart contracts to a blockchain is an unfamiliar process for developers.
+In order to deploy a contract, you must write your smart contract deployment code as well as create a smart contract.
+To deploy multiple smart contracts that make up DApp, developers also had to consider the order of deployment.
+If you simply define your deployment targets as a simple configuration file, vvisp considers the deployment order and deploys contracts in a single command line automatically with no code to write, .
+
+**(2) Executing the contract function with one command line**
+
+: Developers had to study the library, call the function, and manually write the function call code to execute the function of a contract.
+This serves as a barrier to entry for developers who are unfamiliar with smart contract development.
+However, vvisp is designed to execute a specific function of a contract through a single command line and to receive results without a series of tasks.
+
+**(3) Supporting Upgradeable Smart Contract Framework**
+
+vvisp also supports USCF(Upgradeable Smart Contract Framework).
+If you want more information about the Upgradeable Smart Contract Framework, you can take a look at the HAECHI-LABS [pdf file](https://drive.google.com/file/d/1H9gtmpiZ5zwIFwgHGOOvz9Oa8SAlpM5h/view?usp=sharing).
+
+| **Contributors**: Please see the [Contributing](#contributing) section of this README. |
+| --- |
 
 ## Install
 
@@ -95,7 +120,8 @@ Please see linked documentation below:
 
 <p align="center"><img src="./images/[vvisp]logical-view.png" width="550px" height="300px"></p>
 
-vvisp communicates with main-net, test-net through rpc, and helps to develop, upgrade, test, compile and control the user’s current version of the DApp service. vvisp uses truffle for testing.
+vvisp communicates with main-net, test-net through rpc, and helps to develop, upgrade, test, compile and control the user’s current version of the DApp service.
+vvisp supports truffle test framework.
 
 
 

@@ -43,21 +43,33 @@ root/
 ├── service.vvisp.json
 └── truffle-config.json
 ```
-> - `package.json`이 생성됩니다. HEACHI LABS에서 사용하는 여러 library들이 추가되어 있습니다.
-> - `contracts` 폴더가 생성됩니다. Contract code는 이곳에서 작업해 주시기 바랍니다.
-> - `contracts/Migrations.sol` 파일이 생성됩니다. 해당 파일은 truffle의 일부 기능을 위해 필요한 컨트랙트입니다.
+> - `package.json`이 생성됩니다.
+HEACHI LABS에서 사용하는 여러 library들이 추가되어 있습니다.
+> - `contracts` 폴더가 생성됩니다.
+Contract code는 이곳에서 작업해 주시기 바랍니다.
+> - `contracts/Migrations.sol` 파일이 생성됩니다.
+해당 파일은 truffle 사용을 위해 필요한 컨트랙트입니다.
 > - `contracts/upgradeable` 폴더 내에 upgradeable smart contract framework에 필요한 `VvispRegistry.sol` file이 생성됩니다.
-> - `.env` 파일이 생성됩니다. 이 곳에서 환경 변수를 설정하십시오. [참고](../../../CONFIGURATION-ko.md#env)
-> - solidity를 위한 교정 도구인 [solium](https://github.com/duaraghav8/Solium)을 위한 파일인 `.soliumignore`, `.solcover.js`, `.soliumrc.json`이 생성됩니다.
-> - `scripts/test.sh`가 생성되고 `$ npm run test` 스크립트가 `package.json`에 추가됩니다. truffle의 contract testing을 할 때 유용합니다.
-> - `scripts/coverage.sh`가 생성되고 ` $ npm run coverage` 스크립트가 `package.json`에 추가됩니다. 컨트랙트 테스트 코드의 커버리지를 보여줍니다.
-> - `truffle-config.js`가 생성됩니다. truffle을 사용할 때 필요하며 관련 설정 정보가 담겨 있습니다.
-> - `migrations/1_initial_migration.js`이 생성됩니다. truffle test를 위해 필요합니다.
-> - `test` 폴더가 생성됩니다. truffle test를 위한 testcode들을 여기서 생성해 주십시오. 
+> - `vvisp-config.js` 파일이 생성됩니다.
+이 곳에서 환경 변수를 설정하십시오.
+[참고](../../../CONFIGURATION-ko.md#config)
+> - solidity를 위한 교정 도구인 [solium](https://github.com/duaraghav8/Solium)을 위한 파일들, `.soliumignore`, `.solcover.js`, `.soliumrc.json`이 생성됩니다.
+> - `scripts/test.sh`가 생성되고 `$ npm run test` 스크립트가 `package.json`에 추가됩니다.
+truffle의 contract testing을 할 때 유용합니다.
+> - `scripts/coverage.sh`가 생성되고 ` $ npm run coverage` 스크립트가 `package.json`에 추가됩니다.
+컨트랙트 테스트 코드의 커버리지를 보여줍니다.
+> - `truffle-config.js`가 생성됩니다.
+truffle을 사용할 때 필요하며 관련 설정 정보가 담겨 있습니다.
+> - `migrations/1_initial_migration.js`이 생성됩니다.
+truffle test를 위해 필요합니다.
+> - `test` 폴더가 생성됩니다.
+truffle test를 위한 testcode들을 여기서 생성해 주십시오. 
 > - truffle 관련 정보는 [truffle documentation](https://truffleframework.com/docs/truffle/overview)을 참고하시길 바랍니다.
 > - Test case 작성을 도와주는 [openzeppelin-test-helpers](https://github.com/OpenZeppelin/openzeppelin-test-helpers)를 이용할 수 있습니다.
 > - `test` 폴더에 예제 테스트 파일인 `Example.test.js`이 생성됩니다. 
-> - `service.vvisp.json` 파일이 생성됩니다. `$ vvisp deploy-service` 실행 전 해당 파일에 변수들을 설정해 주십시오. [참고](../../../CONFIGURATION-ko.md#service)
+> - `service.vvisp.json` 파일이 생성됩니다.
+`$ vvisp deploy-service` 실행 전 해당 파일에 변수들을 설정해 주십시오.
+[참고](../../../CONFIGURATION-ko.md#service)
 
 ## compile
 > vvisp compile [_files..._] [options]
@@ -129,9 +141,10 @@ $ vvisp deploy-service
 
 __Process__
 
-배포 순서는 다음과 같습니다. 배포할 대상이 없다면 해당 작업을 건너뜁니다.
+배포 순서는 다음과 같습니다.
+배포할 대상이 없다면 해당 작업을 건너뜁니다.
 
-1) Registry를 배포합니다. (Upgrade시엔 배포하지 않습니다)
+1) Registry를 배포합니다. (Upgrade 작업시엔 추가적으로 배포하지 않습니다)
 
 2) Upgradeable Contract의 Business Contract들을 배포합니다.
 
@@ -141,7 +154,8 @@ __Process__
 
 5) NonUpgradeable Contract들의 정보를 Registry에 저장합니다.
 
-6) Upgradeable Contract들을 Registry와 연결합니다. 실질적인 upgrade 작업이며, 하나의 트랜잭션에서 atomic하게 일어납니다.
+6) Upgradeable Contract들을 Registry와 연결합니다.
+실질적인 upgrade 작업이며, 하나의 트랜잭션에서 atomic하게 일어납니다.
 
 7) Upgradeable Contract들의 추가적인 정보를 Registry에 저장합니다.
 
@@ -158,44 +172,38 @@ __`state.vvisp.json`__
   "serviceName": "Haechi", (1)
   "registry": "0x00C...", (2)
   "contracts": { (3)
-    "ContractKeyName1": { (4)
-      "address": "0x73c...", (5)
-      "proxy": "0x8d7...", (6)
-      "fileName": "Contract1_V0.sol", (7)
+    "ContractKeyName3": { (4)
+      "address": "0x863...", (5)
+      "fileName": "Contract.sol" (6)
+    },
+    "ContractKeyName1": {
+      "address": "0x73c...",
+      "proxy": "0x8d7...", (7)
+      "fileName": "Contract1_V0.sol",
       "upgradeable": true (8)
-    },
-    "ContractKeyName2": {
-      "address": "0x67B...",
-      "proxy": "0xcf2...",
-      "fileName": "Contract2_V1.sol",
-      "upgradeable": true
-    },
-    "ContractKeyName3": {
-      "address": "0x863...",
-      "fileName": "Contract.sol"
     }
   }
 }
 ```
 
-1) 설정된 service의 이름입니다.
+1. 설정된 service의 이름입니다.
 
-2) 배포된 registry의 address를 나타냅니다.
+1. 배포된 registry의 address를 나타냅니다.
+만약 registry를 사용하지 않겠다고 정의했다면, `noRegistry`로 표현됩니다.
 
-3) 배포된 contract들의 정보를 json 형식으로 정의합니다.
+1. 배포된 contract들의 정보가 json 형식으로 정의됩니다.
 
-4) 배포된 contract의 이름의 이름을 나타냅니다.
+1. 배포된 contract의 이름의 이름을 나타냅니다.
 
-5) 배포된 contract의 address를 나타냅니다.
-nonUpgradeable contract의 entry point입니다.
+1. 배포된 contract의 address를 나타냅니다.
 
-6) 배포된 upgradeable contract의 proxy address를 나타냅니다.
+1. 현재 배포된 contract 버전의 file명(contract명)을 나타냅니다.
+
+1. 배포된 upgradeable contract의 proxy address를 나타냅니다.
 upgradeable contract의 경우 proxy가 entry point입니다.
 nonUpgradeable contract의 경우 해당 속성이 없습니다.
 
-7) 현재 배포된 contract 버전의 file명(contract명)을 나타냅니다.
-
-8) upgradeable contract를 나타내는 속성입니다.
+1. upgradeable contract를 나타내는 속성입니다.
 
 ## abi-to-script
 
@@ -237,10 +245,12 @@ Generate Finished!
 
 ```bash
 $ ls
-README.md           contracts           node_modules        package.json        service.vvisp.json  test                contractApis        migrations          package-lock.json   scripts             service2.vvisp.json truffle-config.js
+README.md           contracts           node_modules        package.json
+service.vvisp.json  test                contractApis        migrations
+package-lock.json   scripts             service2.vvisp.json truffle-config.js
 ```
 
-생성 된`contractApis/` 폴더의 구조는 다음과 같습니다.
+생성 된`contractApis/` 폴더의 구조는 다음과 같습니다:
 
 ```
 contractApis/
@@ -263,13 +273,14 @@ contractApis/
 
 > - `contractApis/back/abi/`에 컨트랙트들의 abi 파일들이 저장됩니다.
 > - `contractApis/back/js/`에 api들이 저장됩니다.
-> - `contractApis/back/utils/`에 api들에 필요한 library들이 저장됩니다.
 
 - `-f, --front <name>` option의 경우
 
 > - `contractApis/front/abi/`에 컨트랙트들의 abi 파일이 저장됩니다.
-> - `contractApis/front/js/`에 api들이 저장됩니다. **(not needed)** 
-> - `contractApis/front/name.js`에 번들링된 api들이 저장됩니다. (파일명은 입력한 name을 따라 갑니다)
+> - `contractApis/front/js/`에 api들이 저장됩니다.
+**(not needed)** 
+> - `contractApis/front/name.js`에 번들링된 api들이 저장됩니다.
+(파일명은 입력한 name을 따라 갑니다)
 
 front api의 경우, 메타마스크와 연동을 위해 [web3 구버전](https://github.com/ethereum/wiki/wiki/JavaScript-API)에 맞춰져 있습니다.
 
@@ -280,9 +291,6 @@ front api의 경우, 메타마스크와 연동을 위해 [web3 구버전](https:
 자동 생성된 `contractApis/`를 활용하여 smart contract의 api를 호출 할 수 있습닏다.
 
 ```javascript
-// Set the environment variable in the .env file.
-require('dotenv').config();
-
 /*
 HaechiV1 has following methods
 
@@ -296,7 +304,16 @@ run: function(options)
 initialize: function(__gym, options)
 
 */
-const { HaechiV1 } = require('../contractApis/back');
+// You can give configuration arguments like below.
+// If you described vvisp-config.json already, you don't have to give arguments.
+const config = {
+  from: PRIVATE_KEY,
+  gasPrice: GAS_PRICE,
+  gasLimit: GAS_LIMIT
+};
+// Write url or make provider object
+const webSetter = 'URL_OR_PROVIDER';
+const { HaechiV1 } = require('../contractApis/back')(config, webSetter);
 
 main();
 
@@ -316,7 +333,9 @@ async function main() {
 
 > vvisp console <_contract-apis_> [options]
 
-abi-to-script에 의해 생성된 contractApis를 사용하여 smart contract의 api를 쉽고, 상호작용하며 호출할 수 있는 `console` 환경을 제공합니다. 해당 문서에서 사용된 예제 repository는 다음과 같습니다.(https://github.com/HAECHI-LABS/vvisp-sample)
+`abi-to-script`에 의해 생성된 contractApis를 사용하여 smart contract의 api를 쉽고, 상호작용하며 호출할 수 있는 `console` 환경을 제공합니다.
+해당 문서에서 사용된 예제 repository는 다음과 같습니다.
+(https://github.com/HAECHI-LABS/vvisp-sample)
 
 **console을 시작하기 전에, contractApis가 반드시 생성되어 있어야 하고 호출한 smart contract가 deploy되어 있어야 합니다.**
 
@@ -326,7 +345,7 @@ abi-to-script에 의해 생성된 contractApis를 사용하여 smart contract의
 
 `vvisp console <contract-apis>` 
 
-만약 `<contract-apis>`를 일력하지 않는다면, 자동으로 현재폴더에 있는 `<contract-apis>`를 찾고 `console`을 실행시킵니다.
+만약 `<contract-apis>`를 일력하지 않는다면, 자동으로 현재폴더에 있는 `contractApis/`를 찾고 `console`을 실행시킵니다.
 
 
 
@@ -468,7 +487,7 @@ vvisp console에서 사용가능한 command는 다음과 같습니다: call, sho
    Enter the address of SampleToken: 
    ```
 
-3. `abi-to-script`에 의해 자동생성된 script파일(예를 들어  `HaechiV1.js` 와 `HaechiGym.js` in contractApis/back/js)의 이름은 반드시 state.vvisp.json의 contract 파일 이름과 동일해야 합니다.
+3. `abi-to-script`에 의해 자동생성된 script파일(예를 들어 `HaechiV1.js` 와 `HaechiGym.js` in `contractApis/back/js`)의 이름은 반드시 `state.vvisp.json`의 contract 파일 이름과 동일해야 합니다.
 
 
 ## flatten
