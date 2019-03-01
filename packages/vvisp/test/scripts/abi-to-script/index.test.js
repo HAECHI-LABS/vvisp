@@ -1,5 +1,5 @@
 const chai = require('chai');
-const assert = chai.assert;
+const expect = chai.expect;
 chai.use(require('chai-as-promised')).should();
 
 const path = require('path');
@@ -14,7 +14,8 @@ const {
   web3Store,
   privateKeyToAddress
 } = require('@haechi-labs/vvisp-utils');
-const { TEST } = require('../../../config/Constant');
+const { TEST, DEFAULT_CONFIG_FILE } = require('../../../config/Constant');
+const VVISP_CONFIG_PATH = path.join('./', DEFAULT_CONFIG_FILE);
 
 const CONTRACT1 = 'Attachment';
 const CONTRACT2 = 'Token_V0';
@@ -97,67 +98,83 @@ describe('# abi-to-script process test', function() {
     });
 
     describe('# output test', function() {
-      before(async function() {
-        const configSetting = {
-          from: PRIV_KEY
-        };
+      const configSetting = {
+        from: PRIV_KEY
+      };
+      const web3Setting = TEST.URL;
 
-        const web3Setting = TEST.URL;
+      it('should throw error when there is not network configuration', function() {
+        let tmpConfigName = 'oaieugaoiefu.js';
+        const TMP_CONFIG_PATH = path.join('./', tmpConfigName);
 
-        this.apis = _.omit(
-          require('../../../contractApis/back')(configSetting, web3Setting),
-          ['config', 'setWeb3']
-        );
-        const txCount = await web3.eth.getTransactionCount(SENDER);
-        this.receipt1 = await compileAndDeploy(CONTRACT_PATH1, PRIV_KEY, [], {
-          silent: true,
-          txCount: txCount
+        fs.moveSync(VVISP_CONFIG_PATH, TMP_CONFIG_PATH);
+        web3Store.delete();
+        Config.delete();
+
+        expect(() => {
+          require('../../../contractApis/back')();
+        }).to.throw(Error);
+
+        web3Store.delete();
+        Config.delete();
+        fs.moveSync(TMP_CONFIG_PATH, VVISP_CONFIG_PATH);
+      });
+
+      describe('After deploying', function() {
+        before(async function() {
+          this.apis = require('../../../contractApis/back')(
+            configSetting,
+            web3Setting
+          );
+          const txCount = await web3.eth.getTransactionCount(SENDER);
+          this.receipt1 = await compileAndDeploy(CONTRACT_PATH1, PRIV_KEY, [], {
+            silent: true,
+            txCount: txCount
+          });
+          this.receipt2 = await compileAndDeploy(CONTRACT_PATH2, PRIV_KEY, [], {
+            silent: true,
+            txCount: txCount + 1
+          });
         });
-        this.receipt2 = await compileAndDeploy(CONTRACT_PATH2, PRIV_KEY, [], {
-          silent: true,
-          txCount: txCount + 1
+
+        it('should have contract functions', function() {
+          forIn(this.apis, Contract => {
+            Contract.should.be.a('function');
+          });
         });
-      });
 
-      it('should have two constructor functions', function() {
-        forIn(this.apis, Contract => {
-          Contract.should.be.a('function');
+        it('should make api instances', function() {
+          this.attachment = new this.apis[CONTRACT1](
+            this.receipt1.contractAddress
+          );
+          this.token = new this.apis[CONTRACT2](this.receipt2.contractAddress);
+          this.attachment
+            .getAddress()
+            .should.equal(this.receipt1.contractAddress);
+          this.token.getAddress().should.equal(this.receipt2.contractAddress);
         });
-      });
 
-      it('should make api instances', function() {
-        this.attachment = new this.apis[CONTRACT1](
-          this.receipt1.contractAddress
-        );
-        this.token = new this.apis[CONTRACT2](this.receipt2.contractAddress);
-        this.attachment
-          .getAddress()
-          .should.equal(this.receipt1.contractAddress);
-        this.token.getAddress().should.equal(this.receipt2.contractAddress);
-      });
+        it('should change address', function() {
+          const tmpAddress = '0x88C22c3Fe7A049e42cF4f3a5507e6820F0EceE61';
+          const address1 = this.attachment.getAddress();
+          const address2 = this.token.getAddress();
+          this.attachment.at(tmpAddress);
+          this.token.at(tmpAddress);
+          this.attachment.getAddress().should.equal(tmpAddress);
+          this.token.getAddress().should.equal(tmpAddress);
+          this.attachment.at(address1);
+          this.token.at(address2);
+        });
 
-      it('should change address', function() {
-        const tmpAddress = '0x88C22c3Fe7A049e42cF4f3a5507e6820F0EceE61';
-        const address1 = this.attachment.getAddress();
-        const address2 = this.token.getAddress();
-        this.attachment.at(tmpAddress);
-        this.token.at(tmpAddress);
-        this.attachment.getAddress().should.equal(tmpAddress);
-        this.token.getAddress().should.equal(tmpAddress);
-        this.attachment.at(address1);
-        this.token.at(address2);
-      });
+        it('should call functions', async function() {
+          const txCount = await web3.eth.getTransactionCount(SENDER);
+          await this.attachment.methods.initialize(SENDER).should.be.fulfilled;
+          await this.token.methods.initialize(SENDER, { txCount: txCount + 1 })
+            .should.be.fulfilled;
 
-      it('should call function', async function() {
-        const txCount = await web3.eth.getTransactionCount(SENDER);
-        await this.attachment.methods.initialize(SENDER).should.be.fulfilled;
-        await this.token.methods.initialize(SENDER, { txCount: txCount + 1 })
-          .should.be.fulfilled;
-      });
-
-      it('should get owner', async function() {
-        (await this.attachment.methods.owner()).should.equal(SENDER);
-        (await this.token.methods.owner()).should.equal(SENDER);
+          (await this.attachment.methods.owner()).should.equal(SENDER);
+          (await this.token.methods.owner()).should.equal(SENDER);
+        });
       });
     });
   });
