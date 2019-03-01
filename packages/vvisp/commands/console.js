@@ -9,6 +9,7 @@ const register = commander =>
     .command(signature, { noHelp: true })
     .usage('[script-api-path]')
     .description(description)
-    .action(console);
+    .action(console)
+    .addNetworkOption();
 
 module.exports = { name, signature, description, register, console };

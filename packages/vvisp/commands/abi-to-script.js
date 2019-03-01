@@ -10,6 +10,7 @@ const register = commander =>
     .usage('<files...> [options]')
     .option('-f, --front <name>', 'generate the front-end library')
     .description(description)
-    .action(abiToScript);
+    .action(abiToScript)
+    .addCustomConfigOption();
 
 module.exports = { name, signature, description, register, abiToScript };

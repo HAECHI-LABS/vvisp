@@ -3,6 +3,8 @@ const { version } = require('../package.json');
 const commands = require('../commands');
 const chalk = require('chalk');
 
+require('./options');
+
 commands.forEach(command => command.register(commander));
 const maxLength = Math.max(
   ...commands.map(command => command.signature.length)

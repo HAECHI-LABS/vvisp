@@ -106,30 +106,32 @@ function Config() {
     },
     gasLimit: {
       get: function() {
+        if (self._values['gasLimit']) {
+          return self._values['gasLimit'];
+        }
         try {
           return self.network_config.gas || self.network_config.gasLimit;
         } catch (e) {
           return defaultTxOptions.gasLimit;
         }
       },
-      set: function() {
-        throw new Error(
-          "Don't set config.gas directly. Instead, set config.networks and then config.networks[<network name>].gas"
-        );
+      set: function(value) {
+        self._values['gasLimit'] = value;
       }
     },
     gasPrice: {
       get: function() {
+        if (self._values['gasPrice']) {
+          return self._values['gasPrice'];
+        }
         try {
           return self.network_config.gasPrice;
         } catch (e) {
           return defaultTxOptions.gasPrice;
         }
       },
-      set: function() {
-        throw new Error(
-          "Don't set config.gasPrice directly. Instead, set config.networks and then config.networks[<network name>].gasPrice"
-        );
+      set: function(value) {
+        self._values['gasPrice'] = value;
       }
     },
     provider: {
