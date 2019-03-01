@@ -1,13 +1,13 @@
 module.exports = function(deployState) {
   const { CONSTRUCTOR, INITIALIZE, VARIABLES } = require('../constants');
   const { forIn } = require('@haechi-labs/vvisp-utils');
-  const { getVar, hasConstructArgs, hasInitArgs } = require('../utils/index');
+  const { getVar, hasConstructArgs, hasInit } = require('../utils/index');
 
   const stateClone = deployState.getState();
   const variables = deployState[VARIABLES];
 
   forIn(stateClone.contracts, (contract, name) => {
-    if (hasInitArgs(contract)) {
+    if (hasInit(contract)) {
       _injectVar(variables, stateClone, name, INITIALIZE);
     }
     if (hasConstructArgs(contract)) {
@@ -22,7 +22,7 @@ module.exports = function(deployState) {
     const _arguments =
       _type === CONSTRUCTOR
         ? _contract[CONSTRUCTOR]
-        : _contract[INITIALIZE].arguments;
+        : _contract[INITIALIZE].arguments || [];
     const _path = `${_name}/${_type}`;
 
     _injecting(_variables, _stateClone, _path, _arguments, _contract);

@@ -6,7 +6,7 @@ const deployService = require('../../../scripts/deploy-service/');
 const compareConfigAndState = require('../../../scripts/deploy-service/preProcess/compareConfigAndState');
 const { PENDING_STATE } = require('../../../scripts/deploy-service/constants');
 const { SERVICE_PATH, STATE_PATH, TEST } = require('../../../config/Constant');
-const { hasInitArgs } = require('../../../scripts/deploy-service/utils');
+const { hasInit } = require('../../../scripts/deploy-service/utils');
 const {
   Config,
   forIn,
@@ -192,7 +192,7 @@ function getWaitingTxNum() {
           nonUpgradeableExists = true;
         }
         resultNumber++; // nonUpgradeables
-        if (hasInitArgs(contract)) {
+        if (hasInit(contract)) {
           resultNumber++; // init Tx
         }
       }

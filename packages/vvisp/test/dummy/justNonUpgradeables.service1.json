@@ -11,7 +11,12 @@
         "${contracts.DependencyB.address}",
         "${contracts.DependencyC.address}",
         "${variables.owner}"
-      ]
+      ],
+      "initialize": {
+        "functionName": "initialize",
+        "arguments": [
+        ]
+      }
     },
     "DependencyB": {
       "path": "contracts/test/DependencyB.sol",
@@ -19,7 +24,12 @@
         3,
         "${contracts.DependencyD.address}",
         "${variables.owner}"
-      ]
+      ],
+      "initialize": {
+        "functionName": "initialize",
+        "arguments": [
+        ]
+      }
     },
     "DependencyC": {
       "path": "contracts/test/DependencyC.sol",
