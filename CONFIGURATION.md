@@ -107,6 +107,15 @@ module.exports = {
 }
 ```
 
+You can change some of the environment variables mentioned above by using option when you run command.
+```
+--configFile <fileName> // Read and use your custom configuration file.
+-n, --network <network> // Change the network.
+--gasLimit <gasLimit> // Change the gasLimit.
+--gasPrice <gasPrice> // Change the gasPrice.
+--from <privateKey> // Change the privateKey to use.
+```
+
 ## <a name="service"></a>service.vvisp.json
 
 `service.vvisp.json` is a configuration file that defines a service, a bundle of smart contracts that must be managed with the same versioning scheme.

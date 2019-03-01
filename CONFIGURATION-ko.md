@@ -107,6 +107,15 @@ module.exports = {
 }
 ```
 
+명령어 입력 시 옵션을 통해 상기 기술된 환경 변수 중 일부를 변경해서 사용가능합니다.
+```
+--configFile <fileName> // custom한 설정 파일을 읽어 사용합니다.
+-n, --network <network> // network를 변경합니다.
+--gasLimit <gasLimit> // gasLimit 값을 조정합니다.
+--gasPrice <gasPrice> // gasPrice 값을 조정합니다.
+--from <privateKey> // 사용할 privateKey 값을 변경합니다.
+```
+
 ## <a name="service"></a>service.vvisp.json
 
 `service.vvisp.json`은 같은 버전 체계로 관리되어야 하는 스마트 컨트랙트의 묶음인 service를 정의하는 설정 파일입니다. 
