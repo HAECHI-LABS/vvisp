@@ -4,8 +4,7 @@ chai.use(require('chai-as-promised')).should();
 
 const path = require('path');
 const fs = require('fs-extra');
-const abiToScript = require('../../../scripts/abi-to-script');
-const _ = require('lodash');
+const genScript = require('../../../scripts/gen-script');
 
 const {
   compileAndDeploy,
@@ -29,7 +28,7 @@ const config = Config.get();
 const PRIV_KEY = config.from;
 const SENDER = privateKeyToAddress(PRIV_KEY);
 
-describe('# abi-to-script process test', function() {
+describe('# gen-script process test', function() {
   this.timeout(50000);
   let web3;
 
@@ -56,7 +55,7 @@ describe('# abi-to-script process test', function() {
       });
 
       it('should be fulfilled', async function() {
-        await abiToScript(this.files, { silent: true }).should.be.fulfilled;
+        await genScript(this.files, { silent: true }).should.be.fulfilled;
       });
 
       it('should make all directories', function() {
@@ -190,7 +189,7 @@ describe('# abi-to-script process test', function() {
       });
 
       it('should be fulfilled', async function() {
-        await abiToScript(this.files, { silent: true, front: this.name }).should
+        await genScript(this.files, { silent: true, front: this.name }).should
           .be.fulfilled;
       });
 

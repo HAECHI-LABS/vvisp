@@ -1,4 +1,4 @@
-const abiToScript = require('./abi-to-script');
+const genScript = require('./gen-script');
 const compile = require('./compile');
 const deployService = require('./deploy-service');
 const deployContract = require('./deploy-contract');
@@ -7,7 +7,7 @@ const flatten = require('./flatten');
 const console = require('./console');
 
 module.exports = {
-  abiToScript,
+  genScript,
   compile,
   deployService,
   deployContract,
