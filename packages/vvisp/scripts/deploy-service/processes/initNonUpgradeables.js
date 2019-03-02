@@ -40,6 +40,9 @@ module.exports = async function(deployState, options) {
     const { contract, name } = nonUpgradeables[i];
     const stateContract = stateClone.contracts[name];
 
+    if (!stateContract.pending) {
+      continue;
+    }
     const initialize = stateContract[INITIALIZE];
     if (initialize && initialize.functionName) {
       const instancePath = path.join('./', contract.path);
