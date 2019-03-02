@@ -46,8 +46,8 @@ module.exports = async function(deployState, options) {
   }
 
   // Check whether this process needs Registry
-  // Event occurs when user sets config.registry false
-  if (config.registry === false) {
+  // Event occurs when user sets config.registry false or does not set.
+  if (!config.registry) {
     // User cannot use upgradeable patterns without registry
     if (compileInformation.noProxy !== true) {
       throw new Error(
