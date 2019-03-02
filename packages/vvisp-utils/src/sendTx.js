@@ -4,7 +4,7 @@ module.exports = async function(_toAddr, _value, _privKey, options) {
   const privateKeyToAddress = require('./privateKeyToAddress');
   const printOrSilent = require('./printOrSilent');
 
-  const DEFAULT_GAS_LIMIT = web3.utils.toHex(4600000);
+  const DEFAULT_GAS_LIMIT = web3.utils.toHex(6721975);
   const DEFAULT_GAS_PRICE = web3.utils.toHex(10e9);
 
   return main(_toAddr, _value, _privKey, options);
