@@ -6,7 +6,7 @@ English version: [README.md](./README.md)
 - [compile](#compile): 폴더 내에 있는 솔리디티 소스를 컴파일
 - [deploy-contract](#deploy-contract): 특정 컨트랙트를 배포
 - [deploy-service](#deploy-service): Upgradeable Smart Contract Framework에 따라 service를 배포
-- [abi-to-script](#abi-to-script): 블록체인 위 스마트 컨트랙트와 상호작용하는 자바스크립트 API들을 생성
+- [gen-script](#gen-script): 블록체인 위 스마트 컨트랙트와 상호작용하는 자바스크립트 API들을 생성
 - [console](#console): 손쉽게 SmartContract의 api를 호출할 수 있는 console 환경을 제공
 - [flatten](#flatten): 여러 컨트랙트들을 하나의 파일로 병합
 
@@ -205,15 +205,15 @@ nonUpgradeable contract의 경우 해당 속성이 없습니다.
 
 1. upgradeable contract를 나타내는 속성입니다.
 
-## abi-to-script
+## gen-script
 
-> vvisp abi-to-script <_files..._> [options]
+> vvisp gen-script <_files..._> [options]
 
-`abi-to-script`는 배포된 스마트 컨트랙트를 쉽게 호출 할 수 있는 자바 스크립트 라이브러리를 자동으로 생성하는 명령입니다. 튜토리얼에 사용 된 저장소는 [다음](https://github.com/HAECHI-LABS/vvisp-sample)과 같습니다.
+`gen-script`는 배포된 스마트 컨트랙트를 쉽게 호출 할 수 있는 자바 스크립트 라이브러리를 자동으로 생성하는 명령입니다. 튜토리얼에 사용 된 저장소는 [다음](https://github.com/HAECHI-LABS/vvisp-sample)과 같습니다.
 
 #### Usage
 
-`vvisp abi-to-script <contract-files...> [options]` 
+`vvisp gen-script <contract-files...> [options]` 
 
 #### options
 
@@ -224,13 +224,13 @@ nonUpgradeable contract의 경우 해당 속성이 없습니다.
 #### Example
 
 ```bash
-$ vvisp abi-to-script contracts/HaechiV1.sol
+$ vvisp gen-script contracts/HaechiV1.sol
 Compiling...
 compile contracts/HaechiV1.sol...
 
 Generate Finished!
 
-$ vvisp abi-to-script -f contracts/HaechiV1.sol
+$ vvisp gen-script -f contracts/HaechiV1.sol
 Compiling...
 compile contracts/HaechiV1.sol...
 
@@ -241,7 +241,7 @@ Generate Finished!
 
 #### Output
 
-`vvisp abi-to-script`를 실행하면 `contractApis/` 폴더가 생성됩니다.
+`vvisp gen-script`를 실행하면 `contractApis/` 폴더가 생성됩니다.
 
 ```bash
 $ ls
@@ -333,7 +333,7 @@ async function main() {
 
 > vvisp console <_contract-apis_> [options]
 
-`abi-to-script`에 의해 생성된 contractApis를 사용하여 smart contract의 api를 쉽고, 상호작용하며 호출할 수 있는 `console` 환경을 제공합니다.
+`gen-script`에 의해 생성된 contractApis를 사용하여 smart contract의 api를 쉽고, 상호작용하며 호출할 수 있는 `console` 환경을 제공합니다.
 해당 문서에서 사용된 예제 repository는 다음과 같습니다.
 (https://github.com/HAECHI-LABS/vvisp-sample)
 
@@ -487,7 +487,7 @@ vvisp console에서 사용가능한 command는 다음과 같습니다: call, sho
    Enter the address of SampleToken: 
    ```
 
-3. `abi-to-script`에 의해 자동생성된 script파일(예를 들어 `HaechiV1.js` 와 `HaechiGym.js` in `contractApis/back/js`)의 이름은 반드시 `state.vvisp.json`의 contract 파일 이름과 동일해야 합니다.
+3. `gen-script`에 의해 자동생성된 script파일(예를 들어 `HaechiV1.js` 와 `HaechiGym.js` in `contractApis/back/js`)의 이름은 반드시 `state.vvisp.json`의 contract 파일 이름과 동일해야 합니다.
 
 
 ## flatten

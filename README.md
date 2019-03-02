@@ -87,18 +87,18 @@ _[See details](./packages/vvisp/commands/README.md#init)_ for ``$ vvisp init``.
 
 **2. Make your Contracts at `contracts/`**
 
-Now, you can use `abi-to-script`, `compile` and `flatten` commands.
+Now, you can use `gen-script`, `compile` and `flatten` commands.
 
 **3. Set `vvisp-config.js` file**
 
 Please set environment variables in `vvisp-config.js` file.
-See [here](https://github.com/HAECHI-LABS/vvisp/blob/dev/CONFIGURATION.md#config) for more information about `vvisp-config.js`.
+See [here](./CONFIGURATION.md#config) for more information about `vvisp-config.js`.
 Now you can use `deploy-contract` command.
 
 **4. Set `service.vvisp.json` file**
 
 Please set information about your DApp service in `service.vvisp.json`.
-See [here](https://github.com/HAECHI-LABS/vvisp/blob/dev/CONFIGURATION.md#service) for more information about `service.vvisp.json`.
+See [here](./CONFIGURATION.md#service) for more information about `service.vvisp.json`.
 Now you can use `deploy-service` command.
 
 Please see [CONFIGURATION.md](./CONFIGURATION.md) to configure your project.
@@ -112,7 +112,7 @@ Please see linked documentation below:
 - [compile](./packages/vvisp/commands/README.md#compile): Compile solidity contract files
 - [deploy-contract](./packages/vvisp/commands/README.md#deploy-contract): Deploy contract
 - [deploy-service](./packages/vvisp/commands/README.md#deploy-service): Deploy service of your contracts
-- [abi-to-script](./packages/vvisp/commands/README.md#abi-to-script): Generate javascript APIs interacting with smart contract on blockchain
+- [gen-script](./packages/vvisp/commands/README.md#gen-script): Generate javascript APIs interacting with smart contract on blockchain
 - [console](./packages/vvisp/commands/README.md#console): Provides a console environment that can invoke contracts interactively
 - [flatten](./packages/vvisp/commands/README.md#flatten): Flatten several contract files in one file
 
@@ -151,7 +151,7 @@ Please see linked documentation below:
 
   - contractApis
 
-    It is generated automatically by the `vvisp abi-to-script` command and provides a javascript library that allows you to easily execute deployed projects.
+    It is generated automatically by the `vvisp gen-script` command and provides a javascript library that allows you to easily execute deployed projects.
 
   - configuration
 

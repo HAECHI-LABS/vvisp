@@ -88,18 +88,18 @@ $ vvisp init
 
 **2. `contracts/` 폴더에 컨트랙트를 생성 및 작성**
 
-이제, `abi-to-script`, `compile` 그리고 `flatten` 명령어를 사용할 수 있습니다.
+이제, `gen-script`, `compile` 그리고 `flatten` 명령어를 사용할 수 있습니다.
 
 **3. `vvisp-config.js` 설정**
 
 `vvisp-config.js`에 환경 변수들을 설정해 주세요.
-`vvisp-config.js`에 대한 자세한 정보는 [이곳](https://github.com/HAECHI-LABS/vvisp/blob/dev/CONFIGURATION-ko.md#config)을 참고해 주세요.
+`vvisp-config.js`에 대한 자세한 정보는 [이곳](./CONFIGURATION-ko.md#config)을 참고해 주세요.
 이제 `deploy-contract` 명령어를 사용할 수 있습니다.
 
 **4. `service.vvisp.json` 작성**
 
 배포할 DApp 서비스의 컨트랙트에 대한 정보를 `service.vvisp.json`에 작성해주세요.
-`service.vvisp.json`에 대한 자세한 정보는 [이곳](https://github.com/HAECHI-LABS/vvisp/blob/dev/CONFIGURATION-ko.md#service)을 참고해 주세요.
+`service.vvisp.json`에 대한 자세한 정보는 [이곳](./CONFIGURATION-ko.md#service)을 참고해 주세요.
 이제 `deploy-service` 명령어를 사용할 수 있습니다.
 
 [CONFIGURATION-ko.md](./CONFIGURATION-ko.md)에서 환경 설정에 대한 자세한 내용을 참고하세요.
@@ -113,7 +113,7 @@ $ vvisp init
 - [compile](./packages/vvisp/commands/README-ko.md#compile): 컨트랙트 파일들을 컴파일합니다.
 - [deploy-contract](./packages/vvisp/commands/README-ko.md#deploy-contract): 컨트랙트를 배포합니다.
 - [deploy-service](./packages/vvisp/commands/README-ko.md#deploy-service): 컨트랙트로 이루어진 서비스를 배포합니다.
-- [abi-to-script](./packages/vvisp/commands/README-ko.md#abi-to-script): 스마트 컨트랙트와 통신할 수 있는 자바스크립트 api들을 생성합니다.
+- [gen-script](./packages/vvisp/commands/README-ko.md#gen-script): 스마트 컨트랙트와 통신할 수 있는 자바스크립트 api들을 생성합니다.
 - [console](./packages/vvisp/commands/README-ko.md#console): 컨트랙트와 상호작용할 수 있는 콘솔 환경을 제공합니다.
 - [flatten](./packages/vvisp/commands/README-ko.md#flatten): 여러 컨트랙트 파일을 하나로 합칩니다.
 
@@ -152,7 +152,7 @@ $ vvisp init
 
   - contractApis
 
-    `vvisp abi-to-script` 명령어를 통해 자동 생성된 자바스크립트 라이브러리로 배포된 프로젝트를 쉽게 사용하게 돕습니다.
+    `vvisp gen-script` 명령어를 통해 자동 생성된 자바스크립트 라이브러리로 배포된 프로젝트를 쉽게 사용하게 돕습니다.
 
   - configuration
 
