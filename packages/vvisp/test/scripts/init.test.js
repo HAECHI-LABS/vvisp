@@ -37,7 +37,9 @@ describe('# init script test', function() {
   });
 
   it('should have right files', function() {
-    fs.existsSync(path.join(directoryName, '.env')).should.be.equal(true);
+    fs.existsSync(path.join(directoryName, 'vvisp-config.js')).should.be.equal(
+      true
+    );
     fs.existsSync(path.join(directoryName, '.gitignore')).should.be.equal(true);
     fs.existsSync(path.join(directoryName, '.solcover.js')).should.be.equal(
       true
