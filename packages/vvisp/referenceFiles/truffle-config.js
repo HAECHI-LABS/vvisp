@@ -1,28 +1,9 @@
-// http://truffleframework.com/tutorials/using-infura-custom-provider
-const HDWalletProvider = require('truffle-hdwallet-provider');
-const providerWithMnemonic = (mnemonic, providerUrl) =>
-  new HDWalletProvider(mnemonic, providerUrl);
-const infuraProvider = network =>
-  providerWithMnemonic(
-    process.env.MNEMONIC || '',
-    `https://${network}.infura.io/${process.env.INFURA_API_KEY}`
-  );
-
-const ropstenProvider = process.env.SOLIDITY_COVERAGE
-  ? undefined
-  : infuraProvider('ropsten');
-
 module.exports = {
   networks: {
     development: {
       host: 'localhost',
       port: 8545,
       network_id: '*' // eslint-disable-line camelcase
-    },
-    ropsten: {
-      provider: ropstenProvider,
-      gas: 4600000,
-      network_id: 3 // eslint-disable-line camelcase
     },
     coverage: {
       host: 'localhost',

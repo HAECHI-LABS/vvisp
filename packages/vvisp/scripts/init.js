@@ -67,8 +67,8 @@ module.exports = async function(name, options) {
 
     fs.copySync(path.join(__dirname, '../referenceFiles'), rootDir);
     fs.renameSync(
-      path.join(rootDir, 'example.env'),
-      path.join(rootDir, '.env')
+      path.join(rootDir, 'example.vvisp-config.js'),
+      path.join(rootDir, 'vvisp-config.js')
     );
     fs.renameSync(
       path.join(rootDir, 'example.service.vvisp.json'),
