@@ -1,13 +1,13 @@
 const getVar = require('./getVar');
 const hasConstructArgs = require('./hasConstructArgs');
-const hasInitArgs = require('./hasInitArgs');
+const hasInit = require('./hasInit');
 const pathToInstance = require('./pathToInstance');
 const writeState = require('./writeState.js');
 
 module.exports = {
   getVar,
   hasConstructArgs,
-  hasInitArgs,
+  hasInit,
   pathToInstance,
   writeState
 };

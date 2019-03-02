@@ -63,7 +63,12 @@
       "constructorArguments": [
         "${variables.owner}",
         "${variables.owner}"
-      ]
+      ],
+      "initialize": {
+        "functionName": "initialize",
+        "arguments": [
+        ]
+      }
     }
   }
 }

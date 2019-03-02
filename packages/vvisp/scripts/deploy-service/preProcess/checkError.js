@@ -6,7 +6,7 @@ module.exports = function(targets, compileOutput, options) {
     getCycle,
     printOrSilent
   } = require('@haechi-labs/vvisp-utils');
-  const { hasConstructArgs, hasInitArgs, getVar } = require('../utils/index');
+  const { hasConstructArgs, hasInit, getVar } = require('../utils/index');
   const { INITIALIZE, CONSTRUCTOR, UPGRADEABLE } = require('../constants');
 
   printOrSilent(chalk.head('Check Arguments...'), options);
@@ -16,9 +16,9 @@ module.exports = function(targets, compileOutput, options) {
     const abi = JSON.parse(
       getCompiledContracts(compileOutput, filePath).interface
     );
-    const hasInit = hasInitArgs(contract);
+    const hasInitialize = hasInit(contract);
     const hasConstruct = hasConstructArgs(contract);
-    if (hasInit && hasConstruct) {
+    if (hasInitialize && hasConstruct) {
       let initialize = false;
       let constructorArguments = false;
       for (let i = 0; i < abi.length; i++) {
@@ -26,11 +26,14 @@ module.exports = function(targets, compileOutput, options) {
           abi[i].name === contract[INITIALIZE].functionName &&
           abi[i].type === 'function'
         ) {
-          if (contract[INITIALIZE].arguments.length !== abi[i].inputs.length) {
+          const length = contract[INITIALIZE].arguments
+            ? contract[INITIALIZE].arguments.length
+            : 0;
+          if (length !== abi[i].inputs.length) {
             throw new Error(
               `Arguments Number Error at ${name}: Expected ${
                 abi[i].inputs.length
-              }, but ${contract[INITIALIZE].arguments.length}`
+              }, but ${length}`
             );
           }
           initialize = true;
@@ -49,17 +52,20 @@ module.exports = function(targets, compileOutput, options) {
           break;
         }
       }
-    } else if (hasInit) {
+    } else if (hasInitialize) {
       for (let i = 0; i < abi.length; i++) {
         if (
           abi[i].name === contract[INITIALIZE].functionName &&
           abi[i].type === 'function'
         ) {
-          if (contract[INITIALIZE].arguments.length !== abi[i].inputs.length) {
+          const length = contract[INITIALIZE].arguments
+            ? contract[INITIALIZE].arguments.length
+            : 0;
+          if (length !== abi[i].inputs.length) {
             throw new Error(
               `Arguments Number Error at ${name}: Expected ${
                 abi[i].inputs.length
-              }, but ${contract[INITIALIZE].arguments.length}`
+              }, but ${length}`
             );
           }
           break;
