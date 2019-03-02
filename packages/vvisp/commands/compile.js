@@ -9,6 +9,7 @@ const register = commander =>
     .command(signature, { noHelp: true })
     .usage('[files...] [options]')
     .description(description)
-    .action(compile);
+    .action(compile)
+    .addCustomConfigOption();
 
 module.exports = { name, signature, description, register, compile };
