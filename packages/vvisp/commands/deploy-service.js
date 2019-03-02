@@ -10,6 +10,7 @@ const register = commander =>
     .command(signature, { noHelp: true })
     .usage('[options]')
     .description(description)
-    .action(deployService);
+    .action(test)
+    .addNetworkOption();
 
 module.exports = { name, signature, description, register, deployService };

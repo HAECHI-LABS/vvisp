@@ -356,12 +356,6 @@ describe('# Config test', function() {
 
       describe('#gasLimit', function() {
         const TEST_NETWORK = 'coverage';
-        it('should not set directly', function() {
-          expect(() => {
-            config.gasLimit = 8000000;
-          }).to.throw();
-        });
-
         it('should return default gasLimit when network is not set', function() {
           expect(config.gasLimit).to.equal(DEFAULT_TX_OPTIONS.gasLimit);
         });
@@ -371,6 +365,13 @@ describe('# Config test', function() {
           expect(config.gasLimit).to.equal(
             sampleConfig.networks[TEST_NETWORK].gasLimit
           );
+        });
+
+        it('should prioritize option', function() {
+          config.network = TEST_NETWORK;
+          const optionGasLimit = 300;
+          config.merge({ gasLimit: optionGasLimit });
+          expect(config.gasLimit).to.equal(optionGasLimit);
         });
 
         it('should allow to receive gas also instead of gasLimit', function() {
@@ -387,21 +388,22 @@ describe('# Config test', function() {
 
       describe('#gasPrice', function() {
         const TEST_NETWORK = 'coverage';
-        it('should not set directly', function() {
-          expect(() => {
-            config.gasPrice = 10000000000;
-          }).to.throw();
-        });
-
-        it('should return default gas when network is not set', function() {
+        it('should return default gasPrice when network is not set', function() {
           expect(config.gasPrice).to.equal(DEFAULT_TX_OPTIONS.gasPrice);
         });
 
-        it('should return right gas', function() {
+        it('should return right gasPrice', function() {
           config.network = TEST_NETWORK;
           expect(config.gasPrice).to.equal(
             sampleConfig.networks[TEST_NETWORK].gasPrice
           );
+        });
+
+        it('should prioritize option', function() {
+          config.network = TEST_NETWORK;
+          const optionGasPrice = 300;
+          config.merge({ gasPrice: optionGasPrice });
+          expect(config.gasPrice).to.equal(optionGasPrice);
         });
       });
 
