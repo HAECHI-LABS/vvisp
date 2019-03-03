@@ -145,14 +145,17 @@ function Config() {
         } else if (options.provider) {
           provider = options.provider;
         } else if (options.url) {
-          provider = new Web3.providers.HttpProvider(options.url);
+          provider = new Web3.providers.HttpProvider(options.url, {
+            keepAlive: false
+          });
         } else if (options.websockets) {
           provider = new Web3.providers.WebsocketProvider(
             'ws://' + options.host + ':' + options.port
           );
         } else {
           provider = new Web3.providers.HttpProvider(
-            'http://' + options.host + ':' + options.port
+            'http://' + options.host + ':' + options.port,
+            { keepAlive: false }
           );
         }
 
