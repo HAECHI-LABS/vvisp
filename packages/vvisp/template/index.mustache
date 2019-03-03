@@ -1,5 +1,3 @@
-const fs = require('fs');
-const path = require('path');
 const { Config, web3Store } = require('@haechi-labs/vvisp-utils');
 
 module.exports = function(configOption, web3Setter) {
@@ -13,17 +11,11 @@ module.exports = function(configOption, web3Setter) {
 };
 
 function loadApis() {
-  const files = fs.readdirSync(path.join(__dirname, 'js'));
   const apis = {};
 
-  for (let i = 0; i < files.length; i++) {
-    if (files[i].slice(-3) === '.js') {
-      if (files[i] === 'index.js') {
-        continue;
-      }
-      apis[files[i].slice(0, -3)] = require(`./js/${files[i].slice(0, -3)}.js`);
-    }
-  }
+  {{#apis}}
+  apis['{{name}}'] = require('./js/{{name}}.js');
+  {{/apis}}
   return apis;
 }
 

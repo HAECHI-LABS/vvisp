@@ -11,7 +11,7 @@ module.exports = async function(files, options) {
 
   const TEMPLATE = {
     backScript: path.join(__dirname, '../../template/script.mustache'),
-    backIndex: path.join(__dirname, '../../template/index.js'),
+    backIndex: path.join(__dirname, '../../template/index.mustache'),
     frontScript: path.join(__dirname, '../../template/front.mustache'),
     frontIndex: path.join(__dirname, '../../template/frontIndex.mustache')
   };
@@ -39,8 +39,11 @@ module.exports = async function(files, options) {
     const { rootDir, abiDir, jsDir } = setDir('back');
 
     await generateApis(files, abiDir, jsDir, TEMPLATE.backScript, options);
-
-    fs.copySync(TEMPLATE.backIndex, path.join(rootDir, 'index.js'));
+    render(
+      getJsApis(jsDir),
+      path.join(rootDir, 'index.js'),
+      TEMPLATE.backIndex
+    );
 
     printOrSilent('\nGenerate Finished!', options);
   }
