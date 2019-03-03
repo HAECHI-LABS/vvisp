@@ -212,13 +212,17 @@ For nonUpgradeable contract, there is no such property.
 
 ## gen-script
 
-> vvisp gen-script <_files..._> [options]
+> vvisp gen-script [_filesOrDirectory..._] [options]
 
-The `gen-script` is a command that automatically creates a javascript library to help you easily call deployed smart contracts. The repository used in the tutorial is as follows.(https://github.com/HAECHI-LABS/vvisp-sample)
+The `gen-script` is a command that automatically creates a javascript library to help you easily call deployed smart contracts.
+The repository used in the tutorial is as follows.
+(https://github.com/HAECHI-LABS/vvisp-sample)
+
+If there is no filename entered, this command will automatically generate scripts for all the solidity files in the `contracts/` folder.
 
 #### Usage
 
-`vvisp gen-script <contract-files...> [options]` 
+`vvisp gen-script [filesOrDirectory...] [options]` 
 
 #### options
 
