@@ -207,18 +207,20 @@ nonUpgradeable contract의 경우 해당 속성이 없습니다.
 
 ## gen-script
 
-> vvisp gen-script <_files..._> [options]
+> vvisp gen-script [_filesOrDirectory..._] [options]
 
-`gen-script`는 배포된 스마트 컨트랙트를 쉽게 호출 할 수 있는 자바 스크립트 라이브러리를 자동으로 생성하는 명령입니다. 튜토리얼에 사용 된 저장소는 [다음](https://github.com/HAECHI-LABS/vvisp-sample)과 같습니다.
+`gen-script`는 배포된 스마트 컨트랙트를 쉽게 호출 할 수 있는 자바 스크립트 라이브러리를 자동으로 생성하는 명령입니다.
+튜토리얼에 사용 된 저장소는 [다음](https://github.com/HAECHI-LABS/vvisp-sample)과 같습니다.
 
 #### Usage
 
-`vvisp gen-script <contract-files...> [options]` 
+`vvisp gen-script [filesOrDirectory...] [options]` 
 
 #### options
 
 `-f, --front <name>`: front-end(브라우저)에서 실행 가능한 자바스크립트 소스코드로 생성합니다.
 
+만약 입력한 파일명이 없다면 이 명령어는 자동적으로 `contracts/` 폴더 안의 모든 솔리디티 파일을 대상으로한 스크립트를 생성합니다.
 
 
 #### Example

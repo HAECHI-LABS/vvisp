@@ -1,4 +1,4 @@
-module.exports = async function(files, options) {
+module.exports = async function(files = [], options) {
   const path = require('path');
   const _ = require('lodash');
   const fs = require('fs-extra');
@@ -15,6 +15,10 @@ module.exports = async function(files, options) {
     frontScript: path.join(__dirname, '../../template/front.mustache'),
     frontIndex: path.join(__dirname, '../../template/frontIndex.mustache')
   };
+
+  if (files.length === 0) {
+    files.push(path.join('./', 'contracts'));
+  }
 
   for (let i = 0; i < files.length; i++) {
     const file = files[i];
