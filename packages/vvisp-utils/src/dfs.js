@@ -1,10 +1,11 @@
 async function dfs(filePath, graph, visitedFiles) {
+  const findImportPath = require('./findImportPath');
   const fs = require('fs');
+  filePath = findImportPath(filePath);
 
   visitedFiles.push(filePath);
 
   const content = fs.readFileSync(filePath, 'utf8');
-  // TODO: check if it works well when we import open-zeppelin or github in node_modules
   const dependencies = getDependencies(filePath, content);
 
   for (const dependency of dependencies) {
@@ -17,6 +18,7 @@ async function dfs(filePath, graph, visitedFiles) {
 }
 
 function getDependencies(filePath, content) {
+  const findImportPath = require('./findImportPath');
   const parser = require('solidity-parser-antlr');
   const path = require('path');
 
@@ -29,7 +31,7 @@ function getDependencies(filePath, content) {
         if (node.path.startsWith('./') || node.path.startsWith('../')) {
           importFilePath = path.join(path.dirname(filePath), node.path);
         } else {
-          importFilePath = node.path;
+          importFilePath = findImportPath(node.path);
         }
         imports.push(importFilePath);
       }
