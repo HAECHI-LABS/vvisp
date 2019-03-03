@@ -29,7 +29,11 @@ module.exports = async function(deployState, options) {
   }
 
   printOrSilent(
-    chalk.head('\tStart Initialize NonUpgradeable Contracts...'),
+    chalk.head(
+      `\tStart Initialize${
+        stateClone.registry === 'noRegistry' ? '' : ' NonUpgradeable'
+      } Contracts...`
+    ),
     options
   );
 

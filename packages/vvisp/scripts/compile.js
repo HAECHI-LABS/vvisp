@@ -1,4 +1,6 @@
 module.exports = async function(files, options) {
+  options = require('./utils/injectConfig')(options);
+
   const path = require('path');
   const fs = require('fs-extra');
   const {

@@ -4,6 +4,7 @@ const compilerSupplier = require('./compilerSupplier');
 const Config = require('./Config');
 const deploy = require('./deploy');
 const filterPrivateKey = require('./filterPrivateKey');
+const findImportPath = require('./findImportPath');
 const forIn = require('./forIn');
 const forInAsync = require('./forInAsync');
 const getAllFiles = require('./getAllFiles');
@@ -29,6 +30,7 @@ module.exports = {
   Config,
   deploy,
   filterPrivateKey,
+  findImportPath,
   forIn,
   forInAsync,
   getAllFiles,
