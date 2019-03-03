@@ -44,7 +44,9 @@ module.exports = async function(deployState, options) {
     return;
   }
 
-  printOrSilent(chalk.head('\tNonUpgradeable Contracts'), options);
+  if (stateClone.registry !== 'noRegistry') {
+    printOrSilent(chalk.head('\tNonUpgradeable Contracts'), options);
+  }
   printOrSilent(chalk.head('Deploying Contracts...\n'), options);
 
   const txCount = await getTxCount(PRIVATE_KEY);

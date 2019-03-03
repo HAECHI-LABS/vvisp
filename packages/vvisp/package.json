@@ -1,7 +1,7 @@
 {
   "name": "@haechi-labs/vvisp",
   "version": "0.3.2",
-  "description": "Command Line Interface for the Upgradeable Smart Contract Framework",
+  "description": "The easiest smart contract development framework and command line interface on EVM based blockchain",
   "author": "HAECHI LABS",
   "authors": [
     {
