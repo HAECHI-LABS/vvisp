@@ -1,10 +1,13 @@
 module.exports = async function(files, options) {
   const path = require('path');
+  const _ = require('lodash');
   const fs = require('fs-extra');
 
-  const { printOrSilent } = require('@haechi-labs/vvisp-utils');
+  const { getAllFiles, printOrSilent } = require('@haechi-labs/vvisp-utils');
   const { getJsApis, render, rollingUp } = require('./utils');
   const generateApis = require('./generateApis');
+
+  options = require('../utils/injectConfig')(options);
 
   const TEMPLATE = {
     backScript: path.join(__dirname, '../../template/script.mustache'),
@@ -12,6 +15,19 @@ module.exports = async function(files, options) {
     frontScript: path.join(__dirname, '../../template/front.mustache'),
     frontIndex: path.join(__dirname, '../../template/frontIndex.mustache')
   };
+
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i];
+    if (fs.statSync(file).isDirectory()) {
+      files = _.without(files, file);
+      files = _.union(
+        files,
+        getAllFiles(file, filePath => {
+          return path.parse(filePath).ext === '.sol';
+        })
+      );
+    }
+  }
 
   if (options.front) {
     await atFront(files, options);
