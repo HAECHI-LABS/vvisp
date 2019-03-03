@@ -2,27 +2,14 @@
 const INFURA_API_KEY = 'INPUT_YOUR_INFURA_API_KEY';
 const MNEMONIC = 'INPUT_YOUR_MNEMONIC_WORDS';
 
-const HDWalletProvider = require('truffle-hdwallet-provider');
-const providerWithMnemonic = (mnemonic, providerUrl) =>
-  new HDWalletProvider(mnemonic, providerUrl);
-const infuraProvider = network =>
-  providerWithMnemonic(
-    MNEMONIC || '',
-    `https://${network}.infura.io/${INFURA_API_KEY}`
-  );
+const externalConfig = require('./truffle-config');
 
-const ropstenProvider = infuraProvider('ropsten');
-
-const truffleConfig = require('./truffle-config');
-
-truffleConfig.networks.ropsten = {
-  provider: ropstenProvider,
-  gas: 4600000,
-  network_id: 3 // eslint-disable-line camelcase
+externalConfig.networks.ropsten = {
+  url: `https://ropsten.infura.io/v3/${INFURA_API_KEY}`
 };
 
 module.exports = {
-  ...truffleConfig,
+  ...externalConfig,
   from: {
     mnemonic: MNEMONIC,
     index: 0

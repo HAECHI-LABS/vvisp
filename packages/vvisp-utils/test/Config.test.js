@@ -8,7 +8,7 @@ const { getPrivateKey } = require('../src');
 const _ = require('lodash');
 const path = require('path');
 const fs = require('fs-extra');
-const Provider = require('truffle-provider');
+const Web3 = require('web3');
 
 const DEFAULT_TX_OPTIONS = {
   gasLimit: 6721975,
@@ -418,12 +418,12 @@ describe('# Config test', function() {
           expect(config.provider).to.equal(null);
         });
 
-        it('should return right provider', function(done) {
+        it('should return right provider', async function() {
           config.network = DEVELOPMENT;
           const provider = config.provider;
-          Provider.test_connection(provider, fail => {
-            done(fail);
-          });
+          const web3 = new Web3();
+          web3.setProvider(provider);
+          await web3.eth.getCoinbase().should.be.fulfilled;
         });
       });
     });

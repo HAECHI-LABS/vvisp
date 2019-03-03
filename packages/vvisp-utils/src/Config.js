@@ -1,6 +1,5 @@
 // reference: https://github.com/trufflesuite/truffle/blob/40a9c615eee78f14854ced65766ed3d370da07ae/packages/truffle-config/index.js
 const _ = require('lodash');
-const Provider = require('truffle-provider');
 const path = require('path');
 
 const DEFAULT_CONFIG_FILE = 'vvisp-config.js';
@@ -10,6 +9,7 @@ const getConfigRoot = require('./getConfigRoot');
 const getPrivateKey = require('./getPrivateKey');
 const filterPrivateKey = require('./filterPrivateKey');
 const forIn = require('./forIn');
+const Web3 = require('web3');
 
 function Config() {
   const self = this;
@@ -24,7 +24,6 @@ function Config() {
   this._values = {
     network: null, // default config is development
     networks: {},
-    verboseRpc: false,
     gasLimit: null,
     gasPrice: null,
     from: null,
@@ -45,7 +44,6 @@ function Config() {
   const props = {
     network: {},
     networks: {},
-    verboseRpc: {},
     compilers: {},
 
     from: {
@@ -139,11 +137,26 @@ function Config() {
         if (!self.network) {
           return null;
         }
-
         const options = self.network_config;
-        options.verboseRpc = self.verboseRpc;
 
-        return Provider.create(options);
+        let provider;
+        if (options.provider && typeof options.provider === 'function') {
+          provider = options.provider();
+        } else if (options.provider) {
+          provider = options.provider;
+        } else if (options.url) {
+          provider = new Web3.providers.HttpProvider(options.url);
+        } else if (options.websockets) {
+          provider = new Web3.providers.WebsocketProvider(
+            'ws://' + options.host + ':' + options.port
+          );
+        } else {
+          provider = new Web3.providers.HttpProvider(
+            'http://' + options.host + ':' + options.port
+          );
+        }
+
+        return provider;
       },
       set: function() {
         throw new Error(
