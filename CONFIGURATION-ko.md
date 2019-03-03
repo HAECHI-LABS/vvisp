@@ -18,11 +18,15 @@ English version: [CONFIGURATION.md](./CONFIGURATION.md)
 
 - `networks`:
     네트워크에 대한 세부 정보입니다.  
+&nbsp;- `url`:
+        연결하고자 하는 url입니다.
+        해당 항목 존재 시 아래 `host`, `port`는 무시됩니다.  
 &nbsp;- `host`:
         custom 블록체인에 접근하기 위해 필요한 호스트 이름입니다.
-        특정 testnet에 연결하기 위해서는 해당 URL을 기입하면 됩니다.  
 &nbsp;- `port`:
         custom 블록체인에 접근하기 위해 필요한 포트 번호입니다.  
+&nbsp;- `websockets`:
+        `host`와 `port`를 websocket과 연결하기 위해서 해당 항목은 `true`로 설정해 주세요.   
 &nbsp;- `network_id`:
         해당 네트워크의 ID입니다.  
 &nbsp;- `gasLimit`:
@@ -69,10 +73,8 @@ module.exports = {
       port: 8545,
       network_id: '*'
     },
-    coverage: {
-      host: 'localhost',
-      port: 8545,
-      network_id: '*',
+    ropsten: {
+      url: "https://ropsten.infura.io/your_infura_api_key",
       gasLimit: 123123,
       gasPrice: 10000000000
     }

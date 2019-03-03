@@ -36,13 +36,13 @@ root/
 ├──── coverage.sh
 ├── test/
 ├──── Example.test.js
-├── .env
 ├── .solcover.js
 ├── .soliumignore
 ├── .soliumrc.json
 ├── .package.json
 ├── service.vvisp.json
-└── truffle-config.json
+├── truffle-config.json
+└── vvisp-config.json
 ```
 > - `package.json` will be created.
 Several libraries used by HEACHI LABS have been added.

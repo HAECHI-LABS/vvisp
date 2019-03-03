@@ -18,11 +18,15 @@ You can define those properties:
 
 - `networks`:
     The detail information of networks.
+  &nbsp;- `url`:
+        The URL you want to connect with.
+        The `host` and` port` below are ignored when the corresponding item is present.  
   &nbsp;- `host`:
         The host name required to access the custom blockchain.
-        To connect to a specific testnet, just enter the URL.  
   &nbsp;- `port`:
         The port number required to access the custom blockchain.  
+  &nbsp;- `websockets`:
+        To connect `host` and` port` to websocket, set this item to `true`.  
   &nbsp;- `network_id`:
         The id of the network.    
   &nbsp;- `gasLimit`:
@@ -69,10 +73,8 @@ module.exports = {
       port: 8545,
       network_id: '*'
     },
-    coverage: {
-      host: 'localhost',
-      port: 8545,
-      network_id: '*',
+    ropsten: {
+      url: "https://ropsten.infura.io/your_infura_api_key",
       gasLimit: 123123,
       gasPrice: 10000000000
     }
