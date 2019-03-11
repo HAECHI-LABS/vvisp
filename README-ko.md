@@ -80,6 +80,7 @@ $ yarn global add @haechi-labs/vvisp
 $ mkdir my-project
 $ cd my-project
 $ vvisp init
+$ npm install #or yarn install
 ```
 `` $ npm init `` 혹은 ``$ truffle init``을 실행하지 않아도 됩니다.
 `vvisp`은 [truffle](https://truffleframework.com/truffle)을 지원하는 환경을 설정해주며 `package.json`을 자동 생성합니다.
