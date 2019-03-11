@@ -23,7 +23,6 @@
 - [Usage](#usage)
 - [Commands](#commands)
 - [Contributing](#contributing)
-- [Architecture](#architecture)
 - [Contact](#contact)
 - [License](#license)
 
@@ -78,6 +77,7 @@ If you want to see sample repository and demo, see [here](https://github.com/HAE
 $ mkdir my-project
 $ cd my-project
 $ vvisp init
+$ npm install #or yarn install
 ```
 You don't have to do `` $ npm init `` or ``$ truffle init``.
 We supports environment for [truffle](https://truffleframework.com/truffle) and it will make `package.json` automatically.

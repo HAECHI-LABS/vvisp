@@ -69,31 +69,4 @@ describe('# getPrivateKey test', function() {
       );
     });
   });
-
-  describe('private key enable', function() {
-    const privateKey = process.env.PRIVATE_KEY;
-    before(function() {
-      process.env.PRIVATE_KEY =
-        '9741fa712a6912b862c9043f8752ffae513cb01895985998c61620da5aaf2d2d';
-    });
-
-    after(function() {
-      process.env.PRIVATE_KEY = privateKey;
-      if (
-        typeof process.env.PRIVATE_KEY === 'string' &&
-        process.env.PRIVATE_KEY.length === 0
-      )
-        delete process.env.PRIVATE_KEY;
-    });
-
-    it('should pass when private key given', function() {
-      const result = getPrivateKey();
-      result.should.equal(process.env.PRIVATE_KEY);
-    });
-
-    it('should return private key instead of mnemonic', function() {
-      const result = getPrivateKey(MNEMONIC, 3);
-      result.should.equal(process.env.PRIVATE_KEY);
-    });
-  });
 });
