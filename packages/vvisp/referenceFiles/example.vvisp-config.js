@@ -1,4 +1,3 @@
-// http://truffleframework.com/tutorials/using-infura-custom-provider
 const INFURA_API_KEY = 'INPUT_YOUR_INFURA_API_KEY';
 const MNEMONIC = 'INPUT_YOUR_MNEMONIC_WORDS';
 

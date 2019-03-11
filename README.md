@@ -79,6 +79,7 @@ If you want to see sample repository, see [here](https://github.com/HAECHI-LABS/
 $ mkdir my-project
 $ cd my-project
 $ vvisp init
+$ npm install #or yarn install
 ```
 You don't have to do `` $ npm init `` or ``$ truffle init``.
 We supports environment for [truffle](https://truffleframework.com/truffle) and it will make `package.json` automatically.
