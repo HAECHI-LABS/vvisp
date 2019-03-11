@@ -291,6 +291,9 @@ async function call(args, apis) {
   ];
   const contract = new apis[contractName](apis[contractName]['address']);
   try {
+    if (!contract.methods[methodName]) {
+      throw new Error(`There is no function name of ${methodName}`);
+    }
     const receipt = await contract.methods[methodName].apply(undefined, params);
     const events = parseLogs(receipt.logs, apis[contractName]['abi']);
     const logs = [];
