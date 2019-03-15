@@ -44,7 +44,7 @@ root/
 └── vvisp-config.json
 ```
 > - `package.json`이 생성됩니다.
-HEACHI LABS에서 사용하는 여러 library들이 추가되어 있습니다.
+HAECHI LABS에서 사용하는 여러 library들이 추가되어 있습니다.
 > - `contracts` 폴더가 생성됩니다.
 Contract code는 이곳에서 작업해 주시기 바랍니다.
 > - `contracts/Migrations.sol` 파일이 생성됩니다.

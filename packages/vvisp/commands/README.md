@@ -45,7 +45,7 @@ root/
 └── vvisp-config.json
 ```
 > - `package.json` will be created.
-Several libraries used by HEACHI LABS have been added.
+Several libraries used by HAECHI LABS have been added.
 > - The `contracts` folder will be created.
 Contract code, please work here.
 > - The `contracts/Migrations.sol` file will be created.
