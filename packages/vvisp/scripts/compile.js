@@ -20,18 +20,17 @@ module.exports = async function(files, options) {
 
   const output = await compile(files, options);
 
-  const contractNames = Object.keys(output.contracts);
-  const contractContents = Object.values(output.contracts);
-
   // TODO: output file refine
-  for (let i = 0; i < contractNames.length; i++) {
-    const contractName = path.parse(contractNames[i]).name;
-    contractContents[i].contractName = contractName;
-    fs.writeJsonSync(
-      path.join('./build/contracts/', contractName + '.json'),
-      contractContents[i],
-      { spaces: '  ' }
-    );
-  }
+  Object.entries(output.contracts).forEach(
+    ([contractNamePath, contractContent]) => {
+      const contractName = path.parse(contractNamePath).name;
+      contractContent.contractName = contractName;
+      fs.writeJsonSync(
+        path.join('./build/contracts', contractName + '.json'),
+        contractContent,
+        { spaces: '  ' }
+      );
+    }
+  );
   printOrSilent('Compiling Finished!', options);
 };
