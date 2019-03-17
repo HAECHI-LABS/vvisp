@@ -4,8 +4,12 @@ const fs = require('fs');
 
 const abi = fs.readFileSync(path.join(__dirname, '../abi/', '{{name}}.json'), {'encoding': 'utf8'});
 
-module.exports = function(_contractAddr = '') {
+module.exports = function(_contractAddr = '', options = {}) {
+  const currentProvider = options.web3.currentProvider
   const web3 = web3Store.get();
+  
+  web3.setProvider(currentProvider)
+  
   const contract = new web3.eth.Contract(JSON.parse(abi));
   contract.options.address = _contractAddr;
   return {
