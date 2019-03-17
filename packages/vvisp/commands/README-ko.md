@@ -108,6 +108,14 @@ __Examples__
 ```shell
 $ vvisp deploy-contract contracts/ContractA.sol input1 input2
 ```
+
+__Options__
+
+`-n, --network <network>`: 배포할 네트워크를 설정합니다.  
+`--gasLimit <gasLimit>` : 배포 시 사용할 gasLimit을 설정합니다.  
+`--gasPrice <privateKey>` : 배포 시 1 gas 당 지불할 gasPrice를 설정합니다.  
+`--from <privateKey>` : privateKey를 통해 배포할 계정을 설정합니다.  
+
 __Outputs__ 
 
 ```shell
@@ -132,6 +140,13 @@ Contract Address : 0xcfb...
 **특별한 경우가 아니면 `state.vvisp.json`의 변경은 추천드리지 않습니다.**
 
 `service.vvisp.json`의 작성은 [이곳](../../../CONFIGURATION-ko.md#service)을 참고하십시오.
+
+__Options__
+
+`-n, --network <network>`: 배포할 네트워크를 설정합니다.  
+`--gasLimit <gasLimit>` : 배포 시 사용할 gasLimit을 설정합니다.  
+`--gasPrice <privateKey>` : 배포 시 1 gas 당 지불할 gasPrice를 설정합니다.  
+`--from <privateKey>` : privateKey를 통해 배포할 계정을 설정합니다.  
 
 __Example__
 
