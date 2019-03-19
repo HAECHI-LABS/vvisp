@@ -103,18 +103,18 @@ build/contracts/
 
 대상 컨트랙트를 배포합니다.
 
-__Examples__
-
-```shell
-$ vvisp deploy-contract contracts/ContractA.sol input1 input2
-```
-
 __Options__
 
 `-n, --network <network>`: 배포할 네트워크를 설정합니다.  
 `--gasLimit <gasLimit>` : 배포 시 사용할 gasLimit을 설정합니다.  
 `--gasPrice <privateKey>` : 배포 시 1 gas 당 지불할 gasPrice를 설정합니다.  
-`--from <privateKey>` : privateKey를 통해 배포할 계정을 설정합니다.  
+`--from <privateKey>` : privateKey를 통해 배포할 계정을 설정합니다.
+
+__Examples__
+
+```shell
+$ vvisp deploy-contract contracts/ContractA.sol input1 input2
+```  
 
 __Outputs__ 
 
