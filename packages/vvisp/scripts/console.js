@@ -46,7 +46,7 @@ module.exports = async function(scriptPath, options) {
 
   printApiInfo(apis);
 
-  const apiCommander = new ApiCommander(apis, options);
+  const apiCommander = new ApiCommander(apis);
   apiCommander.add(
     new Command(
       'register',
@@ -92,7 +92,7 @@ function Command(name, options, description, func) {
  *
  * @param {object} apis has an api of smart contracts
  */
-function ApiCommander(apis, options) {
+function ApiCommander(apis) {
   return {
     end: true,
     apis: apis,
@@ -143,8 +143,7 @@ function ApiCommander(apis, options) {
         try {
           await this.commands[args[0]].run(
             args.slice(1, args.length),
-            this.apis,
-            options
+            this.apis
           );
         } catch (e) {
           console.log(e);
@@ -246,7 +245,7 @@ async function register() {
  * @param {object} args is a list of command args
  * @param {object} apis has an api of smart contracts
  */
-async function call(args, apis, options) {
+async function call(args, apis) {
   if (args.length < 2) {
     console.log(
       'invalid number of args: should be at least 2(contract name, method name), got {0}'.format(
@@ -290,16 +289,11 @@ async function call(args, apis, options) {
     'name',
     'args'
   ];
-  const contract = new apis[contractName](
-    apis[contractName]['address'],
-    options
-  );
-
+  const contract = new apis[contractName](apis[contractName]['address']);
   try {
     if (!contract.methods[methodName]) {
       throw new Error(`There is no function name of ${methodName}`);
     }
-
     const receipt = await contract.methods[methodName].apply(undefined, params);
     const events = parseLogs(receipt.logs, apis[contractName]['abi']);
     const logs = [];
@@ -373,7 +367,6 @@ function setApi(scriptPath) {
 
   // set script api
   // omit configuration functions
-
   const apis = _.omit(require(path.join(scriptPath, 'back') + '/index.js')(), [
     'config',
     'setWeb3'
