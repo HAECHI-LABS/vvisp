@@ -105,11 +105,19 @@ build/contracts/
 
 Deploy the target contract.
 
+__Options__
+
+`-n, --network <network>`: specify the network to deploy on.  
+`--gasLimit <gasLimit>` : specify gasLimit to use for deploying.  
+`--gasPrice <privateKey>` : specify gasPrice to use for deploying.  
+`--from <privateKey>` : specify privateKey to use for deploying.  
+
 __Examples__
 
 ```shell
 $ vvisp deploy-contract contracts/ContractA.sol input1 input2
 ```
+
 __Outputs__ 
 
 ```shell
@@ -136,6 +144,13 @@ If deployment fails due to an unexpected problem during deployment, re-enter the
 **It is not recommended to change `state.vvisp.json` unless it is a special case.**
 
 To create `service.vvisp.json`, see [here](../../../CONFIGURATION.md#service).
+
+__Options__
+
+`-n, --network <network>`: specify the network to deploy on.  
+`--gasLimit <gasLimit>` : specify gasLimit to use for deploying.  
+`--gasPrice <privateKey>` : specify gasPrice to use for deploying.  
+`--from <privateKey>` : specify privateKey to use for deploying.  
 
 __Example__
 
