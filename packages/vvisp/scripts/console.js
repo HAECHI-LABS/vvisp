@@ -37,7 +37,7 @@ const defaultStateFile = 'state.vvisp.json';
 module.exports = async function(scriptPath, options) {
   options = require('./utils/injectConfig')(options);
 
-  let apis = setApi(scriptPath);
+  let apis = setApi(scriptPath, options);
   if (fs.existsSync(defaultStateFile)) {
     apis = setApiAddress(apis, defaultStateFile);
   } else {
@@ -357,9 +357,10 @@ function getApiInfo(apis) {
  * Get the script api and abi of a smart contract from contractApis
  * @param {string} scriptPath is a path to contractApi which is generated
  *  from vvisp abi-to-script command
+ * @param {object} options is the configuration information
  * @return {object} object has an api of smart contracts
  */
-function setApi(scriptPath) {
+function setApi(scriptPath, options) {
   const defaultScriptPath = process.cwd() + '/contractApis';
   if (scriptPath === undefined || scriptPath === '') {
     scriptPath = defaultScriptPath;
@@ -367,10 +368,10 @@ function setApi(scriptPath) {
 
   // set script api
   // omit configuration functions
-  const apis = _.omit(require(path.join(scriptPath, 'back') + '/index.js')(), [
-    'config',
-    'setWeb3'
-  ]);
+  const apis = _.omit(
+    require(path.join(scriptPath, 'back') + '/index.js')(options),
+    ['config']
+  );
 
   // set abi
   for (const key of Object.keys(apis)) {
