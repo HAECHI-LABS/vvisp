@@ -31,7 +31,7 @@ int main(void)
         shell();
         getline(cin, cmd);
 
-        if		(cmd == "esi")              esi();
+        if      (cmd == "esi")              esi();
         else if (cmd == "vvisp debug")      vvisp::debug();
         else if (cmd == "vvisp showstate")  vvisp::showstate();
         else if (cmd == "exit")             return 0;
@@ -197,15 +197,15 @@ void vvisp::debug(void)
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
     cout << " 10";
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 4);
-    cout << " ¡Ü";
+    cout << " ï¿½ï¿½";
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
     cout << "       hjkim = sylee;\n";
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
     cout << " 11";
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 4);
-    cout << " ¡Ü";
+    cout << " ï¿½ï¿½";
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 6);
-    cout << "¢º";
+    cout << "ï¿½ï¿½";
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
     cout << "      return 1;\n";
     cout << " 12     }\n";
