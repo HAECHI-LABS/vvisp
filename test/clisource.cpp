@@ -31,10 +31,10 @@ int main(void)
         shell();
         getline(cin, cmd);
 
-        if		(cmd == "esi")				esi();
-        else if (cmd == "vvisp debug")		vvisp::debug();
-        else if (cmd == "vvisp showstate")	vvisp::showstate();
-        else if (cmd == "exit")				return 0;
+        if		(cmd == "esi")              esi();
+        else if (cmd == "vvisp debug")      vvisp::debug();
+        else if (cmd == "vvisp showstate")  vvisp::showstate();
+        else if (cmd == "exit")             return 0;
         else
         {
             SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
