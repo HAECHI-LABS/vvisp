@@ -7,12 +7,9 @@ module.exports = async function(address, options) {
   if (options.source) {
     const sourcePath = options.source;
     console.log(`Source: ${sourcePath}`);
-    console.log(__dirname);
-    console.log(process.cwd());
+    //console.log(__dirname);
+    //console.log(process.cwd());
 
-
-
-    //var source = fs.readFileSync(path, 'utf-8');
     var indexTable = parse(compile(sourcePath));
 
     console.log(indexTable.toString());
@@ -39,14 +36,14 @@ module.exports = async function(address, options) {
 
     var solcOutput = require('child_process').execFileSync(solcPath, parameters, { encoding: 'utf-8' });
     //solcOutput = JSON.parse(solcOutput);
-    console.log(solcOutput);
+    //console.log(solcOutput);
 
     var solcOutput = JSON.parse(fs.readFileSync('./test.json', 'utf-8'));
 
-    return solcOutput;
+    return [solcOutput.ast, solcOutput.ast];
   }
 
-  function parse(solcOutput) {
+  function parse(asts) {
     var indexMap = {};
     // or remove it
     //delete map[key1];
@@ -56,7 +53,7 @@ module.exports = async function(address, options) {
     var count = 0;
 
     // Entry Point
-    solcOutput.ast.nodes[0].nodes.forEach(function(v) {
+    asts[0].nodes[0].nodes.forEach(function(v) { // <----------iterate for asts[0], asts[1] ...
       checkType(v);
     });
 
