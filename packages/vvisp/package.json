@@ -57,7 +57,12 @@
     "rollup": "^0.65.0",
     "rollup-plugin-babel": "^3.0.7",
     "rollup-plugin-regenerator": "^0.6.0",
-    "string-argv": "^0.1.1"
+    "semver": "^5.5.1",
+    "solidity-parser-antlr": "^0.3.2",
+    "string-argv": "^0.1.1",
+    "tsort": "0.0.1",
+    "web3": "1.0.0-beta.37",
+    "cli-table3": "^0.5.1"
   },
   "devDependencies": {
     "bdd-stdin": "^0.2.0",
