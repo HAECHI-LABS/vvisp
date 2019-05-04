@@ -4,44 +4,45 @@ const Table = require('cli-table3');
 module.exports = async function(address, options) {
 
   console.log(`Address: ${address}`);
+
   if (options.source) {
-    const sourcePath = options.source;
-    console.log(`Source: ${sourcePath}`);
-    //console.log(__dirname);
-    //console.log(process.cwd());
+    const srcPath = options.source;
+    console.log(`Source: ${srcPath}`);
 
-    var indexTable = parse(compile(sourcePath));
+    var solcOutput = compile(srcPath);
 
+    var linearSrcNames = linearize(solcOutput.sourceList);
+
+    var linearAsts = [];
+    linearSrcNames.forEach(name =>
+      linearAsts.push(solcOutput.sources[name].AST)
+    );
+
+    var indexTable = parse(linearAsts);
+
+    //console.log('<----table hear---->');
     console.log(indexTable.toString());
-
-    // var fullpath = process.cwd() + '\\' + options.source;
-    // console.log(process.cwd());
-    // var exec = require('child_process').execFile;
-    // var fun = function() {
-    //     console.log("fun() start");
-    //     // exec('./solc.exe ' + path + ' --ast', function(err, data) {
-    //     //     console.log(err)
-    //     //     console.log(data.toString());
-    //     // });
-    //     exec('cd ' + `"${__dirname}"` + '&& .\\solc.exe ' + fullpath + ' --ast', function(err, data) {
-    //             console.log(err)
-    //             console.log(data.toString());
-    //     });
-    // }
   }
 
-  function compile(sourcePath) {
+
+  function compile(srcPath) {
     var solcPath = __dirname + '/solc.exe';
-    var parameters = ['--ast-compact-json', sourcePath];
+    var params = [srcPath, '--combined-json', 'ast,compact-format'];
+    var options = { encoding: 'utf-8' };
 
-    var solcOutput = require('child_process').execFileSync(solcPath, parameters, { encoding: 'utf-8' });
-    //solcOutput = JSON.parse(solcOutput);
-    //console.log(solcOutput);
-
-    var solcOutput = JSON.parse(fs.readFileSync('./test.json', 'utf-8'));
-
-    return [solcOutput.ast, solcOutput.ast];
+    return JSON.parse(
+      require('child_process')
+        .execFileSync(solcPath, params, options)
+    );
   }
+
+
+  function linearize(srcNames) {
+    var linearSrcNames = srcNames;
+    //var solcOutput = JSON.parse(fs.readFileSync('./test.json', 'utf-8'));
+    return linearSrcNames;
+  }
+
 
   function parse(asts) {
     var indexMap = {};
@@ -53,7 +54,7 @@ module.exports = async function(address, options) {
     var count = 0;
 
     // Entry Point
-    asts[0].nodes[0].nodes.forEach(function(v) { // <----------iterate for asts[0], asts[1] ...
+    asts[0].nodes.find(node => node.nodeType == "ContractDefinition").nodes.forEach(function(v) { // <----------iterate for asts[0], asts[1] ...
       checkType(v);
     });
 
@@ -138,5 +139,3 @@ module.exports = async function(address, options) {
     return table;
   }
 };
-
-
