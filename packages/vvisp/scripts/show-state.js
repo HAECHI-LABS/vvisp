@@ -1,6 +1,8 @@
+const chalk = require('chalk');
 const fs = require('fs');
 const path = require('path');
 const Table = require('cli-table3');
+const Web3 = require('web3');
 const { execFileSync } = require('child_process');
 
 module.exports = async function(contract, options) {
@@ -18,18 +20,37 @@ module.exports = async function(contract, options) {
     .linearizedBaseContracts.reverse();
 
   const nodesById = getContractNodesById(solcOutput);
-
   const linearNodes = linearIds.map(id => nodesById[id]);
-  const indexTable = parse(linearNodes);
+
+  const storageTable = parse(linearNodes);
+
+  const web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545')); // <-----To Do: set real url configured by user
+
+  for (let i = 0; i < storageTable.length; i++) {
+    storageTable[i].push(await web3.eth.getStorageAt(address, i));
+  }
 
   console.log(`Contract: ${contract}`);
   console.log(`Source: ${path.basename(srcPath)}`);
   console.log(`Address: ${address}`);
-  console.log(indexTable.toString());
+
+  flexTable(storageTable);
+  console.log(storageTable.toString());
+
+  /**
+   * for test
+   */
+  console.log('< view of real storage for test >');
+  const testTable = new Table({ head: ['storage layout']});
+  for (let i = 0; i < 16; i++) {
+    testTable.push([i.toString().padStart(2, ' ') + '  ' + await web3.eth.getStorageAt(address, i)]);
+  }
+  flexTable(testTable);
+  console.log(testTable.toString());
 };
 
 function compile(srcPath) {
-  const solcPath = __dirname + '/solc.exe';
+  const solcPath = __dirname + '/solc.exe'; // <------To Do: find another way to compile!!
   const params = [srcPath, '--combined-json', 'ast,compact-format'];
   const options = { encoding: 'utf-8' };
   const solcOutput = execFileSync(solcPath, params, options);
@@ -49,6 +70,17 @@ function getContractNodesById(solcOutput) {
         );
       return acc;
     }, {});
+}
+
+function flexTable(table) {
+  table.options.head = table.options.head
+    .map(str => str.toLowerCase())
+    .map(str => chalk.cyanBright.bold(str))
+  table.options.colWidths = [];
+  table.options.chars['left-mid'] = '';
+  table.options.chars['mid'] = '';
+  table.options.chars['right-mid'] = '';
+  table.options.chars['mid-mid'] = '';
 }
 
 function parse(nodes) {
