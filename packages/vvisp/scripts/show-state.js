@@ -4,26 +4,33 @@ const Table = require('cli-table3');
 const { execFileSync } = require('child_process');
 
 module.exports = async function(contract, options) {
-
   const vvispState = JSON.parse(fs.readFileSync('./state.vvisp.json', 'utf-8'));
   const address = vvispState.contracts[contract].address;
   const srcPath = `./contracts/${vvispState.contracts[contract].fileName}`;
 
   const solcOutput = compile(srcPath);
 
-  const targetAst = solcOutput.sources[srcPath].AST;
-  const linearIds = targetAst.nodes.find(node => node.name == contract).linearizedBaseContracts;
+  const mainAst = solcOutput.sources[srcPath].AST;
+  const linearIds = mainAst.nodes
+    .find(node =>
+      node.name == contract
+    )
+    .linearizedBaseContracts.reverse();
 
-  console.log(linearIds);
+  const contractNodesById = Object.values(solcOutput.sources)
+    .reduce((nodes, src) => {
+      src.AST.nodes
+        .filter(node =>
+          node.nodeType == 'ContractDefinition'
+        )
+        .forEach(node =>
+          nodes[node.id] = node
+        );
+      return nodes;
+    }, {});
 
-  const linearSrcNames = linearize(solcOutput.sourceList);
-
-  const linearAsts = [];
-  linearSrcNames
-    .forEach(name =>
-      linearAsts.push(solcOutput.sources[name].AST)
-    );
-  const indexTable = parse(linearAsts);
+  const linearNodes = linearIds.map(id => contractNodesById[id]);
+  const indexTable = parse(linearNodes);
 
   console.log(`Contract: ${contract}`);
   console.log(`Source: ${path.basename(srcPath)}`);
@@ -40,15 +47,7 @@ function compile(srcPath) {
   return JSON.parse(solcOutput);
 }
 
-function linearize(srcNames) {
-  const linearSrcNames = srcNames;
-
-  //var solcOutput = JSON.parse(fs.readFileSync('./test.json', 'utf-8'));
-
-  return linearSrcNames;
-}
-
-function parse(asts) {
+function parse(nodes) {
   var indexMap = {};
   // or remove it
   //delete map[key1];
@@ -58,15 +57,14 @@ function parse(asts) {
   var count = 0;
 
   // Entry Point
-  asts[0]
-    .nodes
+  nodes
     .find(node =>
       node.nodeType == "ContractDefinition"
     )
     .nodes
     .forEach(function(v) { // <----------iterate for asts[0], asts[1] ...
-    checkType(v);
-  });
+      checkType(v);
+    });
 
   function checkType(v, isStruct) {
     if (v.nodeType=="VariableDeclaration") {
