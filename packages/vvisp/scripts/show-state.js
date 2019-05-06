@@ -17,17 +17,7 @@ module.exports = async function(contract, options) {
     )
     .linearizedBaseContracts.reverse();
 
-  const nodesById = Object.values(solcOutput.sources)
-    .reduce((acc, src) => {
-      src.AST.nodes
-        .filter(node =>
-          node.nodeType == 'ContractDefinition'
-        )
-        .forEach(node =>
-          acc[node.id] = node
-        );
-      return acc;
-    }, {});
+  const nodesById = getContractNodesById(solcOutput);
 
   const linearNodes = linearIds.map(id => nodesById[id]);
   const indexTable = parse(linearNodes);
@@ -45,6 +35,20 @@ function compile(srcPath) {
   const solcOutput = execFileSync(solcPath, params, options);
 
   return JSON.parse(solcOutput);
+}
+
+function getContractNodesById(solcOutput) {
+  return Object.values(solcOutput.sources)
+    .reduce((acc, src) => {
+      src.AST.nodes
+        .filter(node =>
+          node.nodeType == 'ContractDefinition'
+        )
+        .forEach(node =>
+          acc[node.id] = node
+        );
+      return acc;
+    }, {});
 }
 
 function parse(nodes) {
