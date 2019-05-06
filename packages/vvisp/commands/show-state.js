@@ -1,15 +1,15 @@
 const { showState } = require('../scripts');
 
 const name = 'show-state';
-const signature = `${name} <address>`;
+const signature = `${name} <contract>`;
 const description = 'show the smart contract\'s state';
 
 const register = commander =>
   commander
     .command(signature, { noHelp: true })
     .alias('ss')
-    .usage('<address> [options]')
-    .option('-S, --source <file>', 'the original contract source file')
+    .usage('<contract> [options]')
+//    .option('-S, --source <file>', 'the original contract source file') //TO DO: ehter scan option?
     .description(description)
     .action(showState)
 
