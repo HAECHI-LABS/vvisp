@@ -17,19 +17,19 @@ module.exports = async function(contract, options) {
     )
     .linearizedBaseContracts.reverse();
 
-  const contractNodesById = Object.values(solcOutput.sources)
-    .reduce((nodes, src) => {
+  const nodesById = Object.values(solcOutput.sources)
+    .reduce((acc, src) => {
       src.AST.nodes
         .filter(node =>
           node.nodeType == 'ContractDefinition'
         )
         .forEach(node =>
-          nodes[node.id] = node
+          acc[node.id] = node
         );
-      return nodes;
+      return acc;
     }, {});
 
-  const linearNodes = linearIds.map(id => contractNodesById[id]);
+  const linearNodes = linearIds.map(id => nodesById[id]);
   const indexTable = parse(linearNodes);
 
   console.log(`Contract: ${contract}`);
