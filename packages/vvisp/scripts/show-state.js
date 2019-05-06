@@ -6,25 +6,20 @@ const Web3 = require('web3');
 const { execFileSync } = require('child_process');
 
 module.exports = async function(contract, options) {
+  const web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545')); // <-----To Do: set real url configured by user
+
   const vvispState = JSON.parse(fs.readFileSync('./state.vvisp.json', 'utf-8'));
   const address = vvispState.contracts[contract].address;
   const srcPath = `./contracts/${vvispState.contracts[contract].fileName}`;
 
   const solcOutput = compile(srcPath);
 
-  const mainAst = solcOutput.sources[srcPath].AST;
-  const linearIds = mainAst.nodes
-    .find(node =>
-      node.name == contract
-    )
-    .linearizedBaseContracts.reverse();
-
+  const baseAst = solcOutput.sources[srcPath].AST;
+  const linearIds = getLinearContractIds(baseAst, contract);
   const nodesById = getContractNodesById(solcOutput);
   const linearNodes = linearIds.map(id => nodesById[id]);
 
   const storageTable = parse(linearNodes);
-
-  const web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545')); // <-----To Do: set real url configured by user
 
   for (let i = 0; i < storageTable.length; i++) {
     storageTable[i].push(await web3.eth.getStorageAt(address, i));
@@ -33,7 +28,6 @@ module.exports = async function(contract, options) {
   console.log(`Contract: ${contract}`);
   console.log(`Source: ${path.basename(srcPath)}`);
   console.log(`Address: ${address}`);
-
   flexTable(storageTable);
   console.log(storageTable.toString());
 
@@ -56,6 +50,14 @@ function compile(srcPath) {
   const solcOutput = execFileSync(solcPath, params, options);
 
   return JSON.parse(solcOutput);
+}
+
+function getLinearContractIds(ast, targetContract) {
+  return ast.nodes
+    .find(node =>
+      node.name == targetContract
+    )
+    .linearizedBaseContracts.reverse();
 }
 
 function getContractNodesById(solcOutput) {
