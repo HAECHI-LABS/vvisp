@@ -4,6 +4,7 @@ const path = require('path');
 const Table = require('cli-table3');
 const Web3 = require('web3');
 const { execFileSync } = require('child_process');
+const { printOrSilent } = require('@haechi-labs/vvisp-utils');
 
 module.exports = async function(contract, options) {
   const web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545')); // <-----To Do: set real url configured by user
@@ -25,22 +26,22 @@ module.exports = async function(contract, options) {
     storageTable[i].push(await web3.eth.getStorageAt(address, i));
   }
 
-  console.log(`Contract: ${contract}`);
-  console.log(`Source: ${path.basename(srcPath)}`);
-  console.log(`Address: ${address}`);
+  printOrSilent(`Contract: ${contract}`);
+  printOrSilent(`Source: ${path.basename(srcPath)}`);
+  printOrSilent(`Address: ${address}`);
   flexTable(storageTable);
-  console.log(storageTable.toString());
+  printOrSilent(storageTable.toString());
 
   /**
    * for test
    */
-  console.log('< view of real storage for test >');
+  printOrSilent('< view of real storage for test >');
   const testTable = new Table({ head: ['storage layout']});
   for (let i = 0; i < 16; i++) {
     testTable.push([i.toString().padStart(2, ' ') + '  ' + await web3.eth.getStorageAt(address, i)]);
   }
   flexTable(testTable);
-  console.log(testTable.toString());
+  printOrSilent(testTable.toString());
 };
 
 function compile(srcPath) {
