@@ -4,7 +4,10 @@ const path = require('path');
 const Table = require('cli-table3');
 const Web3 = require('web3');
 const { execFileSync } = require('child_process');
-const { printOrSilent } = require('@haechi-labs/vvisp-utils');
+const {
+  compilerSupplier,
+  printOrSilent
+} = require('@haechi-labs/vvisp-utils');
 
 module.exports = async function(contract, options) {
   const web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545')); // <-----To Do: set real url configured by user
@@ -13,9 +16,9 @@ module.exports = async function(contract, options) {
   const address = vvispState.contracts[contract].address;
   const srcPath = `./contracts/${vvispState.contracts[contract].fileName}`;
 
-  const solcOutput = compile(srcPath);
+  const solcOutput = await compile(srcPath);
 
-  const baseAst = solcOutput.sources[srcPath].AST;
+  const baseAst = solcOutput.sources[srcPath].ast;
   const linearIds = getLinearContractIds(baseAst, contract);
   const nodesById = getContractNodesById(solcOutput);
   const linearNodes = linearIds.map(id => nodesById[id]);
@@ -44,11 +47,35 @@ module.exports = async function(contract, options) {
   printOrSilent(testTable.toString());
 };
 
-function compile(srcPath) {
-  const solcPath = __dirname + '/solc.exe'; // <------To Do: find another way to compile!!
-  const params = [srcPath, '--combined-json', 'ast,compact-format'];
-  const options = { encoding: 'utf-8' };
-  const solcOutput = execFileSync(solcPath, params, options);
+async function compile(srcPath) {
+  // windows specific code
+  // const solcPath = __dirname + '/solc.exe'; // <------To Do: find another way to compile!!
+  // const params = [srcPath, '--combined-json', 'ast,compact-format'];
+  // const options = { encoding: 'utf-8' };
+  // const solcOutput = execFileSync(solcPath, params, options);
+  
+  const DEFAULT_COMPILER_VERSION = '0.5.0'; // <------- integrate with compile.js
+
+  const supplier = new compilerSupplier({
+    version: DEFAULT_COMPILER_VERSION
+  });
+  const solc = await supplier.load();
+  const inputDescription = JSON.stringify({
+    language: 'Solidity',
+    sources: {
+      [srcPath]: {
+        content: fs.readFileSync(srcPath, 'utf-8')
+      }
+    },
+    settings: {
+      outputSelection: {
+        '*': {
+          '': ['ast']
+        }
+      }
+    }
+  });
+  const solcOutput = solc.compile(inputDescription);
 
   return JSON.parse(solcOutput);
 }
@@ -64,7 +91,7 @@ function getLinearContractIds(ast, targetContract) {
 function getContractNodesById(solcOutput) {
   return Object.values(solcOutput.sources)
     .reduce((acc, src) => {
-      src.AST.nodes
+      src.ast.nodes
         .filter(node =>
           node.nodeType == 'ContractDefinition'
         )
