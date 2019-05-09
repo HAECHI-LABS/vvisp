@@ -97,13 +97,12 @@ function parse(nodes) {
 
   // Entry Point
   nodes
-    .find(node =>
-      node.nodeType == "ContractDefinition"
-    )
-    .nodes
-    .forEach(function(v) { // <----------iterate for asts[0], asts[1] ...
-      checkType(v);
-    });
+    .forEach(node =>
+      node.nodes
+        .forEach(function(v) {
+          checkType(v);
+        })
+    );
 
   function checkType(v, isStruct) {
     if (v.nodeType=="VariableDeclaration") {
