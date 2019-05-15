@@ -12,7 +12,7 @@ English version: [README.md](./README.md)
 
 **단 한 줄의 명령어로 쉽고 빠른 스마트 컨트랙트 배포와 실행**
 
-<p align="center"><img src="./images/thumbnail.png" width="933px" height="369px"></p>
+<p align="center"><img src="./images/[vvisp]thumbnail.png" width="933px" height="369px"></p>
 
 ### Key Benefits
  - 블록체인 서비스 개발 환경 개선

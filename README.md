@@ -12,7 +12,7 @@ Korean version: [README-ko.md](./README-ko.md)
 
 **Simple and fast smart contract deployment and execution with a single command line**
 
-<p align="center"><img src="./images/thumbnail.png" width="933px" height="369px"></p>
+<p align="center"><img src="./images/[vvisp]thumbnail.png" width="933px" height="369px"></p>
 
 ### Key Benefits
  - Improving Environment of Blockchain Service Development
