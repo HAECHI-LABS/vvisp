@@ -11,10 +11,11 @@ const init = require('./init');
 module.exports = [
   compile,
   console,
+  debug,
   deployContract,
   deployService,
   flatten,
   genScript,
-  debug,
-  init
+  init,
+  showState
 ];
