@@ -1,4 +1,4 @@
-# vvisp/debugger
+# vvisp-debugger
 
 Forked from truffle-debugger under MIT license.
 
@@ -46,8 +46,7 @@ Optionally (and recommended), you can also provide a `files` argument:
 1. Start the debugger session by constructing a Debugger instance with `.forTx()` and then `.connect()` to it:
 
 ```javascript
-import Debugger from "truffle-debugger";
-
+import Debugger from "vvisp-debugger";
 let bugger = await Debugger
   .forTx(txHash, { contracts, files, provider });
 
@@ -87,16 +86,3 @@ let sourceRange = session.view(solidity.current.sourceRange);
   - [**`solidity` selectors**](https://trufflesuite.github.io/truffle-debugger/identifiers.html#solidity-selectors)
   - [**`trace` selectors**](https://trufflesuite.github.io/truffle-debugger/identifiers.html#trace-selectors)
 
-## Contributing
-
-It's our goal that this library should serve as a reliable and well-maintained tool for the Solidity ecosystem. Ultimately, we hope to support all language features and meet the varied requirements of a mature debugging library.
-
-We believe that a good Solidity debugger belongs to the community. We welcome, with our most humble gratitude, any and all community efforts in bringing this debugger closer to that goal. If you find something broken or missing, please open an issue!
-
-Some other ideas for how to get involved:
-- Bug fix PRs
-- Documentation improvements
-- Additional tests - unit tests and integration
-- Technical discussion (ways to improve architecture, etc.)
-
-Thank you for all the continued support. :bow:
