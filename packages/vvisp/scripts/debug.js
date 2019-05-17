@@ -28,5 +28,5 @@ module.exports = async function(files, options) {
       );
     }
   );
-  printOrSilent('Compiling Finished! Debugging . . . ', options);
+  printOrSilent('Debugging . . . ', options);
 };
