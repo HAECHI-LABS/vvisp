@@ -4,8 +4,8 @@ const deployContract = require('./deploy-contract');
 const deployService = require('./deploy-service');
 const flatten = require('./flatten');
 const genScript = require('./gen-script.js');
+const debug = require('./debug');
 const init = require('./init');
-const showState = require('./show-state');
 
 module.exports = [
   compile,
@@ -14,6 +14,6 @@ module.exports = [
   deployService,
   flatten,
   genScript,
-  init,
-  showState
+  debug,
+  init
 ];
