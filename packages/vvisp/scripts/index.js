@@ -14,5 +14,6 @@ module.exports = {
   deployContract,
   init,
   flatten,
+  debug,
   console
 };
