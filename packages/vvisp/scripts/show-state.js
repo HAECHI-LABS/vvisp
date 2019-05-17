@@ -79,6 +79,7 @@ async function compile(srcPath) {
     }
   });
   const solcOutput = solc.compile(inputDescription);
+  fs.writeFileSync('testast.json', solcOutput);
 
   return JSON.parse(solcOutput);
 }
@@ -110,53 +111,15 @@ function flexTable(table) {
 }
 
 function parse(nodes) {
+  // structMap
+  // structMap[struct_id][{name, ref_id} of struct_element]
+  // ref_id는 element가 struct일때 존재
   var indexMap = {};
   var structMap = {};
   var indexCounter = { currentIndex: 0 };
   var structCounter = { currentIndex: 0 };
 
   var bytesInSlot = 0;
-
-  // structMap
-  // structMap[struct_id][{name, ref_id} of struct_element]
-  // ref_id는 element가 struct일때 존재
-
-  function getTypeSize(type) {
-    var elementTypeSize = {
-      bool: 1,
-      address: 20,
-      'address payable': 20,
-      byte: 1,
-      contract: 20, // ????
-      enum: 1, //?????
-      'function (bool) external': 24, //?????
-      'function (bool) internal': 8,
-      'function () external view returns (int8)': 24,
-      'function () internal view returns (int8)': 8
-      //string
-      //bytes
-    };
-
-    if (type.indexOf('int') != -1) {
-      size = parseInt(type.split('t')[1]) / 8;
-      if (isNaN(size)) {
-        size = 32;
-      }
-    } else if (type.indexOf('bytes') != -1) {
-      size = parseInt(type.split('s')[1]);
-      if (isNaN(size)) {
-        size = 'dynamic';
-      }
-    } else if (type.indexOf('fixed') != -1) {
-      size = parseInt(type.split('d')[1].split('x')[0]) / 8;
-      if (isNaN(size)) {
-        size = 16;
-      }
-    } else {
-      size = elementTypeSize[type];
-    }
-    return size;
-  }
 
   var queue = [];
   // Entry Point
@@ -231,20 +194,6 @@ function parse(nodes) {
     }
   }
 
-  // structMap, Counter와 indexMap, Counter 중 택1
-  function selectMapCount(type, def_id) {
-    var targetMap;
-
-    if (type == 'normal') {
-      targetMap = indexMap;
-      counter = indexCounter;
-    } else if (type == 'structDef') {
-      targetMap = structMap[def_id];
-      counter = structCounter;
-    }
-    return [targetMap, counter];
-  }
-
   // [일반변수]
 
   function indexingElement(variable, type, def_id) {
@@ -258,31 +207,7 @@ function parse(nodes) {
     addVarToMap(variable.name, targetMap, counter);
   }
 
-  function addVarToMap(var_name, targetMap, counter, type) {
-    if (counter.currentIndex in targetMap) {
-      tmpList = targetMap[counter.currentIndex];
-      if (!Array.isArray(tmpList)) {
-        tmpList = [tmpList];
-      }
-
-      tmpList.push(var_name);
-
-      targetMap[counter.currentIndex] = tmpList;
-    } else {
-      targetMap[counter.currentIndex] = var_name;
-    }
-  }
-
-  function setCounterIndex(counter, type) {
-    bytesInSlot += getTypeSize(type);
-    if (bytesInSlot > 32) {
-      bytesInSlot = getTypeSize(type);
-      counter.currentIndex++;
-    }
-  }
-
   // [배열]
-
   function indexingArray(variable, type, def_id) {
     // create len array
     var tmpstring = variable.typeDescriptions.typeString;
@@ -412,6 +337,79 @@ function parse(nodes) {
 
       prevStructIndex = key;
     }
+  }
+
+  // structMap, Counter와 indexMap, Counter 중 택1
+  function selectMapCount(type, def_id) {
+    var targetMap;
+
+    if (type == 'normal') {
+      targetMap = indexMap;
+      counter = indexCounter;
+    } else if (type == 'structDef') {
+      targetMap = structMap[def_id];
+      counter = structCounter;
+    }
+    return [targetMap, counter];
+  }
+  function addVarToMap(var_name, targetMap, counter, type) {
+    if (counter.currentIndex in targetMap) {
+      tmpList = targetMap[counter.currentIndex];
+      if (!Array.isArray(tmpList)) {
+        tmpList = [tmpList];
+      }
+
+      tmpList.push(var_name);
+
+      targetMap[counter.currentIndex] = tmpList;
+    } else {
+      targetMap[counter.currentIndex] = var_name;
+    }
+  }
+
+  function setCounterIndex(counter, type) {
+    bytesInSlot += getTypeSize(type);
+    if (bytesInSlot > 32) {
+      bytesInSlot = getTypeSize(type);
+      counter.currentIndex++;
+    }
+  }
+
+  function getTypeSize(type) {
+    var elementTypeSize = {
+      bool: 1,
+      address: 20,
+      'address payable': 20,
+      byte: 1,
+      contract: 20, // ????
+      enum: 1, //?????
+      'function (bool) external': 24, //?????
+      'function (bool) internal': 8,
+      'function () external view returns (int8)': 24,
+      'function () internal view returns (int8)': 8
+      //string
+      //bytes
+    };
+
+    if (type.indexOf('int') != -1) {
+      size = parseInt(type.split('t')[1]) / 8;
+      if (isNaN(size)) {
+        size = 32;
+      }
+    } else if (type.indexOf('bytes') != -1) {
+      size = parseInt(type.split('s')[1]);
+      if (isNaN(size)) {
+        size = 'dynamic';
+      }
+    } else if (type.indexOf('fixed') != -1) {
+      size = parseInt(type.split('d')[1].split('x')[0]) / 8;
+      if (isNaN(size)) {
+        size = 16;
+      }
+    } else {
+      size = elementTypeSize[type];
+    }
+    return size;
   }
 
   // instantiate
