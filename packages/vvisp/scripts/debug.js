@@ -1,13 +1,10 @@
 module.exports = async function(files, options) {
   options = require('./utils/injectConfig')(options);
+  debug = require('./debug/debugger');
 
   const path = require('path');
   const fs = require('fs-extra');
-  const {
-    debug,
-    getAllFiles,
-    printOrSilent
-  } = require('@haechi-labs/vvisp-utils');
+  const { getAllFiles, printOrSilent } = require('@haechi-labs/vvisp-utils');
 
   fs.ensureDirSync(path.join('./', 'build'));
   fs.ensureDirSync(path.join('build', 'contracts'));
