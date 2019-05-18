@@ -6,6 +6,7 @@ const init = require('./init');
 const flatten = require('./flatten');
 const debug = require('./debug');
 const console = require('./console');
+const showState = require('./show-state');
 
 module.exports = {
   genScript,
@@ -15,5 +16,6 @@ module.exports = {
   init,
   flatten,
   debug,
-  console
+  console,
+  showState
 };

@@ -37,17 +37,17 @@ module.exports = async function(contract, options) {
   /**
    * for test
    */
-  printOrSilent('< view of real storage for test >');
-  const testTable = new Table({ head: ['storage layout'] });
-  for (let i = 0; i < 16; i++) {
-    testTable.push([
-      i.toString().padStart(2, ' ') +
-        '  ' +
-        (await web3.eth.getStorageAt(address, i))
-    ]);
-  }
-  flexTable(testTable);
-  printOrSilent(testTable.toString());
+  // printOrSilent('< view of real storage for test >');
+  // const testTable = new Table({ head: ['storage layout'] });
+  // for (let i = 0; i < 16; i++) {
+  //   testTable.push([
+  //     i.toString().padStart(2, ' ') +
+  //       '  ' +
+  //       (await web3.eth.getStorageAt(address, i))
+  //   ]);
+  // }
+  // flexTable(testTable);
+  // printOrSilent(testTable.toString());
 };
 
 async function compile(srcPath) {
@@ -399,15 +399,15 @@ function parse(nodes) {
           prevStructIndex = key;
         });
         targetMap[counter.currentIndex] = tmpList;
-        console.log(
-          counter.currentIndex + ':' + targetMap[counter.currentIndex]
-        );
+        // console.log(
+        //   counter.currentIndex + ':' + targetMap[counter.currentIndex]
+        // );
       } else {
         targetMap[counter.currentIndex] =
           name + '.' + structMap[struct_id][key];
-        console.log(
-          counter.currentIndex + ':' + targetMap[counter.currentIndex]
-        );
+        // console.log(
+        //   counter.currentIndex + ':' + targetMap[counter.currentIndex]
+        // );
       }
 
       prevStructIndex = key;
@@ -422,7 +422,7 @@ function parse(nodes) {
 
   keys = Object.keys(indexMap);
   keys.forEach(function(k) {
-    console.log(indexMap[k]);
+    // console.log(indexMap[k]);
     table.push([indexMap[k].toString(), k]);
   });
 
