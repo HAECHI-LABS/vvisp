@@ -1,7 +1,7 @@
 const { coverage } = require('../scripts');
 
 const name = 'coverage';
-const signature = `${name}`;
+const signature = `${name} [testfile...]`;
 const description = 'smart contract test coverage';
 
 const register = commander =>

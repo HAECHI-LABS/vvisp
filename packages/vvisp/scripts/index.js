@@ -7,6 +7,7 @@ const flatten = require('./flatten');
 const debug = require('./debug');
 const console = require('./console');
 const showState = require('./show-state');
+const coverage = require('./coverage');
 
 module.exports = {
   genScript,
@@ -17,5 +18,6 @@ module.exports = {
   flatten,
   debug,
   console,
-  showState
+  showState,
+  coverage
 };
