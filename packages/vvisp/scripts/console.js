@@ -185,7 +185,7 @@ async function show(args, apis) {
   }
 
   const contract = new apis[contractName](apis[contractName]['address']);
-  let msg = '\n[Method]\t\t\t\t[Args]\n';
+  let msg = '\n' + '[Method]'.padEnd(40) + '[Args]\n';
   for (const method of Object.keys(contract['methods'])) {
     msg =
       msg +
@@ -329,10 +329,6 @@ async function list(args, apis) {
   console.log(getApiInfo(apis));
 }
 
-function parseArgs(input) {
-  return input.trim().split(/\s+/);
-}
-
 /**
  *
  * Get the information of apis
@@ -340,12 +336,15 @@ function parseArgs(input) {
  * @RETURN {string} info shows the currently used smart contracts and address.
  */
 function getApiInfo(apis) {
-  let info = 'Index\t\t\t\tContract\t\t\t\tAddress\n';
+  const pad1 = 10;
+  const pad2 = 20;
+  let info = 'Index'.padEnd(pad1) + 'Contract'.padEnd(pad2) + 'Address\n';
   let i = 0;
 
   for (const contract of Object.keys(apis)) {
     const address = apis[contract]['address'];
-    info = info + '[{0}]\t\t\t\t{1}\t\t\t\t{2}\n'.format(i, contract, address);
+    info =
+      info + `[${i}]`.padEnd(pad1) + contract.padEnd(pad2) + address + '\n';
     i++;
   }
 
