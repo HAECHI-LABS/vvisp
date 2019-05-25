@@ -142,6 +142,7 @@ __Options__
 `--gasLimit <gasLimit>` : 배포 시 사용할 gasLimit을 설정합니다.  
 `--gasPrice <privateKey>` : 배포 시 1 gas 당 지불할 gasPrice를 설정합니다.  
 `--from <privateKey>` : privateKey를 통해 배포할 계정을 설정합니다.  
+`-f, --force` : 현재 존재하는 `state.vvisp.json`를 지우고 새로이 배포합니다.
 
 __Example__
 

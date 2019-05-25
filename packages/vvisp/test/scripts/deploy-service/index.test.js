@@ -90,6 +90,26 @@ describe('# deploy-service process test', function() {
       setResumingProcess(N_R_SERVICE1, N_R_SERVICE2, nrDeployNum, nrUpgradeNum);
     });
   });
+
+  describe('# force option test', function() {
+    beforeEach(async function() {
+      fs.copySync(SERVICE1, SERVICE_PATH);
+      this.waitingTxNum = getWaitingTxNum();
+      await deployService({ silent: true });
+    });
+
+    it('should success forced deployment', async function() {
+      const startTxCount = await web3.eth.getTransactionCount(SENDER);
+      await deployService({ force: true, silent: true });
+      const endTxCount = await web3.eth.getTransactionCount(SENDER);
+      (endTxCount - startTxCount).should.equal(this.waitingTxNum);
+    });
+
+    afterEach(function() {
+      fs.removeSync(SERVICE_PATH);
+      fs.removeSync(STATE_PATH);
+    });
+  });
 });
 
 function checkRightState() {
