@@ -15,7 +15,7 @@ module.exports = {
   },
   compilers: {
     solc: {
-      version: '0.5.8', // Fetch exact version from solc-bin
+      version: '0.5.7', // Fetch exact version from solc-bin
       settings: {
         // See the solidity docs for advice about optimization and evmVersion
         optimizer: {
