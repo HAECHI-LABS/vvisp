@@ -9,14 +9,14 @@ module.exports = async function(files, options) {
       rootDir = path.join(options.directory);
     }
 
-    path.join(rootDir,'scripts/coverage.sh');
-    exec(rootDir,(error,stdout,stderr) => {
+    path.join(roodDir,'scripts/coverage.sh');
+    exec('sh scripts/coverage.sh',(error,stdout,stderr) => {
     if(error) {
         console.error('exec error: ${error}');
         return;
     }
-    console.log('stdout: ${stdout}');
-    console.log('stderr: ${stderr}');
+    console.log('stdout:'+ stdout);
+    console.log('stderr:'+ stderr);
     });
     printOrSilent('Compiling Finished!', options);
   };
