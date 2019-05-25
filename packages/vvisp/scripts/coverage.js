@@ -11,6 +11,10 @@ module.exports = async function(files, options) {
 
     path.join(rootDir,'scripts/coverage.sh');
     exec(rootDir,(error,stdout,stderr));
+    if(error) {
+        console.error('exec error: ${error}');
+        return;
+    }
     printOrSilent('Compiling Finished!', options);
   };
   
