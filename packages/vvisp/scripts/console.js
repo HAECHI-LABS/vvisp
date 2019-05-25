@@ -184,7 +184,9 @@ async function show(args, apis) {
     return;
   }
 
-  const contract = new apis[contractName](apis[contractName]['address']);
+  const contract = new apis[contractName](
+    apis[contractName]['address'].toLowerCase()
+  );
   let msg = '\n' + '[Method]'.padEnd(40) + '[Args]\n';
   for (const method of Object.keys(contract['methods'])) {
     msg =
@@ -289,7 +291,9 @@ async function call(args, apis) {
     'name',
     'args'
   ];
-  const contract = new apis[contractName](apis[contractName]['address']);
+  const contract = new apis[contractName](
+    apis[contractName]['address'].toLowerCase()
+  );
   try {
     if (!contract.methods[methodName]) {
       throw new Error(`There is no function name of ${methodName}`);
