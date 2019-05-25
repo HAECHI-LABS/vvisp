@@ -145,7 +145,8 @@ __Options__
 `-n, --network <network>`: specify the network to deploy on.  
 `--gasLimit <gasLimit>` : specify gasLimit to use for deploying.  
 `--gasPrice <privateKey>` : specify gasPrice to use for deploying.  
-`--from <privateKey>` : specify privateKey to use for deploying.  
+`--from <privateKey>` : specify privateKey to use for deploying.
+`-f, --force` : remove existing `state.vvisp.json` and deploy.  
 
 __Example__
 

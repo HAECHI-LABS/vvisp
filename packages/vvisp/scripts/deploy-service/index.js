@@ -7,7 +7,11 @@ module.exports = async function(options) {
   const { writeState } = require('./utils');
   const DeployState = require('./DeployState');
   const preProcess = require('./preProcess');
-  const { PROJECT_NAME, SERVICE_FILE } = require('../../config/Constant');
+  const {
+    PROJECT_NAME,
+    SERVICE_FILE,
+    STATE_FILE
+  } = require('../../config/Constant');
   const {
     deployContracts,
     deployRegistry,
@@ -15,6 +19,8 @@ module.exports = async function(options) {
     injectVar,
     reflectState
   } = require('./processes');
+  const fs = require('fs-extra');
+  const path = require('path');
   const chk = require('chalk');
   global.chalk = {
     success: chk.green.bold,
@@ -26,6 +32,10 @@ module.exports = async function(options) {
     notImportant: chk.gray,
     warning: chk.yellow
   };
+
+  if (options.force) {
+    fs.removeSync(path.join('./', STATE_FILE));
+  }
 
   await main();
 
