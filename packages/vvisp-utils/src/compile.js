@@ -1,5 +1,5 @@
 module.exports = async function(filePath, options) {
-  const DEFAULT_COMPILER_VERSION = '0.5.0';
+  const DEFAULT_COMPILER_VERSION = '0.5.8';
 
   const compilerOption = extractCompilerOption(options);
 

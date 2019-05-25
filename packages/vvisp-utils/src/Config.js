@@ -34,7 +34,7 @@ function Config() {
             enabled: true,
             runs: 200
           },
-          evmVersion: 'byzantium'
+          evmVersion: 'petersburg'
         }
       },
       vyper: {}
