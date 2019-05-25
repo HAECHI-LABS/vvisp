@@ -5,8 +5,7 @@ module.exports = async function(deployState, options) {
     CONSTRUCTOR,
     PRIVATE_KEY,
     REGISTRY_PATH,
-    TX_OPTIONS,
-    UPGRADEABLE
+    TX_OPTIONS
   } = require('../constants');
   const {
     deploy,
@@ -25,9 +24,6 @@ module.exports = async function(deployState, options) {
   if (!stateClone.paused.details) {
     stateClone.paused.details = {};
     forIn(targets, (contract, name) => {
-      if (contract[UPGRADEABLE] === true) {
-        return;
-      }
       deployTargets.push({ name: name });
       stateClone.paused.details[name] = false;
     });
@@ -44,9 +40,6 @@ module.exports = async function(deployState, options) {
     return;
   }
 
-  if (stateClone.registry !== 'noRegistry') {
-    printOrSilent(chalk.head('\tNonUpgradeable Contracts'), options);
-  }
   printOrSilent(chalk.head('Deploying Contracts...\n'), options);
 
   const txCount = await getTxCount(PRIVATE_KEY);
@@ -117,15 +110,13 @@ module.exports = async function(deployState, options) {
   }
 
   if (stateClone.registry !== 'noRegistry') {
-    await registeringNonUpgradeableInfo(compileOutput, stateClone);
+    await registeringContractsInfo(compileOutput, stateClone);
   }
 
-  // @dev Uploading information about nonUpgradeable contracts to registry
-  async function registeringNonUpgradeableInfo(compileOutput, stateClone) {
+  // @dev Uploading information about contracts to registry
+  async function registeringContractsInfo(compileOutput, stateClone) {
     printOrSilent(
-      chalk.head(
-        "\tRegistering NonUpgradeable Contracts' Information at Registry..."
-      ),
+      chalk.head("\tRegistering Contracts' Information at Registry..."),
       options
     );
     const registryInstance = pathToInstance(compileOutput, REGISTRY_PATH);
@@ -146,7 +137,7 @@ module.exports = async function(deployState, options) {
       _fileNameLength.push(fileName.length);
     }
     const txData = registryInstance.methods
-      .setNonUpgradeables(
+      .registerContractInfo(
         _addresses,
         _names,
         _nameLength,

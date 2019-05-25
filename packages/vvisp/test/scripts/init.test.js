@@ -29,7 +29,7 @@ describe('# init script test', function() {
   it('should have right directories', function() {
     fs.existsSync(path.join(directoryName, 'contracts')).should.be.equal(true);
     fs.existsSync(
-      path.join(directoryName, 'contracts', 'upgradeable')
+      path.join(directoryName, 'contracts', 'vvisp')
     ).should.be.equal(true);
     fs.existsSync(path.join(directoryName, 'migrations')).should.be.equal(true);
     fs.existsSync(path.join(directoryName, 'scripts')).should.be.equal(true);
@@ -63,7 +63,7 @@ describe('# init script test', function() {
       path.join(directoryName, 'contracts', 'Migrations.sol')
     ).should.be.equal(true);
     fs.existsSync(
-      path.join(directoryName, 'contracts', 'upgradeable', 'VvispRegistry.sol')
+      path.join(directoryName, 'contracts', 'vvisp', 'VvispRegistry.sol')
     ).should.be.equal(true);
   });
 });

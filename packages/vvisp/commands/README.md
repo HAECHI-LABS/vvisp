@@ -5,7 +5,7 @@ Korean version: [README-ko.md](./README-ko.md)
 - [init](#init): Initialize project directory
 - [compile](#compile): Compile solidity contract files
 - [deploy-contract](#deploy-contract): Deploy contract
-- [deploy-service](#deploy-service): Deploy service according to Upgradeable Smart Contract Framework
+- [deploy-service](#deploy-service): Deploy service
 - [gen-script](#gen-script): Generate javascript APIs interacting with smart contract on blockchain
 - [console](#console): Provides a console environment that can invoke contracts interactively.
 - [flatten](#flatten): Flatten several contract files in one file
@@ -26,7 +26,7 @@ __Outputs__
 ```
 root/
 ├── contracts/
-├──── upgradeable/
+├──── vvisp/
 ├────── VvispRegistry.sol
 ├──── Migrations.sol
 ├── migrations/
@@ -50,7 +50,7 @@ Several libraries used by HAECHI LABS have been added.
 Contract code, please work here.
 > - The `contracts/Migrations.sol` file will be created.
 This Contract is necessary for using truffle.
-> - The `VvispRegistry.sol` file for the upgradeable smart contract framework will be created in the `contracts/upgradeable` folder.
+> - The `VvispRegistry.sol` file for registering information about contracts will be created in the `contracts/vvisp` folder.
 > - The `vvisp-config.js` file will be created.
 Set environment variables here.
 [See details](../../../CONFIGURATION.md#config).
@@ -81,20 +81,15 @@ Compile solidity source code.
 __Examples__
 
 ```shell
-$ vvisp compile contracts/Proxy.sol contracts/UpgradeabilityProxy.sol
+$ vvisp compile contracts/A.sol contracts/B.sol
 ```
 
 __Outputs__ (Created at `build` folder)
 
 ```
 build/contracts/
-├── BytesLib.json
-├── Ownable.json
-├── OwnedUpgradeabilityProxy.json
-├── Proxy.json
-├── Registry.json
-├── SafeMath.json
-└── UpgradeabilityProxy.json
+├── A.json
+└── B.json
 ```
 > If no file name is entered, all solidity files in the `contracts` folder are compiled.
 
@@ -166,20 +161,11 @@ If there is no target to deploy, skip that task.
 
 1) Deploy the registry. (Not deployed again during upgrade)
 
-2) Deploy business contracts of upgradeable contracts.
+1) Deploy contracts.
 
-3) Deploy proxy contracts of upgradeable contracts.
+1) Save the information of contracts to the registry.
 
-4) Deploy nonUpgradeable contracts.
-
-5) Save the information of nonUpgradeable contracts to the registry.
-
-6) Connect upgradeable contracts with the registry.
-This is a real upgrade, and it happens atomically in one transaction.
-
-7) Save additional information of upgradeable contracts to the Registry.
-
-8) Perform initialization of nonUpgradeable contracts.
+1) Perform initialization of contracts.
 
 __Outputs__
 
@@ -198,9 +184,7 @@ This is the file where you can view the status of the currently deployed service
     },
     "ContractKeyName1": {
       "address": "0x73c...",
-      "proxy": "0x8d7...", (7)
       "fileName": "Contract1_V0.sol",
-      "upgradeable": true (8)
     }
   }
 }
@@ -218,12 +202,6 @@ If you defined not to use, it will be written as `noRegistry`.
 1. Represents the address of deployed contract.
 
 1. Represents the file name (contract name) of the currently deployed contract version.
-
-1. Represents the proxy address of deployed upgradeable contract.
-For an upgradeable contract, proxy is the entry point.
-For nonUpgradeable contract, there is no such property.
-
-1. This property represents upgradeable contract.
 
 ## gen-script
 

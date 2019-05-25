@@ -2,46 +2,22 @@
   "serviceName": "Haechi",
   "registry": true,
   "variables" : {
-    "owner" : "0xb5F4E40c8177Ad63B19D4D3a254a5758771f57d0"
+    "owner" : "0xb5F4E40c8177Ad63B19D4D3a254a5758771f57d0",
+    "value1": 1
   },
   "contracts": {
-    "Attachment": {
-      "upgradeable": true,
-      "path": "contracts/test/Attachment.sol",
-      "initialize": {
-        "functionName": "initialize",
-        "arguments": [
-          "${variables.owner}"
-        ]
-      }
-    },
-    "Token": {
-      "upgradeable": true,
-      "path": "contracts/test/Token_V0.sol",
-      "initialize": {
-        "functionName": "initialize",
-        "arguments": [
-          "${variables.owner}"
-        ]
-      }
-    },
-    "Portfolio": {
-      "upgradeable": true,
-      "path": "contracts/test/Portfolio.sol",
-      "initialize": {
-        "functionName": "initialize",
-        "arguments": [
-          "${contracts.DependencyB.address}"
-        ]
-      }
-    },
     "DependencyA": {
       "path": "contracts/test/DependencyA.sol",
       "constructorArguments": [
         "${contracts.DependencyB.address}",
         "${contracts.DependencyC.address}",
         "${variables.owner}"
-      ]
+      ],
+      "initialize": {
+        "functionName": "initialize",
+        "arguments": [
+        ]
+      }
     },
     "DependencyB": {
       "path": "contracts/test/DependencyB.sol",
@@ -49,7 +25,12 @@
         3,
         "${contracts.DependencyD.address}",
         "${variables.owner}"
-      ]
+      ],
+      "initialize": {
+        "functionName": "initialize",
+        "arguments": [
+        ]
+      }
     },
     "DependencyC": {
       "path": "contracts/test/DependencyC.sol",
@@ -59,17 +40,9 @@
     "DependencyD": {
       "path": "contracts/test/DependencyD.sol",
       "constructorArguments": [
-        [1,2,3],
-        "${contracts.Token.address}"
-      ],
-      "initialize": {
-        "functionName": "initialize",
-        "arguments": [
-          "${contracts.Token.address}",
-          "${variables.owner}",
-          "${contracts.DependencyA.address}"
-        ]
-      }
+        ["${variables.value1}",2,3],
+        "${variables.owner}"
+      ]
     }
   }
 }

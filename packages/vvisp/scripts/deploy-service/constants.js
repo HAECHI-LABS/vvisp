@@ -4,7 +4,7 @@ module.exports = (function() {
   const config = Config.get();
 
   return {
-    REGISTRY_PATH: path.join('./', 'contracts/upgradeable/VvispRegistry.sol'),
+    REGISTRY_PATH: path.join('./', 'contracts/vvisp/VvispRegistry.sol'),
     TX_OPTIONS: {
       gasPrice: config.gasPrice,
       gasLimit: config.gasLimit
@@ -15,7 +15,6 @@ module.exports = (function() {
     VARIABLES: 'variables',
     CONSTRUCTOR: 'constructorArguments',
     INITIALIZE: 'initialize',
-    UPGRADEABLE: 'upgradeable',
     PENDING_STATE: ['deploy', 'upgrade']
   };
 })();

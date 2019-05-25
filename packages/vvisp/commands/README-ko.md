@@ -5,7 +5,7 @@ English version: [README.md](./README.md)
 - [init](#init): 프로젝트 폴더 구축
 - [compile](#compile): 폴더 내에 있는 솔리디티 소스를 컴파일
 - [deploy-contract](#deploy-contract): 특정 컨트랙트를 배포
-- [deploy-service](#deploy-service): Upgradeable Smart Contract Framework에 따라 service를 배포
+- [deploy-service](#deploy-service): service를 배포
 - [gen-script](#gen-script): 블록체인 위 스마트 컨트랙트와 상호작용하는 자바스크립트 API들을 생성
 - [console](#console): 손쉽게 SmartContract의 api를 호출할 수 있는 console 환경을 제공
 - [flatten](#flatten): 여러 컨트랙트들을 하나의 파일로 병합
@@ -25,7 +25,7 @@ __Outputs__
 ```
 root/
 ├── contracts/
-├──── upgradeable/
+├──── vvisp/
 ├────── VvispRegistry.sol
 ├──── Migrations.sol
 ├── migrations/
@@ -49,7 +49,7 @@ HAECHI LABS에서 사용하는 여러 library들이 추가되어 있습니다.
 Contract code는 이곳에서 작업해 주시기 바랍니다.
 > - `contracts/Migrations.sol` 파일이 생성됩니다.
 해당 파일은 truffle 사용을 위해 필요한 컨트랙트입니다.
-> - `contracts/upgradeable` 폴더 내에 upgradeable smart contract framework에 필요한 `VvispRegistry.sol` file이 생성됩니다.
+> - `contracts/vvisp` 폴더 내에 `VvispRegistry.sol` 파일이 생성됩니다.
 > - `vvisp-config.js` 파일이 생성됩니다.
 이 곳에서 환경 변수를 설정하십시오.
 [참고](../../../CONFIGURATION-ko.md#config)
@@ -79,22 +79,17 @@ solidity 소스 코드를 컴파일 합니다.
 __Examples__
 
 ```shell
-$ vvisp compile contracts/Proxy.sol contracts/UpgradeabilityProxy.sol
+$ vvisp compile contracts/A.sol contracts/B.sol
 ```
 
 __Outputs__ (`build` 폴더에 저장됩니다)
 
 ```
 build/contracts/
-├── BytesLib.json
-├── Ownable.json
-├── OwnedUpgradeabilityProxy.json
-├── Proxy.json
-├── Registry.json
-├── SafeMath.json
-└── UpgradeabilityProxy.json
+├── A.json
+└── B.json
 ```
-> file명 입력이 없을 경우, `contracts` 폴더 내의 모든 solidity 파일이 컴파일 됩니다.
+> 파일명 입력이 없을 경우, `contracts` 폴더 내의 모든 solidity 파일이 컴파일 됩니다.
 
 
 ## deploy-contract
@@ -161,20 +156,11 @@ __Process__
 
 1) Registry를 배포합니다. (Upgrade 작업시엔 추가적으로 배포하지 않습니다)
 
-2) Upgradeable Contract의 Business Contract들을 배포합니다.
+1) Contract들을 배포합니다.
 
-3) Upgradeable Contract의 Proxy Contract들을 배포합니다.
+1) Contract들의 정보를 Registry에 저장합니다.
 
-4) NonUpgradeable Contract들을 배포합니다.
-
-5) NonUpgradeable Contract들의 정보를 Registry에 저장합니다.
-
-6) Upgradeable Contract들을 Registry와 연결합니다.
-실질적인 upgrade 작업이며, 하나의 트랜잭션에서 atomic하게 일어납니다.
-
-7) Upgradeable Contract들의 추가적인 정보를 Registry에 저장합니다.
-
-8) NonUpgradeable Contract들의 initialize 작업을 수행합니다.
+1) Contract들의 initialize 작업을 수행합니다.
 
 __Outputs__
 
@@ -193,9 +179,7 @@ __`state.vvisp.json`__
     },
     "ContractKeyName1": {
       "address": "0x73c...",
-      "proxy": "0x8d7...", (7)
       "fileName": "Contract1_V0.sol",
-      "upgradeable": true (8)
     }
   }
 }
@@ -212,13 +196,7 @@ __`state.vvisp.json`__
 
 1. 배포된 contract의 address를 나타냅니다.
 
-1. 현재 배포된 contract 버전의 file명(contract명)을 나타냅니다.
-
-1. 배포된 upgradeable contract의 proxy address를 나타냅니다.
-upgradeable contract의 경우 proxy가 entry point입니다.
-nonUpgradeable contract의 경우 해당 속성이 없습니다.
-
-1. upgradeable contract를 나타내는 속성입니다.
+1. 현재 배포된 contract 버전의 파일명(contract명)을 나타냅니다.
 
 ## gen-script
 
@@ -406,7 +384,7 @@ vvisp console에서 사용가능한 command는 다음과 같습니다: call, sho
   call <Contract> <Method> [Params...] - call a smart contract api method
   ```
 
-  `Help` 는 사용 가능한 command의 목록과 사용법을 보여줍니다.
+  `help` 는 사용 가능한 command의 목록과 사용법을 보여줍니다.
 
 	
 

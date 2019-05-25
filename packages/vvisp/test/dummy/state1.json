@@ -1,40 +1,22 @@
 {
   "contracts": {
-    "Attachment": {
-      "address": "0xb99Da3E85254342E212d4A86f9b5f79Ca3DdC280",
-      "fileName": "Attachment.sol",
-      "proxy": "0x802040087542b4d7dda696baad64d9ebdd05c116",
-      "upgradeable": true
-    },
-    "Token": {
-      "address": "0x05DA9ed62797bAB8a2575EeE4E48e699D0f3e720",
-      "fileName": "Token_V0.sol",
-      "proxy": "0x4e89407a7f313a1d9213ab3c746e67154f0e06f8",
-      "upgradeable": true
-    },
-    "Portfolio": {
-      "address": "0xf516386095c3EA53e833383AAA395b0ca07F914C",
-      "fileName": "Portfolio.sol",
-      "proxy": "0x6a73e934697f6c464689cc3bfa674588e6378e55",
-      "upgradeable": true
-    },
     "DependencyA": {
-      "address": "0x0D2657C2136428Ba7bE1CcF0Ee8e2c5c6AACD927",
+      "address": "0x2B69F7403334B4f9570f3eB966e67c63354374d4",
       "fileName": "DependencyA.sol"
     },
     "DependencyB": {
-      "address": "0x8b19C0EB06925f7708214230615228C9F30E49f0",
+      "address": "0x1fd0973C03dF5F097cd36B86E5E2E5e508539D6b",
       "fileName": "DependencyB.sol"
     },
     "DependencyC": {
-      "address": "0x46f39068665D6EeDEFa53e5C660168AB9e946cA3",
+      "address": "0xcC1b0E1AD6a361a1d2A5d710c4dee681E5dD855c",
       "fileName": "DependencyC.sol"
     },
     "DependencyD": {
-      "address": "0x074A3218146a98C8651696af9fF2396b5aD5700D",
+      "address": "0x02AA0c8cb058fA74a993815884Bce4917d6bfa54",
       "fileName": "DependencyD.sol"
     }
   },
   "serviceName": "Haechi",
-  "registry": "0x310c1318Dc8c53c3bb8d1949C5Bb6FC62995e862"
+  "registry": "0x7c9b8Dbe625c10Ba6EE7Ed7f2Eaa55c584FDAb1f"
 }

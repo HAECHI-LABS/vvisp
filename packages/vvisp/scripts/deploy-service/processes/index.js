@@ -1,21 +1,13 @@
-const deployBusinesses = require('./deployBusinesses');
-const deployNonUpgradeables = require('./deployNonUpgradeables');
-const deployProxies = require('./deployProxies');
+const deployContracts = require('./deployContracts');
 const deployRegistry = require('./deployRegistry');
-const initNonUpgradeables = require('./initNonUpgradeables');
+const initContracts = require('./initContracts');
 const injectVar = require('./injectVar');
 const reflectState = require('./reflectState');
-const registerFileNames = require('./registerFileNames');
-const upgradeAll = require('./upgradeAll');
 
 module.exports = {
-  deployBusinesses,
-  deployNonUpgradeables,
-  deployProxies,
+  deployContracts,
   deployRegistry,
-  initNonUpgradeables,
+  initContracts,
   injectVar,
-  reflectState,
-  registerFileNames,
-  upgradeAll
+  reflectState
 };

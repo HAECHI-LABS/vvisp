@@ -51,12 +51,6 @@ A developer needs to consider deploying multiple smart contracts in order for DA
 This is a big entry barrier for developers who are unfamiliar with smart contract development.
 However, `vvisp` is designed to execute a specific function of a contract with a single command line and to receive results without complex processes.
 
-**(3) Supporting Upgradeable Smart Contract Framework**
-
-: Additionally, `vvisp` supports USCF(Upgradeable Smart Contract Framework).
-Even if developers do not have deep knowledge about upgradeability, they can easily use embedded upgradeable libraries at vvisp.
-If you want more information about the Upgradeable Smart Contract Framework, you can take a look at the HAECHI-LABS [pdf file](https://drive.google.com/file/d/1H9gtmpiZ5zwIFwgHGOOvz9Oa8SAlpM5h/view?usp=sharing).
-
 | **Contributors**: Please see the [Contributing](#contributing) section of this README. |
 | --- |
 
@@ -146,7 +140,7 @@ Please see linked documentation below:
 
   - vvisp-contracts
 
-    vvisp-contracts is a library for developing smart contracts and enables them to be upgradable.
+    vvisp-contracts is a library for developing smart contracts.
 
 - vvisp-sample
 

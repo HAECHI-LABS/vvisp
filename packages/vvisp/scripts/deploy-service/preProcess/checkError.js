@@ -7,7 +7,7 @@ module.exports = function(targets, compileOutput, options) {
     printOrSilent
   } = require('@haechi-labs/vvisp-utils');
   const { hasConstructArgs, hasInit, getVar } = require('../utils/index');
-  const { INITIALIZE, CONSTRUCTOR, UPGRADEABLE } = require('../constants');
+  const { INITIALIZE, CONSTRUCTOR } = require('../constants');
 
   printOrSilent(chalk.head('Check Arguments...'), options);
 
@@ -91,9 +91,6 @@ module.exports = function(targets, compileOutput, options) {
   printOrSilent(chalk.head('Check Dependencies...'), options);
   const dependencyGraph = {};
   forIn(targets, (contract, name) => {
-    if (contract[UPGRADEABLE] === true) {
-      return;
-    }
     if (hasConstructArgs(contract)) {
       for (let i = 0; i < contract[CONSTRUCTOR].length; i++) {
         const variable = getVar(contract[CONSTRUCTOR][i]);
