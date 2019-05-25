@@ -27,6 +27,5 @@ module.exports = async function(files, options) {
     //console.log('stderr:'+ stderr);
     //});
     printOrSilent('Compiling Finished!', options);
-  });
 }
   
