@@ -1,14 +1,16 @@
 module.exports = async function(files, options) {
     options = require('./utils/injectConfig')(options);
     const path = require('path');
-    const { getAllFiles, printOrSilent } = require('@haechi-labs/vvisp-utils');
+    const { printOrSilent } = require('@haechi-labs/vvisp-utils');
+    const { exec } = require('child_process');
     
+    let rootDir = path.join('./');
+    if (options && options.directory) {
+      rootDir = path.join(options.directory);
+    }
 
-  let rootDir = path.join('./');
-  if (options && options.directory) {
-    rootDir = path.join(options.directory);
-  }
-    printOrSilent(rootDir);
+    path.join(rootDir,'scripts/coverage.sh');
+    exec(rootDir,(error,stdout,stderr));
     printOrSilent('Compiling Finished!', options);
   };
   
