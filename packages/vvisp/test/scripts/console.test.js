@@ -13,22 +13,6 @@ const consoleTest = rewire('../../scripts/console.js');
 describe('# console script test', async function() {
   this.timeout(50000);
 
-  describe('parseArgs', function() {
-    const parseArgs = consoleTest.__get__('parseArgs');
-
-    it('should parse args string', function() {
-      const args = 'HaechiV1 freeze';
-      const expected = ['HaechiV1', 'freeze'];
-
-      const r = parseArgs(args);
-
-      for (i = 0; i < r.length; i++) {
-        r[i].should.be.equal(expected[i]);
-      }
-      r.length.should.be.equal(expected.length);
-    });
-  });
-
   describe('setApi', function() {
     const setApi = consoleTest.__get__('setApi');
 
@@ -181,6 +165,9 @@ describe('# console script test', async function() {
     const getApiInfo = consoleTest.__get__('getApiInfo');
 
     it('should print api info', function() {
+      const pad1 = 10;
+      const pad2 = 20;
+
       const dummy_apis = {
         MainToken: {
           address: '0xa0ff2297A8690383784d5A4723d72F8A2f5480D4'
@@ -191,9 +178,15 @@ describe('# console script test', async function() {
       };
 
       const expectedOutput =
-        'Index\t\t\t\tContract\t\t\t\tAddress\n' +
-        '[0]\t\t\t\tMainToken\t\t\t\t0xa0ff2297A8690383784d5A4723d72F8A2f5480D4\n' +
-        '[1]\t\t\t\tSaleManager\t\t\t\t0x3FcE06688555F67962978B3Eb44805849A4A8895\n';
+        'Index'.padEnd(pad1) +
+        'Contract'.padEnd(pad2) +
+        'Address\n' +
+        '[0]'.padEnd(pad1) +
+        'MainToken'.padEnd(pad2) +
+        '0xa0ff2297A8690383784d5A4723d72F8A2f5480D4\n' +
+        '[1]'.padEnd(pad1) +
+        'SaleManager'.padEnd(pad2) +
+        '0x3FcE06688555F67962978B3Eb44805849A4A8895\n';
       getApiInfo(dummy_apis).should.be.equal(expectedOutput);
     });
   });
@@ -236,6 +229,9 @@ describe('# console script test', async function() {
     });
 
     it('should print all available smart contracts and address', async function() {
+      const pad1 = 10;
+      const pad2 = 20;
+
       const dummy_apis = {
         MainToken: {
           address: '0xa0ff2297A8690383784d5A4723d72F8A2f5480D4'
@@ -245,9 +241,15 @@ describe('# console script test', async function() {
         }
       };
       const expectedOutput =
-        'Index\t\t\t\tContract\t\t\t\tAddress\n' +
-        '[0]\t\t\t\tMainToken\t\t\t\t0xa0ff2297A8690383784d5A4723d72F8A2f5480D4\n' +
-        '[1]\t\t\t\tSaleManager\t\t\t\t0x3FcE06688555F67962978B3Eb44805849A4A8895\n\n';
+        'Index'.padEnd(pad1) +
+        'Contract'.padEnd(pad2) +
+        'Address\n' +
+        '[0]'.padEnd(pad1) +
+        'MainToken'.padEnd(pad2) +
+        '0xa0ff2297A8690383784d5A4723d72F8A2f5480D4\n' +
+        '[1]'.padEnd(pad1) +
+        'SaleManager'.padEnd(pad2) +
+        '0x3FcE06688555F67962978B3Eb44805849A4A8895\n\n';
       stdMocks.use();
 
       await list([], dummy_apis).should.be.fulfilled;
@@ -275,7 +277,8 @@ describe('# console script test', async function() {
     it('should print api method and args', async function() {
       const expectedOutput =
         '\n' +
-        '[Method]\t\t\t\t[Args]\n' +
+        '[Method]'.padEnd(40) +
+        '[Args]\n' +
         'velocities                              [_input1]\n' +
         'haechiIds                               [_input1]\n' +
         'distances                               [_input1]\n' +
