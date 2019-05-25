@@ -89,8 +89,8 @@ module.exports = async function(name, options) {
     );
 
     fs.copySync(
-      path.join(__dirname, '../', 'contracts/upgradeable'),
-      path.join(rootDir, 'contracts', 'upgradeable')
+      path.join(__dirname, '../', 'contracts/vvisp'),
+      path.join(rootDir, 'contracts', 'vvisp')
     );
   }
 

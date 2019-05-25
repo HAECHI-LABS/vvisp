@@ -9,15 +9,11 @@ module.exports = async function(options) {
   const preProcess = require('./preProcess');
   const { PROJECT_NAME, SERVICE_FILE } = require('../../config/Constant');
   const {
-    deployBusinesses,
-    deployNonUpgradeables,
-    deployProxies,
+    deployContracts,
     deployRegistry,
-    initNonUpgradeables,
+    initContracts,
     injectVar,
-    reflectState,
-    registerFileNames,
-    upgradeAll
+    reflectState
   } = require('./processes');
   const chk = require('chalk');
   global.chalk = {
@@ -46,45 +42,21 @@ module.exports = async function(options) {
         }
       },
       {
-        name: 'deployBusinesses',
-        process: async function() {
-          await deployBusinesses(deployState, options);
-        }
-      },
-      {
-        name: 'deployProxies',
-        process: async function() {
-          await deployProxies(deployState, options);
-        }
-      },
-      {
         name: 'injectVar',
         process: async function() {
           injectVar(deployState);
         }
       },
       {
-        name: 'deployNonUpgradeables',
+        name: 'deployContracts',
         process: async function() {
-          await deployNonUpgradeables(deployState, options);
+          await deployContracts(deployState, options);
         }
       },
       {
-        name: 'upgradeAll',
+        name: 'initContracts',
         process: async function() {
-          await upgradeAll(deployState, options);
-        }
-      },
-      {
-        name: 'registerFileNames',
-        process: async function() {
-          await registerFileNames(deployState, options);
-        }
-      },
-      {
-        name: 'initNonUpgradeables',
-        process: async function() {
-          await initNonUpgradeables(deployState, options);
+          await initContracts(deployState, options);
         }
       },
       {

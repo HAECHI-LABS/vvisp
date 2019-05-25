@@ -51,12 +51,6 @@ English version: [README.md](./README.md)
 이는 스마트 컨트랙트 개발에 익숙하지 않은 개발자들에게 큰 진입장벽으로 작용합니다.
 그러나 `vvisp`은 일련의 작업들 없이 명령어 한줄을 통해 컨트랙트의 특정 기능을 실행하고, 결과를 받아올 수 있도록 설계되었습니다.
 
-**(3) Upgradeable Smart Contract Framework 지원**
-
-: 추가적으로 `vvisp`은 USCF(Upgradeable Smart Contract Framework)을 지원합니다.
-개발자들이 업그레이드 가능한 스마트 컨트랙트에 대한 깊은 지식이 없더라도, 비습은 내장되어있는 업그레이드 가능한 라이브러리를 지원하여 개발자가 ‘업그레이드’하는 기능을 쉽게 사용할 수 있습니다.
-USCF에 대한 추가적인 정보가 필요하시다면 HAECHI-LABS의 [pdf file](https://drive.google.com/file/d/1H9gtmpiZ5zwIFwgHGOOvz9Oa8SAlpM5h/view?usp=sharing)을 참고하시기 바랍니다.
-
 | **Contributors**: Please see the [Contributing](#contributing) section of this README. |
 | --- |
 
@@ -147,7 +141,7 @@ $ npm install #or yarn install
 
   - vvisp-contracts
 
-    vvisp-contracts는 업그레이드 가능한 스마트 컨트랙트 개발을 위한 컨트랙트 라이브러리입니다.
+    vvisp-contracts는 스마트 컨트랙트 개발을 위한 컨트랙트 라이브러리입니다.
 
 - vvisp-sample
 

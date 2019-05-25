@@ -39,6 +39,9 @@ module.exports = async function(deployState, options) {
     config.contracts,
     stateClone
   );
+  if (compileInformation.noProxy !== true) {
+    throw new Error('Upgradeable feature was deprecated from v1.1.0');
+  }
 
   if (Object.keys(compileInformation.targets).length === 0) {
     printOrSilent(chalk.head('Nothing to upgrade'), options);
@@ -48,22 +51,15 @@ module.exports = async function(deployState, options) {
   // Check whether this process needs Registry
   // Event occurs when user sets config.registry false or does not set.
   if (!config.registry) {
-    // User cannot use upgradeable patterns without registry
-    if (compileInformation.noProxy !== true) {
-      throw new Error(
-        `No Registry with upgradeable contracts is not allowed, change 'registry' from false to true in 'service.vvisp.json'`
+    if (web3.utils.isAddress(stateClone.registry)) {
+      printOrSilent(
+        `${chalk.warning('Warning:')} Registry address ${
+          stateClone.registry
+        } will be deleted.`
       );
-    } else {
-      if (web3.utils.isAddress(stateClone.registry)) {
-        printOrSilent(
-          `${chalk.warning('Warning:')} Registry address ${
-            stateClone.registry
-          } will be deleted.`
-        );
-      }
-      compileInformation.noRegistry = true;
-      stateClone.registry = 'noRegistry';
     }
+    compileInformation.noRegistry = true;
+    stateClone.registry = 'noRegistry';
   } else if (stateClone.registry === 'noRegistry') {
     printOrSilent(
       `${chalk.warning(

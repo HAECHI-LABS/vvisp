@@ -1,11 +1,6 @@
 module.exports = async function(deployState, options) {
   const path = require('path');
-  const {
-    INITIALIZE,
-    PRIVATE_KEY,
-    TX_OPTIONS,
-    UPGRADEABLE
-  } = require('../constants');
+  const { INITIALIZE, PRIVATE_KEY, TX_OPTIONS } = require('../constants');
   const {
     forIn,
     getTxCount,
@@ -17,31 +12,22 @@ module.exports = async function(deployState, options) {
   const { compileOutput, targets } = deployState;
   let stateClone = deployState.getState();
 
-  const nonUpgradeables = [];
+  const contracts = [];
   forIn(targets, (contract, name) => {
-    if (contract[UPGRADEABLE] !== true) {
-      nonUpgradeables.push({ name: name, contract: contract });
-    }
+    contracts.push({ name: name, contract: contract });
   });
 
-  if (nonUpgradeables.length === 0) {
+  if (contracts.length === 0) {
     return;
   }
 
-  printOrSilent(
-    chalk.head(
-      `\tStart Initialize${
-        stateClone.registry === 'noRegistry' ? '' : ' NonUpgradeable'
-      } Contracts...`
-    ),
-    options
-  );
+  printOrSilent(chalk.head(`\tStart Initialize Contracts...`), options);
 
   const startCount = await getTxCount(PRIVATE_KEY);
   let txCount = startCount;
 
-  for (let i = 0; i < nonUpgradeables.length; i++) {
-    const { contract, name } = nonUpgradeables[i];
+  for (let i = 0; i < contracts.length; i++) {
+    const { contract, name } = contracts[i];
     const stateContract = stateClone.contracts[name];
 
     if (!stateContract.pending) {

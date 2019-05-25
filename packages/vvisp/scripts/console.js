@@ -408,18 +408,11 @@ function setApiAddress(apis, stateFilePath) {
 
     const fileName = path.parse(filePath).name;
     if (apis[fileName]) {
-      if (
-        contracts[key]['upgradeable'] &&
-        contracts[key]['upgradeable'] === true
-      ) {
-        apis[fileName]['address'] = contracts[key]['proxy'];
-      } else {
-        apis[fileName]['address'] = contracts[key]['address'];
-      }
+      apis[fileName]['address'] = contracts[key]['address'];
     } else {
       // mismatch occurred between vvisp.state and apis
       throw new Error(
-        'Mismatch has occurred between vvisp.state and apis. Please check state.vvisp.json file and contractApis'
+        'Mismatch has occurred between state.vvisp.json and apis. Please check state.vvisp.json file and contractApis/'
       );
     }
   }
