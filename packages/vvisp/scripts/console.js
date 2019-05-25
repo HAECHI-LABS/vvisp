@@ -4,6 +4,7 @@ const chalk = require('chalk');
 const stringArgv = require('string-argv');
 const _ = require('lodash');
 const { parseLogs } = require('@haechi-labs/vvisp-utils');
+const { STATE_FILE, REGISTRY_PATH } = require('../config/Constant');
 
 if (!String.prototype.format) {
   String.prototype.format = function() {
@@ -14,7 +15,7 @@ if (!String.prototype.format) {
   };
 }
 
-const defaultStateFile = 'state.vvisp.json';
+const defaultStateFile = STATE_FILE;
 
 /**
  *
@@ -419,6 +420,13 @@ function setApiAddress(apis, stateFilePath) {
       );
     }
   }
+
+  if (state['registry'] === 'noRegistry') {
+    delete apis[path.parse(REGISTRY_PATH).name];
+  } else {
+    apis[path.parse(REGISTRY_PATH).name]['address'] = state['registry'];
+  }
+
   return apis;
 }
 

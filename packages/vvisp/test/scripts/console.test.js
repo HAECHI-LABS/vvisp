@@ -64,10 +64,12 @@ describe('# console script test', async function() {
         'test.state.vvisp.json'
       );
       const dummy_api = {
-        HaechiV1: {}
+        HaechiV1: {},
+        VvispRegistry: {}
       };
       const expectedAddress = {
-        HaechiV1: '0x688555B34d5A480D4796723d72F8A9A4A889578F'
+        HaechiV1: '0x688555B34d5A480D4796723d72F8A9A4A889578F',
+        VvispRegistry: '0xf7C93afa7C1a294eBb8dEBB3078F376fE0F1F876'
       };
 
       const state = setApiAddress(dummy_api, stateFile);
