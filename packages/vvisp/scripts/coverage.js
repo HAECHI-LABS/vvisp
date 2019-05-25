@@ -4,13 +4,12 @@ module.exports = async function(files, options) {
     const { printOrSilent } = require('@haechi-labs/vvisp-utils');
     const { exec } = require('child_process');
     const process = require('process');
-    
+    /*
     let rootDir = path.join('./');
     if (options && options.directory) {
       rootDir = path.join(options.directory);
     }
-
-    path.join(roodDir,'scripts/coverage.sh');
+*/
     console.log(process.execPath);
     //exec('sh scripts/coverage.sh',(error,stdout,stderr) => {
     //f(error) {
