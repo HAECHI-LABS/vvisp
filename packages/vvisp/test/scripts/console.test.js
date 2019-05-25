@@ -272,6 +272,8 @@ describe('# console script test', async function() {
         'testContractApis'
       );
       this.apis = setApi(testScriptPath);
+      this.apis['HaechiV1'].address =
+        '0x688555B34d5A480D4796723d72F8A9A4A889578F';
     });
 
     it('should print api method and args', async function() {
