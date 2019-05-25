@@ -20,19 +20,19 @@ const Mitm = require('mitm');
 const config = Config.get();
 
 const SENDER = privateKeyToAddress(config.from);
-const NU_SERVICE1 = path.join('./test/dummy/service1.json');
-const NU_SERVICE2 = path.join('./test/dummy/service2.json');
-const NU_STATE1 = path.join('./test/dummy/state1.json');
+const SERVICE1 = path.join('./test/dummy/service1.json');
+const SERVICE2 = path.join('./test/dummy/service2.json');
+const STATE1 = path.join('./test/dummy/state1.json');
 const N_R_SERVICE1 = path.join('./test/dummy/noRegistry.service1.json');
 const N_R_SERVICE2 = path.join('./test/dummy/noRegistry.service2.json');
 const N_R_STATE1 = path.join('./test/dummy/noRegistry.state1.json');
 
 fs.removeSync(SERVICE_PATH);
 fs.removeSync(STATE_PATH);
-const { deploy: nuDeployNum, upgrade: nuUpgradeNum } = getTxcount(
-  NU_SERVICE1,
-  NU_SERVICE2,
-  NU_STATE1
+const { deploy: deployNum, upgrade: upgradeNum } = getTxcount(
+  SERVICE1,
+  SERVICE2,
+  STATE1
 );
 const { deploy: nrDeployNum, upgrade: nrUpgradeNum } = getTxcount(
   N_R_SERVICE1,
@@ -66,8 +66,8 @@ describe('# deploy-service process test', function() {
       checkRightState();
     });
 
-    describe('# just nonUpgradeables case', function() {
-      setWholeProcess(NU_SERVICE1, NU_SERVICE2);
+    describe('# normal case', function() {
+      setWholeProcess(SERVICE1, SERVICE2);
     });
 
     describe('# no registry case', function() {
@@ -82,8 +82,8 @@ describe('# deploy-service process test', function() {
       fs.removeSync(STATE_PATH);
     });
 
-    describe('# just nonUpgradeables case', function() {
-      setResumingProcess(NU_SERVICE1, NU_SERVICE2, nuDeployNum, nuUpgradeNum);
+    describe('# normal case', function() {
+      setResumingProcess(SERVICE1, SERVICE2, deployNum, upgradeNum);
     });
 
     describe('# no registry case', function() {
@@ -139,14 +139,14 @@ function getWaitingTxNum() {
     stateClone
   );
 
-  let nonUpgradeableExists = false;
+  let targetExists = false;
 
   forIn(compileInformation.targets, contract => {
     if (contract.pending === PENDING_STATE[0]) {
-      if (!nonUpgradeableExists) {
-        nonUpgradeableExists = true;
+      if (!targetExists) {
+        targetExists = true;
       }
-      resultNumber++; // nonUpgradeables
+      resultNumber++;
       if (hasInit(contract)) {
         resultNumber++; // init Tx
       }
@@ -155,8 +155,8 @@ function getWaitingTxNum() {
     }
   });
 
-  if (nonUpgradeableExists && stateClone.registry !== 'noRegistry') {
-    resultNumber++; // registerNonUpgradeables
+  if (targetExists && stateClone.registry !== 'noRegistry') {
+    resultNumber++; // registerContractInfo
   }
   return resultNumber;
 }
