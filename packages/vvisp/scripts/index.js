@@ -8,6 +8,7 @@ const debug = require('./debug');
 const console = require('./console');
 const showState = require('./show-state');
 const coverage = require('./coverage');
+const analyze = require('./analyze');
 
 module.exports = {
   genScript,
@@ -19,5 +20,6 @@ module.exports = {
   debug,
   console,
   showState,
-  coverage
+  coverage,
+  analyze
 };
