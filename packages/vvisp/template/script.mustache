@@ -17,13 +17,13 @@ module.exports = function(_contractAddr = '') {
     },
     methods: {
       {{#constantFuncs}}
-      {{name}}: function({{#inputs}}_{{name}}, {{/inputs}}) {
-        return contract.methods.{{name}}({{#inputs}}_{{name}}, {{/inputs}}).call();
+      {{name}}: function({{#inputs}}{{name}}, {{/inputs}}) {
+        return contract.methods.{{name}}({{#inputs}}{{name}}, {{/inputs}}).call();
       },
       {{/constantFuncs}}
       {{#nonConstantFuncs}}
-      {{name}}: function({{#inputs}}_{{name}}, {{/inputs}}options) {
-        const txData = contract.methods.{{name}}({{#inputs}}_{{name}}, {{/inputs}}).encodeABI();
+      {{name}}: function({{#inputs}}{{name}}, {{/inputs}}options) {
+        const txData = contract.methods.{{name}}({{#inputs}}{{name}}, {{/inputs}}).encodeABI();
         options = {
           ...options,
           data: txData
