@@ -2,7 +2,6 @@ module.exports = async function(_toAddr, _value, _privKey, options) {
   const Tx = require('ethereumjs-tx');
   const web3 = require('./web3Store').get();
   const privateKeyToAddress = require('./privateKeyToAddress');
-  const printOrSilent = require('./printOrSilent');
 
   const DEFAULT_GAS_LIMIT = web3.utils.toHex(6721975);
   const DEFAULT_GAS_PRICE = web3.utils.toHex(10e9);
@@ -37,10 +36,6 @@ module.exports = async function(_toAddr, _value, _privKey, options) {
     transaction.sign(privateKey);
     const serializedTx = transaction.serialize().toString('hex');
 
-    return web3.eth
-      .sendSignedTransaction('0x' + serializedTx)
-      .on('error', function(error) {
-        printOrSilent(error, options);
-      });
+    return web3.eth.sendSignedTransaction('0x' + serializedTx);
   }
 };

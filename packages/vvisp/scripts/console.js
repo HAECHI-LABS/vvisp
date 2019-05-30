@@ -189,31 +189,26 @@ async function show(args, apis) {
     apis[contractName]['address'].toLowerCase()
   );
   let msg = '\n' + '[Method]'.padEnd(40) + '[Args]\n';
-  for (const method of Object.keys(contract['methods'])) {
-    msg =
-      msg +
-      '{0}[{1}]\n'.format(
-        method.padEnd(40),
-        getArgs(contract['methods'][method]).join(', ')
-      );
-  }
+
+  apis[contractName]['abi']
+    .filter(function(obj) {
+      return obj.type === 'function';
+    })
+    .forEach(function(functionAbi) {
+      msg =
+        msg +
+        '{0}[{1}]\n'.format(
+          functionAbi.name.padEnd(40),
+          getArgs(contract['methods'][functionAbi.name], functionAbi).join(', ')
+        );
+    });
   console.log(msg);
 }
 
-function getArgs(func) {
-  // First match everything inside the function argument parens.
-  const args = func.toString().match(/function.*?\(([^)]*)\)/)[1];
-  // Split the arguments string into an array comma delimited.
-  return args
-    .split(',')
-    .map(function(arg) {
-      // Ensure no inline comments are parsed and trim the whitespace.
-      return arg.replace(/\/\*.*\*\//, '').trim();
-    })
-    .filter(function(arg) {
-      // Ensure no undefined values are added.
-      return arg;
-    });
+function getArgs(func, functionAbi) {
+  return functionAbi.inputs.map((input, i) => {
+    return input.type + ' ' + (input.name || `input${i}`);
+  });
 }
 
 async function register() {
