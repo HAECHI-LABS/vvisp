@@ -353,9 +353,11 @@ function getApiInfo(apis) {
 
   for (const contract of Object.keys(apis)) {
     const address = apis[contract]['address'];
-    info =
-      info + `[${i}]`.padEnd(pad1) + contract.padEnd(pad2) + address + '\n';
-    i++;
+    if (address) {
+      info =
+        info + `[${i}]`.padEnd(pad1) + contract.padEnd(pad2) + address + '\n';
+      i++;
+    }
   }
 
   return info;
