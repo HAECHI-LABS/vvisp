@@ -194,6 +194,16 @@ async function show(args, apis) {
     .filter(function(obj) {
       return obj.type === 'function';
     })
+    .sort(function(a, b) {
+      if (a.name < b.name) {
+        return -1;
+      }
+      if (a.name > b.name) {
+        return 1;
+      }
+
+      return 0;
+    })
     .forEach(function(functionAbi) {
       msg =
         msg +
@@ -207,7 +217,7 @@ async function show(args, apis) {
 
 function getArgs(func, functionAbi) {
   return functionAbi.inputs.map((input, i) => {
-    return input.type + ' ' + (input.name || `input${i}`);
+    return input.type + ' ' + (input.name || `input${i + 1}`);
   });
 }
 

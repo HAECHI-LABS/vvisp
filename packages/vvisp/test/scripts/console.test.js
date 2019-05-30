@@ -283,14 +283,14 @@ describe('# console script test', async function() {
         '\n' +
         '[Method]'.padEnd(40) +
         '[Args]\n' +
-        'velocities                              [_input1]\n' +
-        'haechiIds                               [_input1]\n' +
-        'distances                               [_input1]\n' +
+        'distances                               [uint256 input1]\n' +
         'gym                                     []\n' +
-        'makeNewHaechi                           [__id, options]\n' +
-        'increaseVelocity                        [__haechiId, __diff, options]\n' +
-        'run                                     [options]\n' +
-        'initialize                              [__gym, options]\n\n';
+        'haechiIds                               [address input1]\n' +
+        'increaseVelocity                        [uint256 _haechiId, uint256 _diff]\n' +
+        'initialize                              [address _gym]\n' +
+        'makeNewHaechi                           [uint256 _id]\n' +
+        'run                                     []\n' +
+        'velocities                              [uint256 input1]\n\n';
 
       stdMocks.use();
 
