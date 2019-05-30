@@ -2,15 +2,11 @@ const chalk = require('chalk');
 const fs = require('fs');
 const path = require('path');
 const Table = require('cli-table3');
-const Web3 = require('web3');
 const { execFileSync } = require('child_process');
 const { compilerSupplier, printOrSilent } = require('@haechi-labs/vvisp-utils');
 
 module.exports = async function(contract, options) {
-  const web3 = new Web3(
-    new Web3.providers.HttpProvider('http://localhost:8545')
-  ); // <-----To Do: set real url configured by user
-
+  options = require('./utils/injectConfig')(options);
   const vvispState = JSON.parse(fs.readFileSync('./state.vvisp.json', 'utf-8'));
   const address = vvispState.contracts[contract].address;
   const srcPath = `./contracts/${vvispState.contracts[contract].fileName}`;
@@ -25,7 +21,7 @@ module.exports = async function(contract, options) {
   const storageTable = parse(linearNodes);
 
   for (let i = 0; i < storageTable.length; i++) {
-    storageTable[i].push(await web3.eth.getStorageAt(address, i));
+    storageTable[i].push(await options.web3.eth.getStorageAt(address, i));
   }
 
   printOrSilent(`Contract: ${contract}`);
