@@ -17,6 +17,7 @@ class StorageTableBuilder {
     this.buildStructSymbolTables();
     this.storageTable = this.buildStorageTable();
     this.calculateIndex();
+    console.log(this.storageTable);
     var cliTable = this.buildCliTable();
     return cliTable;
   }
@@ -230,11 +231,6 @@ class StorageTableBuilder {
     var getTypeSize = new ASTParser().getTypeSize;
 
     // get name
-    var name = input.split('[')[0];
-    if (!name in this.storageTable.get()) {
-      console.log('The variable does not exist.');
-      return -1;
-    }
 
     var row = this.storageTable.get()[name];
 

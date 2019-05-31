@@ -65,7 +65,7 @@ class ASTParser {
   parseArray(baseType, var_name) {
     var typeString = baseType.typeDescriptions.typeString;
     var dimensions = this.getDimensions(typeString);
-    var index = dimensions.length - 1;
+    var index = 0;
     this.parseInnerArray(baseType, var_name, dimensions, index);
   }
 
@@ -74,7 +74,7 @@ class ASTParser {
     var dimensions = [];
     for (var i = 1; i < tmpstring.length; i++) {
       var tmplen = tmpstring[i].replace(']', '');
-      dimensions.push(tmplen);
+      dimensions.unshift(tmplen);
     }
 
     return dimensions;
@@ -94,11 +94,11 @@ class ASTParser {
         var splited_front = string.split('[')[0];
         var splited_back = string.replace(splited_front, '');
 
-        tmpstring = splited_front + '[' + i + ']' + splited_back;
+        tmpstring = splited_front + splited_back + '[' + i + ']';
 
         // 현재 원소의 타입이 배열
-        if (index > 0) {
-          this.parseInnerArray(baseType.baseType, tmpstring, dim, index - 1);
+        if (index < dim.length - 1) {
+          this.parseInnerArray(baseType.baseType, tmpstring, dim, index + 1);
         } else {
           // 현재원소의 타입이 구조체
           if (baseType.typeDescriptions.typeString.split(' ')[0] == 'struct') {

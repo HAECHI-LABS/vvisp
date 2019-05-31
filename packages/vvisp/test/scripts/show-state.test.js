@@ -719,8 +719,81 @@ describe('# show-state script test', function() {
       tableBuilder.calculateIndex(storageTable);
       var table = tableBuilder.buildMapping('map2[40]');
     });
-
+*/
     it('buildDynamicArray: calculate valid storage index of dynamicArray', async function() {
+      /*
+
+      var_name을 키로 symbolTable에서 row검색
+      -> type, index, size, start index 획득
+
+      타입보고 분기 -> 동적배열, 맵핑, 종료
+
+*/
+      /*
+
+      mapping()
+      key : elementary type (bytes, tring 포함)
+      value : 무엇이든 될수 잇음
+      우선 타입들을 쪼갠다
+      결과값에 따라 보여주는거를 달리해야함
+      array라면 array들을
+      struct라면 struct들을
+      맵핑이라면 한번더 타고갈수있고
+      기타는 그냥 보여주고
+      동적배열이면 동적배열 처리하도록
+
+      mapping => (mapping => uint[])
+
+      구조체타입 맵핑
+
+      배열맵핑
+      동적배열맵핑
+
+
+
+
+      */
+      /*
+
+      show var_name
+      
+      
+
+      동적배열이면 arr[][]
+      -> 체크타입에 보내면 되지않을까?
+      1. 배열타입이면 배열을 출력
+      2. 엘리먼트타입이면 엘리먼트 하나를 출력
+
+
+
+      동적 배열 더 깊게 : arr[4][3][4]
+        - 이름전체가 그냥 변수면 출력
+        - 아니면 이름만 잘라냄 -> 동적배열인지확인
+        - 타입을 본다 -> 어디가 동적배열 부분인지확인
+        - Dimesions [3,4]
+          - 길이넘으면 탈락
+          - 크기 넘어도 탈락 (동적배열은 값 크기)
+          - 동적배열이 아닌부분 : 그냥 순서대로 출력 (파스함수 돌려)
+          - 동적배열인 부분 : web3로 값을가져옴 + offset만큼 더해
+          - 끝까지 갈대까지 반복 
+
+      스트럭트 타입 동적배열
+        - structDef를 본다
+        - baseIndex + structDef의 형태로 다 출력
+
+
+
+
+
+
+
+
+      
+
+
+
+      */
+
       // given
       var dynamicOutput = JSON.parse(
         fs.readFileSync(
@@ -739,8 +812,9 @@ describe('# show-state script test', function() {
       var storageTable = tableBuilder.buildStorageTable();
       tableBuilder.calculateIndex(storageTable);
       var table = tableBuilder.buildMapping('map2[40]');
+
+      //
     });
-    */
   });
   function expect_structSymbolTable(structTypeName, symbolTable, getTypeSize) {
     switch (structTypeName) {
