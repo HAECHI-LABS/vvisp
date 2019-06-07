@@ -1,15 +1,15 @@
-module.exports = async function() {
-    const { printOrSilent } = require('@haechi-labs/vvisp-utils');
+const { printOrSilent } = require('@haechi-labs/vvisp-utils');
+const { execSync } = require('child_process');
 
-    const exec = require('child_process').exec;
-    const testscript = exec('sh scripts/coverage.sh')
-    
-    testscript.stdout.on('data', function(data){
-       console.log(data);
-    });
-    testscript.stderr.on('data', function(data){
-        console.log(data);
-    });
-    
+module.exports = async function(options) {
+    const result = execSync('sh scripts/coverage.sh');
+
+    printOrSilent(result.toString(), options);
+
+    // testscript.stdout.on('data', function(data){
+    //    console.log(data);
+    // });
+    // testscript.stderr.on('data', function(data){
+    //     console.log(data);
+    // });
 }
-  

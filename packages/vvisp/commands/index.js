@@ -1,4 +1,5 @@
 const analyze = require('./analyze');
+const ci = require('./ci');
 const compile = require('./compile');
 const console = require('./console');
 const coverage = require('./coverage')
@@ -13,6 +14,7 @@ const init = require('./init');
 
 module.exports = [
   analyze,
+  ci,
   compile,
   console,
   coverage,
