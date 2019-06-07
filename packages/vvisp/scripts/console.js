@@ -314,6 +314,13 @@ async function call(args, apis) {
         args: events[key].args
       });
     }
+
+    if (typeof receipt === 'object') {
+      const result = JSON.parse(JSON.stringify(receipt, null));
+      console.log(JSON.stringify(result, undefined, 2));
+      return;
+    }
+
     receipt.logs = undefined;
     const result = JSON.parse(JSON.stringify(receipt, receiptFilter));
     result.logs = logs;
