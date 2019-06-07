@@ -1,5 +1,6 @@
 const rewire = require('rewire');
 const chai = require('chai');
+const expect = chai.expect;
 const path = require('path');
 const stdMocks = require('std-mocks');
 const bddStdin = require('bdd-stdin');
@@ -16,40 +17,49 @@ describe('# console script test', async function() {
   describe('setApi', function() {
     const setApi = consoleTest.__get__('setApi');
 
-    before('create apis', function() {
-      const testScriptPath = path.join(
-        __dirname,
-        '..',
-        'dummy',
-        'testContractApis'
-      );
-      this.apis = setApi(testScriptPath);
-    });
-
-    it('should have contract functions', function() {
-      forIn(this.apis, Contract => {
-        Contract.should.be.a('function');
+    context('prerequisite', function() {
+      it('should run gen-script command first', function() {
+        const invalidScriptPath = path.join(__dirname, '..', 'falsePath');
+        expect(setApi(invalidScriptPath)).to.be.undefined;
       });
     });
 
-    it('should have right name of contracts', function() {
-      const expectedContractsName = ['HaechiV1'];
-      let i = 0;
-      for (const key of Object.keys(this.apis)) {
-        key.should.be.equal(expectedContractsName[i]);
-        i++;
-      }
-    });
+    context('satisfied prerequisite', function() {
+      before('create apis', function() {
+        const testScriptPath = path.join(
+          __dirname,
+          '..',
+          'dummy',
+          'testContractApis'
+        );
+        this.apis = setApi(testScriptPath);
+      });
 
-    it('should have right number of contracts', function() {
-      Object.keys(this.apis).length.should.be.equal(1);
-    });
+      it('should have contract functions', function() {
+        forIn(this.apis, Contract => {
+          Contract.should.be.a('function');
+        });
+      });
 
-    it('should have abi', function() {
-      for (const key of Object.keys(this.apis)) {
-        this.apis[key]['abi'].should.not.be.undefined;
-        this.apis[key]['abi'].length.should.be.equal(11);
-      }
+      it('should have right name of contracts', function() {
+        const expectedContractsName = ['HaechiV1'];
+        let i = 0;
+        for (const key of Object.keys(this.apis)) {
+          key.should.be.equal(expectedContractsName[i]);
+          i++;
+        }
+      });
+
+      it('should have right number of contracts', function() {
+        Object.keys(this.apis).length.should.be.equal(1);
+      });
+
+      it('should have abi', function() {
+        for (const key of Object.keys(this.apis)) {
+          this.apis[key]['abi'].should.not.be.undefined;
+          this.apis[key]['abi'].length.should.be.equal(11);
+        }
+      });
     });
   });
 

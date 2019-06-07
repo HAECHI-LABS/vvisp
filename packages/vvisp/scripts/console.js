@@ -39,6 +39,9 @@ module.exports = async function(scriptPath, options) {
   options = require('./utils/injectConfig')(options);
 
   let apis = setApi(scriptPath, options);
+  if (apis === undefined || apis === '') {
+    return;
+  }
   if (fs.existsSync(defaultStateFile)) {
     apis = setApiAddress(apis, defaultStateFile);
   } else {
@@ -374,7 +377,7 @@ function getApiInfo(apis) {
  *
  * Get the script api and abi of a smart contract from contractApis
  * @param {string} scriptPath is a path to contractApi which is generated
- *  from vvisp abi-to-script command
+ *  from vvisp gen-script command
  * @param {object} options is the configuration information
  * @return {object} object has an api of smart contracts
  */
@@ -382,6 +385,13 @@ function setApi(scriptPath, options) {
   const defaultScriptPath = process.cwd() + '/contractApis';
   if (scriptPath === undefined || scriptPath === '') {
     scriptPath = defaultScriptPath;
+  }
+
+  if (!fs.existsSync(scriptPath)) {
+    console.log(
+      "Run 'vvisp gen-script' command first to create api of smart contracts."
+    );
+    return;
   }
 
   // set script api
