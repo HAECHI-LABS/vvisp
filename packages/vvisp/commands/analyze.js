@@ -7,7 +7,7 @@ const description = 'analyze the smart contracts';
 const register = commander =>
   commander
     .command(signature, { noHelp: true })
-    .usage('[files...]')
+    .usage('[files...] [options]')
     .option('-a, --all-contract', 'analyze all contract')
     .description(description)
     .action(analyze)

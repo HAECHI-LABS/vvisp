@@ -1,7 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 const chalk = require('chalk');
-const ora = require('ora');
 const { execSync } = require('child_process');
 const { printOrSilent } = require('@haechi-labs/vvisp-utils');
 const test = require('./coverage');
@@ -12,31 +11,18 @@ const constants = require('../config/Constant');
 module.exports = async function(options) {
   options = require('./utils/injectConfig')(options);
 
-  let spinner = ora('Testing...').start();
+  printOrSilent('Testing...', options);
+  await test({silent: true});
+  printOrSilent('Testing... OK', options);
 
-  try {
-    await test({silent: true});
-    spinner.succeed();
-  } catch {
-    spinner.fail();
-  }
+  printOrSilent('Analyzing...', options);
+  await analyze([], {silent: true, allContract: true});
+  printOrSilent('Analyzing... OK', options);
 
-  spinner = ora('Analyzing...').start();
-  try {
-    await analyze([], {silent: true, allContract: true});
-    spinner.succeed();
-  } catch {
-    spinner.fail();
+  printOrSilent('Deploying...', options);
+  if (options.reset) {
+    fs.unlinkSync(constants.STATE_PATH);
   }
-
-  spinner = ora('Deploying...').start();
-  try {
-    if (options.reset) {
-      fs.unlinkSync(constants.STATE_PATH);
-    }
-    await deployService({silent: true});
-    spinner.succeed();
-  } catch {
-    spinner.fail();
-  }
+  await deployService({silent: true});
+  printOrSilent('Deploying... OK', options);
 };

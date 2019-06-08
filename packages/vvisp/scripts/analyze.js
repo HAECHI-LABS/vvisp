@@ -8,7 +8,7 @@ const {
 
 module.exports = async function(files, options) {
   options = require('./utils/injectConfig')(options);
-  
+
   try {
     execSync('command -v docker');
   } catch {
@@ -23,7 +23,7 @@ module.exports = async function(files, options) {
   } catch {
     console.error('Requirement: mythril/myth must be pulled');
     console.error('>>> $ docker pull mythril/myth');
-    
+
     return;
   }
 
@@ -37,10 +37,10 @@ module.exports = async function(files, options) {
     const url = `${options.config.network_config.host}:${options.config.network_config.port}`;
     const vvispState = JSON.parse(fs.readFileSync('./state.vvisp.json', 'utf-8'));
 
-    Object.values(vvispState.contracts) 
+    Object.values(vvispState.contracts)
       .forEach(contract => {
         const command = `sudo docker run --network=host mythril/myth -xa ${contract.address} --rpc ${url}`;
-        const result = execSync(command).toString();
+        const result = execSync(command, { stdio: 'pipe' }).toString();
 
         printOrSilent(result, options);
     });
@@ -51,9 +51,9 @@ module.exports = async function(files, options) {
 
         const dirName = path.dirname(path.resolve(file));
         const baseName = path.basename(file);
-      
+
         const command = `sudo docker run -v ${dirName}:/tmp mythril/myth -x tmp/${baseName}`;
-        const result = execSync(command).toString();
+        const result = execSync(command, { stdio: 'pipe' }).toString();
 
         printOrSilent(result, options);
       });
