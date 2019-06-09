@@ -1,7 +1,6 @@
 const Web3 = require('web3');
 
 let web3;
-const voidWeb3 = new Web3();
 module.exports = (function() {
   return {
     /**
@@ -21,7 +20,7 @@ module.exports = (function() {
      */
     get: () => {
       if (!web3) {
-        return voidWeb3;
+        return new Web3();
       }
       return web3;
     },
