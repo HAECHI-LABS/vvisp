@@ -18,6 +18,9 @@ You can define those properties:
 
 - `networks`:
     The detail information of networks.
+  &nbsp;- `platform`:
+        The platform you want to connect with. (vvisp is supporting ethereum and klaytn)
+        Default is `ethereum`.  
   &nbsp;- `url`:
         The URL you want to connect with.
         The `host` and` port` below are ignored when the corresponding item is present.  
@@ -34,7 +37,8 @@ You can define those properties:
         Default is `6721975`.  
   &nbsp;- `gasPrice`:
         The gas price to pay for transactions.
-        Default is `10000000000`(10Gwei)` and unit is wei.  
+        Default is `10000000000`(10Gwei)` and unit is wei.
+        In Klaytn, the gasPrice is fixed at 25ston(25000000000) and no other values are allowed.  
 
 - `compilers`:
     The detail information of compilers.  
@@ -66,9 +70,10 @@ You can define those properties:
 
 ```javascript
 module.exports = {
-  network: "development",
+  network: 'development',
   networks: {
     development: {
+      platform: 'ethereum',
       host: 'localhost',
       port: 8545,
       network_id: '*'
@@ -113,6 +118,7 @@ You can change some of the environment variables mentioned above by using option
 ```
 --configFile <fileName> // Read and use your custom configuration file.
 -n, --network <network> // Change the network.
+-p, --platform <platform> // Change the platform.
 --gasLimit <gasLimit> // Change the gasLimit.
 --gasPrice <gasPrice> // Change the gasPrice.
 --from <privateKey> // Change the privateKey to use.
@@ -127,22 +133,23 @@ Normally, make file like below:
 ```
 {
   "serviceName": "Haechi", (1)
-  "variables" : { (2)
+  "registry" : true, (2)
+  "variables" : { (3)
     "varName": "constant"
   },
-  "contracts": { (3)
-    "ContractKeyName1": { (4)
-      "path": "path/to/your/contract/Contract1.sol" (5)
+  "contracts": { (4)
+    "ContractKeyName1": { (5)
+      "path": "path/to/your/contract/Contract1.sol" (6)
     },
     "ContractKeyName2": {
       "path": "contracts/Contract2.sol",
-      "constructorArguments": [ (6)
-        "${contracts.ContractKeyName1.address}", (7)
-        "${variables.varName}" (8)
+      "constructorArguments": [ (7)
+        "${contracts.ContractKeyName1.address}", (8)
+        "${variables.varName}" (9)
       ],
-      "initialize": { (9)
-        "functionName": "initialize", (10)
-        "arguments": [ (11)
+      "initialize": { (10)
+        "functionName": "initialize", (11)
+        "arguments": [ (12)
           "argument1",
           "argument2"
         ]
@@ -153,6 +160,9 @@ Normally, make file like below:
 ```
 
 1. Define the name of service.
+
+1. If you set `registry` property `true` to register your contracts, registry contract would be deployed automatically.
+   Default is `false`.
 
 1. Set some constant variables in `service.vvisp.json`.
 Define a constant variable as a key-value pair.
@@ -179,43 +189,3 @@ If you do not have to initialize, you can omit this.
 
 1. Write the arguments to initialize as an array.
 If you do not have to the arguments to initialize, you can omit this.
-
-
-### Example2
-If you want to add upgradeability to your service, see this file:
-```
-{
-  "serviceName": "Haechi",
-  "variables" : {
-    "varName": "constant"
-  },
-  "registry" : true, (1)
-  "contracts": {
-    "ContractKeyName1": {
-      "upgradeable": true, (2)
-      "path": "path/to/your/contract/Contract1_V0.sol",
-      "initialize": { (3)
-        "functionName": "initialize",
-        "arguments": [
-          "${contracts.ContractKeyName2.address}", (4)
-          "argument2"
-        ]
-      }
-    },
-    "ContractKeyName2": {
-      "upgradeable": true,
-      "path": "contracts/Contract2_V1.sol"
-    }
-  }
-}
-```
-
-1. If you set `registry` property `true` to adopt upgradeability to your service.
-   Default is `false`.
-
-1. If you want an upgradeable contract, set `upgradeable` property `true`.
-vvisp will generate proxy and connect to your business logic automatically.
-
-1. In the case of an upgradeable smart contract, instead of using the constructor, you need to place a separate method, such as `initialize`, to perform the initialization logic here.
-
-1. If the referenced contract is upgradeable, it brings proxy address.

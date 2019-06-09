@@ -18,6 +18,9 @@ English version: [CONFIGURATION.md](./CONFIGURATION.md)
 
 - `networks`:
     네트워크에 대한 세부 정보입니다.  
+  &nbsp;- `platform`:
+        연결하고자 하는 플랫폼의 명칭입니다. (vvisp은 현재 ethereum과 klaytn을 지원합니다.)
+        기본값은 `ethereum`입니다.  
 &nbsp;- `url`:
         연결하고자 하는 url입니다.
         해당 항목 존재 시 아래 `host`, `port`는 무시됩니다.  
@@ -34,7 +37,8 @@ English version: [CONFIGURATION.md](./CONFIGURATION.md)
         기본값은 `6721975`입니다.  
 &nbsp;- `gasPrice`:
         트랙잭션 발생시 설정하고자 하는 gas price입니다.
-        기본값은 `10000000000`(10Gwei)이며, 입력 단위는 wei입니다.  
+        기본값은 `10000000000`(10Gwei)이며, 입력 단위는 wei입니다.
+        클레이튼에서 gasPrice는 25ston(25000000000)으로 고정되어 있으며 다른 값들은 허용되지 않습니다.  
 
 - `compilers`:
     사용하고자 하는 컴파일러에 대한 세부 정보입니다.  
@@ -66,9 +70,10 @@ English version: [CONFIGURATION.md](./CONFIGURATION.md)
 
 ```javascript
 module.exports = {
-  network: "development",
+  network: 'development',
   networks: {
     development: {
+      platform: 'ethereum',
       host: 'localhost',
       port: 8545,
       network_id: '*'
@@ -113,6 +118,7 @@ module.exports = {
 ```
 --configFile <fileName> // custom한 설정 파일을 읽어 사용합니다.
 -n, --network <network> // network를 변경합니다.
+-p, --platform <platform> // platform을 변경합니다.
 --gasLimit <gasLimit> // gasLimit 값을 조정합니다.
 --gasPrice <gasPrice> // gasPrice 값을 조정합니다.
 --from <privateKey> // 사용할 privateKey 값을 변경합니다.
@@ -127,22 +133,23 @@ module.exports = {
 ```
 {
   "serviceName": "Haechi", (1)
-  "variables" : { (2)
+  "registry" : true, (2)
+  "variables" : { (3)
     "varName": "constant"
   },
-  "contracts": { (3)
-    "ContractKeyName1": { (4)
-      "path": "path/to/your/contract/Contract1.sol" (5)
+  "contracts": { (4)
+    "ContractKeyName1": { (5)
+      "path": "path/to/your/contract/Contract1.sol" (6)
     },
     "ContractKeyName2": {
       "path": "contracts/Contract2.sol",
-      "constructorArguments": [ (6)
-        "${contracts.ContractKeyName1.address}", (7)
-        "${variables.varName}" (8)
+      "constructorArguments": [ (7)
+        "${contracts.ContractKeyName1.address}", (8)
+        "${variables.varName}" (9)
       ],
-      "initialize": { (9)
-        "functionName": "initialize", (10)
-        "arguments": [ (11)
+      "initialize": { (10)
+        "functionName": "initialize", (11)
+        "arguments": [ (12)
           "argument1",
           "argument2"
         ]
@@ -153,6 +160,9 @@ module.exports = {
 ```
 
 1. service의 이름을 정의합니다.
+
+1. `registry` 값을 `true`로 설정한다면, 배포 컨트랙트들을 기록하는 용도의 Registry 컨트랙트가 자동 배포됩니다.
+   기본값은 `false`입니다.
 
 1. `service.vvisp.json`에서 사용할 상수를 설정하는 곳 입니다.
 key-value pair로 상수를 지정합니다.
@@ -179,43 +189,3 @@ key-value pair로 상수를 지정합니다.
 
 1. 초기화할 argument의 array를 적는 곳 입니다.
 초기화할 argument가 없다면 생략하여도 무방합니다.
-
-
-### Example2
-해당 스마트 컨트랙트 서비스에 업그레이드 기능을 추가하고 싶으시다면, 다음의 설정 파일을 참고하세요:
-```
-{
-  "serviceName": "Haechi",
-  "variables" : {
-    "varName": "constant"
-  },
-  "registry" : true, (1)
-  "contracts": {
-    "ContractKeyName1": {
-      "upgradeable": true, (2)
-      "path": "path/to/your/contract/Contract1_V0.sol",
-      "initialize": { (3)
-        "functionName": "initialize",
-        "arguments": [
-          "${contracts.ContractKeyName2.address}", (4)
-          "argument2"
-        ]
-      }
-    },
-    "ContractKeyName2": {
-      "upgradeable": true,
-      "path": "contracts/Contract2_V1.sol"
-    }
-  }
-}
-```
-
-1. Upgradeable한 서비스를 구성하고 싶으시다면, `registry` 속성을 `true`로 설정하십시오.
-기본값은 `false`입니다.
-
-1. upgrade를 원하는 contract의 경우 `upgradeable` 속성을 `true`로 설정합니다.
-`vvisp`은 이를 위한 proxy 컨트랙트를 자동 생성 및 연결해줍니다.
-
-1. upgradeable한 스마트 컨트랙트의 경우, constructor를 사용하는 대신 `initialize` 같은 별도의 method를 둬 이곳에서 초기화 로직 수행해야 합니다.
-
-1. 만약 참조할 컨트랙트가 upgradeable contract일 경우, proxy의 address가 입력됩니다.
