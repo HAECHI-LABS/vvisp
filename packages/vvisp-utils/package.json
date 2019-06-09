@@ -36,6 +36,7 @@
   ],
   "dependencies": {
     "bip39": "^2.5.0",
+    "caver-js": "^0.9.3",
     "chalk": "^2.4.1",
     "ethereumjs-tx": "^1.3.7",
     "ethereumjs-wallet": "^0.6.2",

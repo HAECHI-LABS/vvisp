@@ -5,6 +5,7 @@ module.exports = async function(
   options
 ) {
   const filterPrivateKey = require('./filterPrivateKey');
+  const { getContractFactory } = require('./blockchainApis');
   privateKey = filterPrivateKey(privateKey);
 
   if (arguments && arguments.length === undefined) {
@@ -39,16 +40,16 @@ module.exports = async function(
     }
   }
 
-  const sendTx = require('./sendTx');
-  const web3 = require('./web3Store').get();
+  const { sendTx } = require('./blockchainApis');
+  const Contract = getContractFactory(options);
 
   const inputs = { data: '0x' + bytecode, arguments };
-  const deployData = new web3.eth.Contract(abi).deploy(inputs).encodeABI();
+  const deployData = new Contract(abi).deploy(inputs).encodeABI();
 
   options = {
     ...options,
     data: deployData
   };
 
-  return sendTx('0x', 0, privateKey, options);
+  return sendTx(null, 0, privateKey, options);
 };

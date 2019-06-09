@@ -6,11 +6,12 @@ module.exports = {
       network_id: '*' // eslint-disable-line camelcase
     },
     coverage: {
+      platform: 'klaytn',
       host: 'localhost',
       port: 8545,
       network_id: '*', // eslint-disable-line camelcase
       gasLimit: 123123,
-      gasPrice: 10000000000
+      gasPrice: 25000000000
     }
   },
   compilers: {

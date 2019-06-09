@@ -76,7 +76,7 @@ module.exports = async function(scriptPath, options) {
     )
   );
 
-  await apiCommander.run();
+  await apiCommander.run(options);
   process.exit(1);
 };
 
@@ -101,7 +101,7 @@ function ApiCommander(apis) {
     add: function(command) {
       this.commands[command.name] = command;
     },
-    run: async function() {
+    run: async function(options) {
       while (this.end) {
         const prompt = '>> ';
         process.stdout.write(prompt);
@@ -144,7 +144,8 @@ function ApiCommander(apis) {
         try {
           await this.commands[args[0]].run(
             args.slice(1, args.length),
-            this.apis
+            this.apis,
+            options
           );
         } catch (e) {
           console.log(e);
@@ -252,8 +253,9 @@ async function register() {
  * Call api of a smart contract and print a result.
  * @param {object} args is a list of command args
  * @param {object} apis has an api of smart contracts
+ * @param {object} options is a global option
  */
-async function call(args, apis) {
+async function call(args, apis, options) {
   if (args.length < 2) {
     console.log(
       'invalid number of args: should be at least 2(contract name, method name), got {0}'.format(
@@ -286,6 +288,12 @@ async function call(args, apis) {
     return param;
   });
 
+  params.push({
+    gasLimit: options.config.gasLimit,
+    gasPrice: options.config.gasPrice,
+    platform: options.config.platform
+  });
+
   const receiptFilter = [
     'transactionHash',
     'transactionIndex',
@@ -305,26 +313,30 @@ async function call(args, apis) {
       throw new Error(`There is no function name of ${methodName}`);
     }
     const receipt = await contract.methods[methodName].apply(undefined, params);
-    const events = parseLogs(receipt.logs, apis[contractName]['abi']);
-    const logs = [];
-    for (const key in events) {
-      logs.push({
-        transactionHash: events[key].transactionHash,
-        name: events[key].name,
-        args: events[key].args
-      });
-    }
+    if (typeof receipt !== 'object') {
+      // result of constant functions
+      console.log(JSON.stringify(receipt, undefined, 2));
+    } else if (Array.isArray(receipt.logs)) {
+      // receipt is Receipt of transaction
+      const events = parseLogs(receipt.logs, apis[contractName]['abi']);
+      const logs = [];
+      for (const key in events) {
+        logs.push({
+          transactionHash: events[key].transactionHash,
+          name: events[key].name,
+          args: events[key].args
+        });
+      }
 
-    if (typeof receipt === 'object') {
+      receipt.logs = undefined;
+      const result = JSON.parse(JSON.stringify(receipt, receiptFilter));
+      result.logs = logs;
+      console.log(JSON.stringify(result, undefined, 2));
+    } else {
+      // multiple constant return values
       const result = JSON.parse(JSON.stringify(receipt, null));
       console.log(JSON.stringify(result, undefined, 2));
-      return;
     }
-
-    receipt.logs = undefined;
-    const result = JSON.parse(JSON.stringify(receipt, receiptFilter));
-    result.logs = logs;
-    console.log(JSON.stringify(result, undefined, 2));
   } catch (e) {
     console.log(e);
   }
@@ -374,11 +386,11 @@ function getApiInfo(apis) {
  *
  * Get the script api and abi of a smart contract from contractApis
  * @param {string} scriptPath is a path to contractApi which is generated
- *  from vvisp abi-to-script command
+ *  from vvisp gen-script command
  * @param {object} options is the configuration information
  * @return {object} object has an api of smart contracts
  */
-function setApi(scriptPath, options) {
+function setApi(scriptPath, options = {}) {
   const defaultScriptPath = process.cwd() + '/contractApis';
   if (scriptPath === undefined || scriptPath === '') {
     scriptPath = defaultScriptPath;
@@ -387,7 +399,7 @@ function setApi(scriptPath, options) {
   // set script api
   // omit configuration functions
   const apis = _.omit(
-    require(path.join(scriptPath, 'back') + '/index.js')(options),
+    require(path.join(scriptPath, 'back') + '/index.js')(options.config),
     ['config']
   );
 

@@ -3,7 +3,6 @@ module.exports = async function(deployState, options) {
   const { SERVICE_PATH, STATE_PATH } = require('../../../config/Constant');
   const { VARIABLES } = require('../constants');
   const { forIn, printOrSilent } = require('@haechi-labs/vvisp-utils');
-  const web3 = options.web3;
 
   let stateClone = deployState.getState();
 
@@ -51,11 +50,14 @@ module.exports = async function(deployState, options) {
   // Check whether this process needs Registry
   // Event occurs when user sets config.registry false or does not set.
   if (!config.registry) {
-    if (web3.utils.isAddress(stateClone.registry)) {
+    if (stateClone.registry && stateClone.registry !== 'noRegistry') {
       printOrSilent(
-        `${chalk.warning('Warning:')} Registry address ${
+        `${chalk.warning(
+          'Warning:'
+        )} You changed registry config to false. Registry address ${
           stateClone.registry
-        } will be deleted.`
+        } will be deleted.`,
+        options
       );
     }
     compileInformation.noRegistry = true;
@@ -64,9 +66,10 @@ module.exports = async function(deployState, options) {
     printOrSilent(
       `${chalk.warning(
         'Notice:'
-      )} Sorry. In this version, we do not support adding registry in noRegistry service.\nKeep 'registry' property to false or re-deploy whole service.`
+      )} Sorry. In this version, we do not support adding registry in noRegistry service.\nKeep 'registry' property to false or re-deploy whole service.`,
+      options
     );
-    process.exit();
+    process.exit(1);
   }
 
   const compileOutput = await require('./compileAll')(

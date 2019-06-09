@@ -42,7 +42,7 @@ module.exports = async function(deployState, options) {
 
   printOrSilent(chalk.head('Deploying Contracts...\n'), options);
 
-  const txCount = await getTxCount(PRIVATE_KEY);
+  const txCount = await getTxCount(PRIVATE_KEY, options);
   let deployCount = 0;
   const TOLERANCE = 30;
   let tolerance = 0; // 10
@@ -110,16 +110,20 @@ module.exports = async function(deployState, options) {
   }
 
   if (stateClone.registry !== 'noRegistry') {
-    await registeringContractsInfo(compileOutput, stateClone);
+    await registeringContractsInfo(compileOutput, stateClone, options);
   }
 
   // @dev Uploading information about contracts to registry
-  async function registeringContractsInfo(compileOutput, stateClone) {
+  async function registeringContractsInfo(compileOutput, stateClone, options) {
     printOrSilent(
       chalk.head("\tRegistering Contracts' Information at Registry..."),
       options
     );
-    const registryInstance = pathToInstance(compileOutput, REGISTRY_PATH);
+    const registryInstance = pathToInstance(
+      compileOutput,
+      REGISTRY_PATH,
+      options
+    );
     registryInstance.options.address = stateClone.registry;
 
     const setTargets = Object.keys(stateClone.paused.details);
@@ -149,7 +153,7 @@ module.exports = async function(deployState, options) {
     const receipt = await sendTx(stateClone.registry, 0, PRIVATE_KEY, {
       ...options,
       ...TX_OPTIONS,
-      txCount: await getTxCount(PRIVATE_KEY),
+      txCount: await getTxCount(PRIVATE_KEY, options),
       data: txData
     });
     printOrSilent(
