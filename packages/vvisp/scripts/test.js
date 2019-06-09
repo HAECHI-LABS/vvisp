@@ -1,11 +1,12 @@
 const { printOrSilent } = require('@haechi-labs/vvisp-utils');
 const { execSync } = require('child_process');
 
-module.exports = async function(options) {
+module.exports = async function(files, options) {
+  let result;
   if (options.coverage) {
-    const result = execSync('sh scripts/coverage.sh');
+    result = execSync('./scripts/coverage.sh');
   } else {
-    const result = execSync('sh scripts/test.sh');
+    result = execSync('./scripts/test.sh');
   }
 
   printOrSilent(result.toString(), options);
