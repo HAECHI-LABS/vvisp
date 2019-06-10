@@ -5,6 +5,7 @@ const {
   execSync
 } = require('child_process');
 
+
 module.exports = async function(files, options) {
 
   let test_command = './node_modules/.bin/truffle test';
