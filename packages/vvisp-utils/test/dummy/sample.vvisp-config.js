@@ -6,7 +6,6 @@ module.exports = {
       network_id: '*' // eslint-disable-line camelcase
     },
     coverage: {
-      platform: 'klaytn',
       host: 'localhost',
       port: 8545,
       network_id: '*', // eslint-disable-line camelcase

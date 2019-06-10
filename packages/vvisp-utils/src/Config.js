@@ -315,6 +315,13 @@ Config.load = options => {
         break;
       }
     }
+  } else if (
+    config.platform === KLAYTN &&
+    config.compilers.solc.settings.evmVersion === 'petersburg'
+  ) {
+    throw new Error(
+      'Notice, Klaytn platform does not support petersburg evmVersion currently, change it to byzantium'
+    );
   }
 
   return config;

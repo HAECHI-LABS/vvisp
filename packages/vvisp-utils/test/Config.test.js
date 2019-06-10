@@ -14,7 +14,7 @@ const DEFAULT_TX_OPTIONS = {
   gasLimit: 6721975,
   gasPrice: 10000000000 // 10 gwei,
 };
-const { DEFAULT_NETWORK, DEFAULT_PLATFORM } = require('../constants');
+const { DEFAULT_NETWORK, DEFAULT_PLATFORM, KLAYTN } = require('../constants');
 
 const SAMPLE_CONFIG_PATH = path.join(
   __dirname,
@@ -261,6 +261,14 @@ describe('# Config test', function() {
         config.compilers = compilers;
         expect(config.compilers).to.deep.equal(compilers);
       });
+
+      it('should throw error when platform is klaytn and evmVersion is petersburg', function() {
+        Config.delete();
+        config.platform = KLAYTN;
+        expect(() => {
+          Config.get();
+        }).to.throw(Error);
+      });
     });
 
     describe('#from', function() {
@@ -410,6 +418,10 @@ describe('# Config test', function() {
 
       describe('#platform', function() {
         const TEST_NETWORK = 'coverage';
+        beforeEach(function() {
+          config.networks[TEST_NETWORK].platform = KLAYTN;
+        });
+
         it('should return default platform when network is not set', function() {
           expect(config.platform).to.equal(DEFAULT_PLATFORM);
         });
