@@ -1,7 +1,7 @@
 const { test } = require('../scripts');
 
 const name = 'test';
-const signature = `${name} [testfile...]`;
+const signature = `${name} [files...]`;
 const description = 'test smart contract';
 
 const register = commander =>
