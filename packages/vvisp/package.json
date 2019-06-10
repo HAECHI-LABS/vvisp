@@ -1,6 +1,6 @@
 {
   "name": "@haechi-labs/vvisp",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "The easiest smart contract development framework and command line interface on EVM based blockchain",
   "author": "HAECHI LABS",
   "authors": [
@@ -48,7 +48,7 @@
   ],
   "dependencies": {
     "@haechi-labs/vvisp-contracts": "^2.0.0",
-    "@haechi-labs/vvisp-utils": "^1.0.3",
+    "@haechi-labs/vvisp-utils": "^1.1.0",
     "babel-preset-env": "^1.7.0",
     "chalk": "^2.4.1",
     "commander": "^2.17.1",
@@ -62,11 +62,11 @@
     "string-argv": "^0.1.1"
   },
   "devDependencies": {
+    "bdd-stdin": "^0.2.0",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
-    "nyc": "^13.1.0",
-    "bdd-stdin": "^0.2.0",
     "mitm": "^1.4.0",
+    "nyc": "^13.1.0",
     "rewire": "^4.0.1",
     "std-mocks": "^1.0.1"
   },
