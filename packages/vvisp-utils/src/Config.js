@@ -9,7 +9,6 @@ const DEFAULT_NETWORK = 'development';
 const getConfigRoot = require('./getConfigRoot');
 const getPrivateKey = require('./getPrivateKey');
 const filterPrivateKey = require('./filterPrivateKey');
-const printOrSilent = require('./printOrSilent');
 const forIn = require('./forIn');
 
 const web3Store = require('./web3Store');
@@ -38,8 +37,7 @@ function Config() {
           optimizer: {
             enabled: true,
             runs: 200
-          },
-          evmVersion: 'petersburg'
+          }
         }
       },
       vyper: {}
@@ -304,6 +302,19 @@ Config.load = options => {
 
   if (!config.platform) {
     config.platform = DEFAULT_PLATFORM;
+  }
+
+  if (!config.compilers.solc.settings.evmVersion) {
+    switch (config.platform) {
+      case ETHEREUM: {
+        config.compilers.solc.settings.evmVersion = 'petersburg';
+        break;
+      }
+      case KLAYTN: {
+        config.compilers.solc.settings.evmVersion = 'byzantium';
+        break;
+      }
+    }
   }
 
   return config;
