@@ -71,7 +71,21 @@
     "solidity-parser-antlr": "^0.3.2",
     "string-argv": "^0.1.1",
     "tsort": "0.0.1",
-    "web3": "1.0.0-beta.37"
+    "web3": "1.0.0-beta.37",
+    "debug": "^4.1.0",
+    "async": "2.6.1",
+    "safe-eval": "^0.4.1",
+    "ganache-core": "2.5.5",
+    "truffle-config": "^1.1.13",
+    "truffle-contract": "^4.0.19",
+    "truffle-interface-adapter": "^0.1.6",
+    "truffle-error": "^0.0.5",
+    "truffle-expect": "^0.0.9",
+    "truffle-resolver": "^5.0.14",
+    "truffle-artifactor": "^4.0.18",
+    "truffle-compile": "^4.1.0",
+    "truffle-debugger": "^5.0.14",
+    "truffle-debug-utils": "^1.0.18"
   },
   "devDependencies": {
     "bdd-stdin": "^0.2.0",
