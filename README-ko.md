@@ -3,6 +3,7 @@
 English version: [README.md](./README.md)
 
 [![CircleCI](https://circleci.com/gh/HAECHI-LABS/vvisp.svg?style=svg)](https://circleci.com/gh/HAECHI-LABS/vvisp)
+[![NPM](https://img.shields.io/npm/v/@haechi-labs/vvisp.svg)](https://www.npmjs.com/package/@haechi-labs/vvisp)
 [![Coverage Status](https://coveralls.io/repos/github/HAECHI-LABS/vvisp/badge.svg?branch=dev)](https://coveralls.io/github/HAECHI-LABS/vvisp?branch=dev)
 [![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
@@ -59,7 +60,7 @@ English version: [README.md](./README.md)
 [Node.js](http://nodejs.org/)가 설치되어야 합니다.
 이후, [npm](https://npmjs.com/)를 설치하신 후
 ```sh
-$ npm install --global @haechi-labs/vvisp
+$ npm install -g @haechi-labs/vvisp
 ```
 을 실행하거나 [yarn](https://yarnpkg.com)을 설치 후
 ```sh
@@ -75,6 +76,7 @@ $ yarn global add @haechi-labs/vvisp
 ```sh
 $ mkdir my-project
 $ cd my-project
+
 $ vvisp init
 $ npm install #or yarn install
 ```
@@ -90,12 +92,67 @@ $ npm install #or yarn install
 **3. `vvisp-config.js` 설정**
 
 `vvisp-config.js`에 환경 변수들을 설정해 주세요.
+
+_Example_
+```javascript
+const MNEMONIC = 'YOUR_MNEMONIC';
+
+module.exports = {
+  networks: {
+    development: {
+      url: 'URL_TO_ETHEREUM_NODE',
+      gasLimit: 6000000,
+    }
+  },
+  compilers: {
+    solc: {
+      version: '0.5.8'
+    }
+  },
+  from: { // or from: 'YOUR_PRIVATE_KEY'
+    mnemonic: MNEMONIC,
+    index: 0
+  },
+};
+```
 `vvisp-config.js`에 대한 자세한 정보는 [이곳](./CONFIGURATION-ko.md#config)을 참고해 주세요.
 이제 `deploy-contract` 명령어를 사용할 수 있습니다.
 
 **4. `service.vvisp.json` 작성**
 
 배포할 DApp 서비스의 컨트랙트에 대한 정보를 `service.vvisp.json`에 작성해주세요.
+
+_Example_
+```json
+{
+  "serviceName": "Haechi",
+  "registry": true,
+  "variables" : {
+    "exampleVarName": 123
+  },
+  "contracts": {
+    "ContractKeyName1": {
+      "path": "path/to/your/contract/Contract1.sol",
+      "constructorArguments": [
+        "${contracts.ContractKeyName1.address}",
+        "${variables.exampleVarName}"
+      ],
+      "initialize": {
+        "functionName": "initialize",
+        "arguments": ["argument1", "argument2"]
+      }
+    },
+    "ContractKeyName2": {
+      "path": "path/to/your/contract/Contract2.sol",
+      "initialize": {
+        "functionName": "initialize",
+        "arguments": ["argument1", "argument2"]
+      }
+    }
+  }
+}
+
+```
 `service.vvisp.json`에 대한 자세한 정보는 [이곳](./CONFIGURATION-ko.md#service)을 참고해 주세요.
 이제 `deploy-service` 명령어를 사용할 수 있습니다.
 
