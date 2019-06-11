@@ -4,6 +4,7 @@ const {
   ASTParser
 } = require('../../scripts/show-state/astParser');
 const StorageTableBuilder = require('../../scripts/show-state/storageTableBuilder');
+//const VariableTracker = require("../../scripts/variableTracker")
 
 const chai = require('chai');
 chai.use(require('chai-as-promised')).should();
@@ -312,8 +313,8 @@ describe('# show-state script test', function() {
 
       // then
       expect(dim1).to.deep.equal(['5']);
-      expect(dim2).to.deep.equal(['2', '7']);
-      expect(dim3).to.deep.equal(['1', '2', '3']);
+      expect(dim2).to.deep.equal(['7', '2']);
+      expect(dim3).to.deep.equal(['3', '2', '1']);
       expect(dim4).to.deep.equal(['', '']);
     });
 
@@ -352,7 +353,7 @@ describe('# show-state script test', function() {
       expect_variable_not_in_symbolTable('array_bool[4][3]', astParser);
       expect_variable_not_in_symbolTable('array_bool[3][4]', astParser);
       expect_symbolTable_equal(
-        'array_uint[3][1][2]',
+        'array_uint[2][1][3]',
         'uint256',
         44,
         symbolTable,
@@ -488,6 +489,7 @@ describe('# show-state script test', function() {
       tableBuilder.buildStructSymbolTables();
       var storageTable = tableBuilder.buildStorageTable();
 
+      // then
       expect_symbolTable_equal(
         's1.var_bool',
         'bool',
@@ -589,6 +591,8 @@ describe('# show-state script test', function() {
       tableBuilder.buildStructSymbolTables();
       var storageTable = tableBuilder.buildStorageTable();
       tableBuilder.calculateIndex(storageTable);
+
+      // then
       expect_symbolTable_equal_with_index(
         's1.var_bool',
         'bool',
@@ -698,124 +702,83 @@ describe('# show-state script test', function() {
         getTypeSize
       );
     });
+
     /*
-    it('buildMapping: calculate valid storage index of mapping', async function() {
+    it('show command: input normal vairables', async function() {
       // given
-      var dynamicOutput = JSON.parse(
+      var Output = JSON.parse(
         fs.readFileSync(
-          'test/scripts/show-state/dynamicVar_output.json',
+          'test/scripts/show-state/element_output.json',
           'utf-8'
         )
       );
-      var dynamicAST =
-        dynamicOutput.sources['./contracts/dynamicVarTestcase.sol'].ast;
-      var testobject = [dynamicAST.nodes[1]];
-      var tableBuilder = new StorageTableBuilder(testobject);
-      var getTypeSize = new ASTParser().getTypeSize;
+      var ast =
+        Output.sources['./contracts/elementTestcase.sol'].ast;
+      var testobject = [ast.nodes[1]];
+      var storageTableBuilder = new StorageTableBuilder(testobject);
+      storageTableBuilder.build();
+      var variableTracker = new VariableTracker(storageTableBuilder.storageTable);
 
       // when
-      tableBuilder.buildStructSymbolTables();
-      var storageTable = tableBuilder.buildStorageTable();
-      tableBuilder.calculateIndex(storageTable);
-      var table = tableBuilder.buildMapping('map2[40]');
+      testNames = ["var_bool", "var_int8", ]
+      answerRow = [['bool', 1, 0, 0, 0],
+                   ['var_int8', 1, 0, 0, 0],
+                   ['bool', 1, 0, 0, 0],
+                   ['bool', 1, 0, 0, 0],
+                   ['bool', 1, 0, 0, 0],
+                   ['bool', 1, 0, 0, 0],
+                   ['bool', 1, 0, 0, 0],
+                  ]*/
+    /*
+      var table = variableTracker.getInfo("var_bool")
+      │ var_bool            │ bool                                     │ 1    │ 0     │ 0         │ 0x0101                                                             │
+│ var_int8            │ int8                                     │ 1    │ 0     │ 1         │ 0x0101                                                             │
+│ var_int256          │ int256                                   │ 32   │ 1     │ 0         │ 0x28                                                               │
+│ var_int             │ int256                                   │ 32   │ 2     │ 0         │ 0x03                                                               │
+│ var_uint8           │ uint8                                    │ 1    │ 3     │ 0         │ 0x01                                                               │
+│ var_uint256         │ uint256                                  │ 32   │ 4     │ 0         │ 0x28                                                               │
+│ var_uint            │ uint256                                  │ 32   │ 5     │ 0         │ 0x03                                                               │
+│ var_address         │ address                                  │ 20   │ 6     │ 0         │ 0x345ca3e014aaf5dca488057592ee47305d9b3e10                         │
+│ var_address_payable │ address payable                          │ 20   │ 7     │ 0         │ 0x0201345ca3e014aaf5dca488057592ee47305d9b3e10                     │
+│ var_byte            │ bytes1                                   │ 1    │ 7     │ 20        │ 0x0201345ca3e014aaf5dca488057592ee47305d9b3e10                     │
+│ var_bytes2          │ bytes2                                   │ 2    │ 7     │ 21        │ 0x0201345ca3e014aaf5dca488057592ee47305d9b3e10                     │
+│ var_bytes32         │ bytes32                                  │ 32   │ 8     │ 0         │ 0x02000200020002000200020002000200020002000200020002000200020002   │
+│ var_contract        │ contract elementTestcase                 │ 20   │ 9     │ 0         │ 0x0                                                                │
+│ var_enum            │ enum elementTestcase.myEnum              │ 1    │ 9     │ 20        │ 0x0                                                                │
+│ var_f1              │ function (bool) external                 │ 24   │ 10    │ 0         │ 0x0                                                                │
+│ var_f2              │ function (bool)                          │ 8    │ 10    │ 24        │ 0x0                                                                │
+│ var_f3              │ function () view external returns (int8) │ 24   │ 11    │ 0         │ 0x0                                                                │
+│ var_f4              │ function () view returns (int8)          │ 8    │ 11    │ 24        │ 0x0                                                                │
+│ var_bytes           │ bytes                                    │ 32   │ 12    │ 0         │ 0x627974657300000000000000000000000000000000000000000000000000000a │
+│ var_string          │ string                                   │ 32   │ 13    │ 0         │ 0x68656c6c6f00000000000000000000000000000000000000000000000000000a │
+│ var_mapping         │ mapping(uint256 => uint256)              │ 32   │ 14    │ 0         │ 0x0 
+
+      expect_symbolTable_equal("", "int8", 1, symbolTable, getTypeSize);
+      expect_symbolTable_equal("var_int256", "int256", 2, symbolTable, getTypeSize);
+      expect_symbolTable_equal("var_int", "int256", 3, symbolTable, getTypeSize);
+      expect_symbolTable_equal("var_uint8", "uint8", 4, symbolTable, getTypeSize);
+      expect_symbolTable_equal("var_uint256", "uint256", 5, symbolTable, getTypeSize);
+      expect_symbolTable_equal("var_uint", "uint256", 6, symbolTable, getTypeSize);
+      expect_symbolTable_equal("var_address", "address", 7, symbolTable, getTypeSize);
+      expect_symbolTable_equal("var_address_payable", "address payable", 8, symbolTable, getTypeSize);
+      expect_symbolTable_equal("var_byte", "bytes1", 9, symbolTable, getTypeSize);
+      expect_symbolTable_equal("var_bytes2", "bytes2", 10, symbolTable, getTypeSize);
+      expect_symbolTable_equal("var_bytes32", "bytes32", 11, symbolTable, getTypeSize);
+      expect_symbolTable_equal("var_contract", "contract elementTestcase", 12, symbolTable, getTypeSize);
+      expect_symbolTable_equal("var_enum", "enum elementTestcase.myEnum", 13, symbolTable, getTypeSize);
+      expect_symbolTable_equal("var_f1", "function (bool) external", 14, symbolTable, getTypeSize);
+      expect_symbolTable_equal("var_f2", "function (bool)", 15, symbolTable, getTypeSize);
+      expect_symbolTable_equal("var_f3", "function () view external returns (int8)", 16, symbolTable, getTypeSize);
+      expect_symbolTable_equal("var_f4", "function () view returns (int8)", 17, symbolTable, getTypeSize);
+      expect_symbolTable_equal("var_bytes", "bytes", 18, symbolTable, getTypeSize);
+      expect_symbolTable_equal("var_string", "string", 19, symbolTable, getTypeSize);
+      expect_symbolTable_equal("var_mapping", "mapping(uint256 => uint256)", 20, symbolTable, getTypeSize);
+
+      
     });
 */
-    it('buildDynamicArray: calculate valid storage index of dynamicArray', async function() {
-      /*
-
-      var_name을 키로 symbolTable에서 row검색
-      -> type, index, size, start index 획득
-
-      타입보고 분기 -> 동적배열, 맵핑, 종료
-
-*/
-      /*
-
-      mapping()
-      key : elementary type (bytes, tring 포함)
-      value : 무엇이든 될수 잇음
-      우선 타입들을 쪼갠다
-      결과값에 따라 보여주는거를 달리해야함
-      array라면 array들을
-      struct라면 struct들을
-      맵핑이라면 한번더 타고갈수있고
-      기타는 그냥 보여주고
-      동적배열이면 동적배열 처리하도록
-
-      mapping => (mapping => uint[])
-
-      구조체타입 맵핑
-
-      배열맵핑
-      동적배열맵핑
-
-
-
-
-      */
-      /*
-
-      show var_name
-      
-      
-
-      동적배열이면 arr[][]
-      -> 체크타입에 보내면 되지않을까?
-      1. 배열타입이면 배열을 출력
-      2. 엘리먼트타입이면 엘리먼트 하나를 출력
-
-
-
-      동적 배열 더 깊게 : arr[4][3][4]
-        - 이름전체가 그냥 변수면 출력
-        - 아니면 이름만 잘라냄 -> 동적배열인지확인
-        - 타입을 본다 -> 어디가 동적배열 부분인지확인
-        - Dimesions [3,4]
-          - 길이넘으면 탈락
-          - 크기 넘어도 탈락 (동적배열은 값 크기)
-          - 동적배열이 아닌부분 : 그냥 순서대로 출력 (파스함수 돌려)
-          - 동적배열인 부분 : web3로 값을가져옴 + offset만큼 더해
-          - 끝까지 갈대까지 반복 
-
-      스트럭트 타입 동적배열
-        - structDef를 본다
-        - baseIndex + structDef의 형태로 다 출력
-
-
-
-
-
-
-
-
-      
-
-
-
-      */
-
-      // given
-      var dynamicOutput = JSON.parse(
-        fs.readFileSync(
-          'test/scripts/show-state/dynamicVar_output.json',
-          'utf-8'
-        )
-      );
-      var dynamicAST =
-        dynamicOutput.sources['./contracts/dynamicVarTestcase.sol'].ast;
-      var testobject = [dynamicAST.nodes[1]];
-      var tableBuilder = new StorageTableBuilder(testobject);
-      var getTypeSize = new ASTParser().getTypeSize;
-
-      // when
-      tableBuilder.buildStructSymbolTables();
-      var storageTable = tableBuilder.buildStorageTable();
-      tableBuilder.calculateIndex(storageTable);
-      var table = tableBuilder.buildMapping('map2[40]');
-
-      //
-    });
   });
+
   function expect_structSymbolTable(structTypeName, symbolTable, getTypeSize) {
     switch (structTypeName) {
       case 'struct1':

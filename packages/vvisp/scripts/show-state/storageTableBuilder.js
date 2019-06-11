@@ -17,7 +17,6 @@ class StorageTableBuilder {
     this.buildStructSymbolTables();
     this.storageTable = this.buildStorageTable();
     this.calculateIndex();
-    console.log(this.storageTable);
     var cliTable = this.buildCliTable();
     return cliTable;
   }
@@ -173,7 +172,8 @@ class StorageTableBuilder {
 
     return table;
   }
-
+}
+/*
   buildMapping(input, web3) {
     var getDimensions = new ASTParser().getDimensions;
     var name = input.split('[')[0];
@@ -287,7 +287,7 @@ class StorageTableBuilder {
     return [table, baseIndex];
   }
 }
-
+*/
 /*
     const dynamicStorageTable = dynamicArrayParse(linearNodes, target, len);
 
