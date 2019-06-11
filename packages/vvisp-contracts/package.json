@@ -23,7 +23,6 @@
     "blockchain",
     "dapps",
     "solidity",
-    "upgradeable"
   ],
   "dependencies": {
     "openzeppelin-solidity": "2.1.3"

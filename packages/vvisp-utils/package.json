@@ -31,7 +31,6 @@
     "tooling",
     "task-runner",
     "solidity",
-    "upgradeable",
     "library"
   ],
   "dependencies": {

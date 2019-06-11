@@ -43,7 +43,6 @@
     "tooling",
     "task-runner",
     "solidity",
-    "upgradeable",
     "cli"
   ],
   "dependencies": {
