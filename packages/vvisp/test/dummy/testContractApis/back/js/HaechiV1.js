@@ -1,14 +1,21 @@
 const path = require('path');
-const { Config, web3Store, sendTx } = require('@haechi-labs/vvisp-utils');
+const {
+  Config,
+  getContractFactory,
+  sendTx
+} = require('@haechi-labs/vvisp-utils');
 const fs = require('fs');
 
-const abi = fs.readFileSync(path.join(__dirname, '../abi/', 'HaechiV1.json'), {
-  encoding: 'utf8'
-});
+let abi;
 
 module.exports = function(_contractAddr = '') {
-  const web3 = web3Store.get();
-  const contract = new web3.eth.Contract(JSON.parse(abi));
+  abi = fs.readFileSync(path.join(__dirname, '../abi/', 'HaechiV1.json'), {
+    encoding: 'utf8'
+  });
+
+  const platform = Config.get().platform;
+  const Contract = getContractFactory({ platform: platform });
+  const contract = new Contract(JSON.parse(abi));
   contract.options.address = _contractAddr;
   return {
     at: function(_addr) {
@@ -18,23 +25,24 @@ module.exports = function(_contractAddr = '') {
       return contract.options.address;
     },
     methods: {
-      velocities: function(_input1) {
-        return contract.methods.velocities(_input1).call();
+      velocities: function(input1) {
+        return contract.methods.velocities(input1).call();
       },
-      haechiIds: function(_input1) {
-        return contract.methods.haechiIds(_input1).call();
+      haechiIds: function(input1) {
+        return contract.methods.haechiIds(input1).call();
       },
-      distances: function(_input1) {
-        return contract.methods.distances(_input1).call();
+      distances: function(input1) {
+        return contract.methods.distances(input1).call();
       },
       gym: function() {
         return contract.methods.gym().call();
       },
-      makeNewHaechi: function(__id, options) {
-        const txData = contract.methods.makeNewHaechi(__id).encodeABI();
+      makeNewHaechi: function(_id, options) {
+        const txData = contract.methods.makeNewHaechi(_id).encodeABI();
         options = {
           ...options,
-          data: txData
+          data: txData,
+          platform: platform
         };
         return sendTx(
           contract.options.address,
@@ -43,13 +51,14 @@ module.exports = function(_contractAddr = '') {
           options
         );
       },
-      increaseVelocity: function(__haechiId, __diff, options) {
+      increaseVelocity: function(_haechiId, _diff, options) {
         const txData = contract.methods
-          .increaseVelocity(__haechiId, __diff)
+          .increaseVelocity(_haechiId, _diff)
           .encodeABI();
         options = {
           ...options,
-          data: txData
+          data: txData,
+          platform: platform
         };
         return sendTx(
           contract.options.address,
@@ -62,7 +71,8 @@ module.exports = function(_contractAddr = '') {
         const txData = contract.methods.run().encodeABI();
         options = {
           ...options,
-          data: txData
+          data: txData,
+          platform: platform
         };
         return sendTx(
           contract.options.address,
@@ -71,11 +81,12 @@ module.exports = function(_contractAddr = '') {
           options
         );
       },
-      initialize: function(__gym, options) {
-        const txData = contract.methods.initialize(__gym).encodeABI();
+      initialize: function(_gym, options) {
+        const txData = contract.methods.initialize(_gym).encodeABI();
         options = {
           ...options,
-          data: txData
+          data: txData,
+          platform: platform
         };
         return sendTx(
           contract.options.address,
