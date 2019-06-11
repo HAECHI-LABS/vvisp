@@ -409,7 +409,9 @@ function setApi(scriptPath, options = {}) {
   // set script api
   // omit configuration functions
   const apis = _.omit(
-    require(path.join(scriptPath, 'back') + '/index.js')(options.config),
+    require(path.join(scriptPath, 'back') + '/index.js')({
+      ...options.config._values
+    }),
     ['config']
   );
 
