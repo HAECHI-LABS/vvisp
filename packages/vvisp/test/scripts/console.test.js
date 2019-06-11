@@ -32,7 +32,7 @@ describe('# console script test', async function() {
           'dummy',
           'testContractApis'
         );
-        this.apis = setApi(testScriptPath);
+        this.apis = setApi(testScriptPath, { config: { _values: {} } });
       });
 
       it('should have contract functions', function() {
@@ -181,22 +181,27 @@ describe('# console script test', async function() {
       const pad2 = 20;
 
       const dummy_apis = {
-        MainToken: {
+        Token: {
+          fileName: 'MainToken',
           address: '0xa0ff2297A8690383784d5A4723d72F8A2f5480D4'
         },
-        SaleManager: {
+        Manager: {
+          fileName: 'SaleManager',
           address: '0x3FcE06688555F67962978B3Eb44805849A4A8895'
         }
       };
 
       const expectedOutput =
         'Index'.padEnd(pad1) +
+        'Name'.padEnd(pad2) +
         'Contract'.padEnd(pad2) +
         'Address\n' +
         '[0]'.padEnd(pad1) +
+        'Token'.padEnd(pad2) +
         'MainToken'.padEnd(pad2) +
         '0xa0ff2297A8690383784d5A4723d72F8A2f5480D4\n' +
         '[1]'.padEnd(pad1) +
+        'Manager'.padEnd(pad2) +
         'SaleManager'.padEnd(pad2) +
         '0x3FcE06688555F67962978B3Eb44805849A4A8895\n';
       getApiInfo(dummy_apis).should.be.equal(expectedOutput);
@@ -245,21 +250,26 @@ describe('# console script test', async function() {
       const pad2 = 20;
 
       const dummy_apis = {
-        MainToken: {
+        Token: {
+          fileName: 'MainToken',
           address: '0xa0ff2297A8690383784d5A4723d72F8A2f5480D4'
         },
-        SaleManager: {
+        Manager: {
+          fileName: 'SaleManager',
           address: '0x3FcE06688555F67962978B3Eb44805849A4A8895'
         }
       };
       const expectedOutput =
         'Index'.padEnd(pad1) +
+        'Name'.padEnd(pad2) +
         'Contract'.padEnd(pad2) +
         'Address\n' +
         '[0]'.padEnd(pad1) +
+        'Token'.padEnd(pad2) +
         'MainToken'.padEnd(pad2) +
         '0xa0ff2297A8690383784d5A4723d72F8A2f5480D4\n' +
         '[1]'.padEnd(pad1) +
+        'Manager'.padEnd(pad2) +
         'SaleManager'.padEnd(pad2) +
         '0x3FcE06688555F67962978B3Eb44805849A4A8895\n\n';
       stdMocks.use();
@@ -273,7 +283,7 @@ describe('# console script test', async function() {
   });
 
   describe('show', function() {
-    const setApi = consoleTest.__get__('setApi');
+    const setApi = consoleTest.__get__('setApi', { config: { _values: {} } });
     const show = consoleTest.__get__('show');
 
     before('create apis', function() {
@@ -283,9 +293,13 @@ describe('# console script test', async function() {
         'dummy',
         'testContractApis'
       );
-      this.apis = setApi(testScriptPath);
-      this.apis['HaechiV1'].address =
-        '0x688555B34d5A480D4796723d72F8A9A4A889578F';
+      this.apis = {
+        Haechi: {
+          fileName: 'HaechiV1',
+          address: '0x688555B34d5A480D4796723d72F8A9A4A889578F',
+          api: setApi(testScriptPath, { config: { _values: {} } })['HaechiV1']
+        }
+      };
     });
 
     it('should print api method and args', async function() {
@@ -304,7 +318,7 @@ describe('# console script test', async function() {
 
       stdMocks.use();
 
-      await show(['HaechiV1'], this.apis);
+      await show(['Haechi'], this.apis);
 
       stdMocks.restore();
       const output = stdMocks.flush();

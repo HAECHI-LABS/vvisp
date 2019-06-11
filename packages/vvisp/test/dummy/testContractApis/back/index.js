@@ -1,10 +1,8 @@
-const fs = require('fs');
-const path = require('path');
-const { Config, web3Store } = require('@haechi-labs/vvisp-utils');
+const { Config } = require('@haechi-labs/vvisp-utils');
 
-module.exports = function(configOption, web3Setter) {
+module.exports = function(configOption, networkSetter) {
   setters.config(configOption);
-  setters.setWeb3(web3Setter);
+  setters.setNetwork(networkSetter);
 
   return {
     config: setters.config,
@@ -13,17 +11,10 @@ module.exports = function(configOption, web3Setter) {
 };
 
 function loadApis() {
-  const files = fs.readdirSync(path.join(__dirname, 'js'));
   const apis = {};
 
-  for (let i = 0; i < files.length; i++) {
-    if (files[i].slice(-3) === '.js') {
-      if (files[i] === 'index.js') {
-        continue;
-      }
-      apis[files[i].slice(0, -3)] = require(`./js/${files[i].slice(0, -3)}.js`);
-    }
-  }
+  apis['HaechiV1'] = require('./js/HaechiV1.js');
+
   return apis;
 }
 
@@ -39,11 +30,13 @@ const setters = {
     }
     Config.setStore(config);
   },
-  setWeb3: web3Setter => {
-    if (web3Setter && typeof web3Setter === 'string') {
-      web3Store.setWithURL(web3Setter);
-    } else if (web3Setter) {
-      web3Store.setWithProvider(web3Setter);
+  setNetwork: networkSetter => {
+    const config = Config.get();
+    const blockchainApiStore = config.blockchainApiStore;
+    if (networkSetter && typeof networkSetter === 'string') {
+      blockchainApiStore.setWithURL(networkSetter);
+    } else if (networkSetter) {
+      blockchainApiStore.setWithProvider(networkSetter);
     } else {
       const config = Config.get();
       let provider;
@@ -55,7 +48,11 @@ const setters = {
           `Input network config as the second parameter or set network in config file`
         );
       }
-      web3Store.setWithProvider(provider);
+      if (typeof provider === 'string') {
+        blockchainApiStore.setWithURL(provider);
+      } else {
+        blockchainApiStore.setWithProvider(provider);
+      }
     }
   }
 };

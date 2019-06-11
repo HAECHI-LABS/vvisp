@@ -370,11 +370,11 @@ If you do not enter a `<contract-apis>` value, it will automatically find `contr
 $ vvisp console
 Available contract contracts:
 
-Index     Contract            Address
-[0]       Haechi              0x3F2e170DE66ca0eD6c66Db38479A8f8C33835475
-[1]       HaechiGym           0x1130160d3036E4dd5A8979634bDe5c0A0B13D8BA
-[2]       SampleToken         0x4831c628F61a64c87a0C8522F06d7d870ced7b51
-[3]       VvispRegistry       0x08c21E900a41c150De7e244b06D0F505665AC890
+Index     Name                Contract            Address
+[0]       Haechi              Haechi              0x660dd4EaDb8df267cE912797C588Fc9eadfa1861
+[1]       Gym                 HaechiGym           0xDc7C74e475e8100F7714DeE869b73E8DC91Af510
+[2]       Token               SampleToken         0x54Cd384968d10C980bEe2A258E1ff8CF45a6354D
+[R]       VvispRegistry       VvispRegistry       0x28091e8022332609Ca5Aa4Bb50a1E8B052484F68
 
 
 If you are wondering how to use it, type help command.
@@ -404,9 +404,9 @@ The commands available in the vvisp console are call, show list help exit.
   
   	list                                                                 list the available smart contracts
   
-  	show     <Contract>                                                  show the available method of a smart contract
+  	show     <Name>                                                      show the available method of a smart contract
   
-  	call     <Contract> <Method> [Params...]                             call a smart contract api method
+  	call     <Name> <Method> [Params...]                                 call a smart contract api method
   ```
 
   `Help` command shows currently available commands.
@@ -417,11 +417,11 @@ The commands available in the vvisp console are call, show list help exit.
 
   ```
   >> list
-  Index     Contract            Address
-  [0]       Haechi              0x3F2e170DE66ca0eD6c66Db38479A8f8C33835475
-  [1]       HaechiGym           0x1130160d3036E4dd5A8979634bDe5c0A0B13D8BA
-  [2]       SampleToken         0x4831c628F61a64c87a0C8522F06d7d870ced7b51
-  [3]       VvispRegistry       0x08c21E900a41c150De7e244b06D0F505665AC890
+  Index     Name                Contract            Address
+  [0]       Haechi              Haechi              0x660dd4EaDb8df267cE912797C588Fc9eadfa1861
+  [1]       Gym                 HaechiGym           0xDc7C74e475e8100F7714DeE869b73E8DC91Af510
+  [2]       Token               SampleToken         0x54Cd384968d10C980bEe2A258E1ff8CF45a6354D
+  [R]       VvispRegistry       VvispRegistry       0x28091e8022332609Ca5Aa4Bb50a1E8B052484F68
   
   ```
 

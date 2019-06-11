@@ -22,7 +22,7 @@
     "smart-contracts",
     "blockchain",
     "dapps",
-    "solidity",
+    "solidity"
   ],
   "dependencies": {
     "openzeppelin-solidity": "2.1.3"
