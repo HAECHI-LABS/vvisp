@@ -29,8 +29,9 @@ const defaultStateFile = STATE_FILE;
  *
  * interactive console has following command
  * command:
- *    - show <contract>: show all the available api in the contract
- *    - call <contract> <method> [params...]: call the method
+ *    - register: register the address of smart contracts
+ *    - show <name>: show all the available api in the contract
+ *    - call <name> <method> [params...]: call the method
  *    - list: show all contracts name and address
  *    - help: print help message
  */
