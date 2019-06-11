@@ -143,11 +143,11 @@ To create `service.vvisp.json`, see [here](../../../CONFIGURATION.md#service).
 
 #### Options
 
-`-n, --network <network>`: specify the network to deploy on. 
-`-p, --platform <platform>`: specify the platform to deploy on.   
+`-n, --network <network>`: specify the network to deploy on.  
+`-p, --platform <platform>`: specify the platform to deploy on.  
 `--gasLimit <gasLimit>` : specify gasLimit to use for deploying.  
 `--gasPrice <privateKey>` : specify gasPrice to use for deploying.  
-`--from <privateKey>` : specify privateKey to use for deploying.
+`--from <privateKey>` : specify privateKey to use for deploying.  
 `-f, --force` : remove existing `state.vvisp.json` and deploy.  
 
 #### Example
@@ -357,11 +357,11 @@ If you do not enter a `<contract-apis>` value, it will automatically find `contr
 
 #### Options
 
-`-n, --network <network>`: specify the network to deploy on. 
+`-n, --network <network>`: specify the network to deploy on.  
 `-p, --platform <platform>`: specify the platform to deploy on.   
 `--gasLimit <gasLimit>` : specify gasLimit to use for deploying.  
 `--gasPrice <privateKey>` : specify gasPrice to use for deploying.  
-`--from <privateKey>` : specify privateKey to use for deploying.
+`--from <privateKey>` : specify privateKey to use for deploying.  
 
 
 #### Example
@@ -370,10 +370,11 @@ If you do not enter a `<contract-apis>` value, it will automatically find `contr
 $ vvisp console
 Available contract contracts:
 
-Index				Contract				Address
-[0]				HaechiGym				0x5c06aa41561Ef806dA109B1e9c6271208e203758
-[1]				HaechiV1				0xc95663de3398D74972c16Ad34aCd0c31baa6859e
-[2]				SampleToken				0x8C894a56e0B036Af7308A01B5d8EE0F718B03554
+Index     Contract            Address
+[0]       Haechi              0x3F2e170DE66ca0eD6c66Db38479A8f8C33835475
+[1]       HaechiGym           0x1130160d3036E4dd5A8979634bDe5c0A0B13D8BA
+[2]       SampleToken         0x4831c628F61a64c87a0C8522F06d7d870ced7b51
+[3]       VvispRegistry       0x08c21E900a41c150De7e244b06D0F505665AC890
 
 
 If you are wondering how to use it, type help command.
@@ -399,11 +400,13 @@ The commands available in the vvisp console are call, show list help exit.
   
   Commands:
   
-  list                                 - list the available smart contracts
+  	register                                                             register the address of smart contracts
   
-  show <Contract>                      - show the available method of a smart contract
+  	list                                                                 list the available smart contracts
   
-  call <Contract> <Method> [Params...] - call a smart contract api method
+  	show     <Contract>                                                  show the available method of a smart contract
+  
+  	call     <Contract> <Method> [Params...]                             call a smart contract api method
   ```
 
   `Help` command shows currently available commands.
@@ -414,10 +417,11 @@ The commands available in the vvisp console are call, show list help exit.
 
   ```
   >> list
-  Index			Contract				Address
-  [0]			HaechiGym				0x5c06aa41561Ef806dA109B1e9c6271208e203758
-  [1]			HaechiV1				0xc95663de3398D74972c16Ad34aCd0c31baa6859e
-  [2]			SampleToken				0x8C894a56e0B036Af7308A01B5d8EE0F718B03554
+  Index     Contract            Address
+  [0]       Haechi              0x3F2e170DE66ca0eD6c66Db38479A8f8C33835475
+  [1]       HaechiGym           0x1130160d3036E4dd5A8979634bDe5c0A0B13D8BA
+  [2]       SampleToken         0x4831c628F61a64c87a0C8522F06d7d870ced7b51
+  [3]       VvispRegistry       0x08c21E900a41c150De7e244b06D0F505665AC890
   
   ```
 
