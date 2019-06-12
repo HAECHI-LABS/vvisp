@@ -4,7 +4,7 @@ const {
   ASTParser
 } = require('../../scripts/show-state/astParser');
 const StorageTableBuilder = require('../../scripts/show-state/storageTableBuilder');
-//const VariableTracker = require("../../scripts/variableTracker")
+const VariableTracker = require("../../scripts/show-state/variableTracker")
 
 const chai = require('chai');
 chai.use(require('chai-as-promised')).should();
@@ -703,7 +703,7 @@ describe('# show-state script test', function() {
       );
     });
 
-    /*
+    
     it('show command: input normal vairables', async function() {
       // given
       var Output = JSON.parse(
@@ -720,64 +720,106 @@ describe('# show-state script test', function() {
       var variableTracker = new VariableTracker(storageTableBuilder.storageTable);
 
       // when
-      testNames = ["var_bool", "var_int8", ]
+      testNames = ["var_bool", "var_int8", "var_int256", "var_uint", "var_address", "var_bytes2", "var_enum", "var_f1", "var_string", "var_mapping"]
       answerRow = [['bool', 1, 0, 0, 0],
-                   ['var_int8', 1, 0, 0, 0],
-                   ['bool', 1, 0, 0, 0],
-                   ['bool', 1, 0, 0, 0],
-                   ['bool', 1, 0, 0, 0],
-                   ['bool', 1, 0, 0, 0],
-                   ['bool', 1, 0, 0, 0],
-                  ]*/
-    /*
-      var table = variableTracker.getInfo("var_bool")
-      │ var_bool            │ bool                                     │ 1    │ 0     │ 0         │ 0x0101                                                             │
-│ var_int8            │ int8                                     │ 1    │ 0     │ 1         │ 0x0101                                                             │
-│ var_int256          │ int256                                   │ 32   │ 1     │ 0         │ 0x28                                                               │
-│ var_int             │ int256                                   │ 32   │ 2     │ 0         │ 0x03                                                               │
-│ var_uint8           │ uint8                                    │ 1    │ 3     │ 0         │ 0x01                                                               │
-│ var_uint256         │ uint256                                  │ 32   │ 4     │ 0         │ 0x28                                                               │
-│ var_uint            │ uint256                                  │ 32   │ 5     │ 0         │ 0x03                                                               │
-│ var_address         │ address                                  │ 20   │ 6     │ 0         │ 0x345ca3e014aaf5dca488057592ee47305d9b3e10                         │
-│ var_address_payable │ address payable                          │ 20   │ 7     │ 0         │ 0x0201345ca3e014aaf5dca488057592ee47305d9b3e10                     │
-│ var_byte            │ bytes1                                   │ 1    │ 7     │ 20        │ 0x0201345ca3e014aaf5dca488057592ee47305d9b3e10                     │
-│ var_bytes2          │ bytes2                                   │ 2    │ 7     │ 21        │ 0x0201345ca3e014aaf5dca488057592ee47305d9b3e10                     │
-│ var_bytes32         │ bytes32                                  │ 32   │ 8     │ 0         │ 0x02000200020002000200020002000200020002000200020002000200020002   │
-│ var_contract        │ contract elementTestcase                 │ 20   │ 9     │ 0         │ 0x0                                                                │
-│ var_enum            │ enum elementTestcase.myEnum              │ 1    │ 9     │ 20        │ 0x0                                                                │
-│ var_f1              │ function (bool) external                 │ 24   │ 10    │ 0         │ 0x0                                                                │
-│ var_f2              │ function (bool)                          │ 8    │ 10    │ 24        │ 0x0                                                                │
-│ var_f3              │ function () view external returns (int8) │ 24   │ 11    │ 0         │ 0x0                                                                │
-│ var_f4              │ function () view returns (int8)          │ 8    │ 11    │ 24        │ 0x0                                                                │
-│ var_bytes           │ bytes                                    │ 32   │ 12    │ 0         │ 0x627974657300000000000000000000000000000000000000000000000000000a │
-│ var_string          │ string                                   │ 32   │ 13    │ 0         │ 0x68656c6c6f00000000000000000000000000000000000000000000000000000a │
-│ var_mapping         │ mapping(uint256 => uint256)              │ 32   │ 14    │ 0         │ 0x0 
-
-      expect_symbolTable_equal("", "int8", 1, symbolTable, getTypeSize);
-      expect_symbolTable_equal("var_int256", "int256", 2, symbolTable, getTypeSize);
-      expect_symbolTable_equal("var_int", "int256", 3, symbolTable, getTypeSize);
-      expect_symbolTable_equal("var_uint8", "uint8", 4, symbolTable, getTypeSize);
-      expect_symbolTable_equal("var_uint256", "uint256", 5, symbolTable, getTypeSize);
-      expect_symbolTable_equal("var_uint", "uint256", 6, symbolTable, getTypeSize);
-      expect_symbolTable_equal("var_address", "address", 7, symbolTable, getTypeSize);
-      expect_symbolTable_equal("var_address_payable", "address payable", 8, symbolTable, getTypeSize);
-      expect_symbolTable_equal("var_byte", "bytes1", 9, symbolTable, getTypeSize);
-      expect_symbolTable_equal("var_bytes2", "bytes2", 10, symbolTable, getTypeSize);
-      expect_symbolTable_equal("var_bytes32", "bytes32", 11, symbolTable, getTypeSize);
-      expect_symbolTable_equal("var_contract", "contract elementTestcase", 12, symbolTable, getTypeSize);
-      expect_symbolTable_equal("var_enum", "enum elementTestcase.myEnum", 13, symbolTable, getTypeSize);
-      expect_symbolTable_equal("var_f1", "function (bool) external", 14, symbolTable, getTypeSize);
-      expect_symbolTable_equal("var_f2", "function (bool)", 15, symbolTable, getTypeSize);
-      expect_symbolTable_equal("var_f3", "function () view external returns (int8)", 16, symbolTable, getTypeSize);
-      expect_symbolTable_equal("var_f4", "function () view returns (int8)", 17, symbolTable, getTypeSize);
-      expect_symbolTable_equal("var_bytes", "bytes", 18, symbolTable, getTypeSize);
-      expect_symbolTable_equal("var_string", "string", 19, symbolTable, getTypeSize);
-      expect_symbolTable_equal("var_mapping", "mapping(uint256 => uint256)", 20, symbolTable, getTypeSize);
-
+                   ['int8', 1, 1, 0, 1],
+                   ['int256', 32, 2, 1, 0],
+                   ['uint256', 32, 6, 5, 0],
+                   ['address', 20, 7, 6, 0],
+                   ['bytes2', 2, 10, 7, 21],
+                   ['enum elementTestcase.myEnum', 1, 13, 9, 20],
+                   ['function (bool) external', 24, 14, 10, 0],
+                   ['string', 32, 19, 13, 0],
+                   ['mapping(uint256 => uint256)', 32, 20, 14, 0]
+                  ]
+      // then
+      for(var i=0; i<testNames.length; i++){
+        result = variableTracker.getInfo(testNames[i])
+        expect(result[0]).to.deep.equal(answerRow[i]);
+      }
       
     });
-*/
+
+
   });
+
+  it('show command: check non existing vairables', async function() {
+    // given
+    var Output = JSON.parse(
+      fs.readFileSync(
+        'test/scripts/show-state/array_output.json',
+        'utf-8'
+      )
+    );
+    var ast =
+      Output.sources['./contracts/arrayTestcase.sol'].ast;
+    var testobject = [ast.nodes[1]];
+    var storageTableBuilder = new StorageTableBuilder(testobject);
+    storageTableBuilder.build();
+    var variableTracker = new VariableTracker(storageTableBuilder.storageTable);
+
+    // when
+    result1 = variableTracker.getInfo("asdb")
+    result2 = variableTracker.getInfo("array_boo[56]")
+
+    // then
+    expect(result1).equal(-1);
+    expect(result2).equal(-1);
+
+  });
+
+  it('show command: check invalid vairables reference', async function() {
+    // given
+    var Output = JSON.parse(
+      fs.readFileSync(
+        'test/scripts/show-state/element_output.json',
+        'utf-8'
+      )
+    );
+    var ast =
+      Output.sources['./contracts/elementTestcase.sol'].ast;
+    var testobject = [ast.nodes[1]];
+    var storageTableBuilder = new StorageTableBuilder(testobject);
+    storageTableBuilder.build();
+    var variableTracker = new VariableTracker(storageTableBuilder.storageTable);
+
+    // when
+    result1 = variableTracker.getInfo("array_bool[2][3][4]")
+
+    // then
+    expect(result1).equal(-1);
+
+  });
+
+
+
+  it('show command : gdg', async function() {
+    // given
+    var Output = JSON.parse(
+      fs.readFileSync(
+        'test/scripts/show-state/array_output.json',
+        'utf-8'
+      )
+    );
+    var ast =
+      Output.sources['./contracts/arrayTestcase.sol'].ast;
+    var testobject = [ast.nodes[1]];
+    var storageTableBuilder = new StorageTableBuilder(testobject);
+    storageTableBuilder.build();
+    var variableTracker = new VariableTracker(storageTableBuilder.storageTable);
+
+    // when
+    result1 = variableTracker.getInfo("var_uint[3][3][3]")
+    result2 = variableTracker.getInfo("var_uint[1]")
+
+    // then
+    expect(result1).equal(-1);
+    expect(result2).equal(-1);
+
+  });
+
+
+
 
   function expect_structSymbolTable(structTypeName, symbolTable, getTypeSize) {
     switch (structTypeName) {

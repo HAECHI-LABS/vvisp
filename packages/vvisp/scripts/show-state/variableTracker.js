@@ -5,19 +5,20 @@ class VariableTracker {
     this.storageTable = storageTable;
   }
 
-  getInfo(name) {
+  getInfo(input) {
     var table = new Table({
       head: ['VARIABLE', 'TYPE', 'SIZE', 'INDEX', 'STARTBYTE', 'VALUE'],
       colWidths: [25, 25, 25]
     });
 
     // variable exist in storageTable
-    if (name in this.storageTable.get()) {
-      var row = this.storageTable.get()[name];
+    if (input in this.storageTable.get()) {
+      var row = this.storageTable.get()[input];
       var type = row[0];
 
       if (type.indexOf('[]') != -1) {
         // If dynamic array, outputs are elements of array
+        // TODO!!!!!!!!!!!!!!
       } else {
         // output is table contents
         table.push(row);
@@ -25,21 +26,22 @@ class VariableTracker {
 
       // variable doesn't exist in storageTable
     } else {
-      // [ 기준으로 잘라냄
-      name = input.split('[')[0];
-      // 앞부분이 없으면 진짜없는거
-      if (!name in this.storageTable.get()) {
+      var name = input.split('[')[0];
+      console.log(name)
+      // case that really doesn't exist
+      if (!(name in this.storageTable.get())) {
         console.log('The variable does not exist.');
         return -1;
+
+      // case of array, mapping variable
       } else {
-        // 앞부분이 있으면 타입확인
         var row = this.storageTable.get()[name];
         var type = row[0];
         // []가 있으면 동적배열 (우선) mapping이 있으면 맵핑
         if (type.indexOf('[]') != -1 || type.indexOf('mapping') != -1) {
-          this.parssing();
+          this.parseSequentially(input, type);
         } else {
-          // 없으면 잘못된 참조
+          // case of input var[4] when real variable is var
           console.log('Invalid reference.');
           return -1;
         }
@@ -48,30 +50,35 @@ class VariableTracker {
     return table;
   }
 
-  parssing() {
-    // 우선순위대로 따라가보자
-    // == 우선순위 파싱 로직 ==
-    // dim과 Type Flag를 구한다
-    // dimensions : [3, key1, key2, 3]. 참조하게될 위치
+  parseSequentially(input, type) {
+
+    /*
+    # Example
+    input : var[3][key1][key2][2]
+    dimensions : [2, key1, key2, 3]
+    var's type : ( mapping => (mapping => int[2][3][]) )[]
+    seqType : ([], mapping, mapping, [], [3], [2])
+    */
+   console.log(input)
+
     var getDimensions = new ASTParser().getDimensions;
     var dimensions = getDimensions(input);
+    print(dimensions)
 
-    var typeFlag;
+    var seqType;
     /* 계산 규칙 */
-    // type : ( mapping => (mapping => int[2][3][]) )[]
-    // typeFlag : ([], mapping, mapping, [], [3], [2]) : 순서대로임
 
     // 순서대로 참조값이 일치하는지 확인
     //   - dimensions가 더 긴경우 에러
-    if (dimensions.length > typeFlag.length) {
-      console.log('Invalid reference.');
+    if (dimensions.length > seqType.length) {
+      console.log('Invalid reference:dimension is too long');
       return -1;
     }
 
     //   - 대응되는 놈들이 일반값들이어야함
     for (var i = 0; i < dimensions.length; i++) {
-      if (typeFlag[i].indexOf('[]') == -1) {
-        if (typeFlag.indexOf('mapping') == -1) {
+      if (seqType[i].indexOf('[]') == -1) {
+        if (seqType.indexOf('mapping') == -1) {
           console.log('Invalid reference.');
           return -1;
         }
@@ -90,7 +97,7 @@ class VariableTracker {
     parent.type = type;
     parent.size = row[1];
     child.name = child.name + diemnsions[i];
-    child.type = typeFlag[i];
+    child.type = seqType[i];
     for (i = 0; i < dimensions.length; i++) {
       //  중간값 처리 x[3]이 child / x가 parent
 
@@ -120,7 +127,7 @@ class VariableTracker {
           dimensionsnum = 0;
 
           for (var j = 0; j < dimensions.length; j++) {
-            if (typeFlag == []) {
+            if (seqType == []) {
               break;
             }
             dimensionsnum++;
@@ -137,7 +144,7 @@ class VariableTracker {
       parent.type = child.type;
       parent.size = row[1];
       child.name = child.name + diemnsions[i];
-      child.type = typeFlag[i];
+      child.type = seqType[i];
     }
 
     //  최종값 처리
