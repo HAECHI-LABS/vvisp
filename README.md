@@ -23,7 +23,7 @@ Korean version: [README-ko.md](./README-ko.md)
 > VVISP is sponsored by the EF(Ethereum Foundation).
 EF gave the grants to HAECHI LABS at ethcon korea 2019.
 
-<p align="center"><img src="./images/[EF]logo.png" width="570px" height="300px"></p>
+<p align="center"><img src="./images/[EF]logo.png" width="285px" height="150px"></p>
 
 ## Table of Contents
 
