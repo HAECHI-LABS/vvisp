@@ -1,4 +1,4 @@
-const showState = require('../../scripts/show-state');
+const showState = require('../../scripts/show-state')
 const {
   SymbolTable,
   ASTParser
@@ -10,6 +10,11 @@ const chai = require('chai');
 chai.use(require('chai-as-promised')).should();
 const expect = chai.expect;
 const fs = require('fs');
+const {execSync} = require('child_process')
+const path = require('path');
+const options = require('../../scripts/utils/injectConfig')();
+const web3 = options.web3
+
 
 describe('# show-state script test', function() {
   describe('# astParser script test', function() {
@@ -81,7 +86,7 @@ describe('# show-state script test', function() {
     it('checkType: element Type', async function() {
       // given
       var elementOutput = JSON.parse(
-        fs.readFileSync('test/scripts/show-state/element_output.json', 'utf-8')
+        fs.readFileSync('test/dummy/show-state/ast/element_output.json', 'utf-8')
       );
       var symbolTable = new SymbolTable();
       var astParser = new ASTParser(symbolTable);
@@ -104,7 +109,7 @@ describe('# show-state script test', function() {
     it('checkType: array Type', async function() {
       // given
       var arrayOutput = JSON.parse(
-        fs.readFileSync('test/scripts/show-state/array_output.json', 'utf-8')
+        fs.readFileSync('test/dummy/show-state/ast/array_output.json', 'utf-8')
       );
       var symbolTable = new SymbolTable();
       var astParser = new ASTParser(symbolTable);
@@ -126,7 +131,7 @@ describe('# show-state script test', function() {
     it('checkType: struct Type', async function() {
       // given
       var arrayOutput = JSON.parse(
-        fs.readFileSync('test/scripts/show-state/struct_output.json', 'utf-8')
+        fs.readFileSync('test/dummy/show-state/ast/struct_output.json', 'utf-8')
       );
       var arrayAST = arrayOutput.sources['./contracts/structTestcase.sol'].ast;
       var symbolTable = new SymbolTable();
@@ -148,7 +153,7 @@ describe('# show-state script test', function() {
     it('parseElement: should return correct parsed result', async function() {
       // given
       var elementOutput = JSON.parse(
-        fs.readFileSync('test/scripts/show-state/element_output.json', 'utf-8')
+        fs.readFileSync('test/dummy/show-state/ast/element_output.json', 'utf-8')
       );
       var symbolTable = new SymbolTable();
       var astParser = new ASTParser(symbolTable);
@@ -321,7 +326,7 @@ describe('# show-state script test', function() {
     it('parseArray: should return correct parsed result', async function() {
       // given
       var arrayOutput = JSON.parse(
-        fs.readFileSync('test/scripts/show-state/array_output.json', 'utf-8')
+        fs.readFileSync('test/dummy/show-state/ast/array_output.json', 'utf-8')
       );
       var symbolTable = new SymbolTable();
       var astParser = new ASTParser(symbolTable);
@@ -422,7 +427,7 @@ describe('# show-state script test', function() {
     it('parseStruct: should return correct parsed result', async function() {
       // given
       var structOutput = JSON.parse(
-        fs.readFileSync('test/scripts/show-state/struct_output.json', 'utf-8')
+        fs.readFileSync('test/dummy/show-state/ast/struct_output.json', 'utf-8')
       );
       var structAST =
         structOutput.sources['./contracts/structTestcase.sol'].ast;
@@ -446,7 +451,7 @@ describe('# show-state script test', function() {
       // given
       var arrayStructOutput = JSON.parse(
         fs.readFileSync(
-          'test/scripts/show-state/arrayOfStruct_output.json',
+          'test/dummy/show-state/ast/arrayOfStruct_output.json',
           'utf-8'
         )
       );
@@ -477,7 +482,7 @@ describe('# show-state script test', function() {
     it('buildStorageTable: return valid storageTable', async function() {
       // given
       var structOutput = JSON.parse(
-        fs.readFileSync('test/scripts/show-state/struct_output.json', 'utf-8')
+        fs.readFileSync('test/dummy/show-state/ast/struct_output.json', 'utf-8')
       );
       var structAST =
         structOutput.sources['./contracts/structTestcase.sol'].ast;
@@ -579,7 +584,7 @@ describe('# show-state script test', function() {
     it('calculateIndex: calculate valid storage index', async function() {
       // given
       var structOutput = JSON.parse(
-        fs.readFileSync('test/scripts/show-state/struct_output.json', 'utf-8')
+        fs.readFileSync('test/dummy/show-state/ast/struct_output.json', 'utf-8')
       );
       var structAST =
         structOutput.sources['./contracts/structTestcase.sol'].ast;
@@ -708,7 +713,7 @@ describe('# show-state script test', function() {
       // given
       var Output = JSON.parse(
         fs.readFileSync(
-          'test/scripts/show-state/element_output.json',
+          'test/dummy/show-state/ast/element_output.json',
           'utf-8'
         )
       );
@@ -741,109 +746,107 @@ describe('# show-state script test', function() {
     });
 
 
-  });
+    it('show command: check non existing vairables', async function() {
+      // given
+      var Output = JSON.parse(
+        fs.readFileSync(
+          'test/dummy/show-state/ast/array_output.json',
+          'utf-8'
+        )
+      );
+      var ast =
+        Output.sources['./contracts/arrayTestcase.sol'].ast;
+      var testobject = [ast.nodes[1]];
+      var storageTableBuilder = new StorageTableBuilder(testobject);
+      storageTableBuilder.build();
+      var variableTracker = new VariableTracker(storageTableBuilder.storageTable);
+  
+      // when
+      result1 = variableTracker.getInfo("asdb")
+      result2 = variableTracker.getInfo("array_boo[56]")
+  
+      // then
+      expect(result1).equal(-1);
+      expect(result2).equal(-1);
+  
+    });
+  
+    it('show command: input is not array nor mapping when input string is reference form', async function() {
+      // given
+      var Output = JSON.parse(
+        fs.readFileSync(
+          'test/dummy/show-state/ast/array_output.json',
+          'utf-8'
+        )
+      );
+      var ast =
+        Output.sources['./contracts/arrayTestcase.sol'].ast;
+      var testobject = [ast.nodes[1]];
+      var storageTableBuilder = new StorageTableBuilder(testobject);
+      storageTableBuilder.build();
+      var variableTracker = new VariableTracker(storageTableBuilder.storageTable);
+  
+      // when
+      result1 = variableTracker.getInfo("array_bool[2][3][4]")
+  
+      // then
+      expect(result1).equal(-1);
+  
+    });
+  
+  
+  
+    it('show command : check long dimension error', async function() {
+      // given
+      var Output = JSON.parse(
+        fs.readFileSync(
+          'test/dummy/show-state/ast/dynamicVar_output.json',
+          'utf-8'
+        )
+      );
+      var ast =
+        Output.sources['./contracts/dynamicVarTestcase.sol'].ast;
+      var testobject = [ast.nodes[1]];
+      var storageTableBuilder = new StorageTableBuilder(testobject);
+      storageTableBuilder.build();
+      var variableTracker = new VariableTracker(storageTableBuilder.storageTable);
+  
+      // when
+      result1 = variableTracker.getInfo("darray4[0][1][2][3]")
+      result2 = variableTracker.getInfo("map2[key1][key2][key3]")
+      
+      // then
+      expect(result1[0]).equal(-1);
+      expect(result2[0]).equal(-1);
+  
+    });
+  
+  
 
-  it('show command: check non existing vairables', async function() {
-    // given
-    var Output = JSON.parse(
-      fs.readFileSync(
-        'test/scripts/show-state/array_output.json',
-        'utf-8'
-      )
-    );
-    var ast =
-      Output.sources['./contracts/arrayTestcase.sol'].ast;
-    var testobject = [ast.nodes[1]];
-    var storageTableBuilder = new StorageTableBuilder(testobject);
-    storageTableBuilder.build();
-    var variableTracker = new VariableTracker(storageTableBuilder.storageTable);
-
-    // when
-    result1 = variableTracker.getInfo("asdb")
-    result2 = variableTracker.getInfo("array_boo[56]")
-
-    // then
-    expect(result1).equal(-1);
-    expect(result2).equal(-1);
-
-  });
-
-  it('show command: input is not array nor mapping when input string is reference form', async function() {
-    // given
-    var Output = JSON.parse(
-      fs.readFileSync(
-        'test/scripts/show-state/array_output.json',
-        'utf-8'
-      )
-    );
-    var ast =
-      Output.sources['./contracts/arrayTestcase.sol'].ast;
-    var testobject = [ast.nodes[1]];
-    var storageTableBuilder = new StorageTableBuilder(testobject);
-    storageTableBuilder.build();
-    var variableTracker = new VariableTracker(storageTableBuilder.storageTable);
-
-    // when
-    result1 = variableTracker.getInfo("array_bool[2][3][4]")
-
-    // then
-    expect(result1).equal(-1);
-
-  });
-
-
-
-  it('show command : check long dimension error', async function() {
-    // given
-    var Output = JSON.parse(
-      fs.readFileSync(
-        'test/scripts/show-state/dynamicVar_output.json',
-        'utf-8'
-      )
-    );
-    var ast =
-      Output.sources['./contracts/dynamicVarTestcase.sol'].ast;
-    var testobject = [ast.nodes[1]];
-    var storageTableBuilder = new StorageTableBuilder(testobject);
-    storageTableBuilder.build();
-    var variableTracker = new VariableTracker(storageTableBuilder.storageTable);
-
-    // when
-    result1 = variableTracker.getInfo("darray4[0][1][2][3]")
-    result2 = variableTracker.getInfo("map2[key1][key2][key3]")
-
-    // then
-    expect(result1).equal(-1);
-    expect(result2).equal(-1);
-
-  });
-
-  it('show command : check ??', async function() {
-    // given
-    var Output = JSON.parse(
-      fs.readFileSync(
-        'test/scripts/show-state/dynamicVar_output.json',
-        'utf-8'
-      )
-    );
-    var ast =
-      Output.sources['./contracts/dynamicVarTestcase.sol'].ast;
-    var testobject = [ast.nodes[1]];
-    var storageTableBuilder = new StorageTableBuilder(testobject);
-    storageTableBuilder.build();
-    var variableTracker = new VariableTracker(storageTableBuilder.storageTable);
-
-    // when
-    result1 = variableTracker.getInfo("darray3[0][1]")
-    result2 = variableTracker.getInfo("mapdarray[0][key1][key2]")
-    console.log(result1[0])
-    console.log(result2[0])
-
-    // then
-    expect(result1).equal(-1);
-    expect(result2).equal(-1);
 
   });
+
+
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -857,6 +860,7 @@ describe('# show-state script test', function() {
           symbolTable,
           getTypeSize
         );
+
         expect_symbolTable_equal(
           'var_int8',
           'int8',
@@ -869,7 +873,7 @@ describe('# show-state script test', function() {
           'address',
           2,
           symbolTable,
-          getTypeSize
+          getTypeSize  
         );
         expect_symbolTable_equal(
           'var_contract',
@@ -1052,7 +1056,7 @@ describe('# show-state script test', function() {
         );
         break;
       default:
-        throw 'There is invalid type in table of struct.';
+        throw 'There is invashowStatelid type in table of struct.';
     }
   }
 
@@ -1089,4 +1093,3 @@ describe('# show-state script test', function() {
       startByte
     ]);
   }
-});

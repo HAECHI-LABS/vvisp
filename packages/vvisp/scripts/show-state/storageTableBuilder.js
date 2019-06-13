@@ -1,7 +1,5 @@
 const Table = require('cli-table3');
 const { ASTParser, SymbolTable } = require('./astParser');
-const ethers = require('ethers');
-var indexerStack = [];
 
 class StorageTableBuilder {
   constructor(nodes) {
@@ -92,12 +90,16 @@ class StorageTableBuilder {
     var isNewStruct = false;
     var prevStructName = '';
     var prevArrayName = '';
+    var getDimensions = new ASTParser().getDimensions;
 
+    
+      
     for (var i = 0; i < this.storageTable.num; i++) {
       var name = this.storageTable.get()[i];
       var row = this.storageTable.get()[name];
       var type = row[0];
       var size = row[1];
+      var secondDimension;
 
       // check variable is new struct
       if (name.indexOf('.') != -1) {
@@ -110,10 +112,21 @@ class StorageTableBuilder {
 
       // check variable is new array
       if (name.indexOf('[') != -1) {
-        var tmpArray = name.split('[');
-        if (prevArrayName != tmpArray[0]) {
-          isNewArray = true;
-          prevArrayName = tmpArray[0];
+        
+        var dimensions = getDimensions(name)
+        // multi dimension array
+        if(dimensions.length > 1){ 
+          if(secondDimension != dimensions[1]){
+            isNewArray=true;
+          }
+          secondDimension = dimensions[1]
+        // one dimension array
+        }else{
+          var tmpArray = name.split('[');
+          if (prevArrayName != tmpArray[0]) {
+            isNewArray = true;
+            prevArrayName = tmpArray[0];
+          }  
         }
       }
 

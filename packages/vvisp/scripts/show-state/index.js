@@ -1,17 +1,14 @@
 const chalk = require('chalk');
 const fs = require('fs');
 const path = require('path');
-const Web3 = require('web3');
-const { execFileSync } = require('child_process');
 const { compilerSupplier, printOrSilent } = require('@haechi-labs/vvisp-utils');
 const StorageTableBuilder = require('./storageTableBuilder');
-const web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545')); // <-----To Do: set real url configured by user
 const stringArgv = require('string-argv');
 var storageTable;
-var address;
-var tableStack = [];
 var storageTableBuilder;
-//const VariableTracker = require("../variableTracker")
+const options = require('../utils/injectConfig')();
+const web3 = options.web3
+const VariableTracker = require("./variableTracker")
 
 module.exports = async function(contract, options) {
   printOrSilent(
@@ -19,7 +16,7 @@ module.exports = async function(contract, options) {
   );
 
   const vvispState = JSON.parse(fs.readFileSync('./state.vvisp.json', 'utf-8'));
-  address = vvispState.contracts[contract].address;
+  const address = vvispState.contracts[contract].address;
   const srcPath = `./contracts/${vvispState.contracts[contract].fileName}`;
 
   const solcOutput = await compile(srcPath);
@@ -32,55 +29,7 @@ module.exports = async function(contract, options) {
   storageTableBuilder = new StorageTableBuilder(linearNodes);
 
   storageTable = storageTableBuilder.build();
-
-
-  for (let i = 0; i < storageTable.length; i++) {
-    type = storageTable[i][1];
-    index = storageTable[i][3];
-    startByte = storageTable[i][4];
-    size = storageTable[i][2];
-    hexValue = await web3.eth.getStorageAt(address, index);
-    hexLen = hexValue.length
-    value = hexValue.slice(hexLen-2*startByte-2*size, hexLen-2*startByte)
-
-    // hex formatting
-    if(value == ''){
-      value='0';
-    }
-    if(value.indexOf('0x') == -1){
-      value = '0x' + value;
-    }
-
-    // type converting
-    if(type.indexOf('function') == -1 && type.indexOf('mapping') == -1 && type.indexOf('[]') == -1){
-      if (type.indexOf('int') != -1) {
-      
-        value = parseInt(value, 16)
-      }else if(type =='bool' ){
-        value = parseInt(value, 16)
-        if(value ==0){
-          value = 'false'
-        }else if(value ==1){
-          value = 'true'
-        }
-      }else if(type == 'string'){
-        value = value.slice(0, value.length-1)
-        var j;
-        for(j=value.length-1; j>=0; j--){
-          if(value[j] !=0){
-            break;
-          }
-        }
-        value = value.slice(0,j+1)
-        console.log(value)
-        value = hex2a(value)
-      }  
-    }
-
-
-
-    storageTable[i].push(value);
-  }
+  storageTable = await addVariableValue(storageTable, address, web3);
 
   printOrSilent(chalk.blue.bold('Contract') + ':' + chalk.bold(contract));
   printOrSilent(
@@ -108,7 +57,9 @@ module.exports = async function(contract, options) {
   );
   await commander.run();
   process.exit(1);
+
 };
+
 
 async function compile(srcPath) {
   // const solcPath = __dirname + '/solc.exe'; // <------To Do: find another way to compile!!
@@ -169,6 +120,64 @@ function flexTable(table) {
   table.options.chars['right-mid'] = '';
   table.options.chars['mid-mid'] = '';
 }
+
+
+async function addVariableValue(storageTable, address, web3) {
+  for (let i = 0; i < storageTable.length; i++) {
+    var type = storageTable[i][1];
+    var size = storageTable[i][2];
+    var index = storageTable[i][3];
+    var startByte = storageTable[i][4];
+    var hexValue = await web3.eth.getStorageAt(address, index);
+
+    hexValue = hexValue.replace("0x", "")
+    hexValue = hexValue.padStart(64, "0");
+
+    var hexLen = hexValue.length
+    var value = hexValue.slice(hexLen-2*startByte-2*size, hexLen-2*startByte)
+    // hex formatting
+    if(value.indexOf('0x') == -1){
+      value = '0x' + value;
+    }
+
+    // type converting
+    if(type.indexOf('function') == -1 && type.indexOf('mapping') == -1){
+      if (type.indexOf('uint') != -1) {
+        value = parseInt(value, 16)
+
+      }else if(type.indexOf('int') != -1){
+        size = parseInt(type.split('t')[1]) / 8;
+        if (isNaN(size)) {
+          size = 32;
+        }
+        value = hexToSignedInt(value, size)
+
+      }else if(type =='bool' ){
+        value = parseInt(value, 16)
+        if(value ==0){
+          value = 'false'
+        }else if(value ==1){
+          value = 'true'
+        }
+      }else if(type == 'string'){
+        value = value.slice(0, value.length-1)
+        var j;
+        for(j=value.length-1; j>=0; j--){
+          if(value[j] !=0){
+            break;
+          }
+        }
+        value = value.slice(0,j+1)
+        value = hex2a(value)
+      }  
+    }
+
+    storageTable[i].push(value);
+  }
+  return storageTable
+}
+
+
 
 function Command(name, options, description, func) {
   return {
@@ -252,59 +261,16 @@ function readLine() {
   });
 }
 
-// == show ==
-// 변수가 존재하면
-// 전부자기자신 그대로 출력
-
-// 동적배열만 자식따라가서 출력? (추가기능)
-
-// 변수가 존재안하면
-// [ 기준으로 잘라냄
-// 앞부분이 없으면 진짜없는거
-// 앞부분이 있으면 타입확인
-// []가 있으면 동적배열 (우선)
-// 우선순위 파싱로직
-// mapping이 있으면 맵핑
-// 우선순위 파싱로직
-// 없으면 잘못된 참조
-
-// 배열 순서는 선언과 거꾸로 된다고 보면됨 (바깥쪽부터 차오르는거는 맞음)
-// 즉 arr[2][4] -> arr[0][0], arr[0][1], arr[1][0], arr[1][1] 순으로 차오름
-// == 우선순위 파싱 로직 ==
-// dim과 Type Flag를 구한다
-// 변수 x[3][key1][key2][3][5][2]
-// dimensions : [3, key1, key2, 3]. 참조하게될 위치
-// type : ( mapping => (mapping => int[2][3][]) )[]
-// typeFlag : ([], mapping, mapping, [], [3], [2]) : 순서대로임
-// 순서대로 참조값이 일치하는지 확인
-//   - dimensions가 더 긴경우 에러
-//   - []인데 key가 들어가면안됨
-// 통과하면 이제 실제로 돌려보면서 값을 구한다.
-//  중간값 처리 x[3]이 child / x가 parent
-//    - x가 동적배열 : x[3]의 인덱스 = 해시(x의 인덱스) + 3
-//    - x가 맵핑 : x[3]의 인덱스 = 해시(키 3+x의 인덱스)
-//    - 일반변수 : 끝
-//    - x가 배열 : x[3]의 인덱스 = x+3
-//    - x가 다중배열 : x[3][3]의 인덱스 = x+9
-//    - x가 구조체 : x.k[]의 인덱스 = x의 구조체테이블안의 k의 인덱스
-//  최종값 처리
-//    - 동적배열 : 현재배열의 자식들 보여줌(선택사항)
-//    - 맵핑 : 그냥 끝
-//    - 일반변수 : 그냥 끝
-//    - 배열 : 그냥 값하나만 보여주자
-//    - 구조체 : 안에있는값들 다보여주자
-
-async function show(args, linearNodes) {
+async function show(args, address, web3) {
   if (args.length !== 1) {
     console.log(
-      'invalid number of args: should be 1, got {0}'.format(args.length)
+      'invalid nustorageTablember of args: should be 1, got {0}'.format(args.length)
     );
     return;
   }
 
   var variableTracker = new VariableTracker(storageTableBuilder.storageTable);
   var name = args[0];
-
   var table = variableTracker.getInfo(name);
 
   /*
@@ -335,11 +301,8 @@ async function show(args, linearNodes) {
   }
 */
 
-  for (let i = 0; i < table.length; i++) {
-    index = table[i][3];
-    value = await web3.eth.getStorageAt(address, index);
-    table[i].push(value);
-  }
+  table = await addVariableValue(table, address, web3);
+
 
   printOrSilent(chalk.blue.bold('variableName') + ':' + chalk.bold(name));
   //printOrSilent(chalk.blue.bold('baseIndex') + ':' + chalk.bold(baseIndex));
@@ -360,4 +323,18 @@ function hex2a(hexx) {
   for (var i = 0; (i < hex.length && hex.substr(i, 2) !== '00'); i += 2)
       str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
   return str;
+}
+
+function hexToSignedInt(hex, size) {
+
+  var val = {
+      mask: 0x80 * Math.pow(8, size-1), 
+      sub: -0x100 * Math.pow(8, size-1) 
+  }
+  if((parseInt(hex, 16) & val.mask) > 0) { //negative
+    return (val.sub + parseInt(hex, 16))
+  }else {                                 //positive
+    return (parseInt(hex,16))
+
+  }
 }
