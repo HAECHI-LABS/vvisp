@@ -25,7 +25,6 @@ EF gave the grants to HAECHI LABS at [ethcon korea 2019](https://ethcon.kr/).
  - 블록체인 서비스 개발 및 운영 시간 단축
  - 블록체인이 익숙하지 않은 전세계 개발자들의 러닝커브 단축
 
-
 ## Table of Contents
 
 - [Description](#description)
