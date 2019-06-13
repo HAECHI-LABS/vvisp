@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const chalk = require('chalk');
 const { execSync } = require('child_process');
 const {
   getAllFiles,
@@ -37,9 +38,12 @@ module.exports = async function(files, options) {
     const url = `${options.config.network_config.host}:${options.config.network_config.port}`;
     const vvispState = JSON.parse(fs.readFileSync('./state.vvisp.json', 'utf-8'));
 
-    Object.values(vvispState.contracts)
-      .forEach(contract => {
-        const command = `docker run --network=host mythril/myth -xa ${contract.address} --rpc ${url}`;
+    Object.keys(vvispState.contracts)
+      .forEach(contractName => {
+        printOrSilent(chalk.bold(`Contract: ${contractName}`), options);
+
+        const address = vvispState.contracts[contractName].address;
+        const command = `docker run --network=host mythril/myth -xa ${address} --rpc ${url}`;
         const result = execSync(command, { stdio: 'pipe' }).toString();
 
         printOrSilent(result, options);
@@ -47,7 +51,7 @@ module.exports = async function(files, options) {
   } else {
     files
       .forEach(file => {
-        printOrSilent(`File: ${file}`, options);
+        printOrSilent(chalk.bold(`File: ${file}`), options);
 
         const dirName = path.dirname(path.resolve(file));
         const baseName = path.basename(file);

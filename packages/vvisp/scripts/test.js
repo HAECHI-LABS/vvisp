@@ -18,6 +18,10 @@ module.exports = async function(files, options) {
     port = 8555;
   }
 
+  files.forEach(file => {
+    test_command += ` ${file}`;
+  })
+
   let ganache_process;
   try {
     execSync(`nc -z localhost ${port}`) // check port listening...

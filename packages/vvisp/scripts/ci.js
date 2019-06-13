@@ -12,17 +12,17 @@ module.exports = async function(options) {
   options = require('./utils/injectConfig')(options);
 
   printOrSilent('Testing...', options);
-  await test({silent: true});
+  await test([], { silent: true, coverage: true });
   printOrSilent('Testing... OK', options);
 
   printOrSilent('Analyzing...', options);
-  await analyze([], {silent: true, allContract: true});
+  await analyze([], { silent: true, allContract: true });
   printOrSilent('Analyzing... OK', options);
 
   printOrSilent('Deploying...', options);
   if (options.reset) {
     fs.unlinkSync(constants.STATE_PATH);
   }
-  await deployService({silent: true});
+  await deployService({ silent: true });
   printOrSilent('Deploying... OK', options);
 };
