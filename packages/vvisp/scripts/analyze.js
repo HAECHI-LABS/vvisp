@@ -19,7 +19,7 @@ module.exports = async function(files, options) {
   }
 
   try {
-    execSync('sudo docker image inspect mythril/myth', { stdio: 'pipe' });
+    execSync('docker image inspect mythril/myth', { stdio: 'pipe' });
   } catch {
     console.error('Requirement: mythril/myth must be pulled');
     console.error('>>> $ docker pull mythril/myth');
@@ -39,7 +39,7 @@ module.exports = async function(files, options) {
 
     Object.values(vvispState.contracts)
       .forEach(contract => {
-        const command = `sudo docker run --network=host mythril/myth -xa ${contract.address} --rpc ${url}`;
+        const command = `docker run --network=host mythril/myth -xa ${contract.address} --rpc ${url}`;
         const result = execSync(command, { stdio: 'pipe' }).toString();
 
         printOrSilent(result, options);
@@ -52,7 +52,7 @@ module.exports = async function(files, options) {
         const dirName = path.dirname(path.resolve(file));
         const baseName = path.basename(file);
 
-        const command = `sudo docker run -v ${dirName}:/tmp mythril/myth -x tmp/${baseName}`;
+        const command = `docker run -v ${dirName}:/tmp mythril/myth -x tmp/${baseName}`;
         const result = execSync(command, { stdio: 'pipe' }).toString();
 
         printOrSilent(result, options);
