@@ -15,6 +15,11 @@ English version: [README.md](./README.md)
 
 <p align="center"><img src="./images/[vvisp]thumbnail.png" width="933px" height="369px"></p>
 
+> VVISP is sponsored by the EF([Ethereum Foundation](https://ethereum.foundation/)).
+EF gave the grants to HAECHI LABS at [ethcon korea 2019](https://ethcon.kr/).
+
+<p align="center"><img src="./images/[EF]logo.png" width="285px" height="150px"></p>
+
 ### Key Benefits
  - 블록체인 서비스 개발 환경 개선
  - 블록체인 서비스 개발 및 운영 시간 단축
