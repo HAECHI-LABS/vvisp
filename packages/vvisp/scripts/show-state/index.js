@@ -33,9 +33,52 @@ module.exports = async function(contract, options) {
 
   storageTable = storageTableBuilder.build();
 
+
   for (let i = 0; i < storageTable.length; i++) {
+    type = storageTable[i][1];
     index = storageTable[i][3];
-    value = await web3.eth.getStorageAt(address, index);
+    startByte = storageTable[i][4];
+    size = storageTable[i][2];
+    hexValue = await web3.eth.getStorageAt(address, index);
+    hexLen = hexValue.length
+    value = hexValue.slice(hexLen-2*startByte-2*size, hexLen-2*startByte)
+
+    // hex formatting
+    if(value == ''){
+      value='0';
+    }
+    if(value.indexOf('0x') == -1){
+      value = '0x' + value;
+    }
+
+    // type converting
+    if(type.indexOf('function') == -1 && type.indexOf('mapping') == -1 && type.indexOf('[]') == -1){
+      if (type.indexOf('int') != -1) {
+      
+        value = parseInt(value, 16)
+      }else if(type =='bool' ){
+        value = parseInt(value, 16)
+        if(value ==0){
+          value = 'false'
+        }else if(value ==1){
+          value = 'true'
+        }
+      }else if(type == 'string'){
+        value = value.slice(0, value.length-1)
+        var j;
+        for(j=value.length-1; j>=0; j--){
+          if(value[j] !=0){
+            break;
+          }
+        }
+        value = value.slice(0,j+1)
+        console.log(value)
+        value = hex2a(value)
+      }  
+    }
+
+
+
     storageTable[i].push(value);
   }
 
@@ -308,4 +351,13 @@ async function show(args, linearNodes) {
       '\nIf you want to the storage index of the dynamic variable, enter the command.'
     )
   );
+}
+
+
+function hex2a(hexx) {
+  var hex = hexx.toString();//force conversion
+  var str = '';
+  for (var i = 0; (i < hex.length && hex.substr(i, 2) !== '00'); i += 2)
+      str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+  return str;
 }

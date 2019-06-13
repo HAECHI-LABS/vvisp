@@ -1,4 +1,7 @@
 const Table = require('cli-table3');
+const { ASTParser} = require('./astParser');
+const Web3 = require('web3');
+const web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545')); // <-----To Do: set real url configured by user
 
 class VariableTracker {
   constructor(storageTable) {
@@ -26,23 +29,45 @@ class VariableTracker {
 
       // variable doesn't exist in storageTable
     } else {
-      var name = input.split('[')[0];
-      console.log(name)
+
+      var splitedList = input.split('[');
+      var name = splitedList[0]
+      var existVar = name in this.storageTable.get()
+
+      for(var i=1; i<splitedList.length ;i++){
+        if(existVar == false){
+          name = name + '[' + splitedList[i]
+          existVar = name in this.storageTable.get()
+        }
+      }
       // case that really doesn't exist
-      if (!(name in this.storageTable.get())) {
-        console.log('The variable does not exist.');
+      if (existVar == false) {
+        //console.log('The variable does not exist.');
         return -1;
 
       // case of array, mapping variable
       } else {
         var row = this.storageTable.get()[name];
         var type = row[0];
+        var index = row[3];
         // []가 있으면 동적배열 (우선) mapping이 있으면 맵핑
         if (type.indexOf('[]') != -1 || type.indexOf('mapping') != -1) {
-          this.parseSequentially(input, type);
+          var endIndex = this.parseSequentially(input, type, index);
+
+          if(endIndex == -1){
+            return -1
+          }
+
+
+          // type, size, startByte
+
+          
+          table.push(row)
+
+
         } else {
           // case of input var[4] when real variable is var
-          console.log('Invalid reference.');
+          //console.log('Invalid reference : It is not array nor mapping');
           return -1;
         }
       }
@@ -50,124 +75,190 @@ class VariableTracker {
     return table;
   }
 
-  parseSequentially(input, type) {
+  parseSequentially(input, type, index) {
 
     /*
     # Example
-    input : var[3][key1][key2][2]
-    dimensions : [2, key1, key2, 3]
-    var's type : ( mapping => (mapping => int[2][3][]) )[]
-    seqType : ([], mapping, mapping, [], [3], [2])
+    input : var[3][2][1][key2][key1][0]
+    dimensions : [0, key1, key2, 1, 2, 3]
+    var's type : mapping( int => mapping(string => int[2][3][]) )[]
+    typeSeq : ([], mapping, mapping, [2], [3], [])
     */
-   console.log(input)
 
     var getDimensions = new ASTParser().getDimensions;
+    var getTypeSize = new ASTParser().getTypeSize;
+
     var dimensions = getDimensions(input);
-    print(dimensions)
 
-    var seqType;
-    /* 계산 규칙 */
-
-    // 순서대로 참조값이 일치하는지 확인
-    //   - dimensions가 더 긴경우 에러
-    if (dimensions.length > seqType.length) {
+    var typeSeq = this.getTypeSeq(type)
+    var typeString =  this.getTypeString(typeSeq, type)
+    console.log(typeSeq)
+    console.log(typeString)
+    
+    // error check
+    if (dimensions.length > typeSeq.length) {
       console.log('Invalid reference:dimension is too long');
       return -1;
     }
-
-    //   - 대응되는 놈들이 일반값들이어야함
     for (var i = 0; i < dimensions.length; i++) {
-      if (seqType[i].indexOf('[]') == -1) {
-        if (seqType.indexOf('mapping') == -1) {
-          console.log('Invalid reference.');
+      if ((typeSeq[i].indexOf('[') == -1) && (typeSeq.indexOf('mapping') == -1) ) {
+          console.log('Invalid reference. : invalid type');
           return -1;
-        }
-      } else {
-        //   - []인데 key가 들어가면안됨
-        if (dimensions[i] /* String 이면!! (NaN이면!!)*/) {
-          console.log('Invalid reference.');
-          return -1;
-        }
       }
     }
 
-    // 통과하면 이제 실제로 돌려보면서 값을 구한다.
-    child.name = '';
-    parent.name = name;
-    parent.type = type;
-    parent.size = row[1];
-    child.name = child.name + diemnsions[i];
-    child.type = seqType[i];
+
+
+    var indexList = [index]
+    var continiousArray = false
+    var prevOffsetBytes = 0
+    var offset
+    var startByte
+    // calculate index
     for (i = 0; i < dimensions.length; i++) {
-      //  중간값 처리 x[3]이 child / x가 parent
 
-      switch (parent.type) {
-        case darray:
-          //    - x가 동적배열 : x[3]의 인덱스 = 해시(x의 인덱스) + 3
-          var baseIndex = web3.utils.soliditySha3(String(index));
-          baseIndex =
-            '0x' + (BigInt(baseIndex) + BigInt(dimensions[i])).toString(16);
-          break;
+      // case mapping
+      // when x is mapping : x[3].index = Hash(x.index, 3)
+      if(typeSeq.indexOf('mapping') != -1){
+        startByte = 0
 
-        case mapping:
-          //    - x가 맵핑 : x[3]의 인덱스 = 해시(키 3+x의 인덱스)
-          var key = dimensions[i];
-          index = web3.utils.soliditySha3(String(key), String(index));
-          break;
+         var key = dimensions[i];
+         var nextIndex = web3.utils.soliditySha3(String(key), String(indexList[indexList.length-1]));
+         indexList.push(nextIndex)
 
-        case normal:
-          //    - 일반변수 : 끝
-          finalData = normal;
-          break;
+         var continiousArray = false
 
-        case array:
-          //    - x가 배열 : x[3]의 인덱스 = x+3
-          //    - x가 다중배열 : x[3][3]의 인덱스 = x+9
+      }else if(typeSeq.indexOf('[') != -1){
+        var size = getTypeSize(typeString[i].split('[')[0])
+        console.log(size)
+        // case darray
+        // when x is darray : x[3].index = HASH(x.index) + 3
+        if(typeSeq.indexOf('[]') != -1){
+          var baseIndex = web3.utils.soliditySha3(String(indexList[indexList.length-1]));
+          var offset = dimensions[i].replace('(','').replace(')','')
+          var nextIndex = '0x' + (BigInt(baseIndex) + BigInt(offset)).toString(16);
+          indexList.push(nextIndex)
 
-          dimensionsnum = 0;
+          var continiousArray = false
 
-          for (var j = 0; j < dimensions.length; j++) {
-            if (seqType == []) {
-              break;
-            }
-            dimensionsnum++;
+        // case normal array
+        // when x is array : x[3][3].index = x.index+9
+        }else{
+
+          // calculate offsetbytes
+          offsetBytes = dimensions[i].replace('(','').replace(')','') * size
+          if(continiousArray){
+            offsetBytes = offsetBytes * prevOffsetBytes;
           }
-          break;
+          prevOffsetBytes = offsetBytes
 
-        case struct:
-          //    - x가 구조체 : x.k[]의 인덱스 = x의 구조체테이블안의 k의 인덱스
-          finalData = struct;
-          break;
+          offsetIndex = offsetBytes / 32
+          startByte = offsetBytes % 32
+
+          // calculate nextIndex
+          var nextIndex = indexList[indexList.length-1] + offsetIndex - prevOffsetIndex
+          prevOffsetIndex = offsetIndex         
+
+          indexList.push(nextIndex)
+          var continiousArray = true
+        }
+      }
+    }
+
+
+    var endpointType = typeString[typeString.length-1]
+    var row = [input, endpointType, getTypeSize(endpointType.split('[')[0]), 0, indexList[indexList.length-1], startByte]
+
+    return row
+
+
+    
+
+
+
+    // 동적 배열일 경우 자식들 보여주기
+    // 구조체의 처리
+  }
+
+  getTypeSeq(type){
+    var mappingSeq = type.split('(');
+
+    if(mappingSeq.length >1){
+      if(mappingSeq[0] != 'mapping'){
+        console.log("input string is invalid (for mapping)")
+        return -1
+      }
+      for(var i=1; i<mappingSeq.length-1; i++){
+        var splitedList = mappingSeq[i].split('>')
+        if(splitedList[splitedList.length-1] != ' mapping'){
+          console.log("input string is invalid (for mapping)")
+          return -1
+        }
+      }
+    }
+
+    var darraySeq = mappingSeq[mappingSeq.length-1].split(')').reverse();
+    var typeSeq = [];
+    for(var i=0; i<mappingSeq.length; i++){
+      // Prior darray than mapping in same position
+      
+      if(darraySeq[i].indexOf('[') != -1){
+        var splitedList = darraySeq[i].split('[');
+        for(var j=1; j<splitedList.length ;j++){
+          typeSeq.push('[' + splitedList[j])
+        }
       }
 
-      parent.name = child.name;
-      parent.type = child.type;
-      parent.size = row[1];
-      child.name = child.name + diemnsions[i];
-      child.type = seqType[i];
+      var splitedList = mappingSeq[i].split('> ');
+      var mappingString = splitedList[splitedList.length-1]
+      if(mappingString == 'mapping'){
+        typeSeq.push(mappingString)
+      }
     }
 
-    //  최종값 처리
-
-    switch (child.type) {
-      case darray:
-      //    - 동적배열 : 현재배열의 자식들 보여줌(선택사항)
-
-      case mapping:
-      case normal:
-        //    - 맵핑, 일반변수 : 그냥 끝
-        break;
-
-      case array:
-        //    - 배열 : 그냥 값하나만 보여주자
-
-        break;
-
-      case struct:
-        //    - 구조체 : 안에있는값들 다보여주자
-        break;
-    }
+    return typeSeq;
   }
+
+  getTypeString(typeSeq, type){
+    var currentTypeString = type
+
+    var isPrevArray = false
+    var isPrevMapping = false
+
+    var typeString = []
+    for(var i=0; i<typeSeq.length; i++){
+      if(typeSeq[i] == 'mapping'){
+        if(isPrevArray){
+          var li = currentTypeString.lastIndexOf(')')
+          currentTypeString = currentTypeString.slice(0,li+1)
+        
+        }else if(isPrevMapping){
+          var li1 = currentTypeString.indexOf('>')
+          var li2 = currentTypeString.lastIndexOf(')')
+          currentTypeString = currentTypeString.slice(li1+2, li2)
+        }
+
+        typeString.push(currentTypeString)
+        isPrevMapping = true
+        isPrevArray = false
+
+      }else{
+        if(isPrevMapping){
+          var li1 = currentTypeString.indexOf('>')
+          var li2 = currentTypeString.lastIndexOf(')')
+          currentTypeString = currentTypeString.slice(li1+2, li2)
+        }
+        var li =currentTypeString.lastIndexOf(typeSeq[i]) 
+        typeString.push(currentTypeString.slice(0,li))
+        isPrevArray = true
+        isPrevMapping = false
+
+      }
+    }
+
+    return typeString
+  }
+
 }
 
 module.exports = VariableTracker;

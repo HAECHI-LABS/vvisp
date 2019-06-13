@@ -768,32 +768,7 @@ describe('# show-state script test', function() {
 
   });
 
-  it('show command: check invalid vairables reference', async function() {
-    // given
-    var Output = JSON.parse(
-      fs.readFileSync(
-        'test/scripts/show-state/element_output.json',
-        'utf-8'
-      )
-    );
-    var ast =
-      Output.sources['./contracts/elementTestcase.sol'].ast;
-    var testobject = [ast.nodes[1]];
-    var storageTableBuilder = new StorageTableBuilder(testobject);
-    storageTableBuilder.build();
-    var variableTracker = new VariableTracker(storageTableBuilder.storageTable);
-
-    // when
-    result1 = variableTracker.getInfo("array_bool[2][3][4]")
-
-    // then
-    expect(result1).equal(-1);
-
-  });
-
-
-
-  it('show command : gdg', async function() {
+  it('show command: input is not array nor mapping when input string is reference form', async function() {
     // given
     var Output = JSON.parse(
       fs.readFileSync(
@@ -809,8 +784,33 @@ describe('# show-state script test', function() {
     var variableTracker = new VariableTracker(storageTableBuilder.storageTable);
 
     // when
-    result1 = variableTracker.getInfo("var_uint[3][3][3]")
-    result2 = variableTracker.getInfo("var_uint[1]")
+    result1 = variableTracker.getInfo("array_bool[2][3][4]")
+
+    // then
+    expect(result1).equal(-1);
+
+  });
+
+
+
+  it('show command : check long dimension error', async function() {
+    // given
+    var Output = JSON.parse(
+      fs.readFileSync(
+        'test/scripts/show-state/dynamicVar_output.json',
+        'utf-8'
+      )
+    );
+    var ast =
+      Output.sources['./contracts/dynamicVarTestcase.sol'].ast;
+    var testobject = [ast.nodes[1]];
+    var storageTableBuilder = new StorageTableBuilder(testobject);
+    storageTableBuilder.build();
+    var variableTracker = new VariableTracker(storageTableBuilder.storageTable);
+
+    // when
+    result1 = variableTracker.getInfo("darray4[0][1][2][3]")
+    result2 = variableTracker.getInfo("map2[key1][key2][key3]")
 
     // then
     expect(result1).equal(-1);
@@ -818,6 +818,32 @@ describe('# show-state script test', function() {
 
   });
 
+  it('show command : check ??', async function() {
+    // given
+    var Output = JSON.parse(
+      fs.readFileSync(
+        'test/scripts/show-state/dynamicVar_output.json',
+        'utf-8'
+      )
+    );
+    var ast =
+      Output.sources['./contracts/dynamicVarTestcase.sol'].ast;
+    var testobject = [ast.nodes[1]];
+    var storageTableBuilder = new StorageTableBuilder(testobject);
+    storageTableBuilder.build();
+    var variableTracker = new VariableTracker(storageTableBuilder.storageTable);
+
+    // when
+    result1 = variableTracker.getInfo("darray3[0][1]")
+    result2 = variableTracker.getInfo("mapdarray[0][key1][key2]")
+    console.log(result1[0])
+    console.log(result2[0])
+
+    // then
+    expect(result1).equal(-1);
+    expect(result2).equal(-1);
+
+  });
 
 
 
