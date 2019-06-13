@@ -20,6 +20,11 @@ Korean version: [README-ko.md](./README-ko.md)
  - Reducing Operation Time of Blockchain Service Development 
  - Shortening the Learning Curve of Developers Who Are Not Familiar with Blockchain
 
+> VVISP is sponsored by the EF(Ethereum Foundation).
+EF gave the grants to HAECHI LABS at ethcon korea 2019.
+
+<p align="center"><img src="./images/[EF]logo.png" width="570px" height="300px"></p>
+
 ## Table of Contents
 
 - [Description](#description)

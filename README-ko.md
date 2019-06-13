@@ -20,6 +20,12 @@ English version: [README.md](./README.md)
  - 블록체인 서비스 개발 및 운영 시간 단축
  - 블록체인이 익숙하지 않은 전세계 개발자들의 러닝커브 단축
 
+> VVISP is sponsored by the EF(Ethereum Foundation).
+EF gave the grants to HAECHI LABS at ethcon korea 2019.
+
+<p align="center"><img src="./images/[EF]logo.png" width="570px" height="300px"></p>
+
+
 ## Table of Contents
 
 - [Description](#description)
