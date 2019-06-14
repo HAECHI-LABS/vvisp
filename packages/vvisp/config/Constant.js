@@ -10,7 +10,6 @@ module.exports = {
       'piano garage flag neglect spare title drill basic strong aware enforce fury',
     URL: 'http://localhost:8545'
   },
-  REGISTRY_PATH: path.join('./', 'contracts/vvisp/VvispRegistry.sol'),
   PROJECT_NAME: PROJECT_NAME,
   SERVICE_FILE: SERVICE_FILE,
   SERVICE_PATH: path.join('./', SERVICE_FILE),

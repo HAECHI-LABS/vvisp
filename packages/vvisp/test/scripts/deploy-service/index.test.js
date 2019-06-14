@@ -23,9 +23,6 @@ const SENDER = privateKeyToAddress(config.from);
 const SERVICE1 = path.join('./test/dummy/service1.json');
 const SERVICE2 = path.join('./test/dummy/service2.json');
 const STATE1 = path.join('./test/dummy/state1.json');
-const N_R_SERVICE1 = path.join('./test/dummy/noRegistry.service1.json');
-const N_R_SERVICE2 = path.join('./test/dummy/noRegistry.service2.json');
-const N_R_STATE1 = path.join('./test/dummy/noRegistry.state1.json');
 
 fs.removeSync(SERVICE_PATH);
 fs.removeSync(STATE_PATH);
@@ -33,11 +30,6 @@ const { deploy: deployNum, upgrade: upgradeNum } = getTxcount(
   SERVICE1,
   SERVICE2,
   STATE1
-);
-const { deploy: nrDeployNum, upgrade: nrUpgradeNum } = getTxcount(
-  N_R_SERVICE1,
-  N_R_SERVICE2,
-  N_R_STATE1
 );
 
 let web3;
@@ -69,10 +61,6 @@ describe('# deploy-service process test', function() {
     describe('# normal case', function() {
       setWholeProcess(SERVICE1, SERVICE2);
     });
-
-    describe('# no registry case', function() {
-      setWholeProcess(N_R_SERVICE1, N_R_SERVICE2);
-    });
   });
 
   describe('# resuming process test', function() {
@@ -84,10 +72,6 @@ describe('# deploy-service process test', function() {
 
     describe('# normal case', function() {
       setResumingProcess(SERVICE1, SERVICE2, deployNum, upgradeNum);
-    });
-
-    describe('# no registry case', function() {
-      setResumingProcess(N_R_SERVICE1, N_R_SERVICE2, nrDeployNum, nrUpgradeNum);
     });
   });
 
@@ -116,12 +100,8 @@ function checkRightState() {
   const service = fs.readJsonSync(SERVICE_PATH);
   const state = fs.readJsonSync(STATE_PATH);
 
-  Object.keys(state).should.have.lengthOf(3);
+  Object.keys(state).should.have.lengthOf(2);
   state.serviceName.should.be.equal(service.serviceName);
-
-  (
-    web3.utils.isAddress(state.registry) || state.registry === 'noRegistry'
-  ).should.equal(true);
 
   const contracts = state.contracts;
   forIn(contracts, (contract, name) => {
@@ -142,11 +122,6 @@ function getWaitingTxNum() {
     stateClone.notUpgrading = true;
     stateClone.contracts = {};
     stateClone.serviceName = config.serviceName;
-    if (!config.registry) {
-      stateClone.registry = 'noRegistry';
-    } else {
-      resultNumber++; // registry
-    }
   } else {
     const file = fs.readJsonSync(STATE_PATH);
     forIn(file, (object, name) => {
@@ -175,9 +150,6 @@ function getWaitingTxNum() {
     }
   });
 
-  if (targetExists && stateClone.registry !== 'noRegistry') {
-    resultNumber++; // registerContractInfo
-  }
   return resultNumber;
 }
 

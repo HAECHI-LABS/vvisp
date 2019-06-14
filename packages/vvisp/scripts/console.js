@@ -4,7 +4,7 @@ const chalk = require('chalk');
 const stringArgv = require('string-argv');
 const _ = require('lodash');
 const { parseLogs } = require('@haechi-labs/vvisp-utils');
-const { STATE_FILE, REGISTRY_PATH } = require('../config/Constant');
+const { STATE_FILE } = require('../config/Constant');
 
 if (!String.prototype.format) {
   String.prototype.format = function() {
@@ -383,10 +383,9 @@ function getApiInfo(apis) {
   for (const [key, contract] of Object.entries(apis)) {
     const address = contract.address;
     if (address) {
-      let index = contract.registry ? 'R' : i;
       info =
         info +
-        `[${index}]`.padEnd(pad1) +
+        `[${i}]`.padEnd(pad1) +
         key.padEnd(pad2) +
         contract.fileName.padEnd(pad2) +
         address +
@@ -471,20 +470,6 @@ function setApiAddress(rawApis, stateFilePath) {
         'Mismatch has occurred between state.vvisp.json and apis. Please check state.vvisp.json file and contractApis/'
       );
     }
-  }
-
-  if (state['registry'] !== 'noRegistry') {
-    const registryName = path.parse(REGISTRY_PATH).name;
-    let registryKey = registryName;
-    while (_.has(contracts, registryKey)) {
-      registryKey = '_' + registryKey;
-    }
-    contracts[registryKey] = {
-      registry: true,
-      api: rawApis[registryName],
-      fileName: registryName,
-      address: state['registry']
-    };
   }
 
   return contracts;

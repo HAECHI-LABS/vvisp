@@ -1,6 +1,5 @@
 {
   "serviceName": "Haechi",
-  "registry": true,
   "variables" : {
     "varName": "constant"
   },

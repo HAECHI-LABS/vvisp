@@ -14,7 +14,6 @@ module.exports = async function(options) {
   } = require('../../config/Constant');
   const {
     deployContracts,
-    deployRegistry,
     initContracts,
     injectVar,
     reflectState
@@ -45,12 +44,6 @@ module.exports = async function(options) {
     await preProcess(deployState, options);
 
     const processes = [
-      {
-        name: 'deployRegistry',
-        process: async function() {
-          await deployRegistry(deployState, options);
-        }
-      },
       {
         name: 'injectVar',
         process: async function() {
