@@ -1,9 +1,15 @@
-const VariableTracker = require("./variableTracker")
-const {compile, getLinearContractIds, getContractNodesById, flexTable, addVariableValue} = require("./utils")
+const VariableTracker = require('./variableTracker');
+const {
+  compile,
+  getLinearContractIds,
+  getContractNodesById,
+  flexTable,
+  addVariableValue
+} = require('./utils');
 const StorageTableBuilder = require('./storageTableBuilder');
 const { printOrSilent } = require('@haechi-labs/vvisp-utils');
 const options = require('../utils/injectConfig')();
-const web3 = options.web3
+const web3 = options.web3;
 const chalk = require('chalk');
 const fs = require('fs');
 const path = require('path');
@@ -25,14 +31,12 @@ module.exports = async function(contract, options) {
   const linearIds = getLinearContractIds(baseAst, contract);
   const nodesById = getContractNodesById(solcOutput);
   const linearNodes = linearIds.map(id => nodesById[id]);
-  
+
   // build storage table
   storageTableBuilder = new StorageTableBuilder(linearNodes);
   storageTable = storageTableBuilder.build();
-  console.log(storageTable)
   storageTable = await addVariableValue(storageTable, address, web3);
-  console.log(storageTable)
-  
+
   // print table
   printOrSilent(chalk.blue.bold('Contract') + ':' + chalk.bold(contract));
   printOrSilent(
@@ -60,7 +64,6 @@ module.exports = async function(contract, options) {
   );
   await commander.run();
   process.exit(1);
-
 };
 
 function Command(name, options, description, func) {
@@ -148,7 +151,9 @@ function readLine() {
 async function show(args) {
   if (args.length !== 1) {
     console.log(
-      'invalid nustorageTablember of args: should be 1, got {0}'.format(args.length)
+      'invalid nustorageTablember of args: should be 1, got {0}'.format(
+        args.length
+      )
     );
     return;
   }
@@ -157,11 +162,10 @@ async function show(args) {
   var name = args[0];
   var table = variableTracker.getInfo(name);
   table = await addVariableValue(table, address, web3);
-  if(table == -1){
-    return
+  if (table == -1) {
+    return;
   }
 
-  console.log(table)
   printOrSilent(chalk.blue.bold('variableName') + ':' + chalk.bold(name));
   flexTable(table);
   printOrSilent(table.toString());
@@ -172,4 +176,3 @@ async function show(args) {
     )
   );
 }
-
