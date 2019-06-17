@@ -26,8 +26,6 @@ $ vvisp init
 ```
 root/
 ├── contracts/
-├──── vvisp/
-├────── VvispRegistry.sol
 ├──── Migrations.sol
 ├── migrations/
 ├──── 1_initial_migration.js
@@ -50,7 +48,6 @@ Several libraries used by HAECHI LABS have been added.
 Contract code, please work here.
 > - The `contracts/Migrations.sol` file will be created.
 This Contract is necessary for using truffle.
-> - The `VvispRegistry.sol` file for registering information about contracts will be created in the `contracts/vvisp` folder.
 > - The `vvisp-config.js` file will be created.
 Set environment variables here.
 [See details](../../../CONFIGURATION.md#config).
@@ -130,7 +127,6 @@ Contract Address : 0xcfb...
 
 Deploy the service described in `service.vvisp.json`.
 First, we make sure that `service.vvisp.json` is defined.
-If it is defined, we deploy the proxy contract corresponding to the contract and the registry contract corresponding to the service.
 When it is first deployed, `state.vvisp.json` is created to save the deployment status.
 If you upgrade to another version later, you can change `service.vvisp.json` and deploy again.
 The service will be upgraded to the state defined in modified `service.vvisp.json`.
@@ -162,11 +158,7 @@ $ vvisp deploy-service
 The deployment sequence is as follows.
 If there is no target to deploy, skip that task.
 
-1) Deploy the registry. (Not deployed again during upgrade)
-
 1) Deploy contracts.
-
-1) Save the information of contracts to the registry.
 
 1) Perform initialization of contracts.
 
@@ -179,11 +171,10 @@ This is the file where you can view the status of the currently deployed service
 ```
 {
   "serviceName": "Haechi", (1)
-  "registry": "0x00C...", (2)
-  "contracts": { (3)
-    "ContractKeyName3": { (4)
-      "address": "0x863...", (5)
-      "fileName": "Contract.sol" (6)
+  "contracts": { (2)
+    "ContractKeyName3": { (3)
+      "address": "0x863...", (4)
+      "fileName": "Contract.sol" (5)
     },
     "ContractKeyName1": {
       "address": "0x73c...",
@@ -194,9 +185,6 @@ This is the file where you can view the status of the currently deployed service
 ```
 
 1. The name of the configured service.
-
-1. Indicates the address of the deployed registry.
-If you defined not to use, it will be written as `noRegistry`.
 
 1. Json format of the information of deployed contracts.
 
@@ -374,7 +362,6 @@ Index     Name                Contract            Address
 [0]       Haechi              Haechi              0x660dd4EaDb8df267cE912797C588Fc9eadfa1861
 [1]       Gym                 HaechiGym           0xDc7C74e475e8100F7714DeE869b73E8DC91Af510
 [2]       Token               SampleToken         0x54Cd384968d10C980bEe2A258E1ff8CF45a6354D
-[R]       VvispRegistry       VvispRegistry       0x28091e8022332609Ca5Aa4Bb50a1E8B052484F68
 
 
 If you are wondering how to use it, type help command.
@@ -421,7 +408,6 @@ The commands available in the vvisp console are call, show list help exit.
   [0]       Haechi              Haechi              0x660dd4EaDb8df267cE912797C588Fc9eadfa1861
   [1]       Gym                 HaechiGym           0xDc7C74e475e8100F7714DeE869b73E8DC91Af510
   [2]       Token               SampleToken         0x54Cd384968d10C980bEe2A258E1ff8CF45a6354D
-  [R]       VvispRegistry       VvispRegistry       0x28091e8022332609Ca5Aa4Bb50a1E8B052484F68
   
   ```
 

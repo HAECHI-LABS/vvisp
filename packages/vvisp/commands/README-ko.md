@@ -25,8 +25,6 @@ __Outputs__
 ```
 root/
 ├── contracts/
-├──── vvisp/
-├────── VvispRegistry.sol
 ├──── Migrations.sol
 ├── migrations/
 ├──── 1_initial_migration.js
@@ -49,7 +47,6 @@ HAECHI LABS에서 사용하는 여러 library들이 추가되어 있습니다.
 Contract code는 이곳에서 작업해 주시기 바랍니다.
 > - `contracts/Migrations.sol` 파일이 생성됩니다.
 해당 파일은 truffle 사용을 위해 필요한 컨트랙트입니다.
-> - `contracts/vvisp` 폴더 내에 `VvispRegistry.sol` 파일이 생성됩니다.
 > - `vvisp-config.js` 파일이 생성됩니다.
 이 곳에서 환경 변수를 설정하십시오.
 [참고](../../../CONFIGURATION-ko.md#config)
@@ -127,7 +124,7 @@ Contract Address : 0xcfb...
 > vvisp deploy-service [options]
 
 `service.vvisp.json`에 기술된 서비스를 배포합니다.
-우선 `service.vvisp.json`이 정의되어 있는지 확인하며, 정의되어있다면 해당 컨트랙트에 대응하는 proxy 컨트랙트들과 서비스에 대응하는 registry 컨트랙트를 같이 배포합니다.
+우선 `service.vvisp.json`이 정의되어 있는지 확인합니다.
 처음 배포될 때에는 배포 상태를 저장하는 `state.vvisp.json`이 생성되며, 추후에 다른 버전으로 업그레이드 할 때에는 `service.vvisp.json`을 변경한 후 다시 deploy를 하면 기존에 배포된
  서비스가 `service.vvisp.json`에 정의된 상태로 업그레이드가 됩니다.
 
@@ -157,11 +154,7 @@ $ vvisp deploy-service
 배포 순서는 다음과 같습니다.
 배포할 대상이 없다면 해당 작업을 건너뜁니다.
 
-1) Registry를 배포합니다. (Upgrade 작업시엔 추가적으로 배포하지 않습니다)
-
 1) Contract들을 배포합니다.
-
-1) Contract들의 정보를 Registry에 저장합니다.
 
 1) Contract들의 initialize 작업을 수행합니다.
 
@@ -174,11 +167,10 @@ __`state.vvisp.json`__
 ```
 {
   "serviceName": "Haechi", (1)
-  "registry": "0x00C...", (2)
-  "contracts": { (3)
-    "ContractKeyName3": { (4)
-      "address": "0x863...", (5)
-      "fileName": "Contract.sol" (6)
+  "contracts": { (2)
+    "ContractKeyName3": { (3)
+      "address": "0x863...", (4)
+      "fileName": "Contract.sol" (5)
     },
     "ContractKeyName1": {
       "address": "0x73c...",
@@ -189,9 +181,6 @@ __`state.vvisp.json`__
 ```
 
 1. 설정된 service의 이름입니다.
-
-1. 배포된 registry의 address를 나타냅니다.
-만약 registry를 사용하지 않겠다고 정의했다면, `noRegistry`로 표현됩니다.
 
 1. 배포된 contract들의 정보가 json 형식으로 정의됩니다.
 
@@ -365,7 +354,6 @@ Index     Name                Contract            Address
 [0]       Haechi              Haechi              0x660dd4EaDb8df267cE912797C588Fc9eadfa1861
 [1]       Gym                 HaechiGym           0xDc7C74e475e8100F7714DeE869b73E8DC91Af510
 [2]       Token               SampleToken         0x54Cd384968d10C980bEe2A258E1ff8CF45a6354D
-[R]       VvispRegistry       VvispRegistry       0x28091e8022332609Ca5Aa4Bb50a1E8B052484F68
 
 
 If you are wondering how to use it, type help command.
@@ -410,7 +398,6 @@ vvisp console에서 사용가능한 command는 다음과 같습니다: call, sho
   [0]       Haechi              Haechi              0x660dd4EaDb8df267cE912797C588Fc9eadfa1861
   [1]       Gym                 HaechiGym           0xDc7C74e475e8100F7714DeE869b73E8DC91Af510
   [2]       Token               SampleToken         0x54Cd384968d10C980bEe2A258E1ff8CF45a6354D
-  [R]       VvispRegistry       VvispRegistry       0x28091e8022332609Ca5Aa4Bb50a1E8B052484F68
   
   ```
 

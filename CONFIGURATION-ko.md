@@ -133,23 +133,22 @@ module.exports = {
 ```
 {
   "serviceName": "Haechi", (1)
-  "registry" : true, (2)
-  "variables" : { (3)
+  "variables" : { (2)
     "varName": "constant"
   },
-  "contracts": { (4)
-    "ContractKeyName1": { (5)
-      "path": "path/to/your/contract/Contract1.sol" (6)
+  "contracts": { (3)
+    "ContractKeyName1": { (4)
+      "path": "path/to/your/contract/Contract1.sol" (5)
     },
     "ContractKeyName2": {
       "path": "contracts/Contract2.sol",
-      "constructorArguments": [ (7)
-        "${contracts.ContractKeyName1.address}", (8)
-        "${variables.varName}" (9)
+      "constructorArguments": [ (6)
+        "${contracts.ContractKeyName1.address}", (7)
+        "${variables.varName}" (8)
       ],
-      "initialize": { (10)
-        "functionName": "initialize", (11)
-        "arguments": [ (12)
+      "initialize": { (9)
+        "functionName": "initialize", (10)
+        "arguments": [ (11)
           "argument1",
           "argument2"
         ]
@@ -160,9 +159,6 @@ module.exports = {
 ```
 
 1. service의 이름을 정의합니다.
-
-1. `registry` 값을 `true`로 설정한다면, 배포 컨트랙트들을 기록하는 용도의 Registry 컨트랙트가 자동 배포됩니다.
-   기본값은 `false`입니다.
 
 1. `service.vvisp.json`에서 사용할 상수를 설정하는 곳 입니다.
 key-value pair로 상수를 지정합니다.

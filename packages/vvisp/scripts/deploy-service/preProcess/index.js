@@ -7,6 +7,9 @@ module.exports = async function(deployState, options) {
   let stateClone = deployState.getState();
 
   const config = fs.readJsonSync(SERVICE_PATH);
+  if (config.registry === true) {
+    throw new Error('Registry was deprecated');
+  }
 
   let processState;
   if (!fs.existsSync(STATE_PATH)) {
@@ -39,37 +42,12 @@ module.exports = async function(deployState, options) {
     stateClone
   );
   if (compileInformation.noProxy !== true) {
-    throw new Error('Upgradeable feature was deprecated from v1.1.0');
+    throw new Error('Upgradeable feature was deprecated');
   }
 
   if (Object.keys(compileInformation.targets).length === 0) {
     printOrSilent(chalk.head('Nothing to upgrade'), options);
     process.exit();
-  }
-
-  // Check whether this process needs Registry
-  // Event occurs when user sets config.registry false or does not set.
-  if (!config.registry) {
-    if (stateClone.registry && stateClone.registry !== 'noRegistry') {
-      printOrSilent(
-        `${chalk.warning(
-          'Warning:'
-        )} You changed registry config to false. Registry address ${
-          stateClone.registry
-        } will be deleted.`,
-        options
-      );
-    }
-    compileInformation.noRegistry = true;
-    stateClone.registry = 'noRegistry';
-  } else if (stateClone.registry === 'noRegistry') {
-    printOrSilent(
-      `${chalk.warning(
-        'Notice:'
-      )} Sorry. In this version, we do not support adding registry in noRegistry service.\nKeep 'registry' property to false or re-deploy whole service.`,
-      options
-    );
-    process.exit(1);
   }
 
   const compileOutput = await require('./compileAll')(
@@ -80,7 +58,7 @@ module.exports = async function(deployState, options) {
 
   if (!stateClone.paused) {
     stateClone.paused = {};
-    stateClone.paused.stage = 'deployRegistry';
+    stateClone.paused.stage = 'injectVar';
   }
   deployState.compileOutput = compileOutput;
   deployState.targets = compileInformation.targets;

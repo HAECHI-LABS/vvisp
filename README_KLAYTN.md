@@ -10,7 +10,7 @@ $ npm install -g @haechi-labs/vvisp
 #or if you use yarn
 $ yarn global add @haechi-labs/vvisp
 ```
-Use version >= v1.2.3
+Use version >= v2.0.0
 
 **2. Initialize your directory**
 ```bash
@@ -22,7 +22,6 @@ $ npm install #or yarn install
 ```
 **3. Make your Contracts at `contracts/`**
 
-We do not recommend to modify generated contracts in `contracts/vvisp/` by `$ vvisp init`.
 Now, you can use `gen-script`, `compile` and `flatten` commands.
 
 **4. Set `vvisp-config.js` file**
@@ -43,7 +42,7 @@ module.exports = {
   },
   compilers: {
     solc: {
-      version: '0.5.8'
+      version: '0.4.24'
     }
   },
   from: { // or from: 'YOUR_PRIVATE_KEY'
@@ -64,7 +63,6 @@ _Example_
 ```json
 {
   "serviceName": "Haechi",
-  "registry": true,
   "variables" : {
     "exampleVarName": 123
   },

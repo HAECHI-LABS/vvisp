@@ -133,23 +133,22 @@ Normally, make file like below:
 ```
 {
   "serviceName": "Haechi", (1)
-  "registry" : true, (2)
-  "variables" : { (3)
+  "variables" : { (2)
     "varName": "constant"
   },
-  "contracts": { (4)
-    "ContractKeyName1": { (5)
-      "path": "path/to/your/contract/Contract1.sol" (6)
+  "contracts": { (3)
+    "ContractKeyName1": { (4)
+      "path": "path/to/your/contract/Contract1.sol" (5)
     },
     "ContractKeyName2": {
       "path": "contracts/Contract2.sol",
-      "constructorArguments": [ (7)
-        "${contracts.ContractKeyName1.address}", (8)
-        "${variables.varName}" (9)
+      "constructorArguments": [ (6)
+        "${contracts.ContractKeyName1.address}", (7)
+        "${variables.varName}" (8)
       ],
-      "initialize": { (10)
-        "functionName": "initialize", (11)
-        "arguments": [ (12)
+      "initialize": { (9)
+        "functionName": "initialize", (10)
+        "arguments": [ (11)
           "argument1",
           "argument2"
         ]
@@ -160,9 +159,6 @@ Normally, make file like below:
 ```
 
 1. Define the name of service.
-
-1. If you set `registry` property `true` to register your contracts, registry contract would be deployed automatically.
-   Default is `false`.
 
 1. Set some constant variables in `service.vvisp.json`.
 Define a constant variable as a key-value pair.

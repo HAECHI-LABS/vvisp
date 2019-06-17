@@ -1,21 +1,14 @@
 module.exports = async function(deployState, options) {
   const path = require('path');
   const _ = require('lodash');
-  const {
-    CONSTRUCTOR,
-    PRIVATE_KEY,
-    REGISTRY_PATH,
-    TX_OPTIONS
-  } = require('../constants');
+  const { CONSTRUCTOR, PRIVATE_KEY, TX_OPTIONS } = require('../constants');
   const {
     deploy,
     forIn,
     getCompiledContracts,
     getTxCount,
-    printOrSilent,
-    sendTx
+    printOrSilent
   } = require('@haechi-labs/vvisp-utils');
-  const { pathToInstance } = require('../utils/index');
 
   const { compileOutput, targets } = deployState;
   let stateClone = deployState.getState();
@@ -107,61 +100,6 @@ module.exports = async function(deployState, options) {
       deployCount++;
       tolerance = 0;
     }
-  }
-
-  if (stateClone.registry !== 'noRegistry') {
-    await registeringContractsInfo(compileOutput, stateClone, options);
-  }
-
-  // @dev Uploading information about contracts to registry
-  async function registeringContractsInfo(compileOutput, stateClone, options) {
-    printOrSilent(
-      chalk.head("\tRegistering Contracts' Information at Registry..."),
-      options
-    );
-    const registryInstance = pathToInstance(
-      compileOutput,
-      REGISTRY_PATH,
-      options
-    );
-    registryInstance.options.address = stateClone.registry;
-
-    const setTargets = Object.keys(stateClone.paused.details);
-    const _addresses = [];
-    let _names = '';
-    const _nameLength = [];
-    let _filNames = '';
-    const _fileNameLength = [];
-    for (let i = 0; i < setTargets.length; i++) {
-      const { address, fileName } = stateClone.contracts[setTargets[i]];
-      _addresses.push(address);
-      _names += setTargets[i];
-      _nameLength.push(setTargets[i].length);
-      _filNames += fileName;
-      _fileNameLength.push(fileName.length);
-    }
-    const txData = registryInstance.methods
-      .registerContractInfo(
-        _addresses,
-        _names,
-        _nameLength,
-        _filNames,
-        _fileNameLength
-      )
-      .encodeABI();
-
-    const receipt = await sendTx(stateClone.registry, 0, PRIVATE_KEY, {
-      ...options,
-      ...TX_OPTIONS,
-      txCount: await getTxCount(PRIVATE_KEY, options),
-      data: txData
-    });
-    printOrSilent(
-      `${chalk.success('Done')} Transaction Hash: ${chalk.tx(
-        receipt.transactionHash
-      )}\n`,
-      options
-    );
   }
 
   function injectAddress(_arguments, _path, _index, contractAddress) {

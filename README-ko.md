@@ -131,7 +131,6 @@ _Example_
 ```json
 {
   "serviceName": "Haechi",
-  "registry": true,
   "variables" : {
     "exampleVarName": 123
   },
@@ -191,7 +190,7 @@ _Example_
 
 - vvisp
 
-  vvisp은 크게 vvisp-utils, vvisp and vvisp-contracts으로 이루어져 있습니다.
+  vvisp은 크게 vvisp-utils 와 vvisp으로 이루어져 있습니다.
 
   - vvisp-utils
 
@@ -200,10 +199,6 @@ _Example_
   - vvisp
 
     vvisp의 핵심 로직입니다.
-
-  - vvisp-contracts
-
-    vvisp-contracts는 스마트 컨트랙트 개발을 위한 컨트랙트 라이브러리입니다.
 
 - vvisp-sample
 
@@ -223,7 +218,7 @@ _Example_
 
   - contracts
 
-    contracts 폴더 내에는 `vvisp init`를 통해 생성된 registry 파일이 포함되어 있으며 이곳에서 컨트랙트들이 작성됩니다.
+    이곳에서 컨트랙트들이 작성됩니다.
 
 
 
