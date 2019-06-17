@@ -33,7 +33,7 @@ describe('# deploy contract process test', function() {
   it('should reject dummy file', async () => {
     await deployContract(DUMMMY_FILE, [], { silent: true }).should.be.rejected;
   });
-
+  
   it('should reject when contract name and file name are different', async () => {
     await deployContract(CONTRACT_FLATTENED_PATH, [], { silent: true }).should
       .be.rejected;

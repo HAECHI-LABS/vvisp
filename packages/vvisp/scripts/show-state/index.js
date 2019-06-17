@@ -1,15 +1,15 @@
+const VariableTracker = require("./variableTracker")
+const {compile, getLinearContractIds, getContractNodesById, flexTable, addVariableValue} = require("./utils")
+const StorageTableBuilder = require('./storageTableBuilder');
+const { printOrSilent } = require('@haechi-labs/vvisp-utils');
+const options = require('../utils/injectConfig')();
+const web3 = options.web3
 const chalk = require('chalk');
 const fs = require('fs');
 const path = require('path');
-const Web3 = require('web3');
-const { execFileSync } = require('child_process');
-const { compilerSupplier, printOrSilent } = require('@haechi-labs/vvisp-utils');
-const StorageTableBuilder = require('./storageTableBuilder');
-const web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545')); // <-----To Do: set real url configured by user
 const stringArgv = require('string-argv');
-var storageTable;
 var address;
-var tableStack = [];
+var storageTable;
 var storageTableBuilder;
 
 module.exports = async function(contract, options) {
@@ -20,24 +20,20 @@ module.exports = async function(contract, options) {
   const vvispState = JSON.parse(fs.readFileSync('./state.vvisp.json', 'utf-8'));
   address = vvispState.contracts[contract].address;
   const srcPath = `./contracts/${vvispState.contracts[contract].fileName}`;
-
   const solcOutput = await compile(srcPath);
-
   const baseAst = solcOutput.sources[srcPath].ast;
   const linearIds = getLinearContractIds(baseAst, contract);
   const nodesById = getContractNodesById(solcOutput);
   const linearNodes = linearIds.map(id => nodesById[id]);
-
+  
+  // build storage table
   storageTableBuilder = new StorageTableBuilder(linearNodes);
-
-  storageTable = storageTableBuilder.build(linearNodes);
-
-  for (let i = 0; i < storageTable.length; i++) {
-    index = storageTable[i][3];
-    value = await web3.eth.getStorageAt(address, index);
-    storageTable[i].push(value);
-  }
-
+  storageTable = storageTableBuilder.build();
+  console.log(storageTable)
+  storageTable = await addVariableValue(storageTable, address, web3);
+  console.log(storageTable)
+  
+  // print table
   printOrSilent(chalk.blue.bold('Contract') + ':' + chalk.bold(contract));
   printOrSilent(
     chalk.blue.bold('Source') + ':' + chalk.bold(path.basename(srcPath))
@@ -45,19 +41,6 @@ module.exports = async function(contract, options) {
   printOrSilent(chalk.blue.bold('Address') + ':' + chalk.bold(address));
   flexTable(storageTable);
   printOrSilent(storageTable.toString());
-
-  /*
-  global.chalk = {
-    success: chalk.green.bold,
-    address: chalk.cyan,
-    tx: chalk.cyan,
-    head: chalk.bold,
-    error: chalk.red.bold,
-    keyWord: chalk.blue.bold,
-    notImportant: chalk.gray,
-    warning: chalk.yellow
-  };
-*/
 
   console.log(
     chalk.bold(
@@ -69,84 +52,16 @@ module.exports = async function(contract, options) {
   const commander = new Commander(linearNodes);
   commander.add(
     new Command(
-      'darray',
+      'show',
       '<Variable>',
-      'show storage index of input dynamic array variable',
-      darray
+      'show storage index of input variable',
+      show
     )
   );
-  commander.add(
-    new Command(
-      'mapping',
-      '<Variable>',
-      'show storage index of input mapping variable',
-      mapping
-    )
-  );
-
   await commander.run();
   process.exit(1);
+
 };
-
-async function compile(srcPath) {
-  // const solcPath = __dirname + '/solc.exe'; // <------To Do: find another way to compile!!
-  // const params = [srcPath, '--combined-json', 'ast,compact-format'];
-  // const options = { encoding: 'utf-8' };
-  // const solcOutput = execFileSync(solcPath, params, options);
-
-  const DEFAULT_COMPILER_VERSION = '0.5.0'; // <------- integrate with compile.js
-
-  const supplier = new compilerSupplier({
-    version: DEFAULT_COMPILER_VERSION
-  });
-  const solc = await supplier.load();
-  const inputDescription = JSON.stringify({
-    language: 'Solidity',
-    sources: {
-      [srcPath]: {
-        content: fs.readFileSync(srcPath, 'utf-8')
-      }
-    },
-    settings: {
-      outputSelection: {
-        '*': {
-          '': ['ast']
-        }
-      }
-    }
-  });
-  const solcOutput = solc.compile(inputDescription);
-
-  fs.writeFileSync('testast.json', solcOutput);
-
-  return JSON.parse(solcOutput);
-}
-
-function getLinearContractIds(ast, targetContract) {
-  return ast.nodes
-    .find(node => node.name == targetContract)
-    .linearizedBaseContracts.reverse();
-}
-
-function getContractNodesById(solcOutput) {
-  return Object.values(solcOutput.sources).reduce((acc, src) => {
-    src.ast.nodes
-      .filter(node => node.nodeType == 'ContractDefinition')
-      .forEach(node => (acc[node.id] = node));
-    return acc;
-  }, {});
-}
-
-function flexTable(table) {
-  table.options.head = table.options.head
-    .map(str => str.toLowerCase())
-    .map(str => chalk.cyanBright.bold(str));
-  table.options.colWidths = [];
-  table.options.chars['left-mid'] = '';
-  table.options.chars['mid'] = '';
-  table.options.chars['right-mid'] = '';
-  table.options.chars['mid-mid'] = '';
-}
 
 function Command(name, options, description, func) {
   return {
@@ -230,60 +145,24 @@ function readLine() {
   });
 }
 
-async function darray(args, linearNodes) {
+async function show(args) {
   if (args.length !== 1) {
     console.log(
-      'invalid number of args: should be 1, got {0}'.format(args.length)
+      'invalid nustorageTablember of args: should be 1, got {0}'.format(args.length)
     );
     return;
   }
 
-  var result = await storageTableBuilder.buildDynamicArray(
-    args[0],
-    address,
-    web3,
-    linearNodes
-  );
-  var table = result[0];
-  var baseIndex = result[1];
-
-  for (let i = 0; i < table.length; i++) {
-    value = await web3.eth.getStorageAt(address, baseIndex);
-    table[i].push(value);
+  var variableTracker = new VariableTracker(storageTableBuilder.storageTable);
+  var name = args[0];
+  var table = variableTracker.getInfo(name);
+  table = await addVariableValue(table, address, web3);
+  if(table == -1){
+    return
   }
 
-  printOrSilent(chalk.blue.bold('variableName') + ':' + chalk.bold(args[0]));
-  printOrSilent(chalk.blue.bold('baseIndex') + ':' + chalk.bold(baseIndex));
-  flexTable(table);
-  printOrSilent(table.toString());
-
-  console.log(
-    chalk.bold(
-      '\nIf you want to the storage index of the dynamic variable, enter the command.'
-    )
-  );
-  console.log(chalk.bold('Use prev command to see the previous table'));
-}
-
-async function mapping(args, linearNodes) {
-  if (args.length !== 1) {
-    console.log(
-      'invalid number of args: should be 1, got {0}'.format(args.length)
-    );
-    return;
-  }
-
-  var result = storageTableBuilder.buildMapping(args[0], web3);
-  var table = result[0];
-  var baseIndex = result[1];
-
-  for (let i = 0; i < table.length; i++) {
-    value = await web3.eth.getStorageAt(address, baseIndex);
-    table[i].push(value);
-  }
-
-  printOrSilent(chalk.blue.bold('variableName') + ':' + chalk.bold(args[0]));
-  printOrSilent(chalk.blue.bold('baseIndex') + ':' + chalk.bold(baseIndex));
+  console.log(table)
+  printOrSilent(chalk.blue.bold('variableName') + ':' + chalk.bold(name));
   flexTable(table);
   printOrSilent(table.toString());
 
@@ -294,53 +173,3 @@ async function mapping(args, linearNodes) {
   );
 }
 
-// 누가 동적변수인지 구분가능한 기능 필요함
-
-/*
-  prevTable = tableStack[tableStack.length - 1][3];
-
-  if (tableStack.length == 1) {
-    base = 0;
-  } else {
-    base = tableStack[tableStack.length - 1][2];
-  }
-  tableStack.push([target, type, baseIndex, dynamicStorageTable]);
-
-*/
-
-/*
-async function prev(args, linearNodes) {
-  if (args.length !== 0) {
-    console.log(
-      'invalid number of args: should be 0, got {0}'.format(args.length)
-    );
-    return;
-  }
-
-  tableStack.pop();
-  prevTableInfo = tableStack[tableStack.length-1]
-  prevTable = prevTableInfo[3]
-
-
-  if(tableStack.length==0){
-    console.log(chalk.bold('\nIf you want to the storage index of the dynamic variable, enter the command.'));
-    console.log(chalk.bold('Use exit or Ctrl-c to exit'));
-
-    printOrSilent(chalk.blue.bold('Contract')+':' + chalk.bold(prevTableInfo[0]));
-    printOrSilent(chalk.blue.bold('Source')+':' + chalk.bold(prevTableInfo[1]));
-    printOrSilent(chalk.blue.bold('Address')+':' + chalk.bold(prevTableInfo[2]));
-
-  }else{
-    console.log(chalk.bold('\nIf you want to the storage index of the dynamic variable, enter the command.'));
-    console.log(chalk.bold('Use prev command to see the previous table'));
-
-    printOrSilent(chalk.blue.bold('variableName')+':' + chalk.bold(prevTableInfo[0]));
-    printOrSilent(chalk.blue.bold('type')+':' + chalk.bold(prevTableInfo[1]));
-    printOrSilent(chalk.blue.bold('baseIndex')+':' + chalk.bold(prevTableInfo[2]));
-
-  }
-  flexTable(prevTable);
-  printOrSilent(prevTable.toString());
-
-}
-*/

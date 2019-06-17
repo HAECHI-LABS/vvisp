@@ -1,20 +1,22 @@
-const showState = require('../../scripts/show-state');
 const {
   SymbolTable,
   ASTParser
-} = require('../../scripts/show-state/astParser');
-const StorageTableBuilder = require('../../scripts/show-state/storageTableBuilder');
-
+} = require('../../../scripts/show-state/astParser');
+const StorageTableBuilder = require('../../../scripts/show-state/storageTableBuilder');
+const VariableTracker = require("../../../scripts/show-state/variableTracker")
 const chai = require('chai');
 chai.use(require('chai-as-promised')).should();
 const expect = chai.expect;
 const fs = require('fs');
+const utils = require('../../../scripts/show-state/utils')
+
+const {execSync} = require('child_process')
+const path = require('path');
+const options = require('../../../scripts/utils/injectConfig')();
+const web3 = options.web3
 
 describe('# show-state script test', function() {
   describe('# astParser script test', function() {
-    before(function() {});
-
-    after(function() {});
 
     it('getTypeSize: should return correct type size', async function() {
       // given
@@ -38,33 +40,17 @@ describe('# show-state script test', function() {
         'contract t'
       ];
       var astParser = new ASTParser();
-      var sizes = [];
+      var sizeAnswer = [1, 20, 20, 1, 32, 32, 24, 8, 24, 8,
+                        32, 32, 8, 31, 16, 1, 20]
 
       // when
+      var sizes = [];
       types.forEach(function(type, i) {
         sizes.push(astParser.getTypeSize(type));
       });
 
       // then
-      expect(sizes).to.deep.equal([
-        1,
-        20,
-        20,
-        1,
-        32,
-        32,
-        24,
-        8,
-        24,
-        8,
-        32,
-        32,
-        8,
-        31,
-        16,
-        1,
-        20
-      ]);
+      expect(sizes).to.deep.equal(sizeAnswer);
     });
 
     it('getTypeSize: if type is invalid, throw exception', async function() {
@@ -80,7 +66,7 @@ describe('# show-state script test', function() {
     it('checkType: element Type', async function() {
       // given
       var elementOutput = JSON.parse(
-        fs.readFileSync('test/scripts/show-state/element_output.json', 'utf-8')
+        fs.readFileSync('test/dummy/show-state/ast/element_output.json', 'utf-8')
       );
       var symbolTable = new SymbolTable();
       var astParser = new ASTParser(symbolTable);
@@ -103,7 +89,7 @@ describe('# show-state script test', function() {
     it('checkType: array Type', async function() {
       // given
       var arrayOutput = JSON.parse(
-        fs.readFileSync('test/scripts/show-state/array_output.json', 'utf-8')
+        fs.readFileSync('test/dummy/show-state/ast/array_output.json', 'utf-8')
       );
       var symbolTable = new SymbolTable();
       var astParser = new ASTParser(symbolTable);
@@ -125,7 +111,7 @@ describe('# show-state script test', function() {
     it('checkType: struct Type', async function() {
       // given
       var arrayOutput = JSON.parse(
-        fs.readFileSync('test/scripts/show-state/struct_output.json', 'utf-8')
+        fs.readFileSync('test/dummy/show-state/ast/struct_output.json', 'utf-8')
       );
       var arrayAST = arrayOutput.sources['./contracts/structTestcase.sol'].ast;
       var symbolTable = new SymbolTable();
@@ -147,7 +133,7 @@ describe('# show-state script test', function() {
     it('parseElement: should return correct parsed result', async function() {
       // given
       var elementOutput = JSON.parse(
-        fs.readFileSync('test/scripts/show-state/element_output.json', 'utf-8')
+        fs.readFileSync('test/dummy/show-state/ast/element_output.json', 'utf-8')
       );
       var symbolTable = new SymbolTable();
       var astParser = new ASTParser(symbolTable);
@@ -312,15 +298,15 @@ describe('# show-state script test', function() {
 
       // then
       expect(dim1).to.deep.equal(['5']);
-      expect(dim2).to.deep.equal(['2', '7']);
-      expect(dim3).to.deep.equal(['1', '2', '3']);
+      expect(dim2).to.deep.equal(['7', '2']);
+      expect(dim3).to.deep.equal(['3', '2', '1']);
       expect(dim4).to.deep.equal(['', '']);
     });
 
     it('parseArray: should return correct parsed result', async function() {
       // given
       var arrayOutput = JSON.parse(
-        fs.readFileSync('test/scripts/show-state/array_output.json', 'utf-8')
+        fs.readFileSync('test/dummy/show-state/ast/array_output.json', 'utf-8')
       );
       var symbolTable = new SymbolTable();
       var astParser = new ASTParser(symbolTable);
@@ -352,7 +338,7 @@ describe('# show-state script test', function() {
       expect_variable_not_in_symbolTable('array_bool[4][3]', astParser);
       expect_variable_not_in_symbolTable('array_bool[3][4]', astParser);
       expect_symbolTable_equal(
-        'array_uint[3][1][2]',
+        'array_uint[2][1][3]',
         'uint256',
         44,
         symbolTable,
@@ -421,7 +407,7 @@ describe('# show-state script test', function() {
     it('parseStruct: should return correct parsed result', async function() {
       // given
       var structOutput = JSON.parse(
-        fs.readFileSync('test/scripts/show-state/struct_output.json', 'utf-8')
+        fs.readFileSync('test/dummy/show-state/ast/struct_output.json', 'utf-8')
       );
       var structAST =
         structOutput.sources['./contracts/structTestcase.sol'].ast;
@@ -445,7 +431,7 @@ describe('# show-state script test', function() {
       // given
       var arrayStructOutput = JSON.parse(
         fs.readFileSync(
-          'test/scripts/show-state/arrayOfStruct_output.json',
+          'test/dummy/show-state/ast/arrayOfStruct_output.json',
           'utf-8'
         )
       );
@@ -476,7 +462,7 @@ describe('# show-state script test', function() {
     it('buildStorageTable: return valid storageTable', async function() {
       // given
       var structOutput = JSON.parse(
-        fs.readFileSync('test/scripts/show-state/struct_output.json', 'utf-8')
+        fs.readFileSync('test/dummy/show-state/ast/struct_output.json', 'utf-8')
       );
       var structAST =
         structOutput.sources['./contracts/structTestcase.sol'].ast;
@@ -488,6 +474,7 @@ describe('# show-state script test', function() {
       tableBuilder.buildStructSymbolTables();
       var storageTable = tableBuilder.buildStorageTable();
 
+      // then
       expect_symbolTable_equal(
         's1.var_bool',
         'bool',
@@ -577,7 +564,7 @@ describe('# show-state script test', function() {
     it('calculateIndex: calculate valid storage index', async function() {
       // given
       var structOutput = JSON.parse(
-        fs.readFileSync('test/scripts/show-state/struct_output.json', 'utf-8')
+        fs.readFileSync('test/dummy/show-state/ast/struct_output.json', 'utf-8')
       );
       var structAST =
         structOutput.sources['./contracts/structTestcase.sol'].ast;
@@ -589,6 +576,8 @@ describe('# show-state script test', function() {
       tableBuilder.buildStructSymbolTables();
       var storageTable = tableBuilder.buildStorageTable();
       tableBuilder.calculateIndex(storageTable);
+
+      // then
       expect_symbolTable_equal_with_index(
         's1.var_bool',
         'bool',
@@ -698,50 +687,414 @@ describe('# show-state script test', function() {
         getTypeSize
       );
     });
-    /*
-    it('buildMapping: calculate valid storage index of mapping', async function() {
+
+    
+    it('show command: input normal vairables', async function() {
       // given
-      var dynamicOutput = JSON.parse(
+      var Output = JSON.parse(
         fs.readFileSync(
-          'test/scripts/show-state/dynamicVar_output.json',
+          'test/dummy/show-state/ast/element_output.json',
           'utf-8'
         )
       );
-      var dynamicAST =
-        dynamicOutput.sources['./contracts/dynamicVarTestcase.sol'].ast;
-      var testobject = [dynamicAST.nodes[1]];
-      var tableBuilder = new StorageTableBuilder(testobject);
-      var getTypeSize = new ASTParser().getTypeSize;
+      var ast =
+        Output.sources['./contracts/elementTestcase.sol'].ast;
+      var testobject = [ast.nodes[1]];
+      var storageTableBuilder = new StorageTableBuilder(testobject);
+      storageTableBuilder.build();
+      var variableTracker = new VariableTracker(storageTableBuilder.storageTable);
 
       // when
-      tableBuilder.buildStructSymbolTables();
-      var storageTable = tableBuilder.buildStorageTable();
-      tableBuilder.calculateIndex(storageTable);
-      var table = tableBuilder.buildMapping('map2[40]');
+      testNames = ["var_bool", "var_int8", "var_int256", "var_uint", "var_address", "var_bytes2", "var_enum", "var_f1", "var_string", "var_mapping"]
+      answerRow = [['var_bool','bool', 1, 0, 0],
+                   ['var_int8','int8', 1, 0, 1],
+                   ['var_int256','int256', 32, 1, 0],
+                   ['var_uint','uint256', 32, 5, 0],
+                   ['var_address','address', 20, 6, 0],
+                   ['var_bytes2','bytes2', 2, 7, 21],
+                   ['var_enum','enum elementTestcase.myEnum', 1, 9, 20],
+                   ['var_f1','function (bool) external', 24, 10, 0],
+                   ['var_string','string', 32, 13, 0],
+                   ['var_mapping','mapping(uint256 => uint256)', 32, 14, 0]
+                  ]
+      // then
+      for(var i=0; i<testNames.length; i++){
+        result = variableTracker.getInfo(testNames[i])
+        expect(result[0]).to.deep.equal(answerRow[i]);
+      }
+      
     });
 
-    it('buildDynamicArray: calculate valid storage index of dynamicArray', async function() {
+
+    it('show command: check non existing vairables', async function() {
       // given
-      var dynamicOutput = JSON.parse(
+      var Output = JSON.parse(
         fs.readFileSync(
-          'test/scripts/show-state/dynamicVar_output.json',
+          'test/dummy/show-state/ast/array_output.json',
           'utf-8'
         )
       );
-      var dynamicAST =
-        dynamicOutput.sources['./contracts/dynamicVarTestcase.sol'].ast;
-      var testobject = [dynamicAST.nodes[1]];
-      var tableBuilder = new StorageTableBuilder(testobject);
-      var getTypeSize = new ASTParser().getTypeSize;
-
+      var ast =
+        Output.sources['./contracts/arrayTestcase.sol'].ast;
+      var testobject = [ast.nodes[1]];
+      var storageTableBuilder = new StorageTableBuilder(testobject);
+      storageTableBuilder.build();
+      var variableTracker = new VariableTracker(storageTableBuilder.storageTable);
+  
       // when
-      tableBuilder.buildStructSymbolTables();
-      var storageTable = tableBuilder.buildStorageTable();
-      tableBuilder.calculateIndex(storageTable);
-      var table = tableBuilder.buildMapping('map2[40]');
+      result1 = variableTracker.getInfo("asdb")
+      result2 = variableTracker.getInfo("array_boo[56]")
+  
+      // then
+      expect(result1).equal(-1);
+      expect(result2).equal(-1);
+  
     });
-    */
+  
+    it('show command: input is not array nor mapping when input string is reference form', async function() {
+      // given
+      var Output = JSON.parse(
+        fs.readFileSync(
+          'test/dummy/show-state/ast/array_output.json',
+          'utf-8'
+        )
+      );
+      var ast =
+        Output.sources['./contracts/arrayTestcase.sol'].ast;
+      var testobject = [ast.nodes[1]];
+      var storageTableBuilder = new StorageTableBuilder(testobject);
+      storageTableBuilder.build();
+      var variableTracker = new VariableTracker(storageTableBuilder.storageTable);
+  
+      // when
+      result1 = variableTracker.getInfo("array_bool[2][3][4]")
+  
+      // then
+      expect(result1).equal(-1);
+  
+    });
+  
+  
+  
+    it('show command : check long dimension error', async function() {
+      // given
+      var Output = JSON.parse(
+        fs.readFileSync(
+          'test/dummy/show-state/ast/dynamicVar_output.json',
+          'utf-8'
+        )
+      );
+      var ast =
+        Output.sources['./contracts/dynamicVarTestcase.sol'].ast;
+      var testobject = [ast.nodes[1]];
+      var storageTableBuilder = new StorageTableBuilder(testobject);
+      storageTableBuilder.build();
+      var variableTracker = new VariableTracker(storageTableBuilder.storageTable);
+  
+      // when
+      result1 = variableTracker.getInfo("darray4[0][1][2][3]")
+      result2 = variableTracker.getInfo("map2[key1][key2][key3]")
+      
+      // then
+      expect(result1).equal(-1);
+      expect(result2).equal(-1);
+  
+    });
+
   });
+
+
+  describe('# final variable value test', function() {
+    var vvispState;
+    this.timeout(30000);
+
+
+    before(async function() {
+
+      const TEST_PATH = path.join('./', 'test', 'dummy', 'show-state')
+      process.chdir(TEST_PATH);
+
+      fs.exists('./state.vvisp.json', function(exists) {
+        if (exists) {
+          execSync('rm state.vvisp.json')
+        }
+      });
+      console.log(execSync('vvisp deploy-service').toString())
+
+
+      vvispState = JSON.parse(fs.readFileSync('./state.vvisp.json', 'utf-8'));
+     
+    });
+
+    after(function() {});
+
+    it('elementTestcase', async function() {
+
+      var contract = 'elementTestcase'
+
+      // given
+      var address = vvispState.contracts[contract].address;
+      const srcPath = `./contracts/${vvispState.contracts[contract].fileName}`;
+      const solcOutput = await utils.compile(srcPath);
+      const baseAst = solcOutput.sources[srcPath].ast;
+      const linearIds = utils.getLinearContractIds(baseAst, contract);
+      const nodesById = utils.getContractNodesById(solcOutput);
+      const linearNodes = linearIds.map(id => nodesById[id]);
+
+      // when
+      storageTableBuilder = new StorageTableBuilder(linearNodes);
+      storageTable = storageTableBuilder.build();
+      storageTable = await utils.addVariableValue(storageTable, address, web3);
+
+      // then
+      answer=['true', '1', '40', '3', '2', '1000', '23253',
+              "0x345ca3e014aaf5dca488057592ee44305d9b3e11",
+              '0x111113e014aaf5dca488057592ee44305d9b3e11',
+              '0x01', '0x0002',
+              '0x0002000200020002000200020002000200020002000200020002000200020002',
+              '0x0000000000000000000000000000000000000000',
+              '0x01', '0x000000000000000000000000000000000000000000000000', 
+              '0x0000000000000000', 
+              '0x000000000000000000000000000000000000000000000000', 
+              '0x0000000000000000',
+              '0x627974657300000000000000000000000000000000000000000000000000000a',
+              "\u0000hello", '0x0000000000000000000000000000000000000000000000000000000000000000'
+              ]
+      storageTable.forEach(function(row,i) {
+        expect(row[5]).equal(answer[i])
+      });
+    });
+
+
+    it('arrayTestcase', async function() {
+
+      var contract = 'arrayTestcase'
+
+      // given
+      var address = vvispState.contracts[contract].address;
+      const srcPath = `./contracts/${vvispState.contracts[contract].fileName}`;
+      const solcOutput = await utils.compile(srcPath);
+      const baseAst = solcOutput.sources[srcPath].ast;
+      const linearIds = utils.getLinearContractIds(baseAst, contract);
+      const nodesById = utils.getContractNodesById(solcOutput);
+      const linearNodes = linearIds.map(id => nodesById[id]);
+
+      // when
+      storageTableBuilder = new StorageTableBuilder(linearNodes);
+      storageTable = storageTableBuilder.build();
+      storageTable = await utils.addVariableValue(storageTable, address, web3);
+
+      // then
+      answer=['true', 'false', 'true', 'true', 'false',
+              '-1', '-2', '-3', '-4', '-5', '-6', '-7', '-8', '-9',
+              '-10', '-11', '-12', '-13', '-14', '-15', '-16',
+              '1', '2', '3', '4', '5', '6', '7', '8', '9', '10',
+              '11', '12', '13', '14', '15', '16', '17', '18', '19', '20',
+              '21', '22', '23', '24', 
+              '0x0000000000000000000000000000000000000000', 
+              '0x0000000000000000000000000000000000000000', 
+              '0x0000000000000000000000000000000000000000',
+              '0x0001', '0x0011', '0x0111', '0x1111',
+              '0x0000000000000000000000000000000000000000',
+              '0x0000000000000000000000000000000000000000',
+              '0x0000000000000000000000000000000000000000', 
+              '0x00',
+              '0x00', 
+              '0x00',
+              '0x000000000000000000000000000000000000000000000000', 
+              '0x000000000000000000000000000000000000000000000000', 
+              '0x000000000000000000000000000000000000000000000000', 
+              '0x0000000000000000000000000000000000000000000000000000000000000000', 
+              '0x0000000000000000000000000000000000000000000000000000000000000000', 
+              '0x0000000000000000000000000000000000000000000000000000000000000000',
+              "\u0000apple", "\u0000banana", "\u0000kiwi",
+              '0x0000000000000000000000000000000000000000000000000000000000000000', 
+              '0x0000000000000000000000000000000000000000000000000000000000000000', 
+              '0x0000000000000000000000000000000000000000000000000000000000000000'
+              ]
+      storageTable.forEach(function(row,i) {
+        expect(row[5]).equal(answer[i])
+      });
+    });
+
+    it('structTestcase', async function() {
+
+      var contract = 'structTestcase'
+
+      // given
+      var address = vvispState.contracts[contract].address;
+      const srcPath = `./contracts/${vvispState.contracts[contract].fileName}`;
+      const solcOutput = await utils.compile(srcPath);
+      const baseAst = solcOutput.sources[srcPath].ast;
+      const linearIds = utils.getLinearContractIds(baseAst, contract);
+      const nodesById = utils.getContractNodesById(solcOutput);
+      const linearNodes = linearIds.map(id => nodesById[id]);
+
+      // when
+      storageTableBuilder = new StorageTableBuilder(linearNodes);
+      storageTable = storageTableBuilder.build();
+      storageTable = await utils.addVariableValue(storageTable, address, web3);
+
+      // then
+      answer=['true', '3', '0x345ca3e014aaf5dca488057592ee44305d9b3e11',
+              '0x0000000000000000000000000000000000000000', '0x01', 
+              '0x000000000000000000000000000000000000000000000000',
+              '0x0000000000000000000000000000000000000000000000000000000000000000',
+              '0x0100', '0x0010', '0x1000', '0x0000000000001000', '0x0000000010001000',
+              '0x1011100010001000', '0x1001100111011100','0x1000111111111100',
+              '0x1000101010111100', '0x1000000000000000', '0x1111110000001100',
+              '0x1000100010101100', "0x76657279676f6f64000000000000000000000000000000000000000000000010", 
+              "\u0000very very great",
+              '0x01', '0x10', '0x00'
+              ]
+
+      storageTable.forEach(function(row,i) {
+        expect(row[5]).equal(answer[i])
+      });
+    });
+
+
+    it('arrayOfStructTestcase', async function() {
+
+      var contract = 'arrayOfStructTestcase'
+
+      // given
+      var address = vvispState.contracts[contract].address;
+      const srcPath = `./contracts/${vvispState.contracts[contract].fileName}`;
+      const solcOutput = await utils.compile(srcPath);
+      const baseAst = solcOutput.sources[srcPath].ast;
+      const linearIds = utils.getLinearContractIds(baseAst, contract);
+      const nodesById = utils.getContractNodesById(solcOutput);
+      const linearNodes = linearIds.map(id => nodesById[id]);
+
+      // when
+      storageTableBuilder = new StorageTableBuilder(linearNodes);
+      storageTable = storageTableBuilder.build();
+      storageTable = await utils.addVariableValue(storageTable, address, web3);
+
+      // then
+      answer=["0x737765657400000000000000000000000000000000000000000000000000000a", 
+              "\u0000I love beer..", '0x01', '0x02',
+              '0x03', '0x04', '0x05', '0x06', '0x07', '0x08',
+              '0x09', '0x737069637900000000000000000000000000000000000000000000000000000a', 
+              '\u0000I hate coffee!!', '0x0a',
+              '0x0b', '0x0c', '0x0d', '0x0e', '0x0f', '0xff',
+              '0xef', '0x2b'
+              ]
+
+
+      storageTable.forEach(function(row,i) {
+        expect(row[5]).equal(answer[i])
+      });
+    });
+
+
+    it('dynamicVarTestcase', async function() {
+
+      var contract = 'dynamicVarTestcase'
+
+      // given
+      var address = vvispState.contracts[contract].address;
+      const srcPath = `./contracts/${vvispState.contracts[contract].fileName}`;
+      const solcOutput = await utils.compile(srcPath);
+      const baseAst = solcOutput.sources[srcPath].ast;
+      const linearIds = utils.getLinearContractIds(baseAst, contract);
+      const nodesById = utils.getContractNodesById(solcOutput);
+      const linearNodes = linearIds.map(id => nodesById[id]);
+      storageTableBuilder = new StorageTableBuilder(linearNodes);
+      storageTable = storageTableBuilder.build();
+      storageTable = await utils.addVariableValue(storageTable, address, web3);
+
+      // when
+      tests = [
+        "darray1[0]","darray1[1]","darray1[2]","darray1[3]",
+        "darray2[0][0]", "darray2[0][1]", "darray2[0][2]",
+        "darray2[1][0]", "darray2[1][1]", "darray2[2][0]",
+        "darray2[2][1]", "darray2[2][2]", "darray2[2][3]",
+        "darray3[0][0][0]",
+        "darray3[0][0][1]",
+        "darray3[0][1][0]",
+        "darray3[1][0][0]",
+        "darray3[1][1][0]",
+        "darray3[1][1][1]",
+        "darray3[2][0][0]",
+        "darray3[2][0][1]",
+        "darray3[2][0][2]",
+        "darray3[2][1][0]",
+        "darray4[0][0][0]",
+        "darray4[0][0][1]",
+        "darray4[0][0][2]",
+        "darray4[0][1][0]",
+        "darray4[0][1][1]",
+        "darray4[0][1][2]",
+        "map1[zero]",
+        "map1[one]",
+        "map1[two]",
+        "map2[2][4]",
+        "map2[3][8]",
+        "map2[4][7]",
+        "mapdarray[0][36][key1][0][0][0]",
+        "mapdarray[0][36][key1][0][0][1]",
+        "mapdarray[0][36][key1][0][1][0]",
+        "mapdarray[0][36][key1][0][1][1]",
+        "mapdarray[0][36][key1][0][2][0]",
+        "mapdarray[0][36][key1][0][2][1]",
+        "s1[0].darray5[0][0][0][0]",
+        "s1[0].darray5[0][0][0][1]",
+        "s1[0].darray5[0][0][1][0]",
+        "s1[0].darray5[0][0][1][1]",
+        "s1[0].darray5[0][0][2][0]",
+        "s1[0].darray5[0][0][2][1]",
+        "s1[1].darray5[1][0][0][0]",
+        "s1[1].darray5[1][0][0][1]",
+        "s1[1].darray5[1][0][1][0]",
+        "s1[1].darray5[1][0][1][1]",
+        "s1[1].darray5[1][0][2][0]",
+        "s1[1].darray5[1][0][2][1]"
+      ]
+      answer=[
+        '430','23','123','44',
+        '31','32','33','11','12','21','22','23','24',
+        '-1','-2','-3','-4','-5','-6','-7','-8','-9','10',
+        '1','2','3','4','5','6',
+        '0','1','2','8','24','28',
+        '-1','-2','-3','-4','-5','-6',
+        '0', '1', '2', '3', '4', '5',
+        '6', '7', '8', '9', '10', '11'
+      ]
+
+      var variableTracker = new VariableTracker(storageTableBuilder.storageTable);
+      for(var i=0; i < tests.length; i++){
+        var table = variableTracker.getInfo(tests[i]);
+        table = await utils.addVariableValue(table, address, web3);
+        // then
+        console.log(table[0][5])
+        expect(table[0][5]).equal(answer[i])
+      }
+    });
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   function expect_structSymbolTable(structTypeName, symbolTable, getTypeSize) {
     switch (structTypeName) {
       case 'struct1':
@@ -752,6 +1105,7 @@ describe('# show-state script test', function() {
           symbolTable,
           getTypeSize
         );
+
         expect_symbolTable_equal(
           'var_int8',
           'int8',
@@ -764,7 +1118,7 @@ describe('# show-state script test', function() {
           'address',
           2,
           symbolTable,
-          getTypeSize
+          getTypeSize  
         );
         expect_symbolTable_equal(
           'var_contract',
@@ -947,7 +1301,7 @@ describe('# show-state script test', function() {
         );
         break;
       default:
-        throw 'There is invalid type in table of struct.';
+        throw 'There is invashowStatelid type in table of struct.';
     }
   }
 
@@ -984,4 +1338,3 @@ describe('# show-state script test', function() {
       startByte
     ]);
   }
-});
