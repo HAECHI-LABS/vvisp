@@ -28,9 +28,6 @@ describe('# init script test', function() {
 
   it('should have right directories', function() {
     fs.existsSync(path.join(directoryName, 'contracts')).should.be.equal(true);
-    fs.existsSync(
-      path.join(directoryName, 'contracts', 'upgradeable')
-    ).should.be.equal(true);
     fs.existsSync(path.join(directoryName, 'migrations')).should.be.equal(true);
     fs.existsSync(path.join(directoryName, 'scripts')).should.be.equal(true);
     fs.existsSync(path.join(directoryName, 'test')).should.be.equal(true);
@@ -61,9 +58,6 @@ describe('# init script test', function() {
     ).should.be.equal(true);
     fs.existsSync(
       path.join(directoryName, 'contracts', 'Migrations.sol')
-    ).should.be.equal(true);
-    fs.existsSync(
-      path.join(directoryName, 'contracts', 'upgradeable', 'VvispRegistry.sol')
     ).should.be.equal(true);
   });
 });

@@ -1,10 +1,10 @@
-module.exports = function(compileOutput, filePath) {
+module.exports = function(compileOutput, filePath, options) {
   const {
     getCompiledContracts,
-    web3Store
+    getContractFactory
   } = require('@haechi-labs/vvisp-utils');
-  const web3 = web3Store.get();
+  const Contract = getContractFactory(options);
 
   const abi = getCompiledContracts(compileOutput, filePath).interface;
-  return new web3.eth.Contract(JSON.parse(abi));
+  return new Contract(JSON.parse(abi));
 };

@@ -1,6 +1,6 @@
 {
   "name": "@haechi-labs/vvisp-utils",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Javascript Library for the Developing vvisp",
   "author": "HAECHI LABS",
   "authors": [
@@ -31,11 +31,11 @@
     "tooling",
     "task-runner",
     "solidity",
-    "upgradeable",
     "library"
   ],
   "dependencies": {
     "bip39": "^2.5.0",
+    "caver-js": "^0.9.3",
     "chalk": "^2.4.1",
     "ethereumjs-tx": "^1.3.7",
     "ethereumjs-wallet": "^0.6.2",
@@ -54,6 +54,9 @@
     "web3": "1.0.0-beta.37"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
+    "nyc": "^13.1.0",
     "openzeppelin-solidity": "2.1.3"
   },
   "nyc": {

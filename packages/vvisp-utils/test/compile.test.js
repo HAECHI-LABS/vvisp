@@ -1,5 +1,4 @@
 const chai = require('chai');
-const expect = chai.expect;
 chai.use(require('chai-as-promised')).should();
 const _ = require('lodash');
 
@@ -78,14 +77,15 @@ describe('# compile test', function() {
     it('should be fulfilled with other solc version', async function() {
       const config = _.cloneDeep(configWrapper);
       process.env.SOLC_VERSION = 'v0.5.0+commit.1d4f565a';
-      await compile(RIGHT_CONTRACT1, { silent: true, config: config }).should.be.fulfilled;
+      await compile(RIGHT_CONTRACT1, { silent: true, config: config }).should.be
+        .fulfilled;
     });
 
     it('should be fulfilled with optimization', async function() {
       const config = _.cloneDeep(configWrapper);
       config.compilers.solc.settings.optimizer = {
         enabled: true,
-        run: 200
+        runs: 200
       };
       await compile(RIGHT_CONTRACT1, { silent: true, config: config }).should.be
         .fulfilled;
@@ -101,7 +101,8 @@ describe('# compile test', function() {
     it('should be fulfilled with external solidity library', async function() {
       const config = _.cloneDeep(configWrapper);
       process.env.SOLC_VERSION = '0.5.0';
-      await compile(OPEN_NFT, { silent: true, config: config }).should.be.fulfilled;
+      await compile(OPEN_NFT, { silent: true, config: config }).should.be
+        .fulfilled;
       process.env.SOLC_VERSION = '';
     });
   });
@@ -111,7 +112,7 @@ describe('# compile test', function() {
       const optimizeConfig = _.cloneDeep(configWrapper);
       optimizeConfig.compilers.solc.settings.optimizer = {
         enabled: true,
-        run: 200
+        runs: 200
       };
       const optimization = await compile(RIGHT_CONTRACT1, {
         silent: true,

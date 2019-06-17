@@ -5,7 +5,7 @@
   },
   "contracts": {
     "ContractKeyName1": {
-      "path": "path/to/your/contract/Contract.sol",
+      "path": "path/to/your/contract/Contract1.sol",
       "constructorArguments": [
         "${contracts.ContractKeyName1.address}",
         "${variables.varName}"
@@ -16,8 +16,7 @@
       }
     },
     "ContractKeyName2": {
-      "upgradeable": true,
-      "path": "path/to/your/contract/ContractV0.sol",
+      "path": "path/to/your/contract/Contract2.sol",
       "initialize": {
         "functionName": "initialize",
         "arguments": ["argument1", "argument2"]

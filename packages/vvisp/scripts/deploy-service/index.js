@@ -7,18 +7,19 @@ module.exports = async function(options) {
   const { writeState } = require('./utils');
   const DeployState = require('./DeployState');
   const preProcess = require('./preProcess');
-  const { PROJECT_NAME, SERVICE_FILE } = require('../../config/Constant');
   const {
-    deployBusinesses,
-    deployNonUpgradeables,
-    deployProxies,
-    deployRegistry,
-    initNonUpgradeables,
+    PROJECT_NAME,
+    SERVICE_FILE,
+    STATE_FILE
+  } = require('../../config/Constant');
+  const {
+    deployContracts,
+    initContracts,
     injectVar,
-    reflectState,
-    registerFileNames,
-    upgradeAll
+    reflectState
   } = require('./processes');
+  const fs = require('fs-extra');
+  const path = require('path');
   const chk = require('chalk');
   global.chalk = {
     success: chk.green.bold,
@@ -31,6 +32,10 @@ module.exports = async function(options) {
     warning: chk.yellow
   };
 
+  if (options.force) {
+    fs.removeSync(path.join('./', STATE_FILE));
+  }
+
   await main();
 
   async function main() {
@@ -40,51 +45,21 @@ module.exports = async function(options) {
 
     const processes = [
       {
-        name: 'deployRegistry',
-        process: async function() {
-          await deployRegistry(deployState, options);
-        }
-      },
-      {
-        name: 'deployBusinesses',
-        process: async function() {
-          await deployBusinesses(deployState, options);
-        }
-      },
-      {
-        name: 'deployProxies',
-        process: async function() {
-          await deployProxies(deployState, options);
-        }
-      },
-      {
         name: 'injectVar',
         process: async function() {
           injectVar(deployState);
         }
       },
       {
-        name: 'deployNonUpgradeables',
+        name: 'deployContracts',
         process: async function() {
-          await deployNonUpgradeables(deployState, options);
+          await deployContracts(deployState, options);
         }
       },
       {
-        name: 'upgradeAll',
+        name: 'initContracts',
         process: async function() {
-          await upgradeAll(deployState, options);
-        }
-      },
-      {
-        name: 'registerFileNames',
-        process: async function() {
-          await registerFileNames(deployState, options);
-        }
-      },
-      {
-        name: 'initNonUpgradeables',
-        process: async function() {
-          await initNonUpgradeables(deployState, options);
+          await initContracts(deployState, options);
         }
       },
       {

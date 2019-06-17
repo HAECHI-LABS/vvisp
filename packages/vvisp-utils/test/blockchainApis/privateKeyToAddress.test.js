@@ -1,7 +1,7 @@
 const chai = require('chai');
 chai.should();
 
-const { privateKeyToAddress } = require('../src');
+const { privateKeyToAddress } = require('../../src');
 
 const SAMPLE_PRIVATE_KEY =
   '8bb0722ff8cb8161da257dc2d3712a17db1753d1de2d8b6b27b0e4636d9899f6';

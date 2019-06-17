@@ -4,6 +4,7 @@ const chalk = require('chalk');
 const stringArgv = require('string-argv');
 const _ = require('lodash');
 const { parseLogs } = require('@haechi-labs/vvisp-utils');
+const { STATE_FILE } = require('../config/Constant');
 
 if (!String.prototype.format) {
   String.prototype.format = function() {
@@ -14,7 +15,7 @@ if (!String.prototype.format) {
   };
 }
 
-const defaultStateFile = 'state.vvisp.json';
+const defaultStateFile = STATE_FILE;
 
 /**
  *
@@ -28,8 +29,9 @@ const defaultStateFile = 'state.vvisp.json';
  *
  * interactive console has following command
  * command:
- *    - show <contract>: show all the available api in the contract
- *    - call <contract> <method> [params...]: call the method
+ *    - register: register the address of smart contracts
+ *    - show <name>: show all the available api in the contract
+ *    - call <name> <method> [params...]: call the method
  *    - list: show all contracts name and address
  *    - help: print help message
  */
@@ -37,11 +39,16 @@ const defaultStateFile = 'state.vvisp.json';
 module.exports = async function(scriptPath, options) {
   options = require('./utils/injectConfig')(options);
 
-  let apis = setApi(scriptPath, options);
+  let rawApis = setApi(scriptPath, options);
+  if (rawApis === undefined || rawApis === '') {
+    return;
+  }
+
+  let apis;
   if (fs.existsSync(defaultStateFile)) {
-    apis = setApiAddress(apis, defaultStateFile);
+    apis = setApiAddress(rawApis, defaultStateFile);
   } else {
-    apis = await getAddressFromSTDIN(apis);
+    apis = await getAddressFromSTDIN(rawApis);
   }
 
   printApiInfo(apis);
@@ -61,7 +68,7 @@ module.exports = async function(scriptPath, options) {
   apiCommander.add(
     new Command(
       'show',
-      '<Contract>',
+      '<Name>',
       'show the available method of a smart contract',
       show
     )
@@ -69,13 +76,13 @@ module.exports = async function(scriptPath, options) {
   apiCommander.add(
     new Command(
       'call',
-      '<Contract> <Method> [Params...]',
+      '<Name> <Method> [Params...]',
       'call a smart contract api method',
       call
     )
   );
 
-  await apiCommander.run();
+  await apiCommander.run(options);
   process.exit(1);
 };
 
@@ -100,7 +107,7 @@ function ApiCommander(apis) {
     add: function(command) {
       this.commands[command.name] = command;
     },
-    run: async function() {
+    run: async function(options) {
       while (this.end) {
         const prompt = '>> ';
         process.stdout.write(prompt);
@@ -143,7 +150,8 @@ function ApiCommander(apis) {
         try {
           await this.commands[args[0]].run(
             args.slice(1, args.length),
-            this.apis
+            this.apis,
+            options
           );
         } catch (e) {
           console.log(e);
@@ -178,39 +186,46 @@ async function show(args, apis) {
     return;
   }
 
-  const contractName = args[0];
-  if (apis[contractName] === undefined) {
+  const contractKey = args[0];
+  if (apis[contractKey] === undefined) {
     console.log("'{0}' contract does not exist".format(args[0]));
     return;
   }
 
-  const contract = new apis[contractName](apis[contractName]['address']);
-  let msg = '\n[Method]\t\t\t\t[Args]\n';
-  for (const method of Object.keys(contract['methods'])) {
-    msg =
-      msg +
-      '{0}[{1}]\n'.format(
-        method.padEnd(40),
-        getArgs(contract['methods'][method]).join(', ')
-      );
-  }
+  const contract = new apis[contractKey]['api'](
+    apis[contractKey]['address'].toLowerCase()
+  );
+  let msg = '\n' + '[Method]'.padEnd(40) + '[Args]\n';
+
+  apis[contractKey].api['abi']
+    .filter(function(obj) {
+      return obj.type === 'function';
+    })
+    .sort(function(a, b) {
+      if (a.name < b.name) {
+        return -1;
+      }
+      if (a.name > b.name) {
+        return 1;
+      }
+
+      return 0;
+    })
+    .forEach(function(functionAbi) {
+      msg =
+        msg +
+        '{0}[{1}]\n'.format(
+          functionAbi.name.padEnd(40),
+          getArgs(contract['methods'][functionAbi.name], functionAbi).join(', ')
+        );
+    });
   console.log(msg);
 }
 
-function getArgs(func) {
-  // First match everything inside the function argument parens.
-  const args = func.toString().match(/function.*?\(([^)]*)\)/)[1];
-  // Split the arguments string into an array comma delimited.
-  return args
-    .split(',')
-    .map(function(arg) {
-      // Ensure no inline comments are parsed and trim the whitespace.
-      return arg.replace(/\/\*.*\*\//, '').trim();
-    })
-    .filter(function(arg) {
-      // Ensure no undefined values are added.
-      return arg;
-    });
+function getArgs(func, functionAbi) {
+  return functionAbi.inputs.map((input, i) => {
+    return input.type + ' ' + (input.name || `input${i + 1}`);
+  });
 }
 
 async function register() {
@@ -244,8 +259,9 @@ async function register() {
  * Call api of a smart contract and print a result.
  * @param {object} args is a list of command args
  * @param {object} apis has an api of smart contracts
+ * @param {object} options is a global option
  */
-async function call(args, apis) {
+async function call(args, apis, options) {
   if (args.length < 2) {
     console.log(
       'invalid number of args: should be at least 2(contract name, method name), got {0}'.format(
@@ -255,10 +271,10 @@ async function call(args, apis) {
     return;
   }
 
-  const contractName = args[0];
+  const contractKey = args[0];
   const methodName = args[1];
 
-  if (apis[contractName] === undefined) {
+  if (apis[contractKey] === undefined) {
     console.log('no {0} contract is exist'.format(args[0]));
     return;
   }
@@ -278,6 +294,12 @@ async function call(args, apis) {
     return param;
   });
 
+  params.push({
+    gasLimit: options.config.gasLimit,
+    gasPrice: options.config.gasPrice,
+    platform: options.config.platform
+  });
+
   const receiptFilter = [
     'transactionHash',
     'transactionIndex',
@@ -289,25 +311,38 @@ async function call(args, apis) {
     'name',
     'args'
   ];
-  const contract = new apis[contractName](apis[contractName]['address']);
+  const contract = new apis[contractKey]['api'](
+    apis[contractKey]['address'].toLowerCase()
+  );
   try {
     if (!contract.methods[methodName]) {
       throw new Error(`There is no function name of ${methodName}`);
     }
     const receipt = await contract.methods[methodName].apply(undefined, params);
-    const events = parseLogs(receipt.logs, apis[contractName]['abi']);
-    const logs = [];
-    for (const key in events) {
-      logs.push({
-        transactionHash: events[key].transactionHash,
-        name: events[key].name,
-        args: events[key].args
-      });
+    if (typeof receipt !== 'object') {
+      // result of constant functions
+      console.log(JSON.stringify(receipt, undefined, 2));
+    } else if (Array.isArray(receipt.logs)) {
+      // receipt is Receipt of transaction
+      const events = parseLogs(receipt.logs, apis[contractKey].api['abi']);
+      const logs = [];
+      for (const key in events) {
+        logs.push({
+          transactionHash: events[key].transactionHash,
+          name: events[key].name,
+          args: events[key].args
+        });
+      }
+
+      receipt.logs = undefined;
+      const result = JSON.parse(JSON.stringify(receipt, receiptFilter));
+      result.logs = logs;
+      console.log(JSON.stringify(result, undefined, 2));
+    } else {
+      // multiple constant return values
+      const result = JSON.parse(JSON.stringify(receipt, null));
+      console.log(JSON.stringify(result, undefined, 2));
     }
-    receipt.logs = undefined;
-    const result = JSON.parse(JSON.stringify(receipt, receiptFilter));
-    result.logs = logs;
-    console.log(JSON.stringify(result, undefined, 2));
   } catch (e) {
     console.log(e);
   }
@@ -329,10 +364,6 @@ async function list(args, apis) {
   console.log(getApiInfo(apis));
 }
 
-function parseArgs(input) {
-  return input.trim().split(/\s+/);
-}
-
 /**
  *
  * Get the information of apis
@@ -340,13 +371,27 @@ function parseArgs(input) {
  * @RETURN {string} info shows the currently used smart contracts and address.
  */
 function getApiInfo(apis) {
-  let info = 'Index\t\t\t\tContract\t\t\t\tAddress\n';
+  const pad1 = 10;
+  const pad2 = 20;
+  let info =
+    'Index'.padEnd(pad1) +
+    'Name'.padEnd(pad2) +
+    'Contract'.padEnd(pad2) +
+    'Address\n';
   let i = 0;
 
-  for (const contract of Object.keys(apis)) {
-    const address = apis[contract]['address'];
-    info = info + '[{0}]\t\t\t\t{1}\t\t\t\t{2}\n'.format(i, contract, address);
-    i++;
+  for (const [key, contract] of Object.entries(apis)) {
+    const address = contract.address;
+    if (address) {
+      info =
+        info +
+        `[${i}]`.padEnd(pad1) +
+        key.padEnd(pad2) +
+        contract.fileName.padEnd(pad2) +
+        address +
+        '\n';
+      i++;
+    }
   }
 
   return info;
@@ -356,20 +401,29 @@ function getApiInfo(apis) {
  *
  * Get the script api and abi of a smart contract from contractApis
  * @param {string} scriptPath is a path to contractApi which is generated
- *  from vvisp abi-to-script command
+ *  from vvisp gen-script command
  * @param {object} options is the configuration information
  * @return {object} object has an api of smart contracts
  */
-function setApi(scriptPath, options) {
+function setApi(scriptPath, options = {}) {
   const defaultScriptPath = process.cwd() + '/contractApis';
   if (scriptPath === undefined || scriptPath === '') {
     scriptPath = defaultScriptPath;
   }
 
+  if (!fs.existsSync(scriptPath)) {
+    console.log(
+      "Run 'vvisp gen-script' command first to create api of smart contracts."
+    );
+    return;
+  }
+
   // set script api
   // omit configuration functions
   const apis = _.omit(
-    require(path.join(scriptPath, 'back') + '/index.js')(options),
+    require(path.join(scriptPath, 'back') + '/index.js')({
+      ...options.config._values
+    }),
     ['config']
   );
 
@@ -387,11 +441,11 @@ function setApi(scriptPath, options) {
 /**
  *
  * Set the address of the contract from state.json file
- * @param {object} apis is a object that has an api of smart contracts
+ * @param {object} rawApis is a object that has an api of smart contracts
  * @param {string} stateFilePath is a path of vvisp.state.json file
  * @RETURN {object} apis is a object having an api of smart contracts
  */
-function setApiAddress(apis, stateFilePath) {
+function setApiAddress(rawApis, stateFilePath) {
   const f = fs.readFileSync(stateFilePath, { encoding: 'utf8' });
   const state = JSON.parse(f);
   const contracts = state['contracts'];
@@ -407,31 +461,26 @@ function setApiAddress(apis, stateFilePath) {
     }
 
     const fileName = path.parse(filePath).name;
-    if (apis[fileName]) {
-      if (
-        contracts[key]['upgradeable'] &&
-        contracts[key]['upgradeable'] === true
-      ) {
-        apis[fileName]['address'] = contracts[key]['proxy'];
-      } else {
-        apis[fileName]['address'] = contracts[key]['address'];
-      }
+    if (rawApis[fileName]) {
+      contracts[key]['api'] = rawApis[fileName];
+      contracts[key]['fileName'] = fileName; // TODO: check exact contract name
     } else {
       // mismatch occurred between vvisp.state and apis
       throw new Error(
-        'Mismatch has occurred between vvisp.state and apis. Please check state.vvisp.json file and contractApis'
+        'Mismatch has occurred between state.vvisp.json and apis. Please check state.vvisp.json file and contractApis/'
       );
     }
   }
-  return apis;
+
+  return contracts;
 }
 
 /**
  * Get the address of the contract from stdin and set address to apis
- * @param {object} apis is a object having an api of smart contracts
+ * @param {object} rawApis is a object having an api of smart contracts
  * @returns {object} apis is a object having an api and address of smart contracts
  */
-async function getAddressFromSTDIN(apis) {
+async function getAddressFromSTDIN(rawApis) {
   console.log(
     "'{0}' does not existing in current path({1})\n".format(
       defaultStateFile,
@@ -444,15 +493,21 @@ async function getAddressFromSTDIN(apis) {
   );
   console.log('Available contract contracts:');
 
-  for (const key of Object.keys(apis)) {
+  for (const key of Object.keys(rawApis)) {
     console.log('%s', key);
   }
 
-  for (const key of Object.keys(apis)) {
+  const contracts = {};
+  for (const key of Object.keys(rawApis)) {
     process.stdout.write('\nEnter the address of {0}: '.format(key));
-    apis[key]['address'] = await readLine();
+    const address = await readLine();
+    contracts[key] = {
+      api: rawApis[key],
+      address: address
+    };
   }
-  return apis;
+
+  return contracts;
 }
 
 /**

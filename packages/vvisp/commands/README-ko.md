@@ -5,7 +5,7 @@ English version: [README.md](./README.md)
 - [init](#init): 프로젝트 폴더 구축
 - [compile](#compile): 폴더 내에 있는 솔리디티 소스를 컴파일
 - [deploy-contract](#deploy-contract): 특정 컨트랙트를 배포
-- [deploy-service](#deploy-service): Upgradeable Smart Contract Framework에 따라 service를 배포
+- [deploy-service](#deploy-service): service를 배포
 - [gen-script](#gen-script): 블록체인 위 스마트 컨트랙트와 상호작용하는 자바스크립트 API들을 생성
 - [console](#console): 손쉽게 SmartContract의 api를 호출할 수 있는 console 환경을 제공
 - [flatten](#flatten): 여러 컨트랙트들을 하나의 파일로 병합
@@ -25,8 +25,6 @@ __Outputs__
 ```
 root/
 ├── contracts/
-├──── upgradeable/
-├────── VvispRegistry.sol
 ├──── Migrations.sol
 ├── migrations/
 ├──── 1_initial_migration.js
@@ -49,7 +47,6 @@ HAECHI LABS에서 사용하는 여러 library들이 추가되어 있습니다.
 Contract code는 이곳에서 작업해 주시기 바랍니다.
 > - `contracts/Migrations.sol` 파일이 생성됩니다.
 해당 파일은 truffle 사용을 위해 필요한 컨트랙트입니다.
-> - `contracts/upgradeable` 폴더 내에 upgradeable smart contract framework에 필요한 `VvispRegistry.sol` file이 생성됩니다.
 > - `vvisp-config.js` 파일이 생성됩니다.
 이 곳에서 환경 변수를 설정하십시오.
 [참고](../../../CONFIGURATION-ko.md#config)
@@ -72,51 +69,47 @@ truffle test를 위한 testcode들을 여기서 생성해 주십시오.
 [참고](../../../CONFIGURATION-ko.md#service)
 
 ## compile
-> vvisp compile [_files..._] [options]
+> vvisp compile [files...] [options]
 
 solidity 소스 코드를 컴파일 합니다. 
 
-__Examples__
+#### Examples
 
 ```shell
-$ vvisp compile contracts/Proxy.sol contracts/UpgradeabilityProxy.sol
+$ vvisp compile contracts/A.sol contracts/B.sol
 ```
 
-__Outputs__ (`build` 폴더에 저장됩니다)
+#### Outputs (`build` 폴더에 저장됩니다)
 
 ```
 build/contracts/
-├── BytesLib.json
-├── Ownable.json
-├── OwnedUpgradeabilityProxy.json
-├── Proxy.json
-├── Registry.json
-├── SafeMath.json
-└── UpgradeabilityProxy.json
+├── A.json
+└── B.json
 ```
-> file명 입력이 없을 경우, `contracts` 폴더 내의 모든 solidity 파일이 컴파일 됩니다.
+> 파일명 입력이 없을 경우, `contracts` 폴더 내의 모든 solidity 파일이 컴파일 됩니다.
 
 
 ## deploy-contract
 
-> vvisp deploy-contract <_file_> [_arguments..._] [options]
+> vvisp deploy-contract <file> [arguments...] [options]
 
 대상 컨트랙트를 배포합니다.
 
-__Options__
+#### Options
 
 `-n, --network <network>`: 배포할 네트워크를 설정합니다.  
+`-p, --platform <platform>`: 배포할 플랫폼을 설정합니다.  
 `--gasLimit <gasLimit>` : 배포 시 사용할 gasLimit을 설정합니다.  
 `--gasPrice <privateKey>` : 배포 시 1 gas 당 지불할 gasPrice를 설정합니다.  
 `--from <privateKey>` : privateKey를 통해 배포할 계정을 설정합니다.
 
-__Examples__
+#### Examples
 
 ```shell
 $ vvisp deploy-contract contracts/ContractA.sol input1 input2
 ```  
 
-__Outputs__ 
+#### Outputs 
 
 ```shell
 ContractA Deploying...
@@ -131,7 +124,7 @@ Contract Address : 0xcfb...
 > vvisp deploy-service [options]
 
 `service.vvisp.json`에 기술된 서비스를 배포합니다.
-우선 `service.vvisp.json`이 정의되어 있는지 확인하며, 정의되어있다면 해당 컨트랙트에 대응하는 proxy 컨트랙트들과 서비스에 대응하는 registry 컨트랙트를 같이 배포합니다.
+우선 `service.vvisp.json`이 정의되어 있는지 확인합니다.
 처음 배포될 때에는 배포 상태를 저장하는 `state.vvisp.json`이 생성되며, 추후에 다른 버전으로 업그레이드 할 때에는 `service.vvisp.json`을 변경한 후 다시 deploy를 하면 기존에 배포된
  서비스가 `service.vvisp.json`에 정의된 상태로 업그레이드가 됩니다.
 
@@ -141,42 +134,31 @@ Contract Address : 0xcfb...
 
 `service.vvisp.json`의 작성은 [이곳](../../../CONFIGURATION-ko.md#service)을 참고하십시오.
 
-__Options__
+#### Options
 
 `-n, --network <network>`: 배포할 네트워크를 설정합니다.  
+`-p, --platform <platform>`: specify the platform to deploy on.  
 `--gasLimit <gasLimit>` : 배포 시 사용할 gasLimit을 설정합니다.  
 `--gasPrice <privateKey>` : 배포 시 1 gas 당 지불할 gasPrice를 설정합니다.  
 `--from <privateKey>` : privateKey를 통해 배포할 계정을 설정합니다.  
+`-f, --force` : 현재 존재하는 `state.vvisp.json`를 지우고 새로이 배포합니다.
 
-__Example__
+#### Example
 
 ```
 $ vvisp deploy-service
 ```
 
-__Process__
+#### Process
 
 배포 순서는 다음과 같습니다.
 배포할 대상이 없다면 해당 작업을 건너뜁니다.
 
-1) Registry를 배포합니다. (Upgrade 작업시엔 추가적으로 배포하지 않습니다)
+1) Contract들을 배포합니다.
 
-2) Upgradeable Contract의 Business Contract들을 배포합니다.
+1) Contract들의 initialize 작업을 수행합니다.
 
-3) Upgradeable Contract의 Proxy Contract들을 배포합니다.
-
-4) NonUpgradeable Contract들을 배포합니다.
-
-5) NonUpgradeable Contract들의 정보를 Registry에 저장합니다.
-
-6) Upgradeable Contract들을 Registry와 연결합니다.
-실질적인 upgrade 작업이며, 하나의 트랜잭션에서 atomic하게 일어납니다.
-
-7) Upgradeable Contract들의 추가적인 정보를 Registry에 저장합니다.
-
-8) NonUpgradeable Contract들의 initialize 작업을 수행합니다.
-
-__Outputs__
+#### Outputs
 
 __`state.vvisp.json`__
 
@@ -185,17 +167,14 @@ __`state.vvisp.json`__
 ```
 {
   "serviceName": "Haechi", (1)
-  "registry": "0x00C...", (2)
-  "contracts": { (3)
-    "ContractKeyName3": { (4)
-      "address": "0x863...", (5)
-      "fileName": "Contract.sol" (6)
+  "contracts": { (2)
+    "ContractKeyName3": { (3)
+      "address": "0x863...", (4)
+      "fileName": "Contract.sol" (5)
     },
     "ContractKeyName1": {
       "address": "0x73c...",
-      "proxy": "0x8d7...", (7)
       "fileName": "Contract1_V0.sol",
-      "upgradeable": true (8)
     }
   }
 }
@@ -203,26 +182,17 @@ __`state.vvisp.json`__
 
 1. 설정된 service의 이름입니다.
 
-1. 배포된 registry의 address를 나타냅니다.
-만약 registry를 사용하지 않겠다고 정의했다면, `noRegistry`로 표현됩니다.
-
 1. 배포된 contract들의 정보가 json 형식으로 정의됩니다.
 
 1. 배포된 contract의 이름의 이름을 나타냅니다.
 
 1. 배포된 contract의 address를 나타냅니다.
 
-1. 현재 배포된 contract 버전의 file명(contract명)을 나타냅니다.
-
-1. 배포된 upgradeable contract의 proxy address를 나타냅니다.
-upgradeable contract의 경우 proxy가 entry point입니다.
-nonUpgradeable contract의 경우 해당 속성이 없습니다.
-
-1. upgradeable contract를 나타내는 속성입니다.
+1. 현재 배포된 contract 버전의 파일명(contract명)을 나타냅니다.
 
 ## gen-script
 
-> vvisp gen-script [_filesOrDirectory..._] [options]
+> vvisp gen-script [filesOrDirectory...] [options]
 
 `gen-script`는 배포된 스마트 컨트랙트를 쉽게 호출 할 수 있는 자바 스크립트 라이브러리를 자동으로 생성하는 명령입니다.
 튜토리얼에 사용 된 저장소는 [다음](https://github.com/HAECHI-LABS/vvisp-sample)과 같습니다.
@@ -267,7 +237,7 @@ service.vvisp.json  test                contractApis        migrations
 package-lock.json   scripts             service2.vvisp.json truffle-config.js
 ```
 
-생성 된`contractApis/` 폴더의 구조는 다음과 같습니다:
+생성 된 `contractApis/` 폴더의 구조는 다음과 같습니다:
 
 ```
 contractApis/
@@ -311,14 +281,14 @@ front api의 경우, 메타마스크와 연동을 위해 [web3 구버전](https:
 /*
 HaechiV1 has following methods
 
-velocities: function(_input1) 
-haechiIds: function(_input1) 
-distances: function(_input1) 
+velocities: function(input1) 
+haechiIds: function(input1) 
+distances: function(input1) 
 gym: function()
-makeNewHaechi: function(__id, options)
-increaseVelocity: function(__haechiId, __diff, options)
-run: function(options)
-initialize: function(__gym, options)
+makeNewHaechi: function(_id)
+increaseVelocity: function(_haechiId, _diff)
+run: function()
+initialize: function(_gym)
 
 */
 // You can give configuration arguments like below.
@@ -348,7 +318,7 @@ async function main() {
 
 ## console
 
-> vvisp console <_contract-apis_> [options]
+> vvisp console <contract-apis> [options]
 
 `gen-script`에 의해 생성된 contractApis를 사용하여 smart contract의 api를 쉽고, 상호작용하며 호출할 수 있는 `console` 환경을 제공합니다.
 해당 문서에서 사용된 예제 repository는 다음과 같습니다.
@@ -365,6 +335,14 @@ async function main() {
 만약 `<contract-apis>`를 일력하지 않는다면, 자동으로 현재폴더에 있는 `contractApis/`를 찾고 `console`을 실행시킵니다.
 
 
+#### Options
+
+`-n, --network <network>`: specify the network to deploy on.  
+`-p, --platform <platform>`: specify the platform to deploy on.   
+`--gasLimit <gasLimit>` : specify gasLimit to use for deploying.  
+`--gasPrice <privateKey>` : specify gasPrice to use for deploying.  
+`--from <privateKey>` : specify privateKey to use for deploying.  
+
 
 #### Example
 
@@ -372,10 +350,10 @@ async function main() {
 $ vvisp console
 Available contract contracts:
 
-Index				Contract				Address
-[0]				HaechiGym				0x5c06aa41561Ef806dA109B1e9c6271208e203758
-[1]				HaechiV1				0xc95663de3398D74972c16Ad34aCd0c31baa6859e
-[2]				SampleToken				0x8C894a56e0B036Af7308A01B5d8EE0F718B03554
+Index     Name                Contract            Address
+[0]       Haechi              Haechi              0x660dd4EaDb8df267cE912797C588Fc9eadfa1861
+[1]       Gym                 HaechiGym           0xDc7C74e475e8100F7714DeE869b73E8DC91Af510
+[2]       Token               SampleToken         0x54Cd384968d10C980bEe2A258E1ff8CF45a6354D
 
 
 If you are wondering how to use it, type help command.
@@ -394,19 +372,21 @@ vvisp console에서 사용가능한 command는 다음과 같습니다: call, sho
   ```
   >> help
   Usage: <command> [<args...>]
-  
-  where <command> is one of: call, show, list, help
-  
-  Commands:
-  
-  list                                 - list the available smart contracts
-  
-  show <Contract>                      - show the available method of a smart contract
-  
-  call <Contract> <Method> [Params...] - call a smart contract api method
+    
+    where <command> is one of: call, show, list, help
+    
+    Commands:
+    
+    	register                                                             register the address of smart contracts
+    
+    	list                                                                 list the available smart contracts
+    
+    	show     <Name>                                                      show the available method of a smart contract
+    
+    	call     <Name> <Method> [Params...]                                 call a smart contract api method
   ```
 
-  `Help` 는 사용 가능한 command의 목록과 사용법을 보여줍니다.
+  `help` 는 사용 가능한 command의 목록과 사용법을 보여줍니다.
 
 	
 
@@ -414,10 +394,10 @@ vvisp console에서 사용가능한 command는 다음과 같습니다: call, sho
 
   ```
   >> list
-  Index			Contract				Address
-  [0]			HaechiGym				0x5c06aa41561Ef806dA109B1e9c6271208e203758
-  [1]			HaechiV1				0xc95663de3398D74972c16Ad34aCd0c31baa6859e
-  [2]			SampleToken				0x8C894a56e0B036Af7308A01B5d8EE0F718B03554
+  Index     Name                Contract            Address
+  [0]       Haechi              Haechi              0x660dd4EaDb8df267cE912797C588Fc9eadfa1861
+  [1]       Gym                 HaechiGym           0xDc7C74e475e8100F7714DeE869b73E8DC91Af510
+  [2]       Token               SampleToken         0x54Cd384968d10C980bEe2A258E1ff8CF45a6354D
   
   ```
 
@@ -425,12 +405,12 @@ vvisp console에서 사용가능한 command는 다음과 같습니다: call, sho
 
 
 
-- show <Contract>
+- show \<Contract>
 
   ```
   >> show HaechiV1
   
-  [Method]				[Args]
+  [Method]                                [Args]
   velocities                              [_input1]
   haechiIds                               [_input1]
   distances                               [_input1]
@@ -445,35 +425,28 @@ vvisp console에서 사용가능한 command는 다음과 같습니다: call, sho
 
 
 
-- call <Contract> <Method>
+- call \<Contract> \<Method> \[Arguments]
 
   ```
-  >> call HaechiV1 run
-  { transactionHash: '0xeb16014e4cfe6129ebfd66cb4577e864d3f79ceb087a590595872bde45822b7f',
-    transactionIndex: 0,
-    blockHash: '0xd21bdcbee4f797446afef49c7a63231168cc7f7410a59e1e98b09aba5c00a9e0',
-    blockNumber: 11,
-    from: '0x9f2a369f37f20a5c8d1ca7a2aaae216bc57c3b1f',
-    to: '0xc95663de3398d74972c16ad34acd0c31baa6859e',
-    gasUsed: 28800,
-    cumulativeGasUsed: 28800,
-    contractAddress: null,
-    logs:
-     [ { logIndex: 0,
-         transactionIndex: 0,
-         transactionHash: '0xeb16014e4cfe6129ebfd66cb4577e864d3f79ceb087a590595872bde45822b7f',
-         blockHash: '0xd21bdcbee4f797446afef49c7a63231168cc7f7410a59e1e98b09aba5c00a9e0',
-         blockNumber: 11,
-         address: '0xc95663de3398D74972c16Ad34aCd0c31baa6859e',
-         data: '0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
-         topics: [Array],
-         type: 'mined',
-         id: 'log_17beff72' } ],
-    status: true,
-    logsBloom: '0x00000000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
-    v: '0x1b',
-    r: '0x91f248cc00b8e65f4f0bdb2f9e97e2b9d4dfe34428b81402b6719b605c1f40a1',
-    s: '0x5aab1c8bdbd1acb14397928fe951a906b1420ed7c287fa6db39b706513d93f85' }
+  >> call HaechiV1 makeNewHaechi 123
+  {
+    "transactionHash": "0x8ee8273a95c8f9e09e56358bd0c05ff1bf81a1ce91ea0b212347fb42c08dbcc6",
+    "transactionIndex": 1,
+    "blockNumber": 2493275,
+    "from": "0x0d4010164401111f7bcf862e95708dd0624a1115",
+    "to": "0x3f2e170de66ca0ed6c66db38479a8f8c33835475",
+    "gasUsed": 63753,
+    "logs": [
+      {
+        "transactionHash": "0x8ee8273a95c8f9e09e56358bd0c05ff1bf81a1ce91ea0b212347fb42c08dbcc6",
+        "name": "NewHaechi",
+        "args": {
+          "id": "123",
+          "owner": "0x0D4010164401111f7bcF862e95708DD0624a1115"
+        }
+      }
+    ]
+  }
   ```
 
   `call`은 해당 contract의 method를 호출합니다.

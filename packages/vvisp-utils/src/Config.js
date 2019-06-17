@@ -3,13 +3,16 @@ const _ = require('lodash');
 const path = require('path');
 
 const DEFAULT_CONFIG_FILE = 'vvisp-config.js';
+const { DEFAULT_PLATFORM, KLAYTN, ETHEREUM } = require('../constants');
 const DEFAULT_NETWORK = 'development';
 
 const getConfigRoot = require('./getConfigRoot');
 const getPrivateKey = require('./getPrivateKey');
 const filterPrivateKey = require('./filterPrivateKey');
 const forIn = require('./forIn');
-const Web3 = require('web3');
+
+const web3Store = require('./web3Store');
+const caverStore = require('./caverStore');
 
 function Config() {
   const self = this;
@@ -22,6 +25,7 @@ function Config() {
   this._deepCopy = ['networks', 'compilers'];
 
   this._values = {
+    platform: null, // default config is ethereum
     network: null, // default config is development
     networks: {},
     gasLimit: null,
@@ -33,8 +37,7 @@ function Config() {
           optimizer: {
             enabled: true,
             runs: 200
-          },
-          evmVersion: 'byzantium'
+          }
         }
       },
       vyper: {}
@@ -68,6 +71,21 @@ function Config() {
           }
         }
         throw new TypeError(`${JSON.stringify(value)} is invalid key format`);
+      }
+    },
+    platform: {
+      get: function() {
+        if (self._values['platform']) {
+          return self._values['platform'];
+        }
+        try {
+          return self.network_config.platform;
+        } catch (e) {
+          return DEFAULT_PLATFORM;
+        }
+      },
+      set: function(newPlatform) {
+        self._values['platform'] = newPlatform;
       }
     },
     network_config: {
@@ -140,23 +158,46 @@ function Config() {
         const options = self.network_config;
 
         let provider;
-        if (options.provider && typeof options.provider === 'function') {
-          provider = options.provider();
-        } else if (options.provider) {
-          provider = options.provider;
-        } else if (options.url) {
-          provider = new Web3.providers.HttpProvider(options.url, {
-            keepAlive: false
-          });
-        } else if (options.websockets) {
-          provider = new Web3.providers.WebsocketProvider(
-            'ws://' + options.host + ':' + options.port
-          );
-        } else {
-          provider = new Web3.providers.HttpProvider(
-            'http://' + options.host + ':' + options.port,
-            { keepAlive: false }
-          );
+
+        switch (self.platform) {
+          case ETHEREUM: {
+            const Web3 = self.blockchainApiStore.get();
+            if (options.provider && typeof options.provider === 'function') {
+              provider = options.provider();
+            } else if (options.provider) {
+              provider = options.provider;
+            } else if (options.url) {
+              provider = new Web3.providers.HttpProvider(options.url, {
+                keepAlive: false
+              });
+            } else if (options.websockets) {
+              provider = new Web3.providers.WebsocketProvider(
+                'ws://' + options.host + ':' + options.port
+              );
+            } else {
+              provider = new Web3.providers.HttpProvider(
+                'http://' + options.host + ':' + options.port,
+                { keepAlive: false }
+              );
+            }
+
+            break;
+          }
+          case KLAYTN: {
+            if (options.provider && typeof options.provider === 'function') {
+              provider = options.provider();
+            } else if (options.provider) {
+              provider = options.provider;
+            } else if (options.url) {
+              provider = options.url;
+            } else {
+              provider = 'http://' + options.host + ':' + options.port;
+            }
+
+            break;
+          }
+          default:
+            throw new Error('platform is not defined');
         }
 
         return provider;
@@ -164,6 +205,25 @@ function Config() {
       set: function() {
         throw new Error(
           "Don't set config.provider directly. Instead, set config.networks and then set config.networks[<network name>].provider"
+        );
+      }
+    },
+    blockchainApiStore: {
+      get: function() {
+        switch (self.platform) {
+          case ETHEREUM: {
+            return web3Store;
+          }
+          case KLAYTN: {
+            return caverStore;
+          }
+          default:
+            throw new Error('platform is not defined');
+        }
+      },
+      set: function() {
+        throw new Error(
+          'Do not set config.blockchainApiStore directly. Instead, set config.platform'
         );
       }
     }
@@ -238,6 +298,30 @@ Config.load = options => {
 
   if (!config.network && config.networks.hasOwnProperty(DEFAULT_NETWORK)) {
     config.network = DEFAULT_NETWORK;
+  }
+
+  if (!config.platform) {
+    config.platform = DEFAULT_PLATFORM;
+  }
+
+  if (!config.compilers.solc.settings.evmVersion) {
+    switch (config.platform) {
+      case ETHEREUM: {
+        config.compilers.solc.settings.evmVersion = 'petersburg';
+        break;
+      }
+      case KLAYTN: {
+        config.compilers.solc.settings.evmVersion = 'byzantium';
+        break;
+      }
+    }
+  } else if (
+    config.platform === KLAYTN &&
+    config.compilers.solc.settings.evmVersion === 'petersburg'
+  ) {
+    throw new Error(
+      'Notice, Klaytn platform does not support petersburg evmVersion currently, change it to byzantium'
+    );
   }
 
   return config;

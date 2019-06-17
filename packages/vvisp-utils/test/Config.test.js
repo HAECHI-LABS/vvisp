@@ -14,7 +14,7 @@ const DEFAULT_TX_OPTIONS = {
   gasLimit: 6721975,
   gasPrice: 10000000000 // 10 gwei,
 };
-const DEFAULT_NETWORK = 'development';
+const { DEFAULT_NETWORK, DEFAULT_PLATFORM, KLAYTN } = require('../constants');
 
 const SAMPLE_CONFIG_PATH = path.join(
   __dirname,
@@ -218,6 +218,7 @@ describe('# Config test', function() {
       Config.delete();
 
       expect(Config.get().network).to.equal(DEFAULT_NETWORK);
+      expect(Config.get().platform).to.equal(DEFAULT_PLATFORM);
     });
   });
 
@@ -228,7 +229,7 @@ describe('# Config test', function() {
     });
 
     describe('#network', function() {
-      const networkName = DEFAULT_NETWORK;
+      const networkName = 'new_network';
       it('should set network name', function() {
         config.network = networkName;
         config.network.should.equal(networkName);
@@ -259,6 +260,14 @@ describe('# Config test', function() {
       it('should set compilers', function() {
         config.compilers = compilers;
         expect(config.compilers).to.deep.equal(compilers);
+      });
+
+      it('should throw error when platform is klaytn and evmVersion is petersburg', function() {
+        Config.delete();
+        config.platform = KLAYTN;
+        expect(() => {
+          Config.get();
+        }).to.throw(Error);
       });
     });
 
@@ -407,7 +416,36 @@ describe('# Config test', function() {
         });
       });
 
+      describe('#platform', function() {
+        const TEST_NETWORK = 'coverage';
+        beforeEach(function() {
+          config.networks[TEST_NETWORK].platform = KLAYTN;
+        });
+
+        it('should return default platform when network is not set', function() {
+          expect(config.platform).to.equal(DEFAULT_PLATFORM);
+        });
+
+        it('should return right platform', function() {
+          config.network = TEST_NETWORK;
+          expect(config.platform).to.equal(
+            sampleConfig.networks[TEST_NETWORK].platform
+          );
+        });
+
+        it('should prioritize option', function() {
+          config.network = TEST_NETWORK;
+          const optionPlatform = 'NewPlatform';
+          config.merge({ platform: optionPlatform });
+          expect(config.platform).to.equal(optionPlatform);
+        });
+      });
+
       describe('#provider', function() {
+        beforeEach(function() {
+          config.platform = DEFAULT_PLATFORM;
+        });
+
         it('should not set directly', function() {
           expect(() => {
             config.provider = 'something';

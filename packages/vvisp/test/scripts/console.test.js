@@ -1,5 +1,6 @@
 const rewire = require('rewire');
 const chai = require('chai');
+const expect = chai.expect;
 const path = require('path');
 const stdMocks = require('std-mocks');
 const bddStdin = require('bdd-stdin');
@@ -13,59 +14,52 @@ const consoleTest = rewire('../../scripts/console.js');
 describe('# console script test', async function() {
   this.timeout(50000);
 
-  describe('parseArgs', function() {
-    const parseArgs = consoleTest.__get__('parseArgs');
-
-    it('should parse args string', function() {
-      const args = 'HaechiV1 freeze';
-      const expected = ['HaechiV1', 'freeze'];
-
-      const r = parseArgs(args);
-
-      for (i = 0; i < r.length; i++) {
-        r[i].should.be.equal(expected[i]);
-      }
-      r.length.should.be.equal(expected.length);
-    });
-  });
-
   describe('setApi', function() {
     const setApi = consoleTest.__get__('setApi');
 
-    before('create apis', function() {
-      const testScriptPath = path.join(
-        __dirname,
-        '..',
-        'dummy',
-        'testContractApis'
-      );
-      this.apis = setApi(testScriptPath);
-    });
-
-    it('should have contract functions', function() {
-      forIn(this.apis, Contract => {
-        Contract.should.be.a('function');
+    context('prerequisite', function() {
+      it('should run gen-script command first', function() {
+        const invalidScriptPath = path.join(__dirname, '..', 'falsePath');
+        expect(setApi(invalidScriptPath)).to.be.undefined;
       });
     });
 
-    it('should have right name of contracts', function() {
-      const expectedContractsName = ['HaechiV1'];
-      let i = 0;
-      for (const key of Object.keys(this.apis)) {
-        key.should.be.equal(expectedContractsName[i]);
-        i++;
-      }
-    });
+    context('satisfied prerequisite', function() {
+      before('create apis', function() {
+        const testScriptPath = path.join(
+          __dirname,
+          '..',
+          'dummy',
+          'testContractApis'
+        );
+        this.apis = setApi(testScriptPath, { config: { _values: {} } });
+      });
 
-    it('should have right number of contracts', function() {
-      Object.keys(this.apis).length.should.be.equal(1);
-    });
+      it('should have contract functions', function() {
+        forIn(this.apis, Contract => {
+          Contract.should.be.a('function');
+        });
+      });
 
-    it('should have abi', function() {
-      for (const key of Object.keys(this.apis)) {
-        this.apis[key]['abi'].should.not.be.undefined;
-        this.apis[key]['abi'].length.should.be.equal(11);
-      }
+      it('should have right name of contracts', function() {
+        const expectedContractsName = ['HaechiV1'];
+        let i = 0;
+        for (const key of Object.keys(this.apis)) {
+          key.should.be.equal(expectedContractsName[i]);
+          i++;
+        }
+      });
+
+      it('should have right number of contracts', function() {
+        Object.keys(this.apis).length.should.be.equal(1);
+      });
+
+      it('should have abi', function() {
+        for (const key of Object.keys(this.apis)) {
+          this.apis[key]['abi'].should.not.be.undefined;
+          this.apis[key]['abi'].length.should.be.equal(11);
+        }
+      });
     });
   });
 
@@ -80,10 +74,12 @@ describe('# console script test', async function() {
         'test.state.vvisp.json'
       );
       const dummy_api = {
-        HaechiV1: {}
+        HaechiV1: {},
+        VvispRegistry: {}
       };
       const expectedAddress = {
-        HaechiV1: '0x688555B34d5A480D4796723d72F8A9A4A889578F'
+        HaechiV1: '0x688555B34d5A480D4796723d72F8A9A4A889578F',
+        VvispRegistry: '0xf7C93afa7C1a294eBb8dEBB3078F376fE0F1F876'
       };
 
       const state = setApiAddress(dummy_api, stateFile);
@@ -118,24 +114,6 @@ describe('# console script test', async function() {
       }
     });
 
-    it('should set correct proxy address', function() {
-      const stateFile = path.join(
-        __dirname,
-        '..',
-        'dummy',
-        'test.proxy.state.vvisp.json'
-      );
-      const dummy_api = {
-        HaechiV1: {}
-      };
-      const expectedAddress = {
-        HaechiV1: '0xb3d76b17ed24d32c2b335f4b94d734e94eff03c4'
-      };
-
-      const state = setApiAddress(dummy_api, stateFile);
-      state['HaechiV1']['address'].should.be.equal(expectedAddress['HaechiV1']);
-    });
-
     it('should throw an error when mismatched contracts exists in the state file.', function() {
       const stateFile = path.join(
         __dirname,
@@ -153,7 +131,7 @@ describe('# console script test', async function() {
         should.fail();
       } catch (err) {
         err.message.should.be.equal(
-          'Mismatch has occurred between vvisp.state and apis. Please check state.vvisp.json file and contractApis'
+          'Mismatch has occurred between state.vvisp.json and apis. Please check state.vvisp.json file and contractApis/'
         );
       }
     });
@@ -199,19 +177,33 @@ describe('# console script test', async function() {
     const getApiInfo = consoleTest.__get__('getApiInfo');
 
     it('should print api info', function() {
+      const pad1 = 10;
+      const pad2 = 20;
+
       const dummy_apis = {
-        MainToken: {
+        Token: {
+          fileName: 'MainToken',
           address: '0xa0ff2297A8690383784d5A4723d72F8A2f5480D4'
         },
-        SaleManager: {
+        Manager: {
+          fileName: 'SaleManager',
           address: '0x3FcE06688555F67962978B3Eb44805849A4A8895'
         }
       };
 
       const expectedOutput =
-        'Index\t\t\t\tContract\t\t\t\tAddress\n' +
-        '[0]\t\t\t\tMainToken\t\t\t\t0xa0ff2297A8690383784d5A4723d72F8A2f5480D4\n' +
-        '[1]\t\t\t\tSaleManager\t\t\t\t0x3FcE06688555F67962978B3Eb44805849A4A8895\n';
+        'Index'.padEnd(pad1) +
+        'Name'.padEnd(pad2) +
+        'Contract'.padEnd(pad2) +
+        'Address\n' +
+        '[0]'.padEnd(pad1) +
+        'Token'.padEnd(pad2) +
+        'MainToken'.padEnd(pad2) +
+        '0xa0ff2297A8690383784d5A4723d72F8A2f5480D4\n' +
+        '[1]'.padEnd(pad1) +
+        'Manager'.padEnd(pad2) +
+        'SaleManager'.padEnd(pad2) +
+        '0x3FcE06688555F67962978B3Eb44805849A4A8895\n';
       getApiInfo(dummy_apis).should.be.equal(expectedOutput);
     });
   });
@@ -254,18 +246,32 @@ describe('# console script test', async function() {
     });
 
     it('should print all available smart contracts and address', async function() {
+      const pad1 = 10;
+      const pad2 = 20;
+
       const dummy_apis = {
-        MainToken: {
+        Token: {
+          fileName: 'MainToken',
           address: '0xa0ff2297A8690383784d5A4723d72F8A2f5480D4'
         },
-        SaleManager: {
+        Manager: {
+          fileName: 'SaleManager',
           address: '0x3FcE06688555F67962978B3Eb44805849A4A8895'
         }
       };
       const expectedOutput =
-        'Index\t\t\t\tContract\t\t\t\tAddress\n' +
-        '[0]\t\t\t\tMainToken\t\t\t\t0xa0ff2297A8690383784d5A4723d72F8A2f5480D4\n' +
-        '[1]\t\t\t\tSaleManager\t\t\t\t0x3FcE06688555F67962978B3Eb44805849A4A8895\n\n';
+        'Index'.padEnd(pad1) +
+        'Name'.padEnd(pad2) +
+        'Contract'.padEnd(pad2) +
+        'Address\n' +
+        '[0]'.padEnd(pad1) +
+        'Token'.padEnd(pad2) +
+        'MainToken'.padEnd(pad2) +
+        '0xa0ff2297A8690383784d5A4723d72F8A2f5480D4\n' +
+        '[1]'.padEnd(pad1) +
+        'Manager'.padEnd(pad2) +
+        'SaleManager'.padEnd(pad2) +
+        '0x3FcE06688555F67962978B3Eb44805849A4A8895\n\n';
       stdMocks.use();
 
       await list([], dummy_apis).should.be.fulfilled;
@@ -277,7 +283,7 @@ describe('# console script test', async function() {
   });
 
   describe('show', function() {
-    const setApi = consoleTest.__get__('setApi');
+    const setApi = consoleTest.__get__('setApi', { config: { _values: {} } });
     const show = consoleTest.__get__('show');
 
     before('create apis', function() {
@@ -287,25 +293,32 @@ describe('# console script test', async function() {
         'dummy',
         'testContractApis'
       );
-      this.apis = setApi(testScriptPath);
+      this.apis = {
+        Haechi: {
+          fileName: 'HaechiV1',
+          address: '0x688555B34d5A480D4796723d72F8A9A4A889578F',
+          api: setApi(testScriptPath, { config: { _values: {} } })['HaechiV1']
+        }
+      };
     });
 
     it('should print api method and args', async function() {
       const expectedOutput =
         '\n' +
-        '[Method]\t\t\t\t[Args]\n' +
-        'velocities                              [_input1]\n' +
-        'haechiIds                               [_input1]\n' +
-        'distances                               [_input1]\n' +
+        '[Method]'.padEnd(40) +
+        '[Args]\n' +
+        'distances                               [uint256 input1]\n' +
         'gym                                     []\n' +
-        'makeNewHaechi                           [__id, options]\n' +
-        'increaseVelocity                        [__haechiId, __diff, options]\n' +
-        'run                                     [options]\n' +
-        'initialize                              [__gym, options]\n\n';
+        'haechiIds                               [address input1]\n' +
+        'increaseVelocity                        [uint256 _haechiId, uint256 _diff]\n' +
+        'initialize                              [address _gym]\n' +
+        'makeNewHaechi                           [uint256 _id]\n' +
+        'run                                     []\n' +
+        'velocities                              [uint256 input1]\n\n';
 
       stdMocks.use();
 
-      await show(['HaechiV1'], this.apis);
+      await show(['Haechi'], this.apis);
 
       stdMocks.restore();
       const output = stdMocks.flush();

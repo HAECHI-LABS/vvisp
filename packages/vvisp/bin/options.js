@@ -14,6 +14,10 @@ commander.Command.prototype.addNetworkOption = function() {
       'choose network to be used in config.networks'
     )
     .option(
+      '-p, --platform <platform>',
+      'choose platform to be used in config.networks'
+    )
+    .option(
       '--from <privateKey>',
       'specify privateKey to use this time, you can also define in config file'
     )

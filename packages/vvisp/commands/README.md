@@ -5,7 +5,7 @@ Korean version: [README-ko.md](./README-ko.md)
 - [init](#init): Initialize project directory
 - [compile](#compile): Compile solidity contract files
 - [deploy-contract](#deploy-contract): Deploy contract
-- [deploy-service](#deploy-service): Deploy service according to Upgradeable Smart Contract Framework
+- [deploy-service](#deploy-service): Deploy service
 - [gen-script](#gen-script): Generate javascript APIs interacting with smart contract on blockchain
 - [console](#console): Provides a console environment that can invoke contracts interactively.
 - [flatten](#flatten): Flatten several contract files in one file
@@ -16,18 +16,16 @@ Korean version: [README-ko.md](./README-ko.md)
 
 Start the project through this command.
 
-__Examples__
+#### Examples
 
 ```shell
 $ vvisp init
 ```
 
-__Outputs__
+#### Outputs
 ```
 root/
 ├── contracts/
-├──── upgradeable/
-├────── VvispRegistry.sol
 ├──── Migrations.sol
 ├── migrations/
 ├──── 1_initial_migration.js
@@ -50,7 +48,6 @@ Several libraries used by HAECHI LABS have been added.
 Contract code, please work here.
 > - The `contracts/Migrations.sol` file will be created.
 This Contract is necessary for using truffle.
-> - The `VvispRegistry.sol` file for the upgradeable smart contract framework will be created in the `contracts/upgradeable` folder.
 > - The `vvisp-config.js` file will be created.
 Set environment variables here.
 [See details](../../../CONFIGURATION.md#config).
@@ -74,51 +71,47 @@ Before you run `$ vvisp deploy-service`, set the variables in the file.
 
 
 ## compile
-> vvisp compile [_files..._] [options]
+> vvisp compile [files...] [options]
 
 Compile solidity source code.
 
-__Examples__
+#### Examples
 
 ```shell
-$ vvisp compile contracts/Proxy.sol contracts/UpgradeabilityProxy.sol
+$ vvisp compile contracts/A.sol contracts/B.sol
 ```
 
-__Outputs__ (Created at `build` folder)
+#### Outputs (Created at `build` folder)
 
 ```
 build/contracts/
-├── BytesLib.json
-├── Ownable.json
-├── OwnedUpgradeabilityProxy.json
-├── Proxy.json
-├── Registry.json
-├── SafeMath.json
-└── UpgradeabilityProxy.json
+├── A.json
+└── B.json
 ```
 > If no file name is entered, all solidity files in the `contracts` folder are compiled.
 
 
 ## deploy-contract
 
-> vvisp deploy-contract <_file_> [_arguments..._] [options]
+> vvisp deploy-contract <file> [arguments...] [options]
 
 Deploy the target contract.
 
-__Options__
+#### Options
 
 `-n, --network <network>`: specify the network to deploy on.  
+`-p, --platform <platform>`: specify the platform to deploy on.  
 `--gasLimit <gasLimit>` : specify gasLimit to use for deploying.  
 `--gasPrice <privateKey>` : specify gasPrice to use for deploying.  
 `--from <privateKey>` : specify privateKey to use for deploying.  
 
-__Examples__
+#### Examples
 
 ```shell
 $ vvisp deploy-contract contracts/ContractA.sol input1 input2
 ```
 
-__Outputs__ 
+#### Outputs 
 
 ```shell
 ContractA Deploying...
@@ -134,7 +127,6 @@ Contract Address : 0xcfb...
 
 Deploy the service described in `service.vvisp.json`.
 First, we make sure that `service.vvisp.json` is defined.
-If it is defined, we deploy the proxy contract corresponding to the contract and the registry contract corresponding to the service.
 When it is first deployed, `state.vvisp.json` is created to save the deployment status.
 If you upgrade to another version later, you can change `service.vvisp.json` and deploy again.
 The service will be upgraded to the state defined in modified `service.vvisp.json`.
@@ -145,43 +137,32 @@ If deployment fails due to an unexpected problem during deployment, re-enter the
 
 To create `service.vvisp.json`, see [here](../../../CONFIGURATION.md#service).
 
-__Options__
+#### Options
 
 `-n, --network <network>`: specify the network to deploy on.  
+`-p, --platform <platform>`: specify the platform to deploy on.  
 `--gasLimit <gasLimit>` : specify gasLimit to use for deploying.  
 `--gasPrice <privateKey>` : specify gasPrice to use for deploying.  
 `--from <privateKey>` : specify privateKey to use for deploying.  
+`-f, --force` : remove existing `state.vvisp.json` and deploy.  
 
-__Example__
+#### Example
 
 ```
 $ vvisp deploy-service
 ```
 
-__Process__
+#### Process
 
 
 The deployment sequence is as follows.
 If there is no target to deploy, skip that task.
 
-1) Deploy the registry. (Not deployed again during upgrade)
+1) Deploy contracts.
 
-2) Deploy business contracts of upgradeable contracts.
+1) Perform initialization of contracts.
 
-3) Deploy proxy contracts of upgradeable contracts.
-
-4) Deploy nonUpgradeable contracts.
-
-5) Save the information of nonUpgradeable contracts to the registry.
-
-6) Connect upgradeable contracts with the registry.
-This is a real upgrade, and it happens atomically in one transaction.
-
-7) Save additional information of upgradeable contracts to the Registry.
-
-8) Perform initialization of nonUpgradeable contracts.
-
-__Outputs__
+#### Outputs
 
 __`state.vvisp.json`__
 
@@ -190,26 +171,20 @@ This is the file where you can view the status of the currently deployed service
 ```
 {
   "serviceName": "Haechi", (1)
-  "registry": "0x00C...", (2)
-  "contracts": { (3)
-    "ContractKeyName3": { (4)
-      "address": "0x863...", (5)
-      "fileName": "Contract.sol" (6)
+  "contracts": { (2)
+    "ContractKeyName3": { (3)
+      "address": "0x863...", (4)
+      "fileName": "Contract.sol" (5)
     },
     "ContractKeyName1": {
       "address": "0x73c...",
-      "proxy": "0x8d7...", (7)
       "fileName": "Contract1_V0.sol",
-      "upgradeable": true (8)
     }
   }
 }
 ```
 
 1. The name of the configured service.
-
-1. Indicates the address of the deployed registry.
-If you defined not to use, it will be written as `noRegistry`.
 
 1. Json format of the information of deployed contracts.
 
@@ -219,15 +194,9 @@ If you defined not to use, it will be written as `noRegistry`.
 
 1. Represents the file name (contract name) of the currently deployed contract version.
 
-1. Represents the proxy address of deployed upgradeable contract.
-For an upgradeable contract, proxy is the entry point.
-For nonUpgradeable contract, there is no such property.
-
-1. This property represents upgradeable contract.
-
 ## gen-script
 
-> vvisp gen-script [_filesOrDirectory..._] [options]
+> vvisp gen-script [filesOrDirectory...] [options]
 
 The `gen-script` is a command that automatically creates a javascript library to help you easily call deployed smart contracts.
 The repository used in the tutorial is as follows.
@@ -239,7 +208,7 @@ If there is no filename entered, this command will automatically generate script
 
 `vvisp gen-script [filesOrDirectory...] [options]` 
 
-#### options
+#### Options
 
 `-f, --front <name>`: Generate JavaScript source code that can be executed in front-end (browser)
 
@@ -320,14 +289,14 @@ You can easily implement the function of invoking contract using the generated c
 /*
 HaechiV1 has following methods
 
-velocities: function(_input1) 
-haechiIds: function(_input1) 
-distances: function(_input1) 
+velocities: function(input1) 
+haechiIds: function(input1) 
+distances: function(input1) 
 gym: function()
-makeNewHaechi: function(__id, options)
-increaseVelocity: function(__haechiId, __diff, options)
-run: function(options)
-initialize: function(__gym, options)
+makeNewHaechi: function(_id)
+increaseVelocity: function(_haechiId, _diff)
+run: function()
+initialize: function(_gym)
 
 */
 // You can give configuration arguments like below.
@@ -357,7 +326,7 @@ async function main() {
 
 ## console
 
-> vvisp console <_contract-apis_> [options]
+> vvisp console <contract-apis> [options]
 
 The `console` is a command providing an interactive and easy-to-use shell environment for contractApis generated by `gen-script`.
 The repository used in the tutorial is as follows.
@@ -374,6 +343,14 @@ The repository used in the tutorial is as follows.
 If you do not enter a `<contract-apis>` value, it will automatically find `contractApis/` in the current folder and run console.
 
 
+#### Options
+
+`-n, --network <network>`: specify the network to deploy on.  
+`-p, --platform <platform>`: specify the platform to deploy on.   
+`--gasLimit <gasLimit>` : specify gasLimit to use for deploying.  
+`--gasPrice <privateKey>` : specify gasPrice to use for deploying.  
+`--from <privateKey>` : specify privateKey to use for deploying.  
+
 
 #### Example
 
@@ -381,10 +358,10 @@ If you do not enter a `<contract-apis>` value, it will automatically find `contr
 $ vvisp console
 Available contract contracts:
 
-Index				Contract				Address
-[0]				HaechiGym				0x5c06aa41561Ef806dA109B1e9c6271208e203758
-[1]				HaechiV1				0xc95663de3398D74972c16Ad34aCd0c31baa6859e
-[2]				SampleToken				0x8C894a56e0B036Af7308A01B5d8EE0F718B03554
+Index     Name                Contract            Address
+[0]       Haechi              Haechi              0x660dd4EaDb8df267cE912797C588Fc9eadfa1861
+[1]       Gym                 HaechiGym           0xDc7C74e475e8100F7714DeE869b73E8DC91Af510
+[2]       Token               SampleToken         0x54Cd384968d10C980bEe2A258E1ff8CF45a6354D
 
 
 If you are wondering how to use it, type help command.
@@ -410,11 +387,13 @@ The commands available in the vvisp console are call, show list help exit.
   
   Commands:
   
-  list                                 - list the available smart contracts
+  	register                                                             register the address of smart contracts
   
-  show <Contract>                      - show the available method of a smart contract
+  	list                                                                 list the available smart contracts
   
-  call <Contract> <Method> [Params...] - call a smart contract api method
+  	show     <Name>                                                      show the available method of a smart contract
+  
+  	call     <Name> <Method> [Params...]                                 call a smart contract api method
   ```
 
   `Help` command shows currently available commands.
@@ -425,10 +404,10 @@ The commands available in the vvisp console are call, show list help exit.
 
   ```
   >> list
-  Index			Contract				Address
-  [0]			HaechiGym				0x5c06aa41561Ef806dA109B1e9c6271208e203758
-  [1]			HaechiV1				0xc95663de3398D74972c16Ad34aCd0c31baa6859e
-  [2]			SampleToken				0x8C894a56e0B036Af7308A01B5d8EE0F718B03554
+  Index     Name                Contract            Address
+  [0]       Haechi              Haechi              0x660dd4EaDb8df267cE912797C588Fc9eadfa1861
+  [1]       Gym                 HaechiGym           0xDc7C74e475e8100F7714DeE869b73E8DC91Af510
+  [2]       Token               SampleToken         0x54Cd384968d10C980bEe2A258E1ff8CF45a6354D
   
   ```
 
@@ -436,55 +415,48 @@ The commands available in the vvisp console are call, show list help exit.
 
 
 
-- show <Contract>
+- show \<Contract>
 
   ```
   >> show HaechiV1
   
-  [Method]				[Args]
-  velocities                              [_input1]
-  haechiIds                               [_input1]
-  distances                               [_input1]
+  [Method]                                [Args]
+  distances                               [uint256 _id]
   gym                                     []
-  makeNewHaechi                           [__id, options]
-  increaseVelocity                        [__haechiId, __diff, options]
-  run                                     [options]
-  initialize                              [__gym, options]
+  haechiIds                               [address _owner]
+  increaseVelocity                        [uint256 _haechiId, uint256 _diff]
+  initialize                              [address _gym]
+  makeNewHaechi                           [uint256 _id]
+  run                                     []
+  velocities                              [uint256 _id]
   ```
 
   `show` command shows a list of methods that contract can use.
 
 
 
-- call <Contract> <Method>
+- call \<Contract> \<Method> \[Arguments]
 
   ```
-  >> call HaechiV1 run
-  { transactionHash: '0xeb16014e4cfe6129ebfd66cb4577e864d3f79ceb087a590595872bde45822b7f',
-    transactionIndex: 0,
-    blockHash: '0xd21bdcbee4f797446afef49c7a63231168cc7f7410a59e1e98b09aba5c00a9e0',
-    blockNumber: 11,
-    from: '0x9f2a369f37f20a5c8d1ca7a2aaae216bc57c3b1f',
-    to: '0xc95663de3398d74972c16ad34acd0c31baa6859e',
-    gasUsed: 28800,
-    cumulativeGasUsed: 28800,
-    contractAddress: null,
-    logs:
-     [ { logIndex: 0,
-         transactionIndex: 0,
-         transactionHash: '0xeb16014e4cfe6129ebfd66cb4577e864d3f79ceb087a590595872bde45822b7f',
-         blockHash: '0xd21bdcbee4f797446afef49c7a63231168cc7f7410a59e1e98b09aba5c00a9e0',
-         blockNumber: 11,
-         address: '0xc95663de3398D74972c16Ad34aCd0c31baa6859e',
-         data: '0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
-         topics: [Array],
-         type: 'mined',
-         id: 'log_17beff72' } ],
-    status: true,
-    logsBloom: '0x00000000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
-    v: '0x1b',
-    r: '0x91f248cc00b8e65f4f0bdb2f9e97e2b9d4dfe34428b81402b6719b605c1f40a1',
-    s: '0x5aab1c8bdbd1acb14397928fe951a906b1420ed7c287fa6db39b706513d93f85' }
+  >> call HaechiV1 makeNewHaechi 123
+  {
+    "transactionHash": "0x8ee8273a95c8f9e09e56358bd0c05ff1bf81a1ce91ea0b212347fb42c08dbcc6",
+    "transactionIndex": 1,
+    "blockNumber": 2493275,
+    "from": "0x0d4010164401111f7bcf862e95708dd0624a1115",
+    "to": "0x3f2e170de66ca0ed6c66db38479a8f8c33835475",
+    "gasUsed": 63753,
+    "logs": [
+      {
+        "transactionHash": "0x8ee8273a95c8f9e09e56358bd0c05ff1bf81a1ce91ea0b212347fb42c08dbcc6",
+        "name": "NewHaechi",
+        "args": {
+          "id": "123",
+          "owner": "0x0D4010164401111f7bcF862e95708DD0624a1115"
+        }
+      }
+    ]
+  }
   ```
 
   `call` command executes the contract's method.

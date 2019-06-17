@@ -3,6 +3,7 @@
 English version: [README.md](./README.md)
 
 [![CircleCI](https://circleci.com/gh/HAECHI-LABS/vvisp.svg?style=svg)](https://circleci.com/gh/HAECHI-LABS/vvisp)
+[![NPM](https://img.shields.io/npm/v/@haechi-labs/vvisp.svg)](https://www.npmjs.com/package/@haechi-labs/vvisp)
 [![Coverage Status](https://coveralls.io/repos/github/HAECHI-LABS/vvisp/badge.svg?branch=dev)](https://coveralls.io/github/HAECHI-LABS/vvisp?branch=dev)
 [![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
@@ -11,6 +12,13 @@ English version: [README.md](./README.md)
 > vvisp은 EVM 기반 블록체인에서 가장 사용하기 쉬운 스마트 컨트랙트 개발 CLI 도구이자 프레임워크입니다. 
 
 **단 한 줄의 명령어로 쉽고 빠른 스마트 컨트랙트 배포와 실행**
+
+<p align="center"><img src="./images/[vvisp]thumbnail.png" width="933px" height="369px"></p>
+
+> VVISP is sponsored by the EF([Ethereum Foundation](https://ethereum.foundation/)).
+EF gave the grants to HAECHI LABS at [ethcon korea 2019](https://ethcon.kr/).
+
+<p align="center"><img src="./images/[EF]logo.png" width="285px" height="150px"></p>
 
 ### Key Benefits
  - 블록체인 서비스 개발 환경 개선
@@ -49,12 +57,6 @@ English version: [README.md](./README.md)
 이는 스마트 컨트랙트 개발에 익숙하지 않은 개발자들에게 큰 진입장벽으로 작용합니다.
 그러나 `vvisp`은 일련의 작업들 없이 명령어 한줄을 통해 컨트랙트의 특정 기능을 실행하고, 결과를 받아올 수 있도록 설계되었습니다.
 
-**(3) Upgradeable Smart Contract Framework 지원**
-
-: 추가적으로 `vvisp`은 USCF(Upgradeable Smart Contract Framework)을 지원합니다.
-개발자들이 업그레이드 가능한 스마트 컨트랙트에 대한 깊은 지식이 없더라도, 비습은 내장되어있는 업그레이드 가능한 라이브러리를 지원하여 개발자가 ‘업그레이드’하는 기능을 쉽게 사용할 수 있습니다.
-USCF에 대한 추가적인 정보가 필요하시다면 HAECHI-LABS의 [pdf file](https://drive.google.com/file/d/1H9gtmpiZ5zwIFwgHGOOvz9Oa8SAlpM5h/view?usp=sharing)을 참고하시기 바랍니다.
-
 | **Contributors**: Please see the [Contributing](#contributing) section of this README. |
 | --- |
 
@@ -63,7 +65,7 @@ USCF에 대한 추가적인 정보가 필요하시다면 HAECHI-LABS의 [pdf fil
 [Node.js](http://nodejs.org/)가 설치되어야 합니다.
 이후, [npm](https://npmjs.com/)를 설치하신 후
 ```sh
-$ npm install --global @haechi-labs/vvisp
+$ npm install -g @haechi-labs/vvisp
 ```
 을 실행하거나 [yarn](https://yarnpkg.com)을 설치 후
 ```sh
@@ -79,6 +81,7 @@ $ yarn global add @haechi-labs/vvisp
 ```sh
 $ mkdir my-project
 $ cd my-project
+
 $ vvisp init
 $ npm install #or yarn install
 ```
@@ -94,12 +97,66 @@ $ npm install #or yarn install
 **3. `vvisp-config.js` 설정**
 
 `vvisp-config.js`에 환경 변수들을 설정해 주세요.
+
+_Example_
+```javascript
+const MNEMONIC = 'YOUR_MNEMONIC';
+
+module.exports = {
+  networks: {
+    development: {
+      url: 'URL_TO_ETHEREUM_NODE',
+      gasLimit: 6000000,
+    }
+  },
+  compilers: {
+    solc: {
+      version: '0.5.8'
+    }
+  },
+  from: { // or from: 'YOUR_PRIVATE_KEY'
+    mnemonic: MNEMONIC,
+    index: 0
+  },
+};
+```
 `vvisp-config.js`에 대한 자세한 정보는 [이곳](./CONFIGURATION-ko.md#config)을 참고해 주세요.
 이제 `deploy-contract` 명령어를 사용할 수 있습니다.
 
 **4. `service.vvisp.json` 작성**
 
 배포할 DApp 서비스의 컨트랙트에 대한 정보를 `service.vvisp.json`에 작성해주세요.
+
+_Example_
+```json
+{
+  "serviceName": "Haechi",
+  "variables" : {
+    "exampleVarName": 123
+  },
+  "contracts": {
+    "ContractKeyName1": {
+      "path": "path/to/your/contract/Contract1.sol",
+      "constructorArguments": [
+        "${contracts.ContractKeyName1.address}",
+        "${variables.exampleVarName}"
+      ],
+      "initialize": {
+        "functionName": "initialize",
+        "arguments": ["argument1", "argument2"]
+      }
+    },
+    "ContractKeyName2": {
+      "path": "path/to/your/contract/Contract2.sol",
+      "initialize": {
+        "functionName": "initialize",
+        "arguments": ["argument1", "argument2"]
+      }
+    }
+  }
+}
+
+```
 `service.vvisp.json`에 대한 자세한 정보는 [이곳](./CONFIGURATION-ko.md#service)을 참고해 주세요.
 이제 `deploy-service` 명령어를 사용할 수 있습니다.
 
@@ -133,7 +190,7 @@ $ npm install #or yarn install
 
 - vvisp
 
-  vvisp은 크게 vvisp-utils, vvisp and vvisp-contracts으로 이루어져 있습니다.
+  vvisp은 크게 vvisp-utils 와 vvisp으로 이루어져 있습니다.
 
   - vvisp-utils
 
@@ -142,10 +199,6 @@ $ npm install #or yarn install
   - vvisp
 
     vvisp의 핵심 로직입니다.
-
-  - vvisp-contracts
-
-    vvisp-contracts는 업그레이드 가능한 스마트 컨트랙트 개발을 위한 컨트랙트 라이브러리입니다.
 
 - vvisp-sample
 
@@ -165,7 +218,7 @@ $ npm install #or yarn install
 
   - contracts
 
-    contracts 폴더 내에는 `vvisp init`를 통해 생성된 registry 파일이 포함되어 있으며 이곳에서 컨트랙트들이 작성됩니다.
+    이곳에서 컨트랙트들이 작성됩니다.
 
 
 

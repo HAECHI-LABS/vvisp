@@ -10,12 +10,10 @@ const forInAsync = require('./forInAsync');
 const getAllFiles = require('./getAllFiles');
 const getCompiledContracts = require('./getCompiledContracts');
 const getCycle = require('./getCycle');
-const getTxCount = require('./getTxCount');
+const blockchainApis = require('./blockchainApis');
 const web3Store = require('./web3Store');
 const getPrivateKey = require('./getPrivateKey');
 const printOrSilent = require('./printOrSilent');
-const privateKeyToAddress = require('./privateKeyToAddress');
-const sendTx = require('./sendTx');
 const getConfigRoot = require('./getConfigRoot');
 const getRelativeFilePathsFromRoot = require('./getRelativeFilePathsFromRoot');
 const getDependencyFiles = require('./getDependencyFiles');
@@ -24,6 +22,7 @@ const getMaxVersion = require('./getPragmaMaxVersion');
 const parseLogs = require('./parseLogs');
 
 module.exports = {
+  ...blockchainApis,
   compile,
   compileAndDeploy,
   compilerSupplier,
@@ -36,12 +35,9 @@ module.exports = {
   getAllFiles,
   getCompiledContracts,
   getCycle,
-  getTxCount,
   web3Store,
   getPrivateKey,
   printOrSilent,
-  privateKeyToAddress,
-  sendTx,
   getConfigRoot,
   getRelativeFilePathsFromRoot,
   getDependencyFiles,

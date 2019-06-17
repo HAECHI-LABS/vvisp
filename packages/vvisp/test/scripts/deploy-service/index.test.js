@@ -23,15 +23,6 @@ const SENDER = privateKeyToAddress(config.from);
 const SERVICE1 = path.join('./test/dummy/service1.json');
 const SERVICE2 = path.join('./test/dummy/service2.json');
 const STATE1 = path.join('./test/dummy/state1.json');
-const NU_SERVICE1 = path.join('./test/dummy/justNonUpgradeables.service1.json');
-const NU_SERVICE2 = path.join('./test/dummy/justNonUpgradeables.service2.json');
-const NU_STATE1 = path.join('./test/dummy/justNonUpgradeables.state1.json');
-const U_SERVICE1 = path.join('./test/dummy/justUpgradeables.service1.json');
-const U_SERVICE2 = path.join('./test/dummy/justUpgradeables.service2.json');
-const U_STATE1 = path.join('./test/dummy/justUpgradeables.state1.json');
-const N_R_SERVICE1 = path.join('./test/dummy/noRegistry.service1.json');
-const N_R_SERVICE2 = path.join('./test/dummy/noRegistry.service2.json');
-const N_R_STATE1 = path.join('./test/dummy/noRegistry.state1.json');
 
 fs.removeSync(SERVICE_PATH);
 fs.removeSync(STATE_PATH);
@@ -39,21 +30,6 @@ const { deploy: deployNum, upgrade: upgradeNum } = getTxcount(
   SERVICE1,
   SERVICE2,
   STATE1
-);
-const { deploy: nuDeployNum, upgrade: nuUpgradeNum } = getTxcount(
-  NU_SERVICE1,
-  NU_SERVICE2,
-  NU_STATE1
-);
-const { deploy: uDeployNum, upgrade: uUpgradeNum } = getTxcount(
-  U_SERVICE1,
-  U_SERVICE2,
-  U_STATE1
-);
-const { deploy: nrDeployNum, upgrade: nrUpgradeNum } = getTxcount(
-  N_R_SERVICE1,
-  N_R_SERVICE2,
-  N_R_STATE1
 );
 
 let web3;
@@ -82,20 +58,8 @@ describe('# deploy-service process test', function() {
       checkRightState();
     });
 
-    describe('# just nonUpgradeables case', function() {
-      setWholeProcess(NU_SERVICE1, NU_SERVICE2);
-    });
-
-    describe('# just upgradeables case', function() {
-      setWholeProcess(U_SERVICE1, U_SERVICE2);
-    });
-
-    describe('# mixed case', function() {
+    describe('# normal case', function() {
       setWholeProcess(SERVICE1, SERVICE2);
-    });
-
-    describe('# no registry case', function() {
-      setWholeProcess(N_R_SERVICE1, N_R_SERVICE2);
     });
   });
 
@@ -106,20 +70,28 @@ describe('# deploy-service process test', function() {
       fs.removeSync(STATE_PATH);
     });
 
-    describe('# just nonUpgradeables case', function() {
-      setResumingProcess(NU_SERVICE1, NU_SERVICE2, nuDeployNum, nuUpgradeNum);
-    });
-
-    describe('# just upgradeables case', function() {
-      setResumingProcess(U_SERVICE1, U_SERVICE2, uDeployNum, uUpgradeNum);
-    });
-
-    describe('# mixed case', function() {
+    describe('# normal case', function() {
       setResumingProcess(SERVICE1, SERVICE2, deployNum, upgradeNum);
     });
+  });
 
-    describe('# no registry case', function() {
-      setResumingProcess(N_R_SERVICE1, N_R_SERVICE2, nrDeployNum, nrUpgradeNum);
+  describe('# force option test', function() {
+    beforeEach(async function() {
+      fs.copySync(SERVICE1, SERVICE_PATH);
+      this.waitingTxNum = getWaitingTxNum();
+      await deployService({ silent: true });
+    });
+
+    it('should success forced deployment', async function() {
+      const startTxCount = await web3.eth.getTransactionCount(SENDER);
+      await deployService({ force: true, silent: true });
+      const endTxCount = await web3.eth.getTransactionCount(SENDER);
+      (endTxCount - startTxCount).should.equal(this.waitingTxNum);
+    });
+
+    afterEach(function() {
+      fs.removeSync(SERVICE_PATH);
+      fs.removeSync(STATE_PATH);
     });
   });
 });
@@ -128,23 +100,13 @@ function checkRightState() {
   const service = fs.readJsonSync(SERVICE_PATH);
   const state = fs.readJsonSync(STATE_PATH);
 
-  Object.keys(state).should.have.lengthOf(3);
+  Object.keys(state).should.have.lengthOf(2);
   state.serviceName.should.be.equal(service.serviceName);
-
-  (
-    web3.utils.isAddress(state.registry) || state.registry === 'noRegistry'
-  ).should.equal(true);
 
   const contracts = state.contracts;
   forIn(contracts, (contract, name) => {
     service.contracts.hasOwnProperty(name).should.equal(true);
-    if (contract.upgradeable) {
-      Object.keys(contract).should.have.lengthOf(4);
-      contract.upgradeable.should.equal(true);
-      web3.utils.isAddress(contract.proxy).should.equal(true);
-    } else {
-      Object.keys(contract).should.have.lengthOf(2);
-    }
+    Object.keys(contract).should.have.lengthOf(2);
     web3.utils.isAddress(contract.address).should.equal(true);
     const fileName = path.parse(service.contracts[name].path).base;
     contract.fileName.should.equal(fileName);
@@ -160,11 +122,6 @@ function getWaitingTxNum() {
     stateClone.notUpgrading = true;
     stateClone.contracts = {};
     stateClone.serviceName = config.serviceName;
-    if (!config.registry) {
-      stateClone.registry = 'noRegistry';
-    } else {
-      resultNumber++; // registry
-    }
   } else {
     const file = fs.readJsonSync(STATE_PATH);
     forIn(file, (object, name) => {
@@ -177,36 +134,22 @@ function getWaitingTxNum() {
     stateClone
   );
 
-  let nonUpgradeableExists = false;
-  let upgradeableExists = false;
+  let targetExists = false;
 
   forIn(compileInformation.targets, contract => {
     if (contract.pending === PENDING_STATE[0]) {
-      if (contract.upgradeable === true) {
-        if (!upgradeableExists) {
-          upgradeableExists = true;
-        }
-        resultNumber += 2; // proxy and business
-      } else {
-        if (!nonUpgradeableExists) {
-          nonUpgradeableExists = true;
-        }
-        resultNumber++; // nonUpgradeables
-        if (hasInit(contract)) {
-          resultNumber++; // init Tx
-        }
+      if (!targetExists) {
+        targetExists = true;
+      }
+      resultNumber++;
+      if (hasInit(contract)) {
+        resultNumber++; // init Tx
       }
     } else {
       resultNumber++; // just upgrade
     }
   });
 
-  if (upgradeableExists) {
-    resultNumber += 2; // upgradeAll, registerFileNames
-  }
-  if (nonUpgradeableExists && stateClone.registry !== 'noRegistry') {
-    resultNumber++; // registerNonUpgradeables
-  }
   return resultNumber;
 }
 

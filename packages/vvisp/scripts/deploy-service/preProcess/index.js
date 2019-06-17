@@ -3,11 +3,13 @@ module.exports = async function(deployState, options) {
   const { SERVICE_PATH, STATE_PATH } = require('../../../config/Constant');
   const { VARIABLES } = require('../constants');
   const { forIn, printOrSilent } = require('@haechi-labs/vvisp-utils');
-  const web3 = options.web3;
 
   let stateClone = deployState.getState();
 
   const config = fs.readJsonSync(SERVICE_PATH);
+  if (config.registry === true) {
+    throw new Error('Registry was deprecated');
+  }
 
   let processState;
   if (!fs.existsSync(STATE_PATH)) {
@@ -39,37 +41,12 @@ module.exports = async function(deployState, options) {
     config.contracts,
     stateClone
   );
+  if (compileInformation.noProxy !== true) {
+    throw new Error('Upgradeable feature was deprecated');
+  }
 
   if (Object.keys(compileInformation.targets).length === 0) {
     printOrSilent(chalk.head('Nothing to upgrade'), options);
-    process.exit();
-  }
-
-  // Check whether this process needs Registry
-  // Event occurs when user sets config.registry false or does not set.
-  if (!config.registry) {
-    // User cannot use upgradeable patterns without registry
-    if (compileInformation.noProxy !== true) {
-      throw new Error(
-        `No Registry with upgradeable contracts is not allowed, change 'registry' from false to true in 'service.vvisp.json'`
-      );
-    } else {
-      if (web3.utils.isAddress(stateClone.registry)) {
-        printOrSilent(
-          `${chalk.warning('Warning:')} Registry address ${
-            stateClone.registry
-          } will be deleted.`
-        );
-      }
-      compileInformation.noRegistry = true;
-      stateClone.registry = 'noRegistry';
-    }
-  } else if (stateClone.registry === 'noRegistry') {
-    printOrSilent(
-      `${chalk.warning(
-        'Notice:'
-      )} Sorry. In this version, we do not support adding registry in noRegistry service.\nKeep 'registry' property to false or re-deploy whole service.`
-    );
     process.exit();
   }
 
@@ -81,7 +58,7 @@ module.exports = async function(deployState, options) {
 
   if (!stateClone.paused) {
     stateClone.paused = {};
-    stateClone.paused.stage = 'deployRegistry';
+    stateClone.paused.stage = 'injectVar';
   }
   deployState.compileOutput = compileOutput;
   deployState.targets = compileInformation.targets;

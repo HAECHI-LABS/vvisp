@@ -1,12 +1,15 @@
 const path = require('path');
-const { Config, web3Store, sendTx } = require('@haechi-labs/vvisp-utils');
+const { Config, getContractFactory, sendTx } = require('@haechi-labs/vvisp-utils');
 const fs = require('fs');
 
-const abi = fs.readFileSync(path.join(__dirname, '../abi/', '{{name}}.json'), {'encoding': 'utf8'});
+let abi;
 
 module.exports = function(_contractAddr = '') {
-  const web3 = web3Store.get();
-  const contract = new web3.eth.Contract(JSON.parse(abi));
+  abi = fs.readFileSync(path.join(__dirname, '../abi/', '{{name}}.json'), {'encoding': 'utf8'});
+
+  const platform = Config.get().platform;
+  const Contract = getContractFactory({ platform: platform });
+  const contract = new Contract(JSON.parse(abi));
   contract.options.address = _contractAddr;
   return {
     at: function(_addr) {
@@ -17,16 +20,17 @@ module.exports = function(_contractAddr = '') {
     },
     methods: {
       {{#constantFuncs}}
-      {{name}}: function({{#inputs}}_{{name}}, {{/inputs}}) {
-        return contract.methods.{{name}}({{#inputs}}_{{name}}, {{/inputs}}).call();
+      {{name}}: function({{#inputs}}{{name}}, {{/inputs}}) {
+        return contract.methods.{{name}}({{#inputs}}{{name}}, {{/inputs}}).call();
       },
       {{/constantFuncs}}
       {{#nonConstantFuncs}}
-      {{name}}: function({{#inputs}}_{{name}}, {{/inputs}}options) {
-        const txData = contract.methods.{{name}}({{#inputs}}_{{name}}, {{/inputs}}).encodeABI();
+      {{name}}: function({{#inputs}}{{name}}, {{/inputs}}options) {
+        const txData = contract.methods.{{name}}({{#inputs}}{{name}}, {{/inputs}}).encodeABI();
         options = {
           ...options,
-          data: txData
+          data: txData,
+          platform: platform
         };
         return sendTx(contract.options.address, options ? options.value : 0, loadPrivateKey(), options);
       },

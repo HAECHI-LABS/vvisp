@@ -7,6 +7,11 @@ externalConfig.networks.ropsten = {
   url: `https://ropsten.infura.io/v3/${INFURA_API_KEY}`
 };
 
+externalConfig.networks.baobab = {
+  platform: 'klaytn',
+  url: 'URL_TO_KLAYTN_NODE'
+};
+
 module.exports = {
   ...externalConfig,
   from: {

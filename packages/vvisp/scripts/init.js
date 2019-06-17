@@ -87,11 +87,6 @@ module.exports = async function(name, options) {
       JSON.stringify(pkg, null, '  '),
       'utf8'
     );
-
-    fs.copySync(
-      path.join(__dirname, '../', 'contracts/upgradeable'),
-      path.join(rootDir, 'contracts', 'upgradeable')
-    );
   }
 
   function printEndMsg(options) {

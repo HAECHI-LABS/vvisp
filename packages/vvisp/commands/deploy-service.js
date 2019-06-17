@@ -9,6 +9,10 @@ const register = commander =>
   commander
     .command(signature, { noHelp: true })
     .usage('[options]')
+    .option(
+      '-f, --force',
+      'force deploying, it removes current state.vvisp.json'
+    )
     .description(description)
     .action(deployService)
     .addNetworkOption();

@@ -3,6 +3,7 @@
 Korean version: [README-ko.md](./README-ko.md)
 
 [![CircleCI](https://circleci.com/gh/HAECHI-LABS/vvisp.svg?style=svg)](https://circleci.com/gh/HAECHI-LABS/vvisp)
+[![NPM](https://img.shields.io/npm/v/@haechi-labs/vvisp.svg)](https://www.npmjs.com/package/@haechi-labs/vvisp)
 [![Coverage Status](https://coveralls.io/repos/github/HAECHI-LABS/vvisp/badge.svg?branch=dev)](https://coveralls.io/github/HAECHI-LABS/vvisp?branch=dev)
 [![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
@@ -11,6 +12,13 @@ Korean version: [README-ko.md](./README-ko.md)
 > The easiest smart contract development framework and command line interface on EVM based blockchain. 
 
 **Simple and fast smart contract deployment and execution with a single command line**
+
+<p align="center"><img src="./images/[vvisp]thumbnail.png" width="933px" height="369px"></p>
+
+> VVISP is sponsored by the EF([Ethereum Foundation](https://ethereum.foundation/)).
+EF gave the grants to HAECHI LABS at [ethcon korea 2019](https://ethcon.kr/).
+
+<p align="center"><img src="./images/[EF]logo.png" width="285px" height="150px"></p>
 
 ### Key Benefits
  - Improving Environment of Blockchain Service Development
@@ -49,12 +57,6 @@ A developer needs to consider deploying multiple smart contracts in order for DA
 This is a big entry barrier for developers who are unfamiliar with smart contract development.
 However, `vvisp` is designed to execute a specific function of a contract with a single command line and to receive results without complex processes.
 
-**(3) Supporting Upgradeable Smart Contract Framework**
-
-: Additionally, `vvisp` supports USCF(Upgradeable Smart Contract Framework).
-Even if developers do not have deep knowledge about upgradeability, they can easily use embedded upgradeable libraries at vvisp.
-If you want more information about the Upgradeable Smart Contract Framework, you can take a look at the HAECHI-LABS [pdf file](https://drive.google.com/file/d/1H9gtmpiZ5zwIFwgHGOOvz9Oa8SAlpM5h/view?usp=sharing).
-
 | **Contributors**: Please see the [Contributing](#contributing) section of this README. |
 | --- |
 
@@ -63,7 +65,7 @@ If you want more information about the Upgradeable Smart Contract Framework, you
 Install [Node.js](http://nodejs.org/) first.
 Then, install [npm](https://npmjs.com/) and
 ```sh
-$ npm install --global @haechi-labs/vvisp
+$ npm install -g @haechi-labs/vvisp
 ```
 or install [yarn](https://yarnpkg.com) and
 ```sh
@@ -78,6 +80,7 @@ If you want to see sample repository, see [here](https://github.com/HAECHI-LABS/
 ```sh
 $ mkdir my-project
 $ cd my-project
+
 $ vvisp init
 $ npm install #or yarn install
 ```
@@ -93,13 +96,68 @@ Now, you can use `gen-script`, `compile` and `flatten` commands.
 **3. Set `vvisp-config.js` file**
 
 Please set environment variables in `vvisp-config.js` file.
-See [here](./CONFIGURATION.md#config) for more information about `vvisp-config.js`.
+
+_Example_
+```javascript
+const MNEMONIC = 'YOUR_MNEMONIC';
+
+module.exports = {
+  networks: {
+    development: {
+      url: 'URL_TO_ETHEREUM_NODE',
+      gasLimit: 6000000,
+    }
+  },
+  compilers: {
+    solc: {
+      version: '0.5.8'
+    }
+  },
+  from: { // or from: 'YOUR_PRIVATE_KEY'
+    mnemonic: MNEMONIC,
+    index: 0
+  },
+};
+```
+
+See more information at [here](./CONFIGURATION.md#config) for more information about `vvisp-config.js`.
 Now you can use `deploy-contract` command.
 
 **4. Set `service.vvisp.json` file**
 
 Please set information about your DApp service in `service.vvisp.json`.
-See [here](./CONFIGURATION.md#service) for more information about `service.vvisp.json`.
+
+_Example_
+```json
+{
+  "serviceName": "Haechi",
+  "variables" : {
+    "exampleVarName": 123
+  },
+  "contracts": {
+    "ContractKeyName1": {
+      "path": "path/to/your/contract/Contract1.sol",
+      "constructorArguments": [
+        "${contracts.ContractKeyName1.address}",
+        "${variables.exampleVarName}"
+      ],
+      "initialize": {
+        "functionName": "initialize",
+        "arguments": ["argument1", "argument2"]
+      }
+    },
+    "ContractKeyName2": {
+      "path": "path/to/your/contract/Contract2.sol",
+      "initialize": {
+        "functionName": "initialize",
+        "arguments": ["argument1", "argument2"]
+      }
+    }
+  }
+}
+
+```
+See more information at [here](./CONFIGURATION.md#service) for more information about `service.vvisp.json`.
 Now you can use `deploy-service` command.
 
 Please see [CONFIGURATION.md](./CONFIGURATION.md) to configure your project.
@@ -132,7 +190,7 @@ Please see linked documentation below:
 
 - vvisp
 
-  vvisp consists of vvisp-utils, vvisp and vvisp-contracts.
+  vvisp consists of vvisp-utils and vvisp.
 
   - vvisp-utils
 
@@ -141,10 +199,6 @@ Please see linked documentation below:
   - vvisp
 
     vvisp performs the core logic of vvisp.
-
-  - vvisp-contracts
-
-    vvisp-contracts is a library for developing smart contracts and enables them to be upgradable.
 
 - vvisp-sample
 
@@ -164,7 +218,7 @@ Please see linked documentation below:
 
   - contracts
 
-    contracts consist of registry contract that is automatically generated by the `vvisp init` command and the contracts that the user write himself.
+    The contracts that the user write himself.
 
 
 
