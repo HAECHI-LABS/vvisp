@@ -1,6 +1,6 @@
 {
   "name": "@haechi-labs/vvisp",
-  "version": "1.2.3",
+  "version": "2.0.0",
   "description": "The easiest smart contract development framework and command line interface on EVM based blockchain",
   "author": "HAECHI LABS",
   "authors": [
