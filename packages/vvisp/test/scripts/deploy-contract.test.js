@@ -28,12 +28,12 @@ describe('# deploy contract process test', function() {
       .fulfilled;
     await deployContract(CONTRACT_PATH, [], { silent: true }).should.be
       .fulfilled;
-  });contract
+  });
 
   it('should reject dummy file', async () => {
     await deployContract(DUMMMY_FILE, [], { silent: true }).should.be.rejected;
   });
-  contractcontract
+  
   it('should reject when contract name and file name are different', async () => {
     await deployContract(CONTRACT_FLATTENED_PATH, [], { silent: true }).should
       .be.rejected;
