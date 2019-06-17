@@ -11,7 +11,7 @@ module.exports = async function(files, options) {
 
   try {
     execSync('command -v docker');
-  } catch(error) {
+  } catch {
     console.error('Requirement: docker must be installed');
     console.error('>>> $ sudo apt install docker')
 
@@ -20,7 +20,7 @@ module.exports = async function(files, options) {
 
   try {
     execSync('sudo docker image inspect mythril/myth', { stdio: 'pipe' });
-  } catch(error) {
+  } catch {
     console.error('Requirement: mythril/myth must be pulled');
     console.error('>>> $ docker pull mythril/myth');
 
