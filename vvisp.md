@@ -1,4 +1,4 @@
-## ```vvisp show-state```
+## vvisp show-state
 ### How to run
 ```
 vvisp show-state <CONTRACT_NAME>
@@ -30,7 +30,7 @@ npm run-script ssci
 #### code refactoring시에는 test code 통과 여부를 확인 할 것
 
 
-## ```vvisp debug```
+## vvisp debug
 ### dependency
 * truffle-config
 * truffle-expect
@@ -65,7 +65,7 @@ vvisp debug txHash
 
 
 
-## ```vvisp test```
+## vvisp test
 ### Prerequiste
 - 먼저 vvisp init으로 생성한 boilerplate 디렉토리에서 npm install을 실행한다.
 ### How to run
@@ -87,7 +87,7 @@ vvisp test --coverage path/to/file
 
 
 
-## ```vvisp analyze```
+## vvisp analyze
 
 ### Prerequiste
 - Docker 설치 (Ubuntu 18.04 기준)
@@ -124,7 +124,7 @@ vvisp analyze path/to/file
 
 
 
-## ```vvisp ci```
+## vvisp ci
 ### How to run
 ```
 vvisp ci
