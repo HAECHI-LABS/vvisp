@@ -16,8 +16,8 @@ var web3, address;
 var storageTable, storageTableBuilder;
 
 module.exports = async function(contract, options) {
-  const options = require('../utils/injectConfig')(options);
-  web3 = obtions.web3;
+  options = require('../utils/injectConfig')(options);
+  web3 = options.web3;
 
   printOrSilent(
     chalk.bold('Now Start Calculating Storage Index of Variables...\n')
