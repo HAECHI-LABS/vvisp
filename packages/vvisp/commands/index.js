@@ -1,7 +1,8 @@
 const analyze = require('./analyze');
+const ci = require('./ci');
 const compile = require('./compile');
 const console = require('./console');
-const coverage = require('./coverage')
+const test = require('./test')
 const debug = require('./debug');
 const deployContract = require('./deploy-contract');
 const deployService = require('./deploy-service');
@@ -13,14 +14,15 @@ const init = require('./init');
 
 module.exports = [
   analyze,
+  ci,
   compile,
   console,
-  coverage,
   debug,
   deployContract,
   deployService,
   flatten,
   genScript,
   init,
-  showState
+  showState,
+  test
 ];
