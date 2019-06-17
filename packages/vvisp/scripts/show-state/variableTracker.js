@@ -1,11 +1,10 @@
 const Table = require('cli-table3');
 const { ASTParser } = require('./astParser');
-const options = require('../utils/injectConfig')();
-const web3 = options.web3;
 
 class VariableTracker {
-  constructor(storageTable) {
+  constructor(storageTable, web3) {
     this.storageTable = storageTable;
+    this.web3 = web3;
   }
 
   getInfo(input) {
@@ -105,13 +104,13 @@ class VariableTracker {
         bytesInSlot = 0;
 
         var key = refSeq[i];
-        index = web3.utils.soliditySha3(String(key), String(index));
+        index = this.web3.utils.soliditySha3(String(key), String(index));
       } else if (typeSeq[i].indexOf('[') != -1) {
         var size = getTypeSize(typeString[i]);
         // case darray
         // when x is darray : x[3].index = HASH(x.index) + 3
         if (typeSeq[i].indexOf('[]') != -1) {
-          var baseIndex = web3.utils.soliditySha3(String(index));
+          var baseIndex = this.web3.utils.soliditySha3(String(index));
           var offset = parseInt((refSeq[i] * size) / 32);
           startByte = (refSeq[i] * size) % 32;
           bytesInSlot = 0;

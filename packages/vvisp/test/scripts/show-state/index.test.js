@@ -4,14 +4,15 @@ const {
 } = require('../../../scripts/show-state/astParser');
 const StorageTableBuilder = require('../../../scripts/show-state/storageTableBuilder');
 const VariableTracker = require('../../../scripts/show-state/variableTracker');
+const utils = require('../../../scripts/show-state/utils');
+
 const chai = require('chai');
 chai.use(require('chai-as-promised')).should();
 const expect = chai.expect;
 const fs = require('fs');
-const utils = require('../../../scripts/show-state/utils');
-
 const { execSync } = require('child_process');
 const path = require('path');
+
 const options = require('../../../scripts/utils/injectConfig')();
 const web3 = options.web3;
 

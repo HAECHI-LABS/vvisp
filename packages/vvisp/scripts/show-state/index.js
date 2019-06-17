@@ -8,17 +8,17 @@ const {
 } = require('./utils');
 const StorageTableBuilder = require('./storageTableBuilder');
 const { printOrSilent } = require('@haechi-labs/vvisp-utils');
-const options = require('../utils/injectConfig')();
-const web3 = options.web3;
 const chalk = require('chalk');
 const fs = require('fs');
 const path = require('path');
 const stringArgv = require('string-argv');
-var address;
-var storageTable;
-var storageTableBuilder;
+var web3, address;
+var storageTable, storageTableBuilder;
 
 module.exports = async function(contract, options) {
+  const options = require('../utils/injectConfig')(options);
+  web3 = obtions.web3;
+
   printOrSilent(
     chalk.bold('Now Start Calculating Storage Index of Variables...\n')
   );
@@ -158,7 +158,10 @@ async function show(args) {
     return;
   }
 
-  var variableTracker = new VariableTracker(storageTableBuilder.storageTable);
+  var variableTracker = new VariableTracker(
+    storageTableBuilder.storageTable,
+    web3
+  );
   var name = args[0];
   var table = variableTracker.getInfo(name);
   table = await addVariableValue(table, address, web3);
