@@ -70,12 +70,22 @@ class ASTParser {
   }
 
   getDimensions(typeString) {
-    var tmpstring = typeString.split(/[\[]/);
+    var tmpString = typeString
+  
+    // type of mapping array
+    if(typeString.indexOf(')') != -1){
+      var splitedList = typeString.split(')')
+      tmpString = splitedList[splitedList.length-1]  
+    }    
+    
+    tmpString = tmpString.split(/[\[]/);
+
     var dimensions = [];
-    for (var i = 1; i < tmpstring.length; i++) {
-      var tmplen = tmpstring[i].replace(']', '');
+    for (var i = 1; i < tmpString.length; i++) {
+      var tmplen = tmpString[i].replace(']', '');
       dimensions.unshift(tmplen);
-    }
+    }  
+    
 
     return dimensions;
   }

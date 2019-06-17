@@ -15,20 +15,17 @@ class VariableTracker {
       colWidths: [25, 25, 25]
     });
 
-    // variable exist in storageTable
+    // if variable exist in storageTable
     if (input in this.storageTable.get()) {
+      // output is table contents
       var row = this.storageTable.get()[input];
       var type = row[0];
-
-      if (type.indexOf('[]') != -1) {
-        // If dynamic array, outputs are elements of array
-        // TODO!!!!!!!!!!!!!!
-      } else {
-        // output is table contents
-        table.push(row);
-      }
-
-      // variable doesn't exist in storageTable
+      var size = row[1];
+      var index = row[3];
+      var startByte = row[4];
+      table.push([input, type, size, index, startByte]);
+    
+    // if variable doesn't exist in storageTable
     } else {
 
       var splitedList = input.split('[');
@@ -43,7 +40,7 @@ class VariableTracker {
       }
       // case that really doesn't exist
       if (existVar == false) {
-        //console.log('The variable does not exist.');
+        console.log('The variable does not exist.');
         return -1;
 
       // case of array, mapping variable
@@ -51,14 +48,16 @@ class VariableTracker {
         var row = this.storageTable.get()[name];
         var type = row[0];
         var index = row[3];
-        // []가 있으면 동적배열 (우선) mapping이 있으면 맵핑
         if (type.indexOf('[]') != -1 || type.indexOf('mapping') != -1) {
-          var row = this.parseSequentially(input, type, index);          
+          var row = this.parseSequentially(input, name, type, index);
+          if(row == -1){
+            return -1;
+          }       
           table.push(row)
 
         } else {
           // case of input var[4] when real variable is var
-          //console.log('Invalid reference : It is not array nor mapping');
+          console.log('Invalid reference : It is not array nor mapping');
           return -1;
         }
       }
@@ -66,101 +65,101 @@ class VariableTracker {
     return table;
   }
 
-  parseSequentially(input, type, index) {
+  parseSequentially(input, name, type, index) {
 
     /*
     # Example
-    input : var[3][2][1][key2][key1][0]
-    dimensions : [0, key1, key2, 1, 2, 3]
-    var's type : mapping( int => mapping(string => int[2][3][]) )[]
-    typeSeq : ([], mapping, mapping, [2], [3], [])
+    input : mapdarray[1][235]['stringkey'][0][2][1]
+    refSeq : [1, 235, stringkey, 0, 2, 1]
+    mapdarray's type : mapping( int => mapping(string => int[2][3][]) )[2] 
+    typeSeq : ([2], mapping, mapping, [], [3], [2])
     */
-
-    var getDimensions = new ASTParser().getDimensions;
     var getTypeSize = new ASTParser().getTypeSize;
-
-    var dimensions = getDimensions(input);
-
+    var refSeq = this.getRefSeq(input.replace(name, ''));
     var typeSeq = this.getTypeSeq(type)
     var typeString =  this.getTypeString(typeSeq, type)
 
-    
     // error check
-    if (dimensions.length > typeSeq.length) {
-      //console.log('Invalid reference:dimension is too long');
+    if (refSeq.length > typeSeq.length) {
+      console.log('Invalid reference: reference is too long');
       return -1;
     }
-    for (var i = 0; i < dimensions.length; i++) {
+    for (var i = 0; i < refSeq.length; i++) {
       if ((typeSeq[i].indexOf('[') == -1) && (typeSeq.indexOf('mapping') == -1) ) {
-          //console.log('Invalid reference. : invalid type');
+          console.log('Invalid reference. : invalid type');
           return -1;
       }else if(typeSeq[i].indexOf('[') != -1){
-        if(isNaN(dimensions[i])){
+        if(isNaN(refSeq[i])){
           console.log('Invalid reference : array cannot reference using NaN')
           return -1;
         }
       }
     }
 
-
-
-    var startByte=0
+    var startByte
+    var bytesInSlot=0
+    var maxDim = []
+    var targetDim = []
     // calculate index
-    for (i = 0; i < dimensions.length; i++) {
-
+    for (i = 0; i < refSeq.length; i++) {
       // case mapping
       // when x is mapping : x[3].index = Hash(x.index, 3)
       if(typeSeq[i].indexOf('mapping') != -1){
         startByte=0
+        bytesInSlot = 0
 
-         var key = dimensions[i];
-         index = web3.utils.soliditySha3(String(key), String(index));
+        var key = refSeq[i];
+        index = web3.utils.soliditySha3(String(key), String(index));
 
       }else if(typeSeq[i].indexOf('[') != -1){
 
         var size = getTypeSize(typeString[i])
         // case darray
         // when x is darray : x[3].index = HASH(x.index) + 3
-        if(typeSeq.indexOf('[]') != -1){
-          console.log(index)
+        if(typeSeq[i].indexOf('[]') != -1){
           var baseIndex = web3.utils.soliditySha3(String(index));
-          console.log(baseIndex)
-          var offset = dimensions[i] * size / 32
-          startByte = dimensions[i] * size % 32
-          console.log(dimensions[i])
-          console.log(offset)
+          var offset = parseInt(refSeq[i] * size / 32)
+          startByte = refSeq[i] * size % 32
+          bytesInSlot = 0
           index = '0x' + (BigInt(baseIndex) + BigInt(offset)).toString(16);
  
-        // case normal array
+        // case normal array (multi-dim)
         }else{
-          maxDim.push(typeSeq[i])
-          targetDim.push(dimensions[i])
+          // push current dim info during normal array
+          maxDim.unshift(typeSeq[i].replace('[','').replace(']',''))
+          targetDim.unshift(refSeq[i])
+          startByte=0
+
           // if next array is not normal array
-          if( i==dimensions.length-1 || typeSeq[i+1].indexOf('[') == -1 || typeSeq[i+1].indexOf('[]') != -1){
+          if( i==refSeq.length-1 || typeSeq[i+1].indexOf('[') == -1 || typeSeq[i+1].indexOf('[]') != -1){
+            
+            // init current Dim for 0s
             var currentDim = []
             for(var j=0; j<targetDim.length; j++){
               currentDim.push(0)
             }
             // add bytes In Slot
-            while(this.compare(targetDim ,currentDim)){
+            var offset = 0
+            while(!this.compare(targetDim ,currentDim)){
               currentDim[0] += 1;
               bytesInSlot += size;
-              if (bytesInSlot > 32) {
+              if (bytesInSlot >  32) {
                 bytesInSlot = size;
-                index++;
+                offset++;
               }
-
+              startByte = bytesInSlot - size
               if(currentDim.length>1){
-                // second dimension increased than start in new index
-                if(currentDim[0]>=dimList[0]){
+                // if second dimension increased, start in new index
+                if(currentDim[0]>=maxDim[0]){
                   if (bytesInSlot != 0) {
-                    index++;
+                    offset++;
                     bytesInSlot = 0;
-                  }  
+                  }
+                  startByte = 0
                   currentDim[0] = 0
                   currentDim[1] +=1
                 }
-                // higher dimension
+                // higher dimension carry
                 for(var j=1; j<currentDim.length;j++){
                   if(currentDim[j] >= maxDim[j]){
                     currentDim[j] =0
@@ -169,23 +168,34 @@ class VariableTracker {
                 }
               }
             }
+            
+            // add bytes In Slot when targetDim == currentDim 
+            bytesInSlot += size;
+            if (bytesInSlot >  32) {
+              bytesInSlot = size;
+              offset++;
+            }
+            startByte = bytesInSlot - size
+
+            // calculate index
+            index = '0x' + (BigInt(baseIndex) + BigInt(offset)).toString(16);
           }
-          startByte = bytesInSlot
         }
       }
     }
 
-    var endpointType = typeString[i-1]
+    var endpointType = typeString[refSeq.length-1]
     var row = [input, endpointType, getTypeSize(endpointType.split('[')[0]), index, startByte]
+    console.log(row)
+
     return row
-
-
-    // 동적 배열일 경우 자식들 보여주기
-    // 구조체의 처리
   }
 
 
   getTypeSeq(type){
+    if(type.startsWith('struct')){
+      console.log(type.split('.')[1])
+    }
     var mappingSeq = type.split('(');
 
     if(mappingSeq.length >1){
@@ -201,17 +211,17 @@ class VariableTracker {
         }
       }
     }
-
     var darraySeq = mappingSeq[mappingSeq.length-1].split(')').reverse();
     var typeSeq = [];
     for(var i=0; i<mappingSeq.length; i++){
-      // Prior darray than mapping in same position
-      
+      // Prior darray than mapping in same position 
       if(darraySeq[i].indexOf('[') != -1){
         var splitedList = darraySeq[i].split('[');
+        var tmpList = []
         for(var j=1; j<splitedList.length ;j++){
-          typeSeq.push('[' + splitedList[j])
+          tmpList.push('[' + splitedList[j])
         }
+        typeSeq = typeSeq.concat(tmpList.reverse())
       }
 
       var splitedList = mappingSeq[i].split('> ');
@@ -220,9 +230,9 @@ class VariableTracker {
         typeSeq.push(mappingString)
       }
     }
-
     return typeSeq;
   }
+
 
   getTypeString(typeSeq, type){
     var currentTypeString = type
@@ -235,37 +245,31 @@ class VariableTracker {
         typeString.push(currentTypeString)
 
       }else{
-        var li =currentTypeString.lastIndexOf(typeSeq[i]) 
-        typeString.push(currentTypeString.slice(0,li))
-
+        var li =currentTypeString.lastIndexOf(typeSeq[i])
+        currentTypeString = currentTypeString.slice(0,li)
+        typeString.push(currentTypeString)
       }
     }
-
     return typeString
   }
 
-  compare(arr1,arr2){
+  getRefSeq(refString){
+    var splitedList = refString.split(/[\[]/);
+    var refSeq = [];
+    for (var i = 1; i < splitedList.length; i++) {
+      refSeq.push(splitedList[i].replace(']', ''));
+    }
+    return refSeq;
+  }
   
-    if(!arr1  || !arr2) return
-   
-     let result;
-   
-   arr1.forEach((e1,i)=>arr2.forEach(e2=>{
-     
-          if(e1.length > 1 && e2.length){
-             result = compare(e1,e2);
-          }else if(e1 !== e2 ){
-             result = false
-          }else{
-             result = true
-          }
-     })
-   )
-   
-   return result
-   
+  compare(a,b){
+    var i = a.length;
+    if (i != b.length) return false;
+    while (i--) {
+        if (String(a[i]) !== String(b[i])) return false;
+    }
+    return true;   
  }
-
 }
 
 module.exports = VariableTracker;

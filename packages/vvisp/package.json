@@ -32,7 +32,8 @@
   "scripts": {
     "test": "NO_BUILD=true mocha",
     "testAll": "./test/test.sh",
-    "ci": "./test/ci.sh"
+    "ci": "./test/ci.sh",
+    "ssci": "./test/ssci.sh"
   },
   "keywords": [
     "ethereum",

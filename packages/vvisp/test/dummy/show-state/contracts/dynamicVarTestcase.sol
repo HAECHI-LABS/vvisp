@@ -10,36 +10,20 @@ contract dynamicVarTestcase {
     mapping(string => int) map1;
     mapping(int => mapping(int=>int)) map2;
 
+    struct1[2] s1;
     struct struct1 {
-        mapping(string=>inStruct2) map3;
         uint[2][3][][2] darray5;
+        string s;
     }
-
-    struct1[][2] s1;
-
-
 
     mapping( int => mapping(string => int[2][3][]) )[2] mapdarray;
-
-    struct inStruct1 {
-        byte[3][1] var_byte;
-    }
-
-    struct inStruct2 {
-        bytes var_bytes;
-        string var_string;
-        inStruct1 is1;
-    }
-    struct1 tmps1;
-
     int[2][3][] ta;
-
 
     constructor () public {
 
-        darray2.push([3,3,3]);
-        darray2.push([1,1]);
-        darray2.push([2,2,2,2]);
+        darray2.push([31,32,33]);
+        darray2.push([11,12]);
+        darray2.push([21,22,23,24]);
 
         darray3[0][0].push(-1);
         darray3[0][0].push(-2);
@@ -62,23 +46,12 @@ contract dynamicVarTestcase {
         map2[3][8] = 24;
         map2[4][7] = 28;
 
-    inStruct2 memory tmps2;
-    tmps2.var_bytes = "hi";
-    tmps2.var_string = "bye";
-    tmps2.is1.var_byte[0][0] = 0x03;
-    tmps2.is1.var_byte[0][1] = 0x06;
-    tmps2.is1.var_byte[0][2] = 0x09;
+        s1[0].darray5[0].push([[0,1],[2,3],[4,5]]);
+        s1[1].darray5[1].push([[6,7],[8,9],[10,11]]);
 
-    tmps1.map3["capstone"] = tmps2;
-    tmps1.darray5[0].push([[0,1],[2,3],[4,5]]);
-    tmps1.darray5[1].push([[6,7],[8,9],[10,11]]);
+        ta.push([[-1,-2],[-3,-4],[-5,-6]]);
 
-    s1[0].push(tmps1);
-    s1[1].push(tmps1);
-
-    ta.push([[-1,-2],[-3,-4],[-5,-6]]);
-
-    mapdarray[0][36]["key1"] = ta;
+        mapdarray[0][36]["key1"] = ta;
 
     }
 }
