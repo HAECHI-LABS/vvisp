@@ -20,7 +20,9 @@ show <VARIABLE_NAME>
 ### Test
 1. ganache-cli를 미리 띄움
 2. packages/vvisp/test/dummy/show-state/vvisp-config.js의 mnemonic을 ganache-cli의 출력을 참조해 수정
-3. test 쉘스크립트 실행
+3. packages/vvisp/test/scripts/show-state/index.test.js에서 주석부분을 해제
+    * final value test의 경우 ganache에 배포한뒤 진행가능해서 circle-ci 통과를 위해 우선 제외
+4. test 쉘스크립트 실행
 ```
 cd packages/vvisp
 npm run-script ssci

@@ -826,7 +826,7 @@ describe('# show-state script test', function() {
       expect(result2).equal(-1);
     });
   });
-
+  /*
   describe('# final variable value test', function() {
     var vvispState;
     this.timeout(30000);
@@ -1224,6 +1224,7 @@ describe('# show-state script test', function() {
       }
     });
   });
+  */
 });
 
 function expect_structSymbolTable(structTypeName, symbolTable, getTypeSize) {
