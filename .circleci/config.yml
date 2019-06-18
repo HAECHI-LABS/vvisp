@@ -27,7 +27,6 @@ jobs:
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
 
-      - run: rm package-lock.json
       - run: npm update
       - run: npm install -g ganache-cli
       - run: npm install -g lerna
