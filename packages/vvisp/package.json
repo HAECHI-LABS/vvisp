@@ -32,8 +32,7 @@
   "scripts": {
     "test": "NO_BUILD=true mocha",
     "testAll": "./test/test.sh",
-    "ci": "./test/ci.sh",
-    "ssci": "./test/ssci.sh"
+    "ci": "./test/ci.sh"
   },
   "keywords": [
     "ethereum",
@@ -48,38 +47,17 @@
   ],
   "dependencies": {
     "@haechi-labs/vvisp-utils": "^1.1.0",
-    "async": "^2.6.1",
     "babel-preset-env": "^1.7.0",
     "chalk": "^2.4.1",
-    "cli-table3": "^0.5.1",
     "commander": "^2.17.1",
-    "debug": "^4.1.0",
     "fs-extra": "^7.0.0",
-    "ganache-core": "^2.5.5",
-    "lint-staged": "^7.3.0",
     "lodash": "^4.17.10",
-    "mocha": "^6.1.4",
     "mustache": "^2.3.2",
     "openzeppelin-solidity": "2.1.3",
     "rollup": "^0.65.0",
     "rollup-plugin-babel": "^3.0.7",
     "rollup-plugin-regenerator": "^0.6.0",
-    "safe-eval": "^0.4.1",
-    "semver": "^5.5.1",
-    "solidity-parser-antlr": "^0.3.2",
-    "string-argv": "^0.1.1",
-    "truffle-artifactor": "^4.0.19",
-    "truffle-compile": "^4.1.0",
-    "truffle-config": "^1.1.13",
-    "truffle-contract": "^4.0.20",
-    "truffle-debug-utils": "^1.0.18",
-    "truffle-debugger": "^5.0.15",
-    "truffle-error": "^0.0.5",
-    "truffle-expect": "0.0.9",
-    "truffle-interface-adapter": "^0.1.6",
-    "truffle-resolver": "^5.0.14",
-    "tsort": "0.0.1",
-    "web3": "1.0.0-beta.37"
+    "string-argv": "^0.1.1"
   },
   "devDependencies": {
     "bdd-stdin": "^0.2.0",
