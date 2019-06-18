@@ -3,19 +3,17 @@
     "packages/*"
   ],
   "command": {
-    "publish": {
-      "ignoreChanges": [
-        "*.md",
-        "*.json",
-        "*.txt",
-        "test/**",
-        "package.json"
-      ]
+    "version": {
+      "conventionalCommits": true,
+      "message": "chore(release): publish %s"
     }
   },
-  "npmClientArgs": [
-    "--ignore-engines"
+  "ignoreChanges": [
+    "*.md",
+    "*.json",
+    "*.txt",
+    "test/**",
+    "package.json"
   ],
-  "version": "independent",
-  "useWorkspaces": true
+  "version": "independent"
 }
