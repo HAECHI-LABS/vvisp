@@ -29,6 +29,7 @@ jobs:
 
       - run: npm install -g ganache-cli
       - run: npm install -g lerna
+      - run: npm install
       - run: npm run bootstrap --no-package-lock
 
       - save_cache:
