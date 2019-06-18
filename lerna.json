@@ -13,7 +13,6 @@
       ]
     }
   },
-  "npmClient": "yarn",
   "npmClientArgs": [
     "--ignore-engines"
   ],

@@ -26,11 +26,9 @@ jobs:
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
 
-      - run: yarn
-      - run: yarn --version
-      - run: yarn global add ganache-cli
-      - run: yarn global add lerna
-      - run: yarn bootstrap
+      - run: npm install -g ganache-cli
+      - run: npm install -g lerna
+      - run: npm run bootstrap
 
       - save_cache:
           paths:
@@ -38,4 +36,4 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       # run tests!
-      - run: yarn ci
+      - run: npm run ci

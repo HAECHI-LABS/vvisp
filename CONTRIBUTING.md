@@ -12,16 +12,10 @@ Korean version: [CONTRIBUTING-ko.md](./CONTRIBUTING-ko.md)
  - [Commit Message Guidelines](#commit)
 
 ## Prerequisites
-Install lerna:
-```bash
-$ npm install -g yarn
-$ npm install -g lerna
-```
-
 Install modules:
 ```bash
 $ cd vvisp
-$ yarn bootstrap
+$ npm run bootstrap
 ```
 
 ## <a name="question"></a>Question or Problem?

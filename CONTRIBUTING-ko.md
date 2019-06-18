@@ -12,16 +12,10 @@ English version: [CONTRIBUTING.md](./CONFIGURATION.md)
  - [Commit Message Guidelines](#commit)
 
 ## Prerequisites
-Install lerna:
-```bash
-$ npm install -g yarn
-$ npm install -g lerna
-```
-
 Install modules:
 ```bash
 $ cd vvisp
-$ yarn bootstrap
+$ npm run bootstrap
 ```
 
 ## <a name="question"></a>Question or Problem?
