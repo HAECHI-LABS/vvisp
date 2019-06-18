@@ -20,6 +20,7 @@ jobs:
       - checkout
 
       # Download and cache dependencies
+      - run: npm set prefix=/home/circleci/npm && echo 'export PATH=$HOME/circleci/npm/bin:$PATH' >> /home/circleci/.bashrc
       - restore_cache:
           keys:
           - v1-dependencies-{{ checksum "package.json" }}
