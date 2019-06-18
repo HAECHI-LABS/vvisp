@@ -27,7 +27,8 @@ jobs:
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
 
-      - run: npm update
+      - run: ls -al
+      - run: rm -rf ./package-lock.json
       - run: npm install -g ganache-cli
       - run: npm install -g lerna
       - run: npm run bootstrap --no-package-lock
