@@ -20,21 +20,20 @@ jobs:
       - checkout
 
       # Download and cache dependencies
-#      - run: npm set prefix=/home/circleci/npm && echo 'export PATH=$HOME/circleci/npm/bin:$PATH' >> /home/circleci/.bashrc
-#      - restore_cache:
-#          keys:
-#          - v2-dependencies-{{ checksum "package.json" }}
-#          # fallback to using the latest cache if no exact match is found
-#          - v2-dependencies-
+      - restore_cache:
+          keys:
+          - v3-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v3-dependencies-
 
       - run: sudo npm install -g ganache-cli
       - run: sudo npm install -g lerna
       - run: npm run bootstrap
 
-#      - save_cache:
-#          paths:
-#            - node_modules
-#          key: v2-dependencies-{{ checksum "package.json" }}
+      - save_cache:
+          paths:
+            - node_modules
+          key: v3-dependencies-{{ checksum "package.json" }}
 
       # run tests!
       - run: npm run ci
