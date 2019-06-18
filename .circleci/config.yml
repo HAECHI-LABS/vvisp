@@ -27,10 +27,8 @@ jobs:
 #          # fallback to using the latest cache if no exact match is found
 #          - v2-dependencies-
 
-      - run: npm -v
       - run: npm install -g ganache-cli
       - run: npm install -g lerna
-      - run: npm install
       - run: npm run bootstrap
 
 #      - save_cache:
