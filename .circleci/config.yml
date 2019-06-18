@@ -29,7 +29,6 @@ jobs:
 
       - run: sudo npm install -g ganache-cli
       - run: sudo npm install -g lerna
-      - run: ganache-cli --v && lerna --v
       - run: npm run bootstrap
 
 #      - save_cache:
