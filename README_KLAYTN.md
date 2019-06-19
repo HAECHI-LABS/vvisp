@@ -36,7 +36,7 @@ module.exports = {
     development: {
       platform: 'klaytn',
       url: 'URL_TO_KLAYTN_NODE',
-      gasLimit: 6000000,
+      gasLimit: 10000000, // increase if you need
     }
   },
   compilers: {

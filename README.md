@@ -104,7 +104,7 @@ module.exports = {
   networks: {
     development: {
       url: 'URL_TO_ETHEREUM_NODE',
-      gasLimit: 6000000,
+      gasLimit: 6721975,
     }
   },
   compilers: {
