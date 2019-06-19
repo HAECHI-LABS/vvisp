@@ -138,11 +138,11 @@ Normally, make file like below:
   },
   "contracts": { (3)
     "ContractKeyName1": { (4)
-      "path": "path/to/your/contract/Contract1.sol", (5)
+      "path": "./contracts/Contract1.sol", (5)
       "name": "Contract1" (6)
     },
     "ContractKeyName2": {
-      "path": "contracts/Contract2.sol",
+      "path": "./contracts/Contract2.sol",
       "name": "Contract2",
       "constructorArguments": [ (7)
         "${contracts.ContractKeyName1.address}", (8)
