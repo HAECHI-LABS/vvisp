@@ -20,7 +20,7 @@ const SAMPLE_CONFIG_PATH = path.join(
   __dirname,
   './dummy/sample.vvisp-config.js'
 );
-const sampleConfig = require(SAMPLE_CONFIG_PATH);
+const sampleConfig = _.cloneDeep(require(SAMPLE_CONFIG_PATH));
 const VVISP_CONFIG_PATH = path.join('./', DEFAULT_CONFIG_FILE);
 
 describe('# Config test', function() {
@@ -173,6 +173,31 @@ describe('# Config test', function() {
     it('should load config', function() {
       const config = Config.load();
       expect(config).to.be.an.instanceOf(Config);
+    });
+
+    it('should throw when given network does not exist in networks', function() {
+      const wrongNetwork = 'wrong';
+      expect(Config.load.bind(Config, { network: wrongNetwork })).to.throw(
+        'A network named wrong does not exist'
+      );
+    });
+
+    it('should throw when development network is not set', function() {
+      const config = require(SAMPLE_CONFIG_PATH);
+      delete config.networks[DEFAULT_NETWORK];
+      const newConfigFile = 'module.exports=' + JSON.stringify(config);
+      fs.writeFileSync(
+        path.join('./', DEFAULT_CONFIG_FILE),
+        newConfigFile,
+        'utf8'
+      );
+      delete require.cache[
+        require.resolve(path.join(__dirname, '../', DEFAULT_CONFIG_FILE))
+      ];
+
+      expect(Config.load.bind(Config)).to.throw(
+        `A network named ${DEFAULT_NETWORK}(default) does not exist`
+      );
     });
   });
 
@@ -471,10 +496,14 @@ describe('# Config test', function() {
 function needsConfigFile() {
   beforeEach(function() {
     fs.copySync(SAMPLE_CONFIG_PATH, path.join('./', DEFAULT_CONFIG_FILE));
+    delete require
+      .cache[require.resolve(path.join(__dirname, '../', DEFAULT_CONFIG_FILE))];
   });
 
   afterEach(function() {
     fs.removeSync(path.join('./', DEFAULT_CONFIG_FILE));
+    delete require
+      .cache[require.resolve(path.join(__dirname, '../', DEFAULT_CONFIG_FILE))];
   });
 }
 

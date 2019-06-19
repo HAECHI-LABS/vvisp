@@ -296,8 +296,14 @@ Config.load = options => {
   config.merge(fileConfig);
   config.merge(options);
 
-  if (!config.network && config.networks.hasOwnProperty(DEFAULT_NETWORK)) {
+  if (!config.network) {
     config.network = DEFAULT_NETWORK;
+  }
+
+  if (!config.networks.hasOwnProperty(config.network)) {
+    const networkMessage =
+      config.network + (config.network === DEFAULT_NETWORK ? '(default)' : '');
+    throw new Error('A network named ' + networkMessage + ' does not exist');
   }
 
   if (!config.platform) {
