@@ -117,6 +117,12 @@ module.exports = async function(options) {
       )} Again.`,
       options
     );
+    printOrSilent(
+      `If you want to deploy a new service, command ${chalk.keyWord(
+        `${PROJECT_NAME} deploy-service -f`
+      )}`,
+      options
+    );
     writeState(stateClone, options);
   }
 };

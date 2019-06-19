@@ -1,6 +1,10 @@
 module.exports = async function(deployState, options) {
   const fs = require('fs-extra');
-  const { SERVICE_PATH, STATE_PATH } = require('../../../config/Constant');
+  const {
+    PROJECT_NAME,
+    SERVICE_PATH,
+    STATE_PATH
+  } = require('../../../config/Constant');
   const { VARIABLES } = require('../constants');
   const { forIn, printOrSilent } = require('@haechi-labs/vvisp-utils');
 
@@ -47,6 +51,12 @@ module.exports = async function(deployState, options) {
 
   if (Object.keys(compileInformation.targets).length === 0) {
     printOrSilent(chalk.head('Nothing to upgrade'), options);
+    printOrSilent(
+      `If you want to deploy a new service, command ${chalk.keyWord(
+        `${PROJECT_NAME} deploy-service -f`
+      )}`,
+      options
+    );
     process.exit();
   }
 
