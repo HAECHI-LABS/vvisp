@@ -59,5 +59,14 @@ describe('# init script test', function() {
     fs.existsSync(
       path.join(directoryName, 'contracts', 'Migrations.sol')
     ).should.be.equal(true);
+    fs.existsSync(
+      path.join(directoryName, 'scripts', 'test.sh')
+    ).should.be.equal(true);
+    fs.existsSync(
+      path.join(directoryName, 'scripts', 'local_eth_ganache_option.js')
+    ).should.be.equal(true);
+    fs.existsSync(
+      path.join(directoryName, 'scripts', 'coverage.sh')
+    ).should.be.equal(true);
   });
 });
