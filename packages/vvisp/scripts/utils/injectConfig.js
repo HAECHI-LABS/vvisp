@@ -17,11 +17,14 @@ module.exports = function(options = {}) {
 
   if (options.platform === 'klaytn') {
     printOrSilent(
-      '\nIn Klaytn, the gasPrice is fixed at 25ston(25000000000). No other values are allowed.'
+      '\nIn Klaytn, the gasPrice is fixed at 25ston(25000000000). No other values are allowed.',
+      options
     );
-    printOrSilent('GasPrice is changed to 25ston.\n');
+    printOrSilent('GasPrice is changed to 25ston.\n', options);
     config.gasPrice = 25000000000;
   }
+
+  printOrSilent('Network: ' + options.config.network, options);
 
   return options;
 };
