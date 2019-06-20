@@ -32,6 +32,7 @@ root/
 ├── scripts/
 ├──── test.sh
 ├──── coverage.sh
+├──── local_eth_ganache_option.js
 ├── test/
 ├──── Example.test.js
 ├── .solcover.js
@@ -42,31 +43,33 @@ root/
 ├── truffle-config.json
 └── vvisp-config.json
 ```
-> - `package.json` will be created.
+> - `package.json` will be generated.
 Several libraries used by HAECHI LABS have been added.
-> - The `contracts` folder will be created.
+> - The `contracts` folder will be generated.
 Contract code, please work here.
-> - The `contracts/Migrations.sol` file will be created.
+> - The `contracts/Migrations.sol` file will be generated.
 This Contract is necessary for using truffle.
-> - The `vvisp-config.js` file will be created.
+> - The `vvisp-config.js` file will be generated.
 Set environment variables here.
 [See details](../../../CONFIGURATION.md#config).
-> - `.soliumignore`,` .solcover.js`, and `.soliumrc.json` files for [solium](https://github.com/duaraghav8/Solium), a proofing tool for solidity, will be created.
-> - `scripts/test.sh` will be created and the` $ npm run test` script will be added to `package.json`.
+> - `.soliumignore`,` .solcover.js`, and `.soliumrc.json` files for [solium](https://github.com/duaraghav8/Solium), a proofing tool for solidity, will be generated.
+> - `scripts/test.sh` will be generated and the` $ npm run test` script will be added to `package.json`.
 This is useful for truffle contract testing.
-> - `scripts/coverage.sh` will be created and the` $ npm run coverage` script will be added to `package.json`.
+> - `scripts/coverage.sh` will be generated and the` $ npm run coverage` script will be added to `package.json`.
 This shows the coverage of test codes about your contracts.
-> - `truffle-config.js` will be created.
+> - `scripts/local_eth_ganache_option.js` will be generated.
+This file is necessary for running `npm run test`.
+> - `truffle-config.js` will be generated.
 Required when using truffle and contains relevant configuration information.
-> - `migrations/1_initial_migration.js` will be created.
+> - `migrations/1_initial_migration.js` will be generated.
 Required for truffle testing.
-> - `test` folder will be created.
-Please create testcode for truffle test here. 
+> - `test` folder will be generated.
+Please build test code for truffle test at here. 
 > - For information about truffle, see [truffle documentation](https://truffleframework.com/docs/truffle/overview).
-> - You can use [openzeppelin-test-helpers](https://github.com/OpenZeppelin/openzeppelin-test-helpers) to help you create test cases.
-> - A sample test file, `Example.test.js` will be created in `test/` directory.
-> - The `service.vvisp.json` file will be created.
-Before you run `$ vvisp deploy-service`, set the variables in the file.
+> - You can use [openzeppelin-test-helpers](https://github.com/OpenZeppelin/openzeppelin-test-helpers) to help you to build test cases.
+> - A sample test file, `Example.test.js` will be generated in `test/` directory.
+> - The `service.vvisp.json` file will be generated.
+Before you run `$ vvisp deploy-service`, set the variables in this file.
 [See details](../../../CONFIGURATION.md#service).
 
 

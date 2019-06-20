@@ -16,7 +16,8 @@ module.exports = {
       host: 'localhost',
       port: 8545,
       network_id: '*' // eslint-disable-line camelcase
-    }
+    },
+    ...require('./scripts/local_eth_ganache_option.js')
   },
   compilers: {
     solc: {
