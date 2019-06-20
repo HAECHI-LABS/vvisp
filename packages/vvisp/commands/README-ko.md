@@ -15,13 +15,13 @@ English version: [README.md](./README.md)
 
 해당 명령어를 통해 프로젝트를 시작합니다.
 
-__Examples__
+#### Examples
 
 ```shell
 $ vvisp init
 ```
 
-__Outputs__
+#### Outputs
 ```
 root/
 ├── contracts/
@@ -31,6 +31,7 @@ root/
 ├── scripts/
 ├──── test.sh
 ├──── coverage.sh
+├──── local_eth_ganache_option.js
 ├── test/
 ├──── Example.test.js
 ├── .solcover.js
@@ -55,6 +56,8 @@ Contract code는 이곳에서 작업해 주시기 바랍니다.
 truffle의 contract testing을 할 때 유용합니다.
 > - `scripts/coverage.sh`가 생성되고 ` $ npm run coverage` 스크립트가 `package.json`에 추가됩니다.
 컨트랙트 테스트 코드의 커버리지를 보여줍니다.
+> - `scripts/local_eth_ganache_option.js` 파일이 생성됩니다.
+해당 파일은 `npm run test`를 실행하기 위해 필요합니다.
 > - `truffle-config.js`가 생성됩니다.
 truffle을 사용할 때 필요하며 관련 설정 정보가 담겨 있습니다.
 > - `migrations/1_initial_migration.js`이 생성됩니다.
