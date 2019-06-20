@@ -255,11 +255,14 @@ contractApis/
 ├──── js/
 ├────── HaechiV1.js
 ├────── ...
-└──── index.js
+├──── index.js
+exampleUserApi.js
 ```
 
 > - `contractApis/back/abi/`에 컨트랙트들의 abi 파일들이 저장됩니다.
 > - `contractApis/back/js/`에 api들이 저장됩니다.
+> - `exampleUserApi.js` 파일이 루트 디렉토리에 생성됩니다.
+해당 파일을 참고하여 생성된 api들을 사용하시기 바랍니다. 
 
 - `-f, --front <name>` option의 경우
 

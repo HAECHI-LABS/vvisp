@@ -23,6 +23,8 @@ const CONTRACT_PATH2 = path.join(`./contracts/test/${CONTRACT2}.sol`);
 const FILES = [CONTRACT_PATH1, CONTRACT_PATH2];
 const ROOT = path.join('./contractApis');
 
+const exampleApiUserPath = path.join('./exampleApiUser.js');
+
 const config = Config.get();
 
 const PRIV_KEY = config.from;
@@ -37,12 +39,14 @@ describe('# gen-script process test', function() {
     web3 = web3Store.get();
     Config.delete();
     fs.removeSync(ROOT);
+    fs.removeSync(exampleApiUserPath);
   });
 
   after(function() {
     fs.removeSync(ROOT);
     Config.delete();
     web3Store.delete();
+    fs.removeSync(exampleApiUserPath);
   });
 
   describe('# back version', function() {
@@ -71,6 +75,10 @@ describe('# gen-script process test', function() {
         fs.lstatSync(this.js)
           .isDirectory()
           .should.be.equal(true);
+      });
+
+      it('should make example api user file', function() {
+        fs.existsSync(path.join(exampleApiUserPath)).should.be.equal(true);
       });
 
       it('should make index files', function() {

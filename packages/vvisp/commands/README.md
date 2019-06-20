@@ -261,11 +261,14 @@ contractApis/
 ├──── js/
 ├────── HaechiV1.js
 ├────── ...
-└──── index.js
+├──── index.js
+exampleUserApi.js
 ```
 
-> - The abi files of the contracts are created in `contractApis/back/abi/`.
-> - The APIs are created in `contractApis/back/js/`.
+> - The abi files of the contracts are generated in `contractApis/back/abi/`.
+> - The APIs are generated in `contractApis/back/js/`.
+> - `exampleUserApi.js` will be generated at root directory.
+Refer this file to use generated apis. 
 
 
 - `-f, --front <name>` option
