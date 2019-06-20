@@ -15,15 +15,15 @@ const webSetter = 'URL_OR_PROVIDER';
   If you described vvisp-config.json already, you don't have to give above arguments.
  */
 
-const { Haechi } = require('./contractApis/back')(config, webSetter);
+const { ContractA } = require('./contractApis/back')(config, webSetter);
 
 main();
 
 async function main() {
-  // Haechi_ADDRESS is a address of Haechi contract
-  const haechi = new HaechiV1('Haechi_ADDRESS');
+  // ContractA_ADDRESS is a address of ContractA contract
+  const contractA = new ContractA('ContractA_ADDRESS');
 
-  // call the run method in the Haechi contract
-  const receipt = await haechi.methods.run();
+  // call the run method in the ContractA contract
+  const receipt = await contractA.methods.run();
   console.log(receipt);
 }
