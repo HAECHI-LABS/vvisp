@@ -14,6 +14,7 @@ Korean version: [CONTRIBUTING-ko.md](./CONTRIBUTING-ko.md)
 ## Prerequisites
 Install modules:
 ```bash
+$ npm install -g lerna
 $ cd vvisp
 $ npm run bootstrap
 ```
