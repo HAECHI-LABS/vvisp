@@ -10,10 +10,11 @@ module.exports = async function(files = [], options) {
   options = require('../utils/injectConfig')(options);
 
   const TEMPLATE = {
-    backScript: path.join(__dirname, '../../template/script.mustache'),
-    backIndex: path.join(__dirname, '../../template/index.mustache'),
-    frontScript: path.join(__dirname, '../../template/front.mustache'),
-    frontIndex: path.join(__dirname, '../../template/frontIndex.mustache')
+    backScript: path.join(__dirname, './template/script.mustache'),
+    backIndex: path.join(__dirname, './template/index.mustache'),
+    frontScript: path.join(__dirname, './template/front.mustache'),
+    frontIndex: path.join(__dirname, './template/frontIndex.mustache'),
+    exampleApiUser: path.join(__dirname, './template/exampleApiUser.js')
   };
 
   if (files.length === 0) {
@@ -49,7 +50,13 @@ module.exports = async function(files = [], options) {
       TEMPLATE.backIndex
     );
 
-    printOrSilent('\nGenerate Finished!', options);
+    fs.copySync(TEMPLATE.exampleApiUser, path.join('./exampleApiUser.js'));
+    printOrSilent('\nGenerate Finished!\n', options);
+
+    printOrSilent('Api files are generated at contractApis/');
+    printOrSilent(
+      'To use generated apis, see generated exampleApiUser.js file in root dir.\n'
+    );
   }
 
   async function atFront(files, options) {
