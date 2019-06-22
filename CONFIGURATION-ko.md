@@ -138,17 +138,19 @@ module.exports = {
   },
   "contracts": { (3)
     "ContractKeyName1": { (4)
-      "path": "path/to/your/contract/Contract1.sol" (5)
+      "path": "path/to/your/contract/Contract1.sol", (5)
+      "name": "Contract1" (6)
     },
     "ContractKeyName2": {
       "path": "contracts/Contract2.sol",
-      "constructorArguments": [ (6)
-        "${contracts.ContractKeyName1.address}", (7)
-        "${variables.varName}" (8)
+      "name": "Contract2",
+      "constructorArguments": [ (7)
+        "${contracts.ContractKeyName1.address}", (8)
+        "${variables.varName}" (9)
       ],
-      "initialize": { (9)
-        "functionName": "initialize", (10)
-        "arguments": [ (11)
+      "initialize": { (10)
+        "functionName": "initialize", (11)
+        "arguments": [ (12)
           "argument1",
           "argument2"
         ]
@@ -160,14 +162,17 @@ module.exports = {
 
 1. service의 이름을 정의합니다.
 
-1. `service.vvisp.json`에서 사용할 상수를 설정하는 곳 입니다.
+1. `service.vvisp.json`에서 사용할 상수를 설정하는 곳입니다.
 key-value pair로 상수를 지정합니다.
 
 1. contract들의 정보를 json 형식으로 정의합니다.
 
 1. contract의 이름을 정의합니다.
 
-1. 실제 이 contract의 소스 코드가 있는 경로를 적는 곳 입니다.
+1. 실제 이 contract의 소스 코드가 있는 경로를 적는 곳입니다.
+
+1. 배포하고자 하는 컨트랙트의 이름을 적는 곳입니다.
+정의되지 않은 경우, 파일 명과 같은 이름의 컨트랙트를 찾습니다.
 
 1. 해당 컨트랙트의 constructor가 인자를 받는 경우, 해당 인자들을 배열의 형태로 이곳에서 정의하십시오.
 없을 경우, 빈 배열로 두어도 됩니다.
@@ -183,5 +188,5 @@ key-value pair로 상수를 지정합니다.
 
 1. 초기화 기능을 담당하는 method 이름을 적습니다.
 
-1. 초기화할 argument의 array를 적는 곳 입니다.
+1. 초기화할 argument의 array를 적는 곳입니다.
 초기화할 argument가 없다면 생략하여도 무방합니다.

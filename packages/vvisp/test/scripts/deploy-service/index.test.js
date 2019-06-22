@@ -26,7 +26,7 @@ const STATE1 = path.join('./test/dummy/state1.json');
 
 fs.removeSync(SERVICE_PATH);
 fs.removeSync(STATE_PATH);
-const { deploy: deployNum, upgrade: upgradeNum } = getTxcount(
+const { deploy: deployNum, upgrade: upgradeNum } = getTxCount(
   SERVICE1,
   SERVICE2,
   STATE1
@@ -94,6 +94,39 @@ describe('# deploy-service process test', function() {
       fs.removeSync(STATE_PATH);
     });
   });
+
+  describe('# assigning contract name test', function() {
+    beforeEach(async function() {
+      const assignedServiceJson = {
+        serviceName: 'Test',
+        contracts: {
+          DependencyA: {
+            path: 'contracts/test/DependencyA.sol',
+            name: 'DependencyA2',
+            initialize: {
+              functionName: 'initializeA2',
+              arguments: []
+            }
+          }
+        }
+      };
+
+      fs.writeJsonSync(SERVICE_PATH, assignedServiceJson);
+      this.waitingTxNum = getWaitingTxNum();
+    });
+
+    afterEach(function() {
+      fs.removeSync(SERVICE_PATH);
+      fs.removeSync(STATE_PATH);
+    });
+
+    it('should success deploy', async function() {
+      const startTxCount = await web3.eth.getTransactionCount(SENDER);
+      await deployService({ silent: true });
+      const endTxCount = await web3.eth.getTransactionCount(SENDER);
+      (endTxCount - startTxCount).should.equal(this.waitingTxNum);
+    });
+  });
 });
 
 function checkRightState() {
@@ -106,10 +139,13 @@ function checkRightState() {
   const contracts = state.contracts;
   forIn(contracts, (contract, name) => {
     service.contracts.hasOwnProperty(name).should.equal(true);
-    Object.keys(contract).should.have.lengthOf(2);
+    Object.keys(contract).should.have.lengthOf(3);
     web3.utils.isAddress(contract.address).should.equal(true);
     const fileName = path.parse(service.contracts[name].path).base;
     contract.fileName.should.equal(fileName);
+    const contractName =
+      service.contracts[name].name || path.parse(fileName).name;
+    contract.name.should.equal(contractName);
   });
 }
 
@@ -134,18 +170,13 @@ function getWaitingTxNum() {
     stateClone
   );
 
-  let targetExists = false;
-
   forIn(compileInformation.targets, contract => {
     if (contract.pending === PENDING_STATE[0]) {
-      if (!targetExists) {
-        targetExists = true;
-      }
       resultNumber++;
       if (hasInit(contract)) {
         resultNumber++; // init Tx
       }
-    } else {
+    } else if (contract.pending === PENDING_STATE[1]) {
       resultNumber++; // just upgrade
     }
   });
@@ -200,7 +231,7 @@ function setWholeProcess(service1, service2) {
   });
 }
 
-function getTxcount(service1, service2, state1) {
+function getTxCount(service1, service2, state1) {
   fs.copySync(service1, SERVICE_PATH);
   const deploy = getWaitingTxNum();
   fs.copySync(service2, SERVICE_PATH);
@@ -236,7 +267,7 @@ function setResumingProcess(service1, service2, deployTxCount, upgradeTxCount) {
 
     for (let i = 1; i < upgradeTxCount; i++) {
       it(`should resume when paused after ${i} txs`, async function() {
-        runTxStopper(i, deployTxCount);
+        runTxStopper(i, upgradeTxCount);
         await deployService({ silent: true });
         assert.notEqual(fs.readJsonSync(STATE_PATH).paused, undefined);
         await deployService({ silent: true });

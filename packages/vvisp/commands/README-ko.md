@@ -173,7 +173,8 @@ __`state.vvisp.json`__
   "contracts": { (2)
     "ContractKeyName3": { (3)
       "address": "0x863...", (4)
-      "fileName": "Contract.sol" (5)
+      "fileName": "Contract.sol", (5)
+      "name": "Contract" (6)
     },
     "ContractKeyName1": {
       "address": "0x73c...",
@@ -187,11 +188,13 @@ __`state.vvisp.json`__
 
 1. 배포된 contract들의 정보가 json 형식으로 정의됩니다.
 
-1. 배포된 contract의 이름의 이름을 나타냅니다.
+1. 배포된 contract의 이름을 나타냅니다.
 
 1. 배포된 contract의 address를 나타냅니다.
 
-1. 현재 배포된 contract 버전의 파일명(contract명)을 나타냅니다.
+1. 현재 배포된 contract 버전의 파일명을 나타냅니다.
+
+1. 현재 배포된 contract 버전의 contract명 나타냅니다.
 
 ## gen-script
 

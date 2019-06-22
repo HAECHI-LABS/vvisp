@@ -12,6 +12,12 @@ module.exports = function(configContracts, stateClone) {
   const { PENDING_STATE } = require('../constants');
   const targets = {};
 
+  forIn(configContracts, (contract, name) => {
+    if (!contract.name) {
+      configContracts[name].name = path.parse(contract.path).name; // default contract name is file name
+    }
+  });
+
   if (stateClone.notUpgrading) {
     // When deploying DApp first time,
     // 1. If not paused, first copy from service.vvisp.json to stateClone and write PENDING_STATE
@@ -35,10 +41,7 @@ module.exports = function(configContracts, stateClone) {
             ...contract
           };
           targets[name] = { ...stateClone.contracts[name] };
-        } else if (
-          path.parse(contract.path).name !==
-          stateClone.contracts[name].fileName.slice(0, -4)
-        ) {
+        } else if (contract.name !== stateClone.contracts[name].name) {
           // get upgrading contracts
           stateClone.contracts[name] = {
             ...stateClone.contracts[name],
