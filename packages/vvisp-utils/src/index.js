@@ -1,3 +1,5 @@
+const blockchainApis = require('./blockchainApis');
+const caverStore = require('./caverStore');
 const compile = require('./compile');
 const compileAndDeploy = require('./compileAndDeploy');
 const compilerSupplier = require('./compilerSupplier');
@@ -9,21 +11,21 @@ const forIn = require('./forIn');
 const forInAsync = require('./forInAsync');
 const getAllFiles = require('./getAllFiles');
 const getCompiledContracts = require('./getCompiledContracts');
-const getCycle = require('./getCycle');
-const blockchainApis = require('./blockchainApis');
-const web3Store = require('./web3Store');
-const getPrivateKey = require('./getPrivateKey');
-const printOrSilent = require('./printOrSilent');
 const getConfigRoot = require('./getConfigRoot');
-const getRelativeFilePathsFromRoot = require('./getRelativeFilePathsFromRoot');
+const getCycle = require('./getCycle');
 const getDependencyFiles = require('./getDependencyFiles');
-const getSourceCodeWithoutPragma = require('./getSourceCodeWithoutPragma');
 const getMaxVersion = require('./getPragmaMaxVersion');
+const getPrivateKey = require('./getPrivateKey');
+const getRelativeFilePathsFromRoot = require('./getRelativeFilePathsFromRoot');
+const getSourceCodeWithoutPragma = require('./getSourceCodeWithoutPragma');
 const getSTDInput = require('./getSTDInput');
 const parseLogs = require('./parseLogs');
+const printOrSilent = require('./printOrSilent');
+const web3Store = require('./web3Store');
 
 module.exports = {
   ...blockchainApis,
+  caverStore,
   compile,
   compileAndDeploy,
   compilerSupplier,
