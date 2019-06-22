@@ -57,7 +57,7 @@ module.exports = async function(deployState, options) {
       )}`,
       options
     );
-    process.exit();
+    process.exit(1);
   }
 
   const compileOutput = await require('./compileAll')(

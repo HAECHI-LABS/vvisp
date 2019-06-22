@@ -138,17 +138,19 @@ Normally, make file like below:
   },
   "contracts": { (3)
     "ContractKeyName1": { (4)
-      "path": "path/to/your/contract/Contract1.sol" (5)
+      "path": "path/to/your/contract/Contract1.sol", (5)
+      "name": "Contract1" (6)
     },
     "ContractKeyName2": {
       "path": "contracts/Contract2.sol",
-      "constructorArguments": [ (6)
-        "${contracts.ContractKeyName1.address}", (7)
-        "${variables.varName}" (8)
+      "name": "Contract2",
+      "constructorArguments": [ (7)
+        "${contracts.ContractKeyName1.address}", (8)
+        "${variables.varName}" (9)
       ],
-      "initialize": { (9)
-        "functionName": "initialize", (10)
-        "arguments": [ (11)
+      "initialize": { (10)
+        "functionName": "initialize", (11)
+        "arguments": [ (12)
           "argument1",
           "argument2"
         ]
@@ -168,6 +170,9 @@ Define a constant variable as a key-value pair.
 1. Define the name of the contract.
 
 1. Set the path to the source code of this contract file.
+
+1. Set the name of the contract you want to deploy.
+Default name is the name of the file.
 
 1. If the contract has constructor arguments, write them as an array.
 If it does not exist, it can be left as an empty array.
