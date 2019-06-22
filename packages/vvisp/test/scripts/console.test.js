@@ -182,11 +182,11 @@ describe('# console script test', async function() {
 
       const dummy_apis = {
         Token: {
-          fileName: 'MainToken',
+          name: 'MainToken',
           address: '0xa0ff2297A8690383784d5A4723d72F8A2f5480D4'
         },
         Manager: {
-          fileName: 'SaleManager',
+          name: 'SaleManager',
           address: '0x3FcE06688555F67962978B3Eb44805849A4A8895'
         }
       };
@@ -251,11 +251,11 @@ describe('# console script test', async function() {
 
       const dummy_apis = {
         Token: {
-          fileName: 'MainToken',
+          name: 'MainToken',
           address: '0xa0ff2297A8690383784d5A4723d72F8A2f5480D4'
         },
         Manager: {
-          fileName: 'SaleManager',
+          name: 'SaleManager',
           address: '0x3FcE06688555F67962978B3Eb44805849A4A8895'
         }
       };
@@ -295,7 +295,7 @@ describe('# console script test', async function() {
       );
       this.apis = {
         Haechi: {
-          fileName: 'HaechiV1',
+          name: 'HaechiV1',
           address: '0x688555B34d5A480D4796723d72F8A9A4A889578F',
           api: setApi(testScriptPath, { config: { _values: {} } })['HaechiV1']
         }
