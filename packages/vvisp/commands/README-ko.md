@@ -503,21 +503,21 @@ vvisp console에서 사용가능한 command는 다음과 같습니다: call, sho
 
 
 ## flatten
-> vvisp flatten <_files..._> [options]
+> vvisp flatten <files...> [options]
 
 대상 컨트랙트들과 import된 컨트랙트들을 하나의 파일로 묶습니다. 
 
-__Options__
+#### Options
 
 `-s, --silent` : 로그를 출력하지 않습니다.
 `-o, --output <name>` : flatten의 결과값을 `name`의 파일명을 가진 파일로 현 디렉토리에 생성합니다.
 
-__Examples__
+#### Examples
 
 ```shell
 $ vvisp flatten contracts/ContractA.sol -o Output.sol
 ```
-__Outputs__ 
+#### Outputs 
 > 대상 컨트랙트들과 각 컨트랙트에 dependency가 걸려 있는 모든 파일들을 하나로 묶어 콘솔 창에 출력합니다.
 
  - `-o, --output <name>` option의 경우

@@ -511,21 +511,21 @@ The commands available in the vvisp console are call, show list help exit.
 
 
 ## flatten
-> vvisp flatten <_files..._> [options]
+> vvisp flatten <files...> [options]
 
 It bundles target contracts and imported contracts into one file. 
 
-__Options__
+#### Options
 
 `-s, --silent` : do not print logs.
 `-o, --output <name>` : Create a flatten result in the current directory as a file with a file name of `name`.
 
-__Examples__
+#### Examples
 
 ```shell
 $ vvisp flatten contracts/ContractA.sol -o Output.sol
 ```
-__Outputs__ 
+#### Outputs 
 > It bundles the target contracts and all the files that depend on each contract into a single console window.
 
  - `-o, --output <name>` option
