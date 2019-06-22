@@ -234,7 +234,7 @@ async function register() {
 
   const contractName = await getSTDInput('Enter the name of contract: ');
 
-  const questions = ['address', 'fileName'];
+  const questions = ['address', 'fileName', 'name'];
   const contract = {};
   for (const key in questions) {
     contract[questions[key]] = await getSTDInput(
@@ -386,7 +386,7 @@ function getApiInfo(apis) {
         info +
         `[${i}]`.padEnd(pad1) +
         key.padEnd(pad2) +
-        contract.fileName.padEnd(pad2) +
+        contract.name.padEnd(pad2) +
         address +
         '\n';
       i++;
@@ -454,15 +454,18 @@ function setApiAddress(rawApis, stateFilePath) {
   }
 
   for (const key of Object.keys(contracts)) {
-    const filePath = contracts[key]['fileName'];
-    if (!filePath) {
-      throw new Error('fileName does not exist in state.vvisp.json');
+    let name = contracts[key]['name'];
+    if (!name) {
+      const filePath = contracts[key]['fileName'];
+      if (!filePath) {
+        throw new Error('fileName does not exist in state.vvisp.json');
+      }
+      name = path.parse(filePath).name;
     }
 
-    const fileName = path.parse(filePath).name;
-    if (rawApis[fileName]) {
-      contracts[key]['api'] = rawApis[fileName];
-      contracts[key]['fileName'] = fileName; // TODO: check exact contract name
+    if (rawApis[name]) {
+      contracts[key]['api'] = rawApis[name];
+      contracts[key]['name'] = name;
     } else {
       // mismatch occurred between vvisp.state and apis
       throw new Error(
