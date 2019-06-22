@@ -455,9 +455,13 @@ function setApiAddress(rawApis, stateFilePath) {
   }
 
   for (const key of Object.keys(contracts)) {
-    const name = contracts[key]['name'];
+    let name = contracts[key]['name'];
     if (!name) {
-      throw new Error('The contract name does not exist in state.vvisp.json');
+      const filePath = contracts[key]['fileName'];
+      if (!filePath) {
+        throw new Error('fileName does not exist in state.vvisp.json');
+      }
+      name = path.parse(filePath).name;
     }
 
     if (rawApis[name]) {
