@@ -6,22 +6,35 @@ module.exports = async function(files, abiDir, jsDir, templatePath, options) {
 
   const output = await compile(files, options);
 
-  for (let i = 0; i < files.length; i++) {
-    const className = path.parse(files[i]).name;
-    let abi;
-    try {
-      abi = output.contracts[files[i] + ':' + className].interface;
-    } catch (e) {
-      continue;
+  const compileOutputKeys = Object.keys(output.contracts);
+  let compileInfos = {};
+
+  for (const compileOutputKey of compileOutputKeys) {
+    const splits = compileOutputKey.split(':');
+    const filePath = splits[0];
+    if (!compileInfos[filePath]) {
+      compileInfos[filePath] = [];
     }
+    compileInfos[filePath].push(splits[1]);
+  }
 
-    const jsonPath = path.join(abiDir, className + '.json');
-    const jsPath = path.join(jsDir, className + '.js');
+  for (const filePath of files) {
+    for (const contractName of compileInfos[filePath]) {
+      let abi;
+      try {
+        abi = output.contracts[filePath + ':' + contractName].interface;
+      } catch (e) {
+        continue;
+      }
 
-    fs.writeFileSync(jsonPath, abi);
+      const jsonPath = path.join(abiDir, contractName + '.json');
+      const jsPath = path.join(jsDir, contractName + '.js');
 
-    const contract = abiMaker(jsonPath);
+      fs.writeFileSync(jsonPath, abi);
 
-    render(injectInputName(contract), jsPath, templatePath);
+      const contract = abiMaker(jsonPath);
+
+      render(injectInputName(contract), jsPath, templatePath);
+    }
   }
 };
