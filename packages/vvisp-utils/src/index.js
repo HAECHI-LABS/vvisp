@@ -19,6 +19,7 @@ const getRelativeFilePathsFromRoot = require('./getRelativeFilePathsFromRoot');
 const getDependencyFiles = require('./getDependencyFiles');
 const getSourceCodeWithoutPragma = require('./getSourceCodeWithoutPragma');
 const getMaxVersion = require('./getPragmaMaxVersion');
+const getSTDInput = require('./getSTDInput');
 const parseLogs = require('./parseLogs');
 
 module.exports = {
@@ -35,13 +36,14 @@ module.exports = {
   getAllFiles,
   getCompiledContracts,
   getCycle,
-  web3Store,
-  getPrivateKey,
-  printOrSilent,
   getConfigRoot,
-  getRelativeFilePathsFromRoot,
   getDependencyFiles,
-  getSourceCodeWithoutPragma,
   getMaxVersion,
-  parseLogs
+  getPrivateKey,
+  getRelativeFilePathsFromRoot,
+  getSourceCodeWithoutPragma,
+  getSTDInput,
+  parseLogs,
+  printOrSilent,
+  web3Store
 };
