@@ -1,3 +1,5 @@
+// TODO: will be deprecated at next major version
+
 module.exports = async function(filePath, privateKey, arguments, options) {
   const compile = require('./compile');
   const deploy = require('./deploy');
