@@ -5,7 +5,6 @@ module.exports = async function(deployState, options) {
   const {
     deploy,
     forIn,
-    getCompiledContracts,
     getTxCount,
     printOrSilent
   } = require('@haechi-labs/vvisp-utils');
@@ -56,17 +55,17 @@ module.exports = async function(deployState, options) {
         continue;
       }
       const filePath = path.join('./', targets[name].path);
-      const contractName = path.parse(filePath).name;
+      const contractName = targets[name].name;
       printOrSilent(contractName + ' Contract Deploying...', options);
       const receipt = await deploy(
-        getCompiledContracts(compileOutput, filePath),
+        compileOutput.contracts[filePath + ':' + contractName],
         PRIVATE_KEY,
         contract[CONSTRUCTOR],
         { ...options, ...TX_OPTIONS, txCount: txCount + deployCount }
       );
       stateClone.paused.details[name] = true;
       contract.address = receipt.contractAddress;
-      contract.fileName = contractName + '.sol';
+      contract.fileName = path.parse(filePath).name + '.sol';
 
       if (contract.childNode && contract.childNode.length > 0) {
         for (let j = 0; j < contract.childNode.length; j++) {
@@ -90,7 +89,7 @@ module.exports = async function(deployState, options) {
       }
 
       stateClone = deployState.updateState(stateClone).getState();
-      printOrSilent(contractName + ' Contract Created!', options);
+      printOrSilent(contractName + ' Contract Deployed!', options);
       printOrSilent(
         `${chalk.success('Done')} Contract Address: ${chalk.address(
           receipt.contractAddress

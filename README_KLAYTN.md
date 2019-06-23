@@ -69,6 +69,7 @@ _Example_
   "contracts": {
     "ContractKeyName1": {
       "path": "path/to/your/contract/Contract1.sol",
+      "name": "Contract1",
       "constructorArguments": [
         "${contracts.ContractKeyName1.address}",
         "${variables.exampleVarName}"
@@ -80,6 +81,7 @@ _Example_
     },
     "ContractKeyName2": {
       "path": "path/to/your/contract/Contract2.sol",
+      "name": "Contract2",
       "initialize": {
         "functionName": "initialize",
         "arguments": ["argument1", "argument2"]
@@ -109,7 +111,8 @@ Add contract property at `service.vvisp.json#contracts` like:
 "contracts": {
   ...
   "NewContract": {
-    "path": "contracts/NewContract.sol"
+    "path": "contracts/NewContract.sol",
+    "name": "NewContract"
   }
 }
 ```

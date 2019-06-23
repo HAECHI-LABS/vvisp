@@ -177,7 +177,8 @@ This is the file where you can view the status of the currently deployed service
   "contracts": { (2)
     "ContractKeyName3": { (3)
       "address": "0x863...", (4)
-      "fileName": "Contract.sol" (5)
+      "fileName": "Contract.sol", (5)
+      "name": "Contract" (6)
     },
     "ContractKeyName1": {
       "address": "0x73c...",
@@ -191,11 +192,13 @@ This is the file where you can view the status of the currently deployed service
 
 1. Json format of the information of deployed contracts.
 
-1. Indicates the name of the name of the deployed contract.
+1. Indicates the name of the deployed contract.
 
 1. Represents the address of deployed contract.
 
-1. Represents the file name (contract name) of the currently deployed contract version.
+1. Represents the file name of the currently deployed contract version.
+
+1. Represents the contract name of the currently deployed contract version.
 
 ## gen-script
 

@@ -2,7 +2,6 @@ module.exports = function(targets, compileOutput, options) {
   const path = require('path');
   const {
     forIn,
-    getCompiledContracts,
     getCycle,
     printOrSilent
   } = require('@haechi-labs/vvisp-utils');
@@ -14,7 +13,7 @@ module.exports = function(targets, compileOutput, options) {
   forIn(targets, (contract, name) => {
     const filePath = path.join('./', contract.path);
     const abi = JSON.parse(
-      getCompiledContracts(compileOutput, filePath).interface
+      compileOutput.contracts[filePath + ':' + contract.name].interface
     );
     const hasInitialize = hasInit(contract);
     const hasConstruct = hasConstructArgs(contract);

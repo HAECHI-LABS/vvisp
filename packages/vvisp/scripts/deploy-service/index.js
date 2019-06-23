@@ -91,7 +91,7 @@ module.exports = async function(options) {
             options
           );
           printOrSilent(
-            `You can see result in ${chalk.keyWord(SERVICE_FILE)}`,
+            `You can see result in ${chalk.keyWord(STATE_FILE)}`,
             options
           );
         } else {

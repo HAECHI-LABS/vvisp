@@ -7,7 +7,8 @@ const fs = require('fs-extra');
 const genScript = require('../../../scripts/gen-script');
 
 const {
-  compileAndDeploy,
+  compile,
+  deploy,
   Config,
   forIn,
   web3Store,
@@ -134,11 +135,27 @@ describe('# gen-script process test', function() {
             web3Setting
           );
           const txCount = await web3.eth.getTransactionCount(SENDER);
-          this.receipt1 = await compileAndDeploy(CONTRACT_PATH1, PRIV_KEY, [], {
+
+          let output = await compile(CONTRACT_PATH1, {
+            silent: true
+          });
+          let deployTarget =
+            output.contracts[
+              CONTRACT_PATH1 + ':' + path.parse(CONTRACT_PATH1).name
+            ];
+          this.receipt1 = await deploy(deployTarget, PRIV_KEY, [], {
             silent: true,
             txCount: txCount
           });
-          this.receipt2 = await compileAndDeploy(CONTRACT_PATH2, PRIV_KEY, [], {
+
+          output = await compile(CONTRACT_PATH2, {
+            silent: true
+          });
+          deployTarget =
+            output.contracts[
+              CONTRACT_PATH2 + ':' + path.parse(CONTRACT_PATH2).name
+            ];
+          this.receipt2 = await deploy(deployTarget, PRIV_KEY, [], {
             silent: true,
             txCount: txCount + 1
           });

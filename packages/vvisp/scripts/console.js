@@ -3,7 +3,7 @@ const path = require('path');
 const chalk = require('chalk');
 const stringArgv = require('string-argv');
 const _ = require('lodash');
-const { parseLogs } = require('@haechi-labs/vvisp-utils');
+const { getSTDInput, parseLogs } = require('@haechi-labs/vvisp-utils');
 const { STATE_FILE } = require('../config/Constant');
 
 if (!String.prototype.format) {
@@ -110,8 +110,7 @@ function ApiCommander(apis) {
     run: async function(options) {
       while (this.end) {
         const prompt = '>> ';
-        process.stdout.write(prompt);
-        const line = await readLine();
+        const line = await getSTDInput(prompt);
         const args = stringArgv(line);
 
         if (args.length === 0) {
@@ -233,14 +232,14 @@ async function register() {
     'To dynamically register a contract to the console, write the contract name, address, and filename.'
   );
 
-  process.stdout.write('Enter the name of contract: ');
-  const contractName = await readLine();
+  const contractName = await getSTDInput('Enter the name of contract: ');
 
-  const questions = ['address', 'fileName'];
+  const questions = ['address', 'fileName', 'name'];
   const contract = {};
   for (const key in questions) {
-    process.stdout.write('Enter the {0} of contract: '.format(questions[key]));
-    contract[questions[key]] = await readLine();
+    contract[questions[key]] = await getSTDInput(
+      'Enter the {0} of the contract: '.format(questions[key])
+    );
   }
 
   const f = fs.readFileSync(defaultStateFile, { encoding: 'utf8' });
@@ -387,7 +386,7 @@ function getApiInfo(apis) {
         info +
         `[${i}]`.padEnd(pad1) +
         key.padEnd(pad2) +
-        contract.fileName.padEnd(pad2) +
+        contract.name.padEnd(pad2) +
         address +
         '\n';
       i++;
@@ -455,15 +454,18 @@ function setApiAddress(rawApis, stateFilePath) {
   }
 
   for (const key of Object.keys(contracts)) {
-    const filePath = contracts[key]['fileName'];
-    if (!filePath) {
-      throw new Error('fileName does not exist in state.vvisp.json');
+    let name = contracts[key]['name'];
+    if (!name) {
+      const filePath = contracts[key]['fileName'];
+      if (!filePath) {
+        throw new Error('fileName does not exist in state.vvisp.json');
+      }
+      name = path.parse(filePath).name;
     }
 
-    const fileName = path.parse(filePath).name;
-    if (rawApis[fileName]) {
-      contracts[key]['api'] = rawApis[fileName];
-      contracts[key]['fileName'] = fileName; // TODO: check exact contract name
+    if (rawApis[name]) {
+      contracts[key]['api'] = rawApis[name];
+      contracts[key]['name'] = name;
     } else {
       // mismatch occurred between vvisp.state and apis
       throw new Error(
@@ -499,8 +501,9 @@ async function getAddressFromSTDIN(rawApis) {
 
   const contracts = {};
   for (const key of Object.keys(rawApis)) {
-    process.stdout.write('\nEnter the address of {0}: '.format(key));
-    const address = await readLine();
+    const address = await getSTDInput(
+      '\nEnter the address of {0}: '.format(key)
+    );
     contracts[key] = {
       api: rawApis[key],
       address: address
@@ -508,16 +511,4 @@ async function getAddressFromSTDIN(rawApis) {
   }
 
   return contracts;
-}
-
-/**
- * Read one line from stdin and return it
- * @returns {Promise} Promise object to returns the value read from stdin
- */
-function readLine() {
-  return new Promise(function(resolve) {
-    process.stdin.once('data', function(data) {
-      resolve(data.toString().trim());
-    });
-  });
 }

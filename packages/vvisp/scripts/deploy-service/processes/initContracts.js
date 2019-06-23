@@ -3,11 +3,11 @@ module.exports = async function(deployState, options) {
   const { INITIALIZE, PRIVATE_KEY, TX_OPTIONS } = require('../constants');
   const {
     forIn,
+    getContractFactory,
     getTxCount,
     printOrSilent,
     sendTx
   } = require('@haechi-labs/vvisp-utils');
-  const { pathToInstance } = require('../utils/index');
 
   const { compileOutput, targets } = deployState;
   let stateClone = deployState.getState();
@@ -36,8 +36,12 @@ module.exports = async function(deployState, options) {
     const initialize = stateContract[INITIALIZE];
     if (initialize && initialize.functionName) {
       const instancePath = path.join('./', contract.path);
-      const contractName = path.parse(instancePath).name;
-      const instance = pathToInstance(compileOutput, instancePath, options);
+      const contractName = contract.name;
+      const Contract = getContractFactory(options);
+      const abi =
+        compileOutput.contracts[instancePath + ':' + contractName].interface;
+
+      const instance = new Contract(JSON.parse(abi));
       const initData = instance.methods[initialize.functionName](
         ...initialize.arguments
       ).encodeABI();
@@ -59,7 +63,7 @@ module.exports = async function(deployState, options) {
     delete stateContract.pending;
     stateClone = deployState.updateState(stateClone).getState();
   }
-  if (startCount === (await getTxCount(PRIVATE_KEY, options))) {
+  if (startCount === txCount) {
     printOrSilent('Nothing to initialize!\n', options);
   }
 };
