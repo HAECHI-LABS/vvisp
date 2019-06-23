@@ -5,7 +5,7 @@ const chalk = require('chalk');
 
 require('./options');
 
-commands.forEach(command => command.register(commander));
+commands.forEach(command => command.register(commander).addCommonOption());
 const maxLength = Math.max(
   ...commands.map(command => command.signature.length)
 );
@@ -17,7 +17,6 @@ commander
     `where <command> is one of: ${commands.map(c => c.name).join(', ')}`
   )
   .version('v' + version, '-v, --version')
-  .option('-s, --silent', 'do not print logs')
   .on('--help', () =>
     commands.forEach(c =>
       console.log(

@@ -1,5 +1,9 @@
 const commander = require('commander');
 
+commander.Command.prototype.addCommonOption = function() {
+  return this.option('-s, --silent', 'do not print logs');
+};
+
 commander.Command.prototype.addCustomConfigOption = function() {
   return this.option(
     '--configFile <fileName>',
