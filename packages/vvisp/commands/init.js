@@ -9,7 +9,9 @@ const register = commander =>
     .command(signature, { noHelp: true })
     .usage('[name]')
     .description(description)
-    .action(init)
+.action((...args) => {
+  init(...args).catch(e => console.log(e));
+})
     .addSilentOption();
 
 module.exports = { name, signature, description, register, init };
