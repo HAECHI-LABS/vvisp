@@ -10,11 +10,14 @@ Korean version: [README-ko.md](./README-ko.md)
 - [console](#console): Provides a console environment that can invoke contracts interactively.
 - [flatten](#flatten): Flatten several contract files in one file
 
-
 ## init
 > vvisp init [options]
 
 Start the project through this command.
+
+#### Options
+
+`-s, --silent` : do not print logs.
 
 #### Examples
 
@@ -72,11 +75,14 @@ Please build test code for truffle test at here.
 Before you run `$ vvisp deploy-service`, set the variables in this file.
 [See details](../../../CONFIGURATION.md#service).
 
-
 ## compile
 > vvisp compile [files...] [options]
 
 Compile solidity source code.
+
+#### Options
+
+`-s, --silent` : do not print logs.
 
 #### Examples
 
@@ -102,6 +108,7 @@ Deploy the target contract.
 
 #### Options
 
+`-s, --silent` : do not print logs.
 `-n, --network <network>`: specify the network to deploy on.  
 `-p, --platform <platform>`: specify the platform to deploy on.  
 `--gasLimit <gasLimit>` : specify gasLimit to use for deploying.  
@@ -142,6 +149,7 @@ To create `service.vvisp.json`, see [here](../../../CONFIGURATION.md#service).
 
 #### Options
 
+`-s, --silent` : do not print logs.
 `-n, --network <network>`: specify the network to deploy on.  
 `-p, --platform <platform>`: specify the platform to deploy on.  
 `--gasLimit <gasLimit>` : specify gasLimit to use for deploying.  
@@ -216,6 +224,7 @@ If there is no filename entered, this command will automatically generate script
 
 #### Options
 
+`-s, --silent` : do not print logs.
 `-f, --front <name>`: Generate JavaScript source code that can be executed in front-end (browser)
 
 
@@ -506,6 +515,7 @@ It bundles target contracts and imported contracts into one file.
 
 __Options__
 
+`-s, --silent` : do not print logs.
 `-o, --output <name>` : Create a flatten result in the current directory as a file with a file name of `name`.
 
 __Examples__

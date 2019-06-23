@@ -17,7 +17,6 @@ commander
     `where <command> is one of: ${commands.map(c => c.name).join(', ')}`
   )
   .version('v' + version, '-v, --version')
-  .option('-s, --silent', 'do not print logs')
   .on('--help', () =>
     commands.forEach(c =>
       console.log(

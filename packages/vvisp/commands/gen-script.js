@@ -11,6 +11,7 @@ const register = commander =>
     .option('-f, --front <name>', 'generate the front-end javascript library')
     .description(description)
     .action(genScript)
-    .addCustomConfigOption();
+    .addCustomConfigOption()
+    .addSilentOption();
 
 module.exports = { name, signature, description, register, genScript };
