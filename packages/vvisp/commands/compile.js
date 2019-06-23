@@ -10,6 +10,7 @@ const register = commander =>
     .usage('[files...] [options]')
     .description(description)
     .action(compile)
-    .addCustomConfigOption();
+    .addCustomConfigOption()
+    .addSilentOption();
 
 module.exports = { name, signature, description, register, compile };

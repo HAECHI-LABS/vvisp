@@ -15,6 +15,7 @@ const register = commander =>
     )
     .description(description)
     .action(deployService)
-    .addNetworkOption();
+    .addNetworkOption()
+    .addSilentOption();
 
 module.exports = { name, signature, description, register, deployService };

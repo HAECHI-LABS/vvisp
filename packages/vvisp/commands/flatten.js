@@ -10,6 +10,7 @@ const register = commander =>
     .usage('<files...>')
     .option('-o, --output <name>', 'the output file name')
     .description(description)
-    .action(flatten);
+    .action(flatten)
+    .addSilentOption();
 
 module.exports = { name, signature, description, register, flatten };

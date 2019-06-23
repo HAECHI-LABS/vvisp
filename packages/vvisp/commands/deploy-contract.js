@@ -10,6 +10,7 @@ const register = commander =>
     .usage('<file> [arguments...]')
     .description(description)
     .action(deployContract)
-    .addNetworkOption();
+    .addNetworkOption()
+    .addSilentOption();
 
 module.exports = { name, signature, description, register, deployContract };

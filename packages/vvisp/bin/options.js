@@ -1,6 +1,6 @@
 const commander = require('commander');
 
-commander.Command.prototype.addCommonOption = function() {
+commander.Command.prototype.addSilentOption = function() {
   return this.option('-s, --silent', 'do not print logs');
 };
 
