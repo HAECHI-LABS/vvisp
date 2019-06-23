@@ -9,7 +9,9 @@ const register = commander =>
     .command(signature, { noHelp: true })
     .usage('<file> [arguments...]')
     .description(description)
-    .action(deployContract)
+.action((...args) => {
+  deployContract(...args).catch(e => console.log(e));
+})
     .addNetworkOption()
     .addSilentOption();
 

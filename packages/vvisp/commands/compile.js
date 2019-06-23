@@ -9,7 +9,9 @@ const register = commander =>
     .command(signature, { noHelp: true })
     .usage('[files...] [options]')
     .description(description)
-    .action(compile)
+.action((...args) => {
+  compile(...args).catch(e => console.log(e));
+})
     .addCustomConfigOption()
     .addSilentOption();
 

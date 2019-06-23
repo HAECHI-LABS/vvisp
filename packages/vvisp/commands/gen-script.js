@@ -10,7 +10,9 @@ const register = commander =>
     .usage('[files...] [options]')
     .option('-f, --front <name>', 'generate the front-end javascript library')
     .description(description)
-    .action(genScript)
+.action((...args) => {
+  genScript(...args).catch(e => console.log(e));
+})
     .addCustomConfigOption()
     .addSilentOption();
 
