@@ -46,17 +46,30 @@ module.exports = async function(filePath, options) {
       findImports
     )
   );
-  if (compileOutput.errors) {
-    printOrSilent('\n', options);
+  if (compileOutput.errors && compileOutput.errors.length > 0) {
+    let warnings = [];
+    let errors = [];
     for (let i = 0; i < compileOutput.errors.length; i++) {
-      printOrSilent(compileOutput.errors[i], options);
+      if (compileOutput.errors[i].severity === 'warning') {
+        warnings.push(compileOutput.errors[i].formattedMessage);
+      } else if (compileOutput.errors[i].severity === 'error') {
+        errors.push(compileOutput.errors[i].formattedMessage);
+      }
     }
 
-    if (
-      compileOutput.errors.length > 0 &&
-      Object.keys(compileOutput.contracts).length === 0
-    ) {
-      throw new Error('Compilation Error!');
+    if (warnings.length > 0) {
+      printOrSilent('\nWarnings:', options);
+      for (let warnMsg of warnings) {
+        printOrSilent(warnMsg, options);
+      }
+    }
+
+    if (errors.length > 0) {
+      printOrSilent('\nErrors:', options);
+      for (let errMsg of errors) {
+        printOrSilent(errMsg, options);
+      }
+      throw new Error('Compilation Error');
     }
   }
   return fiveToFour(compileOutput);
