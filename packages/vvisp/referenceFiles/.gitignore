@@ -1,7 +1,0 @@
-build
-coverage
-node_modules
-
-coverage.json
-package-lock.json
-.idea/
