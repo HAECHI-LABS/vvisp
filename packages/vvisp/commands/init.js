@@ -12,6 +12,7 @@ const register = commander =>
     .action((...args) => {
       init(...args).catch(e => console.log(e));
     })
+    .option('--klaytn', 'initialize package for klaytn platform')
     .addSilentOption();
 
 module.exports = { name, signature, description, register, init };

@@ -136,7 +136,6 @@ Then run `vvisp console` and operate functions of your contracts.
 ## Contract
 
 - Create your own contracts in `contracts/` directory.
-- Not recommend modifying contracts in `vvsip/` directory.
 
 ## Test
 
