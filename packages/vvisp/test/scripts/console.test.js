@@ -162,17 +162,6 @@ describe('# console script test', async function() {
     });
   });
 
-  describe('readLine', function() {
-    const readLine = consoleTest.__get__('readLine');
-
-    it('should read one line.', async function() {
-      const input = 'hello';
-      bddStdin(input);
-      const line = await readLine();
-      line.should.be.equal(input);
-    });
-  });
-
   describe('printApiInfo', function() {
     const getApiInfo = consoleTest.__get__('getApiInfo');
 

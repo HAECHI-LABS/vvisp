@@ -80,5 +80,7 @@ module.exports = async function(file, arguments, options) {
   printOrSilent('Contract Address: ' + receipt.contractAddress, options);
 
   printOrSilent('Deployment Finished!', options);
-  process.exit();
+  if (!options || !options.test) {
+    process.exit();
+  }
 };
