@@ -41,10 +41,13 @@ root/
 ├──── local_eth_ganache_option.js
 ├── test/
 ├──── Example.test.js
+├── .babelrc
+├── .gitattributes
+├── .gitignore
 ├── .solcover.js
 ├── .soliumignore
 ├── .soliumrc.json
-├── .package.json
+├── package.json
 ├── service.vvisp.json
 ├── truffle-config.json
 └── vvisp-config.json
