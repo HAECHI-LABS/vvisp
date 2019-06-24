@@ -41,7 +41,14 @@ module.exports = {
   },
   compilers: {
     solc: {
-      version: '0.4.24'
+      version: '0.4.24',
+      settings: {
+        optimizer: {
+          enabled: true,
+          runs: 200
+        },
+        evmVersion: 'byzantium'
+      }
     }
   },
   from: { // or from: 'YOUR_PRIVATE_KEY'
