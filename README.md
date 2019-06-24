@@ -104,7 +104,7 @@ module.exports = {
   networks: {
     development: {
       url: 'URL_TO_ETHEREUM_NODE',
-      gasLimit: 6000000,
+      gasLimit: 6721975,
     }
   },
   compilers: {
@@ -135,7 +135,7 @@ _Example_
   },
   "contracts": {
     "ContractKeyName1": {
-      "path": "path/to/your/contract/Contract1.sol",
+      "path": "./contracts/Contract1.sol",
       "name": "Contract1",
       "constructorArguments": [
         "${contracts.ContractKeyName1.address}",
@@ -147,7 +147,7 @@ _Example_
       }
     },
     "ContractKeyName2": {
-      "path": "path/to/your/contract/Contract2.sol",
+      "path": "./contracts/Contract2.sol",
       "name": "Contract2",
       "initialize": {
         "functionName": "initialize",

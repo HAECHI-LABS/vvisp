@@ -36,7 +36,7 @@ module.exports = {
     development: {
       platform: 'klaytn',
       url: 'URL_TO_KLAYTN_NODE',
-      gasLimit: 6000000,
+      gasLimit: 10000000, // increase if you need
     }
   },
   compilers: {
@@ -67,7 +67,7 @@ _Example_
   },
   "contracts": {
     "ContractKeyName1": {
-      "path": "path/to/your/contract/Contract1.sol",
+      "path": "./contracts/Contract1.sol",
       "name": "Contract1",
       "constructorArguments": [
         "${contracts.ContractKeyName1.address}",
@@ -79,7 +79,7 @@ _Example_
       }
     },
     "ContractKeyName2": {
-      "path": "path/to/your/contract/Contract2.sol",
+      "path": "./contracts/Contract2.sol",
       "name": "Contract2",
       "initialize": {
         "functionName": "initialize",
@@ -110,7 +110,7 @@ Add contract property at `service.vvisp.json#contracts` like:
 "contracts": {
   ...
   "NewContract": {
-    "path": "contracts/NewContract.sol",
+    "path": "./contracts/NewContract.sol",
     "name": "NewContract"
   }
 }

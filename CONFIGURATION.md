@@ -116,6 +116,7 @@ module.exports = {
 
 You can change some of the environment variables mentioned above by using option when you run command.
 ```
+`-s, --silent` // Do not print any logs.
 --configFile <fileName> // Read and use your custom configuration file.
 -n, --network <network> // Change the network.
 -p, --platform <platform> // Change the platform.
@@ -138,11 +139,11 @@ Normally, make file like below:
   },
   "contracts": { (3)
     "ContractKeyName1": { (4)
-      "path": "path/to/your/contract/Contract1.sol", (5)
+      "path": "./contracts/Contract1.sol", (5)
       "name": "Contract1" (6)
     },
     "ContractKeyName2": {
-      "path": "contracts/Contract2.sol",
+      "path": "./contracts/Contract2.sol",
       "name": "Contract2",
       "constructorArguments": [ (7)
         "${contracts.ContractKeyName1.address}", (8)

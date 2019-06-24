@@ -14,6 +14,7 @@ English version: [CONTRIBUTING.md](./CONFIGURATION.md)
 ## Prerequisites
 Install modules:
 ```bash
+$ npm install -g lerna
 $ cd vvisp
 $ npm run bootstrap
 ```

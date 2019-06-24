@@ -23,7 +23,7 @@ If you specify directory name in [name], `name` directory will be generated and 
 
 #### Examples
 
-```shell
+```bash
 $ vvisp init
 ```
 
@@ -88,7 +88,7 @@ Compile solidity source code.
 
 #### Examples
 
-```shell
+```bash
 $ vvisp compile contracts/A.sol contracts/B.sol
 ```
 
@@ -119,7 +119,7 @@ Deploy the target contract.
 
 #### Examples
 
-```shell
+```bash
 $ vvisp deploy-contract contracts/ContractA.sol input1 input2
 ```
 
@@ -161,7 +161,7 @@ To create `service.vvisp.json`, see [here](../../../CONFIGURATION.md#service).
 
 #### Example
 
-```
+```bash
 $ vvisp deploy-service
 ```
 
@@ -181,18 +181,19 @@ __`state.vvisp.json`__
 
 This is the file where you can view the status of the currently deployed service.
 
-```
+```json
 {
-  "serviceName": "Haechi", (1)
-  "contracts": { (2)
-    "ContractKeyName3": { (3)
-      "address": "0x863...", (4)
-      "fileName": "Contract.sol", (5)
-      "name": "Contract" (6)
+  "serviceName": "Haechi", //(1)
+  "contracts": { //(2)
+    "ContractKeyName1": { //(3)
+      "address": "0x863...", //(4)
+      "fileName": "Contract1.sol", //(5)
+      "name": "Contract1" //(6)
     },
-    "ContractKeyName1": {
+    "ContractKeyName2": {
       "address": "0x73c...",
-      "fileName": "Contract1_V0.sol",
+      "fileName": "Contract2.sol",
+      "name": "Contract2"
     }
   }
 }
@@ -511,21 +512,21 @@ The commands available in the vvisp console are call, show list help exit.
 
 
 ## flatten
-> vvisp flatten <_files..._> [options]
+> vvisp flatten <files...> [options]
 
 It bundles target contracts and imported contracts into one file. 
 
-__Options__
+#### Options
 
 `-s, --silent` : do not print logs.
 `-o, --output <name>` : Create a flatten result in the current directory as a file with a file name of `name`.
 
-__Examples__
+#### Examples
 
-```shell
+```bash
 $ vvisp flatten contracts/ContractA.sol -o Output.sol
 ```
-__Outputs__ 
+#### Outputs 
 > It bundles the target contracts and all the files that depend on each contract into a single console window.
 
  - `-o, --output <name>` option
