@@ -14,10 +14,9 @@ Use version >= v2.0.0
 
 **2. Initialize your directory**
 ```bash
-$ mkdir vvisp-sample
-$ cd vvisp-sample
+$ vvisp init my-project
+$ cd my-project
 
-$ vvisp init
 $ npm install #or yarn install
 ```
 **3. Make your Contracts at `contracts/`**

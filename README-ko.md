@@ -64,11 +64,11 @@ EF gave the grants to HAECHI LABS at [ethcon korea 2019](https://ethcon.kr/).
 
 [Node.js](http://nodejs.org/)가 설치되어야 합니다.
 이후, [npm](https://npmjs.com/)를 설치하신 후
-```sh
+```bash
 $ npm install -g @haechi-labs/vvisp
 ```
 을 실행하거나 [yarn](https://yarnpkg.com)을 설치 후
-```sh
+```bash
 $ yarn global add @haechi-labs/vvisp
 ```
 을 실행하여 주세요.
@@ -78,11 +78,10 @@ $ yarn global add @haechi-labs/vvisp
 `vvisp`을 사용한 예제 프로젝트를 참고하시려면 [이곳](https://github.com/HAECHI-LABS/vvisp-sample)을 참고해주세요.
 
 **1. 프로젝트 생성**
-```sh
-$ mkdir my-project
+```bash
+$ vvisp init my-project
 $ cd my-project
 
-$ vvisp init
 $ npm install #or yarn install
 ```
 `` $ npm init `` 혹은 ``$ truffle init``을 실행하지 않아도 됩니다.

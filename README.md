@@ -64,11 +64,11 @@ However, `vvisp` is designed to execute a specific function of a contract with a
 
 Install [Node.js](http://nodejs.org/) first.
 Then, install [npm](https://npmjs.com/) and
-```sh
+```bash
 $ npm install -g @haechi-labs/vvisp
 ```
 or install [yarn](https://yarnpkg.com) and
-```sh
+```bash
 $ yarn global add @haechi-labs/vvisp
 ```
 
@@ -77,11 +77,10 @@ $ yarn global add @haechi-labs/vvisp
 If you want to see sample repository, see [here](https://github.com/HAECHI-LABS/vvisp-sample).
 
 **1. Start your project**
-```sh
-$ mkdir my-project
+```bash
+$ vvisp init my-project
 $ cd my-project
 
-$ vvisp init
 $ npm install #or yarn install
 ```
 You don't have to do `` $ npm init `` or ``$ truffle init``.
