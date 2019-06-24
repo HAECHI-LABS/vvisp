@@ -11,9 +11,11 @@ Korean version: [README-ko.md](./README-ko.md)
 - [flatten](#flatten): Flatten several contract files in one file
 
 ## init
-> vvisp init [options]
+> vvisp init [name] [options]
 
 Start the project through this command.
+
+If you specify directory name in [name], `name` directory will be generated and vvisp will initialize at there.
 
 #### Options
 

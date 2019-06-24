@@ -9,10 +9,6 @@ describe('# init script test', function() {
   this.timeout(50000);
   const directoryName = 'a8feya73db';
 
-  before(function() {
-    fs.ensureDirSync(path.join('./', directoryName));
-  });
-
   after(function() {
     fs.removeSync(path.join('./', directoryName));
   });
@@ -22,8 +18,7 @@ describe('# init script test', function() {
   });
 
   it('should initialize directory properly', async function() {
-    await init(undefined, { directory: directoryName, silent: true }).should.be
-      .fulfilled;
+    await init(directoryName, { silent: true }).should.be.fulfilled;
   });
 
   it('should have right directories', function() {
