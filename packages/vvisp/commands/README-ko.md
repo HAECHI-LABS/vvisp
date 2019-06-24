@@ -11,9 +11,11 @@ English version: [README.md](./README.md)
 - [flatten](#flatten): 여러 컨트랙트들을 하나의 파일로 병합
 
 ## init
-> vvisp init [options]
+> vvisp init [name] [options]
 
 해당 명령어를 통해 프로젝트를 시작합니다.
+
+[name] 인자에 패키지 명을 기입할 경우, vvisp은 [name] 폴더를 생성하고 그 곳에서 패키지를 구축합니다.
 
 #### Options
 

@@ -14,9 +14,9 @@ const register = commander =>
       'force deploying, it removes current state.vvisp.json'
     )
     .description(description)
-.action((...args) => {
-  deployService(...args).catch(e => console.log(e));
-})
+    .action((...args) => {
+      deployService(...args).catch(e => console.log(e));
+    })
     .addNetworkOption()
     .addSilentOption();
 

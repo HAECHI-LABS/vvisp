@@ -3,13 +3,16 @@ module.exports = async function(name, options) {
   const fs = require('fs-extra');
   const chalk = require('chalk');
 
+  const { SERVICE_FILE, DEFAULT_CONFIG_FILE } = require('../config/Constant');
+
   const { printOrSilent } = require('@haechi-labs/vvisp-utils');
 
   const PACKAGE_JSON = path.join(__dirname, '../package.json');
 
   let rootDir = path.join('./');
-  if (options && options.directory) {
-    rootDir = path.join(options.directory);
+  if (name) {
+    fs.ensureDirSync(path.join('./', name));
+    rootDir = path.join(name);
   }
 
   if (fs.readdirSync(rootDir).length > 0) {
@@ -68,11 +71,11 @@ module.exports = async function(name, options) {
     fs.copySync(path.join(__dirname, '../referenceFiles'), rootDir);
     fs.renameSync(
       path.join(rootDir, 'example.vvisp-config.js'),
-      path.join(rootDir, 'vvisp-config.js')
+      path.join(rootDir, DEFAULT_CONFIG_FILE)
     );
     fs.renameSync(
       path.join(rootDir, 'example.service.vvisp.json'),
-      path.join(rootDir, 'service.vvisp.json')
+      path.join(rootDir, SERVICE_FILE)
     );
     fs.renameSync(
       path.join(rootDir, 'example.gitignore'),
@@ -85,6 +88,17 @@ module.exports = async function(name, options) {
     fs.writeFileSync(
       path.join(rootDir, 'package.json'),
       JSON.stringify(pkg, null, '  '),
+      'utf8'
+    );
+
+    const serviceFile = fs.readJsonSync(path.join(rootDir, SERVICE_FILE));
+
+    serviceFile.serviceName = name
+      ? name
+      : path.parse(path.resolve(rootDir)).name;
+    fs.writeFileSync(
+      path.join(rootDir, SERVICE_FILE),
+      JSON.stringify(serviceFile, null, '  '),
       'utf8'
     );
   }
