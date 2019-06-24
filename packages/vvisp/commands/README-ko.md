@@ -23,7 +23,7 @@ English version: [README.md](./README.md)
 
 #### Examples
 
-```shell
+```bash
 $ vvisp init
 ```
 
@@ -88,7 +88,7 @@ solidity 소스 코드를 컴파일 합니다.
 
 #### Examples
 
-```shell
+```bash
 $ vvisp compile contracts/A.sol contracts/B.sol
 ```
 
@@ -119,7 +119,7 @@ build/contracts/
 
 #### Examples
 
-```shell
+```bash
 $ vvisp deploy-contract contracts/ContractA.sol input1 input2
 ```  
 
@@ -160,7 +160,7 @@ Contract Address : 0xcfb...
 
 #### Example
 
-```
+```bash
 $ vvisp deploy-service
 ```
 
@@ -179,18 +179,19 @@ __`state.vvisp.json`__
 
 현재 배포된 서비스의 상태를 볼 수 있는 파일입니다.
 
-```
+```json
 {
-  "serviceName": "Haechi", (1)
-  "contracts": { (2)
-    "ContractKeyName3": { (3)
-      "address": "0x863...", (4)
-      "fileName": "Contract.sol", (5)
-      "name": "Contract" (6)
+  "serviceName": "Haechi", //(1)
+  "contracts": { //(2)
+    "ContractKeyName1": { //(3)
+      "address": "0x863...", //(4)
+      "fileName": "Contract1.sol", //(5)
+      "name": "Contract1" //(6)
     },
-    "ContractKeyName1": {
+    "ContractKeyName2": {
       "address": "0x73c...",
-      "fileName": "Contract1_V0.sol",
+      "fileName": "Contract2.sol",
+      "name": "Contract2"
     }
   }
 }
@@ -514,7 +515,7 @@ vvisp console에서 사용가능한 command는 다음과 같습니다: call, sho
 
 #### Examples
 
-```shell
+```bash
 $ vvisp flatten contracts/ContractA.sol -o Output.sol
 ```
 #### Outputs 

@@ -116,6 +116,7 @@ module.exports = {
 
 명령어 입력 시 옵션을 통해 상기 기술된 환경 변수 중 일부를 변경해서 사용가능합니다.
 ```
+`-s, --silent` // 로그를 출력하지 않습니다.
 --configFile <fileName> // custom한 설정 파일을 읽어 사용합니다.
 -n, --network <network> // network를 변경합니다.
 -p, --platform <platform> // platform을 변경합니다.

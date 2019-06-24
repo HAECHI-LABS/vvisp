@@ -116,6 +116,7 @@ module.exports = {
 
 You can change some of the environment variables mentioned above by using option when you run command.
 ```
+`-s, --silent` // Do not print any logs.
 --configFile <fileName> // Read and use your custom configuration file.
 -n, --network <network> // Change the network.
 -p, --platform <platform> // Change the platform.

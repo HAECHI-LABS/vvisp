@@ -135,12 +135,8 @@ _Example_
   },
   "contracts": {
     "ContractKeyName1": {
-<<<<<<< HEAD
-      "path": "path/to/your/contract/Contract1.sol",
-      "name": "Contract1",
-=======
       "path": "./contracts/Contract1.sol",
->>>>>>> docs: update recommended service.vvisp.json
+      "name": "Contract1",
       "constructorArguments": [
         "${contracts.ContractKeyName1.address}",
         "${variables.exampleVarName}"
@@ -151,12 +147,8 @@ _Example_
       }
     },
     "ContractKeyName2": {
-<<<<<<< HEAD
-      "path": "path/to/your/contract/Contract2.sol",
-      "name": "Contract2",
-=======
       "path": "./contracts/Contract2.sol",
->>>>>>> docs: update recommended service.vvisp.json
+      "name": "Contract2",
       "initialize": {
         "functionName": "initialize",
         "arguments": ["argument1", "argument2"]
