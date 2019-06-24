@@ -10,11 +10,11 @@ $ npm install -g @haechi-labs/vvisp
 #or if you use yarn
 $ yarn global add @haechi-labs/vvisp
 ```
-Use version >= v2.0.0
+Use version >= v2.1.0
 
 **2. Initialize your directory**
 ```bash
-$ vvisp init my-project
+$ vvisp init my-project --klaytn
 $ cd my-project
 
 $ npm install #or yarn install

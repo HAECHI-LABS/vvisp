@@ -19,7 +19,8 @@ If you specify directory name in [name], `name` directory will be generated and 
 
 #### Options
 
-`-s, --silent` : do not print logs.
+`-s, --silent` : do not print logs.  
+`--klaytn`: initialize for klaytn platform.
 
 #### Examples
 
@@ -84,7 +85,7 @@ Compile solidity source code.
 
 #### Options
 
-`-s, --silent` : do not print logs.
+`-s, --silent` : do not print logs.  
 
 #### Examples
 
@@ -110,7 +111,7 @@ Deploy the target contract.
 
 #### Options
 
-`-s, --silent` : do not print logs.
+`-s, --silent` : do not print logs.  
 `-n, --network <network>`: specify the network to deploy on.  
 `-p, --platform <platform>`: specify the platform to deploy on.  
 `--gasLimit <gasLimit>` : specify gasLimit to use for deploying.  
@@ -151,7 +152,7 @@ To create `service.vvisp.json`, see [here](../../../CONFIGURATION.md#service).
 
 #### Options
 
-`-s, --silent` : do not print logs.
+`-s, --silent` : do not print logs.  
 `-n, --network <network>`: specify the network to deploy on.  
 `-p, --platform <platform>`: specify the platform to deploy on.  
 `--gasLimit <gasLimit>` : specify gasLimit to use for deploying.  
@@ -518,7 +519,7 @@ It bundles target contracts and imported contracts into one file.
 
 #### Options
 
-`-s, --silent` : do not print logs.
+`-s, --silent` : do not print logs.  
 `-o, --output <name>` : Create a flatten result in the current directory as a file with a file name of `name`.
 
 #### Examples
