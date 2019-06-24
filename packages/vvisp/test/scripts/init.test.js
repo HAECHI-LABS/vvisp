@@ -41,6 +41,9 @@ describe('# init script test', function() {
       fs.existsSync(path.join(directoryName, '.gitignore')).should.be.equal(
         true
       );
+      fs.existsSync(path.join(directoryName, '.gitattributes')).should.be.equal(
+        true
+      );
       fs.existsSync(path.join(directoryName, '.solcover.js')).should.be.equal(
         true
       );
