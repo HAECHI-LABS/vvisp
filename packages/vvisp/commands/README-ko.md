@@ -19,7 +19,8 @@ English version: [README.md](./README.md)
 
 #### Options
 
-`-s, --silent` : 로그를 출력하지 않습니다.
+`-s, --silent` : 로그를 출력하지 않습니다.  
+`--klaytn`: klaytn 플랫폼에 맞춰 폴더를 구축합니다.
 
 #### Examples
 
@@ -84,7 +85,7 @@ solidity 소스 코드를 컴파일 합니다.
 
 #### Options
 
-`-s, --silent` : 로그를 출력하지 않습니다.
+`-s, --silent` : 로그를 출력하지 않습니다.  
 
 #### Examples
 
@@ -110,7 +111,7 @@ build/contracts/
 
 #### Options
 
-`-s, --silent` : 로그를 출력하지 않습니다.
+`-s, --silent` : 로그를 출력하지 않습니다.  
 `-n, --network <network>`: 배포할 네트워크를 설정합니다.  
 `-p, --platform <platform>`: 배포할 플랫폼을 설정합니다.  
 `--gasLimit <gasLimit>` : 배포 시 사용할 gasLimit을 설정합니다.  
@@ -150,7 +151,7 @@ Contract Address : 0xcfb...
 
 #### Options
 
-`-s, --silent` : 로그를 출력하지 않습니다.
+`-s, --silent` : 로그를 출력하지 않습니다.  
 `-n, --network <network>`: 배포할 네트워크를 설정합니다.  
 `-p, --platform <platform>`: specify the platform to deploy on.  
 `--gasLimit <gasLimit>` : 배포 시 사용할 gasLimit을 설정합니다.  
@@ -222,7 +223,7 @@ __`state.vvisp.json`__
 
 #### Options
 
-`-s, --silent` : 로그를 출력하지 않습니다.
+`-s, --silent` : 로그를 출력하지 않습니다.  
 `-f, --front <name>`: front-end(브라우저)에서 실행 가능한 자바스크립트 소스코드로 생성합니다.
 
 만약 입력한 파일명이 없다면 이 명령어는 자동적으로 `contracts/` 폴더 안의 모든 솔리디티 파일을 대상으로한 스크립트를 생성합니다.
@@ -510,7 +511,7 @@ vvisp console에서 사용가능한 command는 다음과 같습니다: call, sho
 
 #### Options
 
-`-s, --silent` : 로그를 출력하지 않습니다.
+`-s, --silent` : 로그를 출력하지 않습니다.  
 `-o, --output <name>` : flatten의 결과값을 `name`의 파일명을 가진 파일로 현 디렉토리에 생성합니다.
 
 #### Examples

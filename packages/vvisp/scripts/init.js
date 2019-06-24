@@ -66,9 +66,17 @@ module.exports = async function(name, options) {
   }
 
   function initializeDirectory(options, rootDir) {
-    fs.ensureDirSync(path.join(rootDir, 'contracts'));
-
     fs.copySync(path.join(__dirname, '../referenceFiles'), rootDir);
+    let platform = 'ethereum';
+    if (options.klaytn) {
+      platform = 'klaytn';
+    }
+    fs.copySync(
+      path.join(__dirname, '../referenceFiles/platform', platform),
+      rootDir
+    );
+    fs.removeSync(path.join(rootDir, 'platform'));
+
     fs.renameSync(
       path.join(rootDir, 'example.vvisp-config.js'),
       path.join(rootDir, DEFAULT_CONFIG_FILE)
