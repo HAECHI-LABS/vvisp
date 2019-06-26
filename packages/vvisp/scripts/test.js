@@ -23,34 +23,29 @@ module.exports = async function(files, options) {
 };
 
 function spawnTemporaryGanache(options) {
-  let ganacheBinPath;
-  let port;
+  let args;
 
   if (options.coverage) {
-    ganacheBinPath = './node_modules/.bin/testrpc-sc';
-    port = 8555;
+    args = ['testrpc-sc', '--port=8555', '--gasLimit=0xfffffffffff'];
   } else {
-    ganacheBinPath = './node_modules/.bin/ganache-cli';
-    port = 8545;
+    args = ['ganache-cli', '--port=8545', '--gasLimit=0xfffffffffff'];
   }
 
-  return spawn(ganacheBinPath, [`--port=${port}`, '--gasLimit=0xfffffffffff']);
+  return spawn('npx', args);
 }
 
 function spawnTest(files, options) {
-  let testBinPath;
-  let args = [];
+  let args;
 
   if (options.coverage) {
-    testBinPath = './node_modules/.bin/solidity-coverage';
+    args = ['solidity-coverage'];
   } else {
-    testBinPath = './node_modules/.bin/truffle';
-    args.push('test');
+    args = ['truffle', 'test'];
   }
 
   args = args.concat(files);
 
-  return spawn(testBinPath, args);
+  return spawn('npx', args);
 }
 
 function addListenerToTestProcess(testProcess, ganacheProcess, options) {
