@@ -1,13 +1,13 @@
-const debugModule = require("debug");
-const debug = debugModule("lib:debug:printer");
+const debugModule = require('debug');
+const debug = debugModule('lib:debug:printer');
 
-const path = require("path");
-const safeEval = require("safe-eval");
+const path = require('path');
+const safeEval = require('safe-eval');
 
-const DebugUtils = require("truffle-debug-utils");
+const DebugUtils = require('truffle-debug-utils');
 
-const selectors = require("truffle-debugger").selectors;
-const { session, solidity, trace, controller, evm } = selectors;
+const selectors = require('truffle-debugger').selectors;
+const { session, solidity, trace, controller } = selectors;
 
 class DebugPrinter {
   constructor(config, session) {
@@ -18,11 +18,11 @@ class DebugPrinter {
 
       try {
         selector = expr
-          .split(".")
+          .split('.')
           .filter(next => next.length > 0)
           .reduce((sel, next) => sel[next], selectors);
       } catch (_) {
-        throw new Error("Unknown selector: %s", expr);
+        throw new Error('Unknown selector: %s', expr);
       }
 
       // throws its own exception
@@ -39,39 +39,39 @@ class DebugPrinter {
   printAddressesAffected() {
     const affectedInstances = this.session.view(session.info.affectedInstances);
 
-    this.config.logger.log("");
-    this.config.logger.log("Addresses called: (not created)");
+    this.config.logger.log('');
+    this.config.logger.log('Addresses called: (not created)');
     this.config.logger.log(
       DebugUtils.formatAffectedInstances(affectedInstances)
     );
   }
 
   printHelp() {
-    this.config.logger.log("");
+    this.config.logger.log('');
     this.config.logger.log(DebugUtils.formatHelp());
   }
 
   printFile() {
-    let message = "";
+    let message = '';
 
-    debug("about to determine sourcePath");
+    debug('about to determine sourcePath');
     const sourcePath = this.session.view(solidity.current.source).sourcePath;
 
     if (sourcePath) {
       message += path.basename(sourcePath);
     } else {
-      message += "?";
+      message += '?';
     }
 
-    this.config.logger.log("");
-    this.config.logger.log(message + ":");
+    this.config.logger.log('');
+    this.config.logger.log(message + ':');
   }
 
   printState() {
     const source = this.session.view(solidity.current.source).source;
     const range = this.session.view(solidity.current.sourceRange);
-    debug("source: %o", source);
-    debug("range: %o", range);
+    debug('source: %o', source);
+    debug('range: %o', range);
 
     // We were splitting on OS.EOL, but it turns out on Windows,
     // in some environments (perhaps?) line breaks are still denoted by just \n
@@ -79,18 +79,18 @@ class DebugPrinter {
 
     if (!source) {
       this.config.logger.log();
-      this.config.logger.log("1: // No source code found.");
-      this.config.logger.log("");
+      this.config.logger.log('1: // No source code found.');
+      this.config.logger.log('');
       return;
     }
 
     const lines = splitLines(source);
 
-    this.config.logger.log("");
+    this.config.logger.log('');
 
     this.config.logger.log(DebugUtils.formatRangeLines(lines, range.lines));
 
-    this.config.logger.log("");
+    this.config.logger.log('');
   }
 
   printInstruction() {
@@ -99,14 +99,14 @@ class DebugPrinter {
     const traceIndex = this.session.view(trace.index);
     const totalSteps = this.session.view(trace.steps).length;
 
-    this.config.logger.log("");
+    this.config.logger.log('');
     this.config.logger.log(
       DebugUtils.formatInstruction(traceIndex + 1, totalSteps, instruction)
     );
     this.config.logger.log(DebugUtils.formatPC(step.pc));
     this.config.logger.log(DebugUtils.formatStack(step.stack));
-    this.config.logger.log("");
-    this.config.logger.log(step.gas + " gas remaining");
+    this.config.logger.log('');
+    this.config.logger.log(step.gas + ' gas remaining');
   }
 
   /**
@@ -116,18 +116,18 @@ class DebugPrinter {
     const result = this.select(selector);
     const debugSelector = debugModule(selector);
     debugSelector.enabled = true;
-    debugSelector("%O", result);
+    debugSelector('%O', result);
   }
 
   printWatchExpressions(expressions) {
     if (expressions.size === 0) {
-      this.config.logger.log("No watch expressions added.");
+      this.config.logger.log('No watch expressions added.');
       return;
     }
 
-    this.config.logger.log("");
+    this.config.logger.log('');
     expressions.forEach(function(expression) {
-      this.config.logger.log("  " + expression);
+      this.config.logger.log('  ' + expression);
     });
   }
 
@@ -151,23 +151,23 @@ class DebugPrinter {
           currentLocation.source.id,
           sourceNames
         );
-        this.config.logger.log("  Breakpoint at " + locationMessage);
+        this.config.logger.log('  Breakpoint at ' + locationMessage);
       }
     } else {
-      this.config.logger.log("No breakpoints added.");
+      this.config.logger.log('No breakpoints added.');
     }
   }
 
   async printWatchExpressionsResults(expressions) {
-    debug("expressions %o", expressions);
+    debug('expressions %o', expressions);
     for (let expression of expressions) {
       this.config.logger.log(expression);
       // Add some padding. Note: This won't work with all loggers,
       // meaning it's not portable. But doing this now so we can get something
       // pretty until we can build more architecture around this.
       // Note: Selector results already have padding, so this isn't needed.
-      if (expression[0] === ":") {
-        process.stdout.write("  ");
+      if (expression[0] === ':') {
+        process.stdout.write('  ');
       }
       await this.printWatchExpressionResult(expression);
     }
@@ -177,7 +177,7 @@ class DebugPrinter {
     const type = expression[0];
     const exprArgs = expression.substring(1);
 
-    if (type === "!") {
+    if (type === '!') {
       this.printSelector(exprArgs);
     } else {
       await this.evalAndPrintExpression(exprArgs, 2, true);
@@ -187,7 +187,7 @@ class DebugPrinter {
   async printVariables() {
     let variables = await this.session.variables();
 
-    debug("variables %o", variables);
+    debug('variables %o', variables);
 
     // Get the length of the longest name.
     const longestNameLength = Math.max.apply(
@@ -200,16 +200,16 @@ class DebugPrinter {
     this.config.logger.log();
 
     Object.keys(variables).forEach(name => {
-      let paddedName = name + ":";
+      let paddedName = name + ':';
 
       while (paddedName.length <= longestNameLength) {
-        paddedName = " " + paddedName;
+        paddedName = ' ' + paddedName;
       }
 
       const value = variables[name];
       const formatted = DebugUtils.formatValue(value, longestNameLength + 5);
 
-      this.config.logger.log("  " + paddedName, formatted);
+      this.config.logger.log('  ' + paddedName, formatted);
     });
 
     this.config.logger.log();
@@ -233,7 +233,7 @@ class DebugPrinter {
     // converts all !<...> expressions to JS-valid selector requests
     const preprocessSelectors = expr => {
       const regex = /!<([^>]+)>/g;
-      const select = "$"; // expect repl context to have this func
+      const select = '$'; // expect repl context to have this func
       const replacer = (_, selector) => `${select}("${selector}")`;
 
       return expr.replace(regex, replacer);
@@ -265,22 +265,22 @@ class DebugPrinter {
     //HACK -- we can't use "this" as a variable name, so we're going to
     //find an available replacement name, and then modify the context
     //and expression appropriately
-    let pseudoThis = "_this";
+    let pseudoThis = '_this';
     while (pseudoThis in context) {
-      pseudoThis = "_" + pseudoThis;
+      pseudoThis = '_' + pseudoThis;
     }
     //in addition to pseudoThis, which replaces this, we also have
     //pseudoPseudoThis, which replaces pseudoThis in order to ensure
     //that any uses of pseudoThis yield an error instead of showing this
-    let pseudoPseudoThis = "thereisnovariableofthatname";
+    let pseudoPseudoThis = 'thereisnovariableofthatname';
     while (pseudoPseudoThis in context) {
-      pseudoPseudoThis = "_" + pseudoPseudoThis;
+      pseudoPseudoThis = '_' + pseudoPseudoThis;
     }
     context = DebugUtils.cleanThis(context, pseudoThis);
     let expr = raw.replace(
       //those characters in [] are the legal JS variable name characters
       //note that pseudoThis contains no special characters
-      new RegExp("(?<![a-zA-Z0-9_$])" + pseudoThis + "(?![a-zA-Z0-9_$])"),
+      new RegExp('(?<![a-zA-Z0-9_$])' + pseudoThis + '(?![a-zA-Z0-9_$])'),
       pseudoPseudoThis
     );
     expr = expr.replace(
@@ -311,7 +311,7 @@ class DebugPrinter {
       //     at ContextifyScript.Script.runInContext (vm.js:59:29)
       //
       // We want to hide this from the user if there's an error.
-      e.stack = e.stack.replace(/SAFE_EVAL_\d+=/, "");
+      e.stack = e.stack.replace(/SAFE_EVAL_\d+=/, '');
       if (!suppress) {
         this.config.logger.log(e);
       } else {
