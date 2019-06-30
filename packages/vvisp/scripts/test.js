@@ -1,69 +1,70 @@
+const portscanner = require('portscanner');
+const spawn = require('cross-spawn');
+const kill = require('tree-kill');
 const { printOrSilent } = require('@haechi-labs/vvisp-utils');
-const { exec, execFile, execSync, spawn } = require('child_process');
 
 module.exports = async function(files, options) {
-  let test_command = './node_modules/.bin/truffle test';
-  let bc_command = './node_modules/.bin/ganache-cli';
-  let port = 8545;
+  let ganacheProcess;
+  let testProcess;
+
   if (options.coverage) {
-    test_command = './node_modules/.bin/solidity-coverage';
-    bc_command = './node_modules/.bin/testrpc-sc';
+    ganacheProcess = spawnTemporaryGanache(options);
+    testProcess = spawnTest(files, options);
+    addListenerToTestProcess(testProcess, ganacheProcess, options);
+  } else {
+    portscanner.checkPortStatus(8545, '127.0.0.1', (error, status) => {
+      if (status === 'closed') {
+        ganacheProcess = spawnTemporaryGanache(options);
+      }
+      testProcess = spawnTest(files, options);
+      addListenerToTestProcess(testProcess, ganacheProcess, options);
+    });
+  }
+};
+
+function spawnTemporaryGanache(options) {
+  let ganacheBinPath;
+  let port;
+
+  if (options.coverage) {
+    ganacheBinPath = './node_modules/.bin/testrpc-sc';
     port = 8555;
+  } else {
+    ganacheBinPath = './node_modules/.bin/ganache-cli';
+    port = 8545;
   }
 
-  files.forEach(file => {
-    test_command += ` ${file}`;
-  });
+  return spawn(ganacheBinPath, [`--port=${port}`, '--gasLimit=0xfffffffffff']);
+}
 
-  let ganache_process;
-  try {
-    execSync(`nc -z localhost ${port}`); // check port listening...
-  } catch {
-    ganache_process = execFile(
-      bc_command,
-      [`--port=${port}`, '--gasLimit=0xfffffffffff'],
-      (error, stdout, stderr) => {}
-    );
+function spawnTest(files, options) {
+  let testBinPath;
+  let args = [];
+
+  if (options.coverage) {
+    testBinPath = './node_modules/.bin/solidity-coverage';
+  } else {
+    testBinPath = './node_modules/.bin/truffle';
+    args.push('test');
   }
 
-  const cmdarr = test_command.split(' ');
-  const cmd = cmdarr[0];
-  const args = cmdarr.slice(1);
+  args = args.concat(files);
 
-  const child = spawn(cmd, args);
-  child.stdout.on('data', function(data) {
+  return spawn(testBinPath, args);
+}
+
+function addListenerToTestProcess(testProcess, ganacheProcess, options) {
+  testProcess.stdout.on('data', data => {
     printOrSilent(data.toString(), options);
   });
 
-  child.stderr.on('data', function(data) {
+  testProcess.stderr.on('data', data => {
     printOrSilent(data.toString(), options);
   });
 
-  child.on('exit', function(code) {
-    if (ganache_process) {
-      ganache_process.kill();
+  testProcess.on('close', code => {
+    if (ganacheProcess) {
+      kill(ganacheProcess.pid);
     }
   });
-
-  // ls    = spawn('ls', ['-lh', '/usr']);
-
-  // ls.stdout.on('data', function (data) {
-  //   console.log('stdout: ' + data.toString());
-  // });
-
-  // ls.stderr.on('data', function (data) {
-  //   console.log('stderr: ' + data.toString());
-  // });
-
-  // ls.on('exit', function (code) {
-  //   console.log('child process exited with code ' + code.toString());
-  // });
-
-  // exec(test_command, (error, stdout, stderr) => {
-  //   printOrSilent(stdout, options);
-
-  //   if (ganache_process) {
-  //     ganache_process.kill();
-  //   }
-  // });
-};
+}
