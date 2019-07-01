@@ -14,7 +14,8 @@ const { execSync } = require('child_process');
 const path = require('path');
 
 const options = require('../../../scripts/utils/injectConfig')();
-const web3 = options.web3;
+var blockchainApiStore = options.config.blockchainApiStore;
+var web3 = blockchainApiStore.get();
 
 describe('# show-state script test', function() {
   describe('# astParser script test', function() {

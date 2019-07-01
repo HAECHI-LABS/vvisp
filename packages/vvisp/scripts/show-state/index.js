@@ -17,7 +17,8 @@ var storageTable, storageTableBuilder;
 
 module.exports = async function(contract, options) {
   options = require('../utils/injectConfig')(options);
-  web3 = options.web3;
+  var blockchainApiStore = options.config.blockchainApiStore;
+  web3 = blockchainApiStore.get();
 
   printOrSilent(
     chalk.bold('Now Start Calculating Storage Index of Variables...\n')
