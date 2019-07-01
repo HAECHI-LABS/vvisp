@@ -11,11 +11,12 @@ chai.use(require('chai-as-promised')).should();
 const expect = chai.expect;
 const fs = require('fs');
 const { execSync } = require('child_process');
-const path = require('path');
 
-const options = require('../../../scripts/utils/injectConfig')();
-var blockchainApiStore = options.config.blockchainApiStore;
-var web3 = blockchainApiStore.get();
+const deployService = require('../../../scripts/deploy-service/');
+const { Config, web3Store } = require('@haechi-labs/vvisp-utils');
+const { TEST } = require('../../../config/Constant');
+
+let web3;
 
 describe('# show-state script test', function() {
   describe('# astParser script test', function() {
@@ -833,20 +834,23 @@ describe('# show-state script test', function() {
     this.timeout(30000);
 
     before(async function() {
-      const TEST_PATH = path.join('./', 'test', 'dummy', 'show-state');
-      process.chdir(TEST_PATH);
+      web3Store.setWithURL(TEST.URL);
+      web3 = web3Store.get();
+      web3Store.delete();
+      Config.delete();
 
-      fs.exists('./state.vvisp.json', function(exists) {
-        if (exists) {
-          execSync('rm state.vvisp.json');
-        }
-      });
-      console.log(execSync('vvisp deploy-service').toString());
-
+      var input = fs.readFileSync(
+        './test/dummy/show-state.sample.service.json',
+        'utf-8'
+      );
+      fs.writeFileSync('service.vvisp.json', input);
+      await deployService({ silent: true });
       vvispState = JSON.parse(fs.readFileSync('./state.vvisp.json', 'utf-8'));
     });
 
-    after(function() {});
+    after(function() {
+      execSync('rm state.vvisp.json');
+    });
 
     it('elementTestcase', async function() {
       var contract = 'elementTestcase';
@@ -1215,7 +1219,8 @@ describe('# show-state script test', function() {
       ];
 
       var variableTracker = new VariableTracker(
-        storageTableBuilder.storageTable
+        storageTableBuilder.storageTable,
+        web3
       );
       for (var i = 0; i < tests.length; i++) {
         var table = variableTracker.getInfo(tests[i]);
