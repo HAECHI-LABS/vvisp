@@ -17,17 +17,35 @@ show <VARIABLE_NAME>
         - testStrcut[][] darraystruct
     - 위 케이스를 제외한 나머지 케이스는 모두 가능 (mapping, dynamic array의 중첩 등)
 
-### Test
-1. ganache-cli를 미리 띄움
-2. packages/vvisp/test/dummy/show-state/vvisp-config.js의 mnemonic을 ganache-cli의 출력을 참조해 수정
-3. packages/vvisp/test/scripts/show-state/index.test.js에서 주석부분을 해제
-    * final value test의 경우 ganache에 배포한뒤 진행가능해서 circle-ci 통과를 위해 우선 제외
-4. test 쉘스크립트 실행
-```
-cd packages/vvisp
-npm run-script ssci
-```
-#### code refactoring시에는 test code 통과 여부를 확인 할 것
+### 구조체타입 동적배열 및 맵핑의 구현전략
+- 사용자 입력 파싱은 VariableTracker 클래스에서 수행
+    - 사용자가 입력한 변수를 파싱해 참조의 순서(refSeq)와 각 참조의 타입을 구함(typeSeq)
+    - 현재 참조의 타입에 맞게 인덱스를 계산
+    - 예시
+    ```
+    - type : mapping(string => char[3][2][]) variable
+    - input : variable[hi][0][1][2]
+    - refSeq : [hi, 0, 1, 2]
+    - typeSeq : [mapping, [], [2], [3]]
+     * solidity는 다른 언어와 달리 다차원 배열 순서가 반대!
+    ```
+- 구조체 정보는 storageTableBuilder 클래스의 structTables 변수가 가지고 있음
+    - key : 구조체 이름
+    - value : 구조체 내의 모든 변수들의 정보를 가지고 있는 Object
+        - key : 변수명
+        - value : 변수 정보 ( type | size | seq_no | index | startByte )
+    - ex: structTables[struct_name][variable_name]
+
+- 구조체타입 동적배열 및 맵핑의 구현전략
+    - 구조체 사용자 입력 예시
+        - 맵핑의 value가 구조체 : mapstruct['hi'].var2
+        - 동적배열이 mapping 타입 : mapstruct[30][2][14].var3
+    - value가 구조체인 맵핑의 타입은 다음과 같음
+        - mapping(string => struct myStruct)
+        - 타입스트링만 봐서는 입력의 전체 타입을 알 수가 없음
+    - 타입스트링을 파싱할 때 구조체 타입이 존재하면
+        - structTables를 가져와서 정보를 찾도록 구현해야 할 것으로 보임
+    - 또한 myStruct3[2].ab[0][3].var2와 같이 사용자 입력 또한 " . " 을 기준으로 파싱해야 할 것으로 보임
 
 
 ## vvisp debug
@@ -84,50 +102,3 @@ vvisp test --coverage path/to/file
 ```
 * ```truffle-test``` 또는 ```solidity-coverage``` 실행.
 * node_modules의 바이너리를 통한 실행.
-
-
-
-## vvisp analyze
-
-### Prerequiste
-- Docker 설치 (Ubuntu 18.04 기준)
-```
-sudo apt update
-sudo apt install apt-transport-https ca-certificates curl software-properties-common
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
-sudo apt update
-apt-cache policy docker-ce
-sudo apt install docker-ce
-```
-
-- pull 'mythril/myth' docker image
-```
-docker pull mythril/myth
-```
-
-### How to Run
-```
-// on-chain analysis
-vvisp analyze
-
-// off-chain analysis (all file)
-vvisp analyze --all-contract
-
-// off-chain analysis (a file)
-vvisp analyze path/to/file
-```
-* on-chain anaylsis
-    * 배포된 스마트 컨트랙트에 대한 mythril 보안 분석 진행
-* off-chain analysis (all file)
-    * contracts 디렉토리의 모든 스마트 컨트랙트에 대한 mythril 보안 분석 진행
-
-
-
-## vvisp ci
-### How to run
-```
-vvisp ci
-```
-* contracts 디렉토리의 모든 스마트 컨트랙트에 대해서 `vvisp analyze`, `vvisp test`, `vvisp deploy-service`를 순서대로 실행.
-
