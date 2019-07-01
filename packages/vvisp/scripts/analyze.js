@@ -3,7 +3,6 @@ const path = require('path');
 const chalk = require('chalk');
 const { execSync } = require('child_process');
 const { getAllFiles, printOrSilent } = require('@haechi-labs/vvisp-utils');
-
 module.exports = async function(files, options) {
   options = require('./utils/injectConfig')(options);
 
@@ -17,10 +16,11 @@ module.exports = async function(files, options) {
   }
 
   try {
-    execSync('sudo docker image inspect mythril/myth', { stdio: 'pipe' });
+    execSync('docker image inspect mythril/myth', { stdio: 'pipe' });
   } catch {
     console.error('Requirement: mythril/myth must be pulled');
     console.error('>>> $ docker pull mythril/myth');
+
     return;
   }
 
@@ -54,7 +54,7 @@ module.exports = async function(files, options) {
       const dirName = path.dirname(path.resolve(file));
       const baseName = path.basename(file);
 
-      const command = `sudo docker run -v ${dirName}:/tmp mythril/myth -x tmp/${baseName}`;
+      const command = `docker run -v ${dirName}:/tmp mythril/myth -x tmp/${baseName}`;
       const result = execSync(command, { stdio: 'pipe' }).toString();
 
       printOrSilent(result, options);
