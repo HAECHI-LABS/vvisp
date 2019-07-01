@@ -1,0 +1,1065 @@
+{
+    "contracts": {
+        "./contracts/elementTestcase.sol": {
+            "elementTestcase": {
+                "evm": {}
+            }
+        }
+    },
+    "sources": {
+        "./contracts/elementTestcase.sol": {
+            "ast": {
+                "absolutePath": "./contracts/elementTestcase.sol",
+                "exportedSymbols": {
+                    "elementTestcase": [
+                        81
+                    ]
+                },
+                "id": 82,
+                "nodeType": "SourceUnit",
+                "nodes": [{
+                        "id": 1,
+                        "literals": [
+                            "solidity",
+                            ">=",
+                            "0.4",
+                            ".21",
+                            "<",
+                            "0.6",
+                            ".0"
+                        ],
+                        "nodeType": "PragmaDirective",
+                        "src": "0:32:0"
+                    },
+                    {
+                        "baseContracts": [],
+                        "contractDependencies": [],
+                        "contractKind": "contract",
+                        "documentation": null,
+                        "fullyImplemented": true,
+                        "id": 81,
+                        "linearizedBaseContracts": [
+                            81
+                        ],
+                        "name": "elementTestcase",
+                        "nodeType": "ContractDefinition",
+                        "nodes": [{
+                                "constant": false,
+                                "id": 4,
+                                "name": "var_bool",
+                                "nodeType": "VariableDeclaration",
+                                "scope": 81,
+                                "src": "65:20:0",
+                                "stateVariable": true,
+                                "storageLocation": "default",
+                                "typeDescriptions": {
+                                    "typeIdentifier": "t_bool",
+                                    "typeString": "bool"
+                                },
+                                "typeName": {
+                                    "id": 2,
+                                    "name": "bool",
+                                    "nodeType": "ElementaryTypeName",
+                                    "src": "65:4:0",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_bool",
+                                        "typeString": "bool"
+                                    }
+                                },
+                                "value": {
+                                    "argumentTypes": null,
+                                    "hexValue": "74727565",
+                                    "id": 3,
+                                    "isConstant": false,
+                                    "isLValue": false,
+                                    "isPure": true,
+                                    "kind": "bool",
+                                    "lValueRequested": false,
+                                    "nodeType": "Literal",
+                                    "src": "81:4:0",
+                                    "subdenomination": null,
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_bool",
+                                        "typeString": "bool"
+                                    },
+                                    "value": "true"
+                                },
+                                "visibility": "internal"
+                            },
+                            {
+                                "constant": false,
+                                "id": 7,
+                                "name": "var_int8",
+                                "nodeType": "VariableDeclaration",
+                                "scope": 81,
+                                "src": "91:17:0",
+                                "stateVariable": true,
+                                "storageLocation": "default",
+                                "typeDescriptions": {
+                                    "typeIdentifier": "t_int8",
+                                    "typeString": "int8"
+                                },
+                                "typeName": {
+                                    "id": 5,
+                                    "name": "int8",
+                                    "nodeType": "ElementaryTypeName",
+                                    "src": "91:4:0",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_int8",
+                                        "typeString": "int8"
+                                    }
+                                },
+                                "value": {
+                                    "argumentTypes": null,
+                                    "hexValue": "31",
+                                    "id": 6,
+                                    "isConstant": false,
+                                    "isLValue": false,
+                                    "isPure": true,
+                                    "kind": "number",
+                                    "lValueRequested": false,
+                                    "nodeType": "Literal",
+                                    "src": "107:1:0",
+                                    "subdenomination": null,
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_rational_1_by_1",
+                                        "typeString": "int_const 1"
+                                    },
+                                    "value": "1"
+                                },
+                                "visibility": "internal"
+                            },
+                            {
+                                "constant": false,
+                                "id": 10,
+                                "name": "var_int256",
+                                "nodeType": "VariableDeclaration",
+                                "scope": 81,
+                                "src": "114:22:0",
+                                "stateVariable": true,
+                                "storageLocation": "default",
+                                "typeDescriptions": {
+                                    "typeIdentifier": "t_int256",
+                                    "typeString": "int256"
+                                },
+                                "typeName": {
+                                    "id": 8,
+                                    "name": "int256",
+                                    "nodeType": "ElementaryTypeName",
+                                    "src": "114:6:0",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_int256",
+                                        "typeString": "int256"
+                                    }
+                                },
+                                "value": {
+                                    "argumentTypes": null,
+                                    "hexValue": "3430",
+                                    "id": 9,
+                                    "isConstant": false,
+                                    "isLValue": false,
+                                    "isPure": true,
+                                    "kind": "number",
+                                    "lValueRequested": false,
+                                    "nodeType": "Literal",
+                                    "src": "134:2:0",
+                                    "subdenomination": null,
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_rational_40_by_1",
+                                        "typeString": "int_const 40"
+                                    },
+                                    "value": "40"
+                                },
+                                "visibility": "internal"
+                            },
+                            {
+                                "constant": false,
+                                "id": 13,
+                                "name": "var_int",
+                                "nodeType": "VariableDeclaration",
+                                "scope": 81,
+                                "src": "142:15:0",
+                                "stateVariable": true,
+                                "storageLocation": "default",
+                                "typeDescriptions": {
+                                    "typeIdentifier": "t_int256",
+                                    "typeString": "int256"
+                                },
+                                "typeName": {
+                                    "id": 11,
+                                    "name": "int",
+                                    "nodeType": "ElementaryTypeName",
+                                    "src": "142:3:0",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_int256",
+                                        "typeString": "int256"
+                                    }
+                                },
+                                "value": {
+                                    "argumentTypes": null,
+                                    "hexValue": "33",
+                                    "id": 12,
+                                    "isConstant": false,
+                                    "isLValue": false,
+                                    "isPure": true,
+                                    "kind": "number",
+                                    "lValueRequested": false,
+                                    "nodeType": "Literal",
+                                    "src": "156:1:0",
+                                    "subdenomination": null,
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_rational_3_by_1",
+                                        "typeString": "int_const 3"
+                                    },
+                                    "value": "3"
+                                },
+                                "visibility": "internal"
+                            },
+                            {
+                                "constant": false,
+                                "id": 16,
+                                "name": "var_uint8",
+                                "nodeType": "VariableDeclaration",
+                                "scope": 81,
+                                "src": "163:19:0",
+                                "stateVariable": true,
+                                "storageLocation": "default",
+                                "typeDescriptions": {
+                                    "typeIdentifier": "t_uint8",
+                                    "typeString": "uint8"
+                                },
+                                "typeName": {
+                                    "id": 14,
+                                    "name": "uint8",
+                                    "nodeType": "ElementaryTypeName",
+                                    "src": "163:5:0",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_uint8",
+                                        "typeString": "uint8"
+                                    }
+                                },
+                                "value": {
+                                    "argumentTypes": null,
+                                    "hexValue": "31",
+                                    "id": 15,
+                                    "isConstant": false,
+                                    "isLValue": false,
+                                    "isPure": true,
+                                    "kind": "number",
+                                    "lValueRequested": false,
+                                    "nodeType": "Literal",
+                                    "src": "181:1:0",
+                                    "subdenomination": null,
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_rational_1_by_1",
+                                        "typeString": "int_const 1"
+                                    },
+                                    "value": "1"
+                                },
+                                "visibility": "internal"
+                            },
+                            {
+                                "constant": false,
+                                "id": 19,
+                                "name": "var_uint256",
+                                "nodeType": "VariableDeclaration",
+                                "scope": 81,
+                                "src": "188:24:0",
+                                "stateVariable": true,
+                                "storageLocation": "default",
+                                "typeDescriptions": {
+                                    "typeIdentifier": "t_uint256",
+                                    "typeString": "uint256"
+                                },
+                                "typeName": {
+                                    "id": 17,
+                                    "name": "uint256",
+                                    "nodeType": "ElementaryTypeName",
+                                    "src": "188:7:0",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_uint256",
+                                        "typeString": "uint256"
+                                    }
+                                },
+                                "value": {
+                                    "argumentTypes": null,
+                                    "hexValue": "3430",
+                                    "id": 18,
+                                    "isConstant": false,
+                                    "isLValue": false,
+                                    "isPure": true,
+                                    "kind": "number",
+                                    "lValueRequested": false,
+                                    "nodeType": "Literal",
+                                    "src": "210:2:0",
+                                    "subdenomination": null,
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_rational_40_by_1",
+                                        "typeString": "int_const 40"
+                                    },
+                                    "value": "40"
+                                },
+                                "visibility": "internal"
+                            },
+                            {
+                                "constant": false,
+                                "id": 22,
+                                "name": "var_uint",
+                                "nodeType": "VariableDeclaration",
+                                "scope": 81,
+                                "src": "218:17:0",
+                                "stateVariable": true,
+                                "storageLocation": "default",
+                                "typeDescriptions": {
+                                    "typeIdentifier": "t_uint256",
+                                    "typeString": "uint256"
+                                },
+                                "typeName": {
+                                    "id": 20,
+                                    "name": "uint",
+                                    "nodeType": "ElementaryTypeName",
+                                    "src": "218:4:0",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_uint256",
+                                        "typeString": "uint256"
+                                    }
+                                },
+                                "value": {
+                                    "argumentTypes": null,
+                                    "hexValue": "33",
+                                    "id": 21,
+                                    "isConstant": false,
+                                    "isLValue": false,
+                                    "isPure": true,
+                                    "kind": "number",
+                                    "lValueRequested": false,
+                                    "nodeType": "Literal",
+                                    "src": "234:1:0",
+                                    "subdenomination": null,
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_rational_3_by_1",
+                                        "typeString": "int_const 3"
+                                    },
+                                    "value": "3"
+                                },
+                                "visibility": "internal"
+                            },
+                            {
+                                "constant": false,
+                                "id": 25,
+                                "name": "var_address",
+                                "nodeType": "VariableDeclaration",
+                                "scope": 81,
+                                "src": "241:64:0",
+                                "stateVariable": true,
+                                "storageLocation": "default",
+                                "typeDescriptions": {
+                                    "typeIdentifier": "t_address",
+                                    "typeString": "address"
+                                },
+                                "typeName": {
+                                    "id": 23,
+                                    "name": "address",
+                                    "nodeType": "ElementaryTypeName",
+                                    "src": "241:7:0",
+                                    "stateMutability": "nonpayable",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_address",
+                                        "typeString": "address"
+                                    }
+                                },
+                                "value": {
+                                    "argumentTypes": null,
+                                    "hexValue": "307833343563413365303134416166356463413438383035373539326565343733303544394233653130",
+                                    "id": 24,
+                                    "isConstant": false,
+                                    "isLValue": false,
+                                    "isPure": true,
+                                    "kind": "number",
+                                    "lValueRequested": false,
+                                    "nodeType": "Literal",
+                                    "src": "263:42:0",
+                                    "subdenomination": null,
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_address_payable",
+                                        "typeString": "address payable"
+                                    },
+                                    "value": "0x345cA3e014Aaf5dcA488057592ee47305D9B3e10"
+                                },
+                                "visibility": "internal"
+                            },
+                            {
+                                "constant": false,
+                                "id": 28,
+                                "name": "var_address_payable",
+                                "nodeType": "VariableDeclaration",
+                                "scope": 81,
+                                "src": "311:80:0",
+                                "stateVariable": true,
+                                "storageLocation": "default",
+                                "typeDescriptions": {
+                                    "typeIdentifier": "t_address_payable",
+                                    "typeString": "address payable"
+                                },
+                                "typeName": {
+                                    "id": 26,
+                                    "name": "address",
+                                    "nodeType": "ElementaryTypeName",
+                                    "src": "311:15:0",
+                                    "stateMutability": "payable",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_address_payable",
+                                        "typeString": "address payable"
+                                    }
+                                },
+                                "value": {
+                                    "argumentTypes": null,
+                                    "hexValue": "307833343563413365303134416166356463413438383035373539326565343733303544394233653130",
+                                    "id": 27,
+                                    "isConstant": false,
+                                    "isLValue": false,
+                                    "isPure": true,
+                                    "kind": "number",
+                                    "lValueRequested": false,
+                                    "nodeType": "Literal",
+                                    "src": "349:42:0",
+                                    "subdenomination": null,
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_address_payable",
+                                        "typeString": "address payable"
+                                    },
+                                    "value": "0x345cA3e014Aaf5dcA488057592ee47305D9B3e10"
+                                },
+                                "visibility": "internal"
+                            },
+                            {
+                                "constant": false,
+                                "id": 31,
+                                "name": "var_byte",
+                                "nodeType": "VariableDeclaration",
+                                "scope": 81,
+                                "src": "397:20:0",
+                                "stateVariable": true,
+                                "storageLocation": "default",
+                                "typeDescriptions": {
+                                    "typeIdentifier": "t_bytes1",
+                                    "typeString": "bytes1"
+                                },
+                                "typeName": {
+                                    "id": 29,
+                                    "name": "byte",
+                                    "nodeType": "ElementaryTypeName",
+                                    "src": "397:4:0",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_bytes1",
+                                        "typeString": "bytes1"
+                                    }
+                                },
+                                "value": {
+                                    "argumentTypes": null,
+                                    "hexValue": "30783031",
+                                    "id": 30,
+                                    "isConstant": false,
+                                    "isLValue": false,
+                                    "isPure": true,
+                                    "kind": "number",
+                                    "lValueRequested": false,
+                                    "nodeType": "Literal",
+                                    "src": "413:4:0",
+                                    "subdenomination": null,
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_rational_1_by_1",
+                                        "typeString": "int_const 1"
+                                    },
+                                    "value": "0x01"
+                                },
+                                "visibility": "internal"
+                            },
+                            {
+                                "constant": false,
+                                "id": 34,
+                                "name": "var_bytes2",
+                                "nodeType": "VariableDeclaration",
+                                "scope": 81,
+                                "src": "423:26:0",
+                                "stateVariable": true,
+                                "storageLocation": "default",
+                                "typeDescriptions": {
+                                    "typeIdentifier": "t_bytes2",
+                                    "typeString": "bytes2"
+                                },
+                                "typeName": {
+                                    "id": 32,
+                                    "name": "bytes2",
+                                    "nodeType": "ElementaryTypeName",
+                                    "src": "423:6:0",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_bytes2",
+                                        "typeString": "bytes2"
+                                    }
+                                },
+                                "value": {
+                                    "argumentTypes": null,
+                                    "hexValue": "307830303032",
+                                    "id": 33,
+                                    "isConstant": false,
+                                    "isLValue": false,
+                                    "isPure": true,
+                                    "kind": "number",
+                                    "lValueRequested": false,
+                                    "nodeType": "Literal",
+                                    "src": "443:6:0",
+                                    "subdenomination": null,
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_rational_2_by_1",
+                                        "typeString": "int_const 2"
+                                    },
+                                    "value": "0x0002"
+                                },
+                                "visibility": "internal"
+                            },
+                            {
+                                "constant": false,
+                                "id": 37,
+                                "name": "var_bytes32",
+                                "nodeType": "VariableDeclaration",
+                                "scope": 81,
+                                "src": "455:88:0",
+                                "stateVariable": true,
+                                "storageLocation": "default",
+                                "typeDescriptions": {
+                                    "typeIdentifier": "t_bytes32",
+                                    "typeString": "bytes32"
+                                },
+                                "typeName": {
+                                    "id": 35,
+                                    "name": "bytes32",
+                                    "nodeType": "ElementaryTypeName",
+                                    "src": "455:7:0",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_bytes32",
+                                        "typeString": "bytes32"
+                                    }
+                                },
+                                "value": {
+                                    "argumentTypes": null,
+                                    "hexValue": "307830303032303030323030303230303032303030323030303230303032303030323030303230303032303030323030303230303032303030323030303230303032",
+                                    "id": 36,
+                                    "isConstant": false,
+                                    "isLValue": false,
+                                    "isPure": true,
+                                    "kind": "number",
+                                    "lValueRequested": false,
+                                    "nodeType": "Literal",
+                                    "src": "477:66:0",
+                                    "subdenomination": null,
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_rational_3533748050272867793501822995611136273846646361963548151047763302293831682_by_1",
+                                        "typeString": "int_const 3533...(65 digits omitted)...1682"
+                                    },
+                                    "value": "0x0002000200020002000200020002000200020002000200020002000200020002"
+                                },
+                                "visibility": "internal"
+                            },
+                            {
+                                "constant": false,
+                                "id": 39,
+                                "name": "var_contract",
+                                "nodeType": "VariableDeclaration",
+                                "scope": 81,
+                                "src": "549:28:0",
+                                "stateVariable": true,
+                                "storageLocation": "default",
+                                "typeDescriptions": {
+                                    "typeIdentifier": "t_contract$_elementTestcase_$81",
+                                    "typeString": "contract elementTestcase"
+                                },
+                                "typeName": {
+                                    "contractScope": null,
+                                    "id": 38,
+                                    "name": "elementTestcase",
+                                    "nodeType": "UserDefinedTypeName",
+                                    "referencedDeclaration": 81,
+                                    "src": "549:15:0",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_contract$_elementTestcase_$81",
+                                        "typeString": "contract elementTestcase"
+                                    }
+                                },
+                                "value": null,
+                                "visibility": "internal"
+                            },
+                            {
+                                "canonicalName": "elementTestcase.myEnum",
+                                "id": 42,
+                                "members": [{
+                                        "id": 40,
+                                        "name": "e1",
+                                        "nodeType": "EnumValue",
+                                        "src": "596:2:0"
+                                    },
+                                    {
+                                        "id": 41,
+                                        "name": "e2",
+                                        "nodeType": "EnumValue",
+                                        "src": "600:2:0"
+                                    }
+                                ],
+                                "name": "myEnum",
+                                "nodeType": "EnumDefinition",
+                                "src": "583:20:0"
+                            },
+                            {
+                                "constant": false,
+                                "id": 46,
+                                "name": "var_enum",
+                                "nodeType": "VariableDeclaration",
+                                "scope": 81,
+                                "src": "608:27:0",
+                                "stateVariable": true,
+                                "storageLocation": "default",
+                                "typeDescriptions": {
+                                    "typeIdentifier": "t_enum$_myEnum_$42",
+                                    "typeString": "enum elementTestcase.myEnum"
+                                },
+                                "typeName": {
+                                    "contractScope": null,
+                                    "id": 43,
+                                    "name": "myEnum",
+                                    "nodeType": "UserDefinedTypeName",
+                                    "referencedDeclaration": 42,
+                                    "src": "608:6:0",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_enum$_myEnum_$42",
+                                        "typeString": "enum elementTestcase.myEnum"
+                                    }
+                                },
+                                "value": {
+                                    "argumentTypes": null,
+                                    "expression": {
+                                        "argumentTypes": null,
+                                        "id": 44,
+                                        "name": "myEnum",
+                                        "nodeType": "Identifier",
+                                        "overloadedDeclarations": [],
+                                        "referencedDeclaration": 42,
+                                        "src": "626:6:0",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_type$_t_enum$_myEnum_$42_$",
+                                            "typeString": "type(enum elementTestcase.myEnum)"
+                                        }
+                                    },
+                                    "id": 45,
+                                    "isConstant": false,
+                                    "isLValue": false,
+                                    "isPure": true,
+                                    "lValueRequested": false,
+                                    "memberName": "e1",
+                                    "nodeType": "MemberAccess",
+                                    "referencedDeclaration": null,
+                                    "src": "626:9:0",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_enum$_myEnum_$42",
+                                        "typeString": "enum elementTestcase.myEnum"
+                                    }
+                                },
+                                "visibility": "internal"
+                            },
+                            {
+                                "constant": false,
+                                "id": 52,
+                                "name": "var_f1",
+                                "nodeType": "VariableDeclaration",
+                                "scope": 81,
+                                "src": "641:31:0",
+                                "stateVariable": true,
+                                "storageLocation": "default",
+                                "typeDescriptions": {
+                                    "typeIdentifier": "t_function_external_nonpayable$_t_bool_$returns$__$",
+                                    "typeString": "function (bool) external"
+                                },
+                                "typeName": {
+                                    "id": 51,
+                                    "nodeType": "FunctionTypeName",
+                                    "parameterTypes": {
+                                        "id": 49,
+                                        "nodeType": "ParameterList",
+                                        "parameters": [{
+                                            "constant": false,
+                                            "id": 48,
+                                            "name": "",
+                                            "nodeType": "VariableDeclaration",
+                                            "scope": 51,
+                                            "src": "651:4:0",
+                                            "stateVariable": false,
+                                            "storageLocation": "default",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_bool",
+                                                "typeString": "bool"
+                                            },
+                                            "typeName": {
+                                                "id": 47,
+                                                "name": "bool",
+                                                "nodeType": "ElementaryTypeName",
+                                                "src": "651:4:0",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_bool",
+                                                    "typeString": "bool"
+                                                }
+                                            },
+                                            "value": null,
+                                            "visibility": "internal"
+                                        }],
+                                        "src": "650:6:0"
+                                    },
+                                    "returnParameterTypes": {
+                                        "id": 50,
+                                        "nodeType": "ParameterList",
+                                        "parameters": [],
+                                        "src": "666:0:0"
+                                    },
+                                    "src": "641:31:0",
+                                    "stateMutability": "nonpayable",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_function_external_nonpayable$_t_bool_$returns$__$",
+                                        "typeString": "function (bool) external"
+                                    },
+                                    "visibility": "external"
+                                },
+                                "value": null,
+                                "visibility": "internal"
+                            },
+                            {
+                                "constant": false,
+                                "id": 58,
+                                "name": "var_f2",
+                                "nodeType": "VariableDeclaration",
+                                "scope": 81,
+                                "src": "678:31:0",
+                                "stateVariable": true,
+                                "storageLocation": "default",
+                                "typeDescriptions": {
+                                    "typeIdentifier": "t_function_internal_nonpayable$_t_bool_$returns$__$",
+                                    "typeString": "function (bool)"
+                                },
+                                "typeName": {
+                                    "id": 57,
+                                    "nodeType": "FunctionTypeName",
+                                    "parameterTypes": {
+                                        "id": 55,
+                                        "nodeType": "ParameterList",
+                                        "parameters": [{
+                                            "constant": false,
+                                            "id": 54,
+                                            "name": "",
+                                            "nodeType": "VariableDeclaration",
+                                            "scope": 57,
+                                            "src": "688:4:0",
+                                            "stateVariable": false,
+                                            "storageLocation": "default",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_bool",
+                                                "typeString": "bool"
+                                            },
+                                            "typeName": {
+                                                "id": 53,
+                                                "name": "bool",
+                                                "nodeType": "ElementaryTypeName",
+                                                "src": "688:4:0",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_bool",
+                                                    "typeString": "bool"
+                                                }
+                                            },
+                                            "value": null,
+                                            "visibility": "internal"
+                                        }],
+                                        "src": "687:6:0"
+                                    },
+                                    "returnParameterTypes": {
+                                        "id": 56,
+                                        "nodeType": "ParameterList",
+                                        "parameters": [],
+                                        "src": "703:0:0"
+                                    },
+                                    "src": "678:31:0",
+                                    "stateMutability": "nonpayable",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_function_internal_nonpayable$_t_bool_$returns$__$",
+                                        "typeString": "function (bool)"
+                                    },
+                                    "visibility": "internal"
+                                },
+                                "value": null,
+                                "visibility": "internal"
+                            },
+                            {
+                                "constant": false,
+                                "id": 64,
+                                "name": "var_f3",
+                                "nodeType": "VariableDeclaration",
+                                "scope": 81,
+                                "src": "715:47:0",
+                                "stateVariable": true,
+                                "storageLocation": "default",
+                                "typeDescriptions": {
+                                    "typeIdentifier": "t_function_external_view$__$returns$_t_int8_$",
+                                    "typeString": "function () view external returns (int8)"
+                                },
+                                "typeName": {
+                                    "id": 63,
+                                    "nodeType": "FunctionTypeName",
+                                    "parameterTypes": {
+                                        "id": 59,
+                                        "nodeType": "ParameterList",
+                                        "parameters": [],
+                                        "src": "724:2:0"
+                                    },
+                                    "returnParameterTypes": {
+                                        "id": 62,
+                                        "nodeType": "ParameterList",
+                                        "parameters": [{
+                                            "constant": false,
+                                            "id": 61,
+                                            "name": "",
+                                            "nodeType": "VariableDeclaration",
+                                            "scope": 63,
+                                            "src": "750:4:0",
+                                            "stateVariable": false,
+                                            "storageLocation": "default",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_int8",
+                                                "typeString": "int8"
+                                            },
+                                            "typeName": {
+                                                "id": 60,
+                                                "name": "int8",
+                                                "nodeType": "ElementaryTypeName",
+                                                "src": "750:4:0",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_int8",
+                                                    "typeString": "int8"
+                                                }
+                                            },
+                                            "value": null,
+                                            "visibility": "internal"
+                                        }],
+                                        "src": "749:6:0"
+                                    },
+                                    "src": "715:47:0",
+                                    "stateMutability": "view",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_function_external_view$__$returns$_t_int8_$",
+                                        "typeString": "function () view external returns (int8)"
+                                    },
+                                    "visibility": "external"
+                                },
+                                "value": null,
+                                "visibility": "internal"
+                            },
+                            {
+                                "constant": false,
+                                "id": 70,
+                                "name": "var_f4",
+                                "nodeType": "VariableDeclaration",
+                                "scope": 81,
+                                "src": "768:47:0",
+                                "stateVariable": true,
+                                "storageLocation": "default",
+                                "typeDescriptions": {
+                                    "typeIdentifier": "t_function_internal_view$__$returns$_t_int8_$",
+                                    "typeString": "function () view returns (int8)"
+                                },
+                                "typeName": {
+                                    "id": 69,
+                                    "nodeType": "FunctionTypeName",
+                                    "parameterTypes": {
+                                        "id": 65,
+                                        "nodeType": "ParameterList",
+                                        "parameters": [],
+                                        "src": "777:2:0"
+                                    },
+                                    "returnParameterTypes": {
+                                        "id": 68,
+                                        "nodeType": "ParameterList",
+                                        "parameters": [{
+                                            "constant": false,
+                                            "id": 67,
+                                            "name": "",
+                                            "nodeType": "VariableDeclaration",
+                                            "scope": 69,
+                                            "src": "803:4:0",
+                                            "stateVariable": false,
+                                            "storageLocation": "default",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_int8",
+                                                "typeString": "int8"
+                                            },
+                                            "typeName": {
+                                                "id": 66,
+                                                "name": "int8",
+                                                "nodeType": "ElementaryTypeName",
+                                                "src": "803:4:0",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_int8",
+                                                    "typeString": "int8"
+                                                }
+                                            },
+                                            "value": null,
+                                            "visibility": "internal"
+                                        }],
+                                        "src": "802:6:0"
+                                    },
+                                    "src": "768:47:0",
+                                    "stateMutability": "view",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_function_internal_view$__$returns$_t_int8_$",
+                                        "typeString": "function () view returns (int8)"
+                                    },
+                                    "visibility": "internal"
+                                },
+                                "value": null,
+                                "visibility": "internal"
+                            },
+                            {
+                                "constant": false,
+                                "id": 73,
+                                "name": "var_bytes",
+                                "nodeType": "VariableDeclaration",
+                                "scope": 81,
+                                "src": "821:25:0",
+                                "stateVariable": true,
+                                "storageLocation": "default",
+                                "typeDescriptions": {
+                                    "typeIdentifier": "t_bytes_storage",
+                                    "typeString": "bytes"
+                                },
+                                "typeName": {
+                                    "id": 71,
+                                    "name": "bytes",
+                                    "nodeType": "ElementaryTypeName",
+                                    "src": "821:5:0",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_bytes_storage_ptr",
+                                        "typeString": "bytes"
+                                    }
+                                },
+                                "value": {
+                                    "argumentTypes": null,
+                                    "hexValue": "6279746573",
+                                    "id": 72,
+                                    "isConstant": false,
+                                    "isLValue": false,
+                                    "isPure": true,
+                                    "kind": "string",
+                                    "lValueRequested": false,
+                                    "nodeType": "Literal",
+                                    "src": "839:7:0",
+                                    "subdenomination": null,
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_stringliteral_b963e9b45d014edd60cff22ec9ad383335bbc3f827be2aee8e291972b0fadcf2",
+                                        "typeString": "literal_string \"bytes\""
+                                    },
+                                    "value": "bytes"
+                                },
+                                "visibility": "internal"
+                            },
+                            {
+                                "constant": false,
+                                "id": 76,
+                                "name": "var_string",
+                                "nodeType": "VariableDeclaration",
+                                "scope": 81,
+                                "src": "852:27:0",
+                                "stateVariable": true,
+                                "storageLocation": "default",
+                                "typeDescriptions": {
+                                    "typeIdentifier": "t_string_storage",
+                                    "typeString": "string"
+                                },
+                                "typeName": {
+                                    "id": 74,
+                                    "name": "string",
+                                    "nodeType": "ElementaryTypeName",
+                                    "src": "852:6:0",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_string_storage_ptr",
+                                        "typeString": "string"
+                                    }
+                                },
+                                "value": {
+                                    "argumentTypes": null,
+                                    "hexValue": "68656c6c6f",
+                                    "id": 75,
+                                    "isConstant": false,
+                                    "isLValue": false,
+                                    "isPure": true,
+                                    "kind": "string",
+                                    "lValueRequested": false,
+                                    "nodeType": "Literal",
+                                    "src": "872:7:0",
+                                    "subdenomination": null,
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_stringliteral_1c8aff950685c2ed4bc3174f3472287b56d9517b9c948127319a09a7a36deac8",
+                                        "typeString": "literal_string \"hello\""
+                                    },
+                                    "value": "hello"
+                                },
+                                "visibility": "internal"
+                            },
+                            {
+                                "constant": false,
+                                "id": 80,
+                                "name": "var_mapping",
+                                "nodeType": "VariableDeclaration",
+                                "scope": 81,
+                                "src": "885:33:0",
+                                "stateVariable": true,
+                                "storageLocation": "default",
+                                "typeDescriptions": {
+                                    "typeIdentifier": "t_mapping$_t_uint256_$_t_uint256_$",
+                                    "typeString": "mapping(uint256 => uint256)"
+                                },
+                                "typeName": {
+                                    "id": 79,
+                                    "keyType": {
+                                        "id": 77,
+                                        "name": "uint",
+                                        "nodeType": "ElementaryTypeName",
+                                        "src": "893:4:0",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_uint256",
+                                            "typeString": "uint256"
+                                        }
+                                    },
+                                    "nodeType": "Mapping",
+                                    "src": "885:21:0",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_mapping$_t_uint256_$_t_uint256_$",
+                                        "typeString": "mapping(uint256 => uint256)"
+                                    },
+                                    "valueType": {
+                                        "id": 78,
+                                        "name": "uint",
+                                        "nodeType": "ElementaryTypeName",
+                                        "src": "901:4:0",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_uint256",
+                                            "typeString": "uint256"
+                                        }
+                                    }
+                                },
+                                "value": null,
+                                "visibility": "internal"
+                            }
+                        ],
+                        "scope": 82,
+                        "src": "34:916:0"
+                    }
+                ],
+                "src": "0:951:0"
+            },
+            "id": 0
+        }
+    }
+}
