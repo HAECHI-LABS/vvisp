@@ -1,0 +1,785 @@
+{
+    "contracts": {
+        "./contracts/structTestcase.sol": {
+            "structTestcase": {
+                "evm": {}
+            }
+        }
+    },
+    "sources": {
+        "./contracts/structTestcase.sol": {
+            "ast": {
+                "absolutePath": "./contracts/structTestcase.sol",
+                "exportedSymbols": {
+                    "structTestcase": [
+                        60
+                    ]
+                },
+                "id": 61,
+                "nodeType": "SourceUnit",
+                "nodes": [
+                    {
+                        "id": 1,
+                        "literals": [
+                            "solidity",
+                            ">=",
+                            "0.4",
+                            ".21",
+                            "<",
+                            "0.6",
+                            ".0"
+                        ],
+                        "nodeType": "PragmaDirective",
+                        "src": "0:32:0"
+                    },
+                    {
+                        "baseContracts": [],
+                        "contractDependencies": [],
+                        "contractKind": "contract",
+                        "documentation": null,
+                        "fullyImplemented": true,
+                        "id": 60,
+                        "linearizedBaseContracts": [
+                            60
+                        ],
+                        "name": "structTestcase",
+                        "nodeType": "ContractDefinition",
+                        "nodes": [
+                            {
+                                "canonicalName": "structTestcase.struct1",
+                                "id": 22,
+                                "members": [
+                                    {
+                                        "constant": false,
+                                        "id": 3,
+                                        "name": "var_bool",
+                                        "nodeType": "VariableDeclaration",
+                                        "scope": 22,
+                                        "src": "111:13:0",
+                                        "stateVariable": false,
+                                        "storageLocation": "default",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_bool",
+                                            "typeString": "bool"
+                                        },
+                                        "typeName": {
+                                            "id": 2,
+                                            "name": "bool",
+                                            "nodeType": "ElementaryTypeName",
+                                            "src": "111:4:0",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_bool",
+                                                "typeString": "bool"
+                                            }
+                                        },
+                                        "value": null,
+                                        "visibility": "internal"
+                                    },
+                                    {
+                                        "constant": false,
+                                        "id": 5,
+                                        "name": "var_int8",
+                                        "nodeType": "VariableDeclaration",
+                                        "scope": 22,
+                                        "src": "134:13:0",
+                                        "stateVariable": false,
+                                        "storageLocation": "default",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_int8",
+                                            "typeString": "int8"
+                                        },
+                                        "typeName": {
+                                            "id": 4,
+                                            "name": "int8",
+                                            "nodeType": "ElementaryTypeName",
+                                            "src": "134:4:0",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_int8",
+                                                "typeString": "int8"
+                                            }
+                                        },
+                                        "value": null,
+                                        "visibility": "internal"
+                                    },
+                                    {
+                                        "constant": false,
+                                        "id": 7,
+                                        "name": "var_address",
+                                        "nodeType": "VariableDeclaration",
+                                        "scope": 22,
+                                        "src": "157:19:0",
+                                        "stateVariable": false,
+                                        "storageLocation": "default",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_address",
+                                            "typeString": "address"
+                                        },
+                                        "typeName": {
+                                            "id": 6,
+                                            "name": "address",
+                                            "nodeType": "ElementaryTypeName",
+                                            "src": "157:7:0",
+                                            "stateMutability": "nonpayable",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_address",
+                                                "typeString": "address"
+                                            }
+                                        },
+                                        "value": null,
+                                        "visibility": "internal"
+                                    },
+                                    {
+                                        "constant": false,
+                                        "id": 9,
+                                        "name": "var_contract",
+                                        "nodeType": "VariableDeclaration",
+                                        "scope": 22,
+                                        "src": "186:27:0",
+                                        "stateVariable": false,
+                                        "storageLocation": "default",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_contract$_structTestcase_$60",
+                                            "typeString": "contract structTestcase"
+                                        },
+                                        "typeName": {
+                                            "contractScope": null,
+                                            "id": 8,
+                                            "name": "structTestcase",
+                                            "nodeType": "UserDefinedTypeName",
+                                            "referencedDeclaration": 60,
+                                            "src": "186:14:0",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_contract$_structTestcase_$60",
+                                                "typeString": "contract structTestcase"
+                                            }
+                                        },
+                                        "value": null,
+                                        "visibility": "internal"
+                                    },
+                                    {
+                                        "constant": false,
+                                        "id": 11,
+                                        "name": "var_enum",
+                                        "nodeType": "VariableDeclaration",
+                                        "scope": 22,
+                                        "src": "223:15:0",
+                                        "stateVariable": false,
+                                        "storageLocation": "default",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_enum$_myEnum_$25",
+                                            "typeString": "enum structTestcase.myEnum"
+                                        },
+                                        "typeName": {
+                                            "contractScope": null,
+                                            "id": 10,
+                                            "name": "myEnum",
+                                            "nodeType": "UserDefinedTypeName",
+                                            "referencedDeclaration": 25,
+                                            "src": "223:6:0",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_enum$_myEnum_$25",
+                                                "typeString": "enum structTestcase.myEnum"
+                                            }
+                                        },
+                                        "value": null,
+                                        "visibility": "internal"
+                                    },
+                                    {
+                                        "constant": false,
+                                        "id": 17,
+                                        "name": "var_f1",
+                                        "nodeType": "VariableDeclaration",
+                                        "scope": 22,
+                                        "src": "248:31:0",
+                                        "stateVariable": false,
+                                        "storageLocation": "default",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_function_external_nonpayable$_t_bool_$returns$__$",
+                                            "typeString": "function (bool) external"
+                                        },
+                                        "typeName": {
+                                            "id": 16,
+                                            "nodeType": "FunctionTypeName",
+                                            "parameterTypes": {
+                                                "id": 14,
+                                                "nodeType": "ParameterList",
+                                                "parameters": [
+                                                    {
+                                                        "constant": false,
+                                                        "id": 13,
+                                                        "name": "",
+                                                        "nodeType": "VariableDeclaration",
+                                                        "scope": 16,
+                                                        "src": "258:4:0",
+                                                        "stateVariable": false,
+                                                        "storageLocation": "default",
+                                                        "typeDescriptions": {
+                                                            "typeIdentifier": "t_bool",
+                                                            "typeString": "bool"
+                                                        },
+                                                        "typeName": {
+                                                            "id": 12,
+                                                            "name": "bool",
+                                                            "nodeType": "ElementaryTypeName",
+                                                            "src": "258:4:0",
+                                                            "typeDescriptions": {
+                                                                "typeIdentifier": "t_bool",
+                                                                "typeString": "bool"
+                                                            }
+                                                        },
+                                                        "value": null,
+                                                        "visibility": "internal"
+                                                    }
+                                                ],
+                                                "src": "257:6:0"
+                                            },
+                                            "returnParameterTypes": {
+                                                "id": 15,
+                                                "nodeType": "ParameterList",
+                                                "parameters": [],
+                                                "src": "273:0:0"
+                                            },
+                                            "src": "248:31:0",
+                                            "stateMutability": "nonpayable",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_function_external_nonpayable$_t_bool_$returns$__$",
+                                                "typeString": "function (bool) external"
+                                            },
+                                            "visibility": "external"
+                                        },
+                                        "value": null,
+                                        "visibility": "internal"
+                                    },
+                                    {
+                                        "constant": false,
+                                        "id": 21,
+                                        "name": "var_mapping",
+                                        "nodeType": "VariableDeclaration",
+                                        "scope": 22,
+                                        "src": "289:33:0",
+                                        "stateVariable": false,
+                                        "storageLocation": "default",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_mapping$_t_uint256_$_t_uint256_$",
+                                            "typeString": "mapping(uint256 => uint256)"
+                                        },
+                                        "typeName": {
+                                            "id": 20,
+                                            "keyType": {
+                                                "id": 18,
+                                                "name": "uint",
+                                                "nodeType": "ElementaryTypeName",
+                                                "src": "297:4:0",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_uint256",
+                                                    "typeString": "uint256"
+                                                }
+                                            },
+                                            "nodeType": "Mapping",
+                                            "src": "289:21:0",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_mapping$_t_uint256_$_t_uint256_$",
+                                                "typeString": "mapping(uint256 => uint256)"
+                                            },
+                                            "valueType": {
+                                                "id": 19,
+                                                "name": "uint",
+                                                "nodeType": "ElementaryTypeName",
+                                                "src": "305:4:0",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_uint256",
+                                                    "typeString": "uint256"
+                                                }
+                                            }
+                                        },
+                                        "value": null,
+                                        "visibility": "internal"
+                                    }
+                                ],
+                                "name": "struct1",
+                                "nodeType": "StructDefinition",
+                                "scope": 60,
+                                "src": "86:243:0",
+                                "visibility": "public"
+                            },
+                            {
+                                "canonicalName": "structTestcase.myEnum",
+                                "id": 25,
+                                "members": [
+                                    {
+                                        "id": 23,
+                                        "name": "e1",
+                                        "nodeType": "EnumValue",
+                                        "src": "347:2:0"
+                                    },
+                                    {
+                                        "id": 24,
+                                        "name": "e2",
+                                        "nodeType": "EnumValue",
+                                        "src": "351:2:0"
+                                    }
+                                ],
+                                "name": "myEnum",
+                                "nodeType": "EnumDefinition",
+                                "src": "334:20:0"
+                            },
+                            {
+                                "constant": false,
+                                "id": 27,
+                                "name": "s1",
+                                "nodeType": "VariableDeclaration",
+                                "scope": 60,
+                                "src": "360:10:0",
+                                "stateVariable": true,
+                                "storageLocation": "default",
+                                "typeDescriptions": {
+                                    "typeIdentifier": "t_struct$_struct1_$22_storage",
+                                    "typeString": "struct structTestcase.struct1"
+                                },
+                                "typeName": {
+                                    "contractScope": null,
+                                    "id": 26,
+                                    "name": "struct1",
+                                    "nodeType": "UserDefinedTypeName",
+                                    "referencedDeclaration": 22,
+                                    "src": "360:7:0",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_struct$_struct1_$22_storage_ptr",
+                                        "typeString": "struct structTestcase.struct1"
+                                    }
+                                },
+                                "value": null,
+                                "visibility": "internal"
+                            },
+                            {
+                                "canonicalName": "structTestcase.struct2",
+                                "id": 38,
+                                "members": [
+                                    {
+                                        "constant": false,
+                                        "id": 31,
+                                        "name": "var_bytes2",
+                                        "nodeType": "VariableDeclaration",
+                                        "scope": 38,
+                                        "src": "426:20:0",
+                                        "stateVariable": false,
+                                        "storageLocation": "default",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_array$_t_bytes2_$3_storage_ptr",
+                                            "typeString": "bytes2[3]"
+                                        },
+                                        "typeName": {
+                                            "baseType": {
+                                                "id": 28,
+                                                "name": "bytes2",
+                                                "nodeType": "ElementaryTypeName",
+                                                "src": "426:6:0",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_bytes2",
+                                                    "typeString": "bytes2"
+                                                }
+                                            },
+                                            "id": 30,
+                                            "length": {
+                                                "argumentTypes": null,
+                                                "hexValue": "33",
+                                                "id": 29,
+                                                "isConstant": false,
+                                                "isLValue": false,
+                                                "isPure": false,
+                                                "kind": "number",
+                                                "lValueRequested": false,
+                                                "nodeType": "Literal",
+                                                "src": "433:1:0",
+                                                "subdenomination": null,
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": null,
+                                                    "typeString": null
+                                                },
+                                                "value": "3"
+                                            },
+                                            "nodeType": "ArrayTypeName",
+                                            "src": "426:9:0",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_array$_t_bytes2_$3_storage_ptr",
+                                                "typeString": "bytes2[3]"
+                                            }
+                                        },
+                                        "value": null,
+                                        "visibility": "internal"
+                                    },
+                                    {
+                                        "constant": false,
+                                        "id": 37,
+                                        "name": "var_bytes32",
+                                        "nodeType": "VariableDeclaration",
+                                        "scope": 38,
+                                        "src": "456:25:0",
+                                        "stateVariable": false,
+                                        "storageLocation": "default",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_array$_t_array$_t_bytes32_$3_storage_$3_storage_ptr",
+                                            "typeString": "bytes32[3][3]"
+                                        },
+                                        "typeName": {
+                                            "baseType": {
+                                                "baseType": {
+                                                    "id": 32,
+                                                    "name": "bytes32",
+                                                    "nodeType": "ElementaryTypeName",
+                                                    "src": "456:7:0",
+                                                    "typeDescriptions": {
+                                                        "typeIdentifier": "t_bytes32",
+                                                        "typeString": "bytes32"
+                                                    }
+                                                },
+                                                "id": 34,
+                                                "length": {
+                                                    "argumentTypes": null,
+                                                    "hexValue": "33",
+                                                    "id": 33,
+                                                    "isConstant": false,
+                                                    "isLValue": false,
+                                                    "isPure": false,
+                                                    "kind": "number",
+                                                    "lValueRequested": false,
+                                                    "nodeType": "Literal",
+                                                    "src": "464:1:0",
+                                                    "subdenomination": null,
+                                                    "typeDescriptions": {
+                                                        "typeIdentifier": null,
+                                                        "typeString": null
+                                                    },
+                                                    "value": "3"
+                                                },
+                                                "nodeType": "ArrayTypeName",
+                                                "src": "456:10:0",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_array$_t_bytes32_$3_storage_ptr",
+                                                    "typeString": "bytes32[3]"
+                                                }
+                                            },
+                                            "id": 36,
+                                            "length": {
+                                                "argumentTypes": null,
+                                                "hexValue": "33",
+                                                "id": 35,
+                                                "isConstant": false,
+                                                "isLValue": false,
+                                                "isPure": false,
+                                                "kind": "number",
+                                                "lValueRequested": false,
+                                                "nodeType": "Literal",
+                                                "src": "467:1:0",
+                                                "subdenomination": null,
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": null,
+                                                    "typeString": null
+                                                },
+                                                "value": "3"
+                                            },
+                                            "nodeType": "ArrayTypeName",
+                                            "src": "456:13:0",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_array$_t_array$_t_bytes32_$3_storage_$3_storage_ptr",
+                                                "typeString": "bytes32[3][3]"
+                                            }
+                                        },
+                                        "value": null,
+                                        "visibility": "internal"
+                                    }
+                                ],
+                                "name": "struct2",
+                                "nodeType": "StructDefinition",
+                                "scope": 60,
+                                "src": "401:87:0",
+                                "visibility": "public"
+                            },
+                            {
+                                "constant": false,
+                                "id": 40,
+                                "name": "s2",
+                                "nodeType": "VariableDeclaration",
+                                "scope": 60,
+                                "src": "493:10:0",
+                                "stateVariable": true,
+                                "storageLocation": "default",
+                                "typeDescriptions": {
+                                    "typeIdentifier": "t_struct$_struct2_$38_storage",
+                                    "typeString": "struct structTestcase.struct2"
+                                },
+                                "typeName": {
+                                    "contractScope": null,
+                                    "id": 39,
+                                    "name": "struct2",
+                                    "nodeType": "UserDefinedTypeName",
+                                    "referencedDeclaration": 38,
+                                    "src": "493:7:0",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_struct$_struct2_$38_storage_ptr",
+                                        "typeString": "struct structTestcase.struct2"
+                                    }
+                                },
+                                "value": null,
+                                "visibility": "internal"
+                            },
+                            {
+                                "canonicalName": "structTestcase.struct3",
+                                "id": 43,
+                                "members": [
+                                    {
+                                        "constant": false,
+                                        "id": 42,
+                                        "name": "is2",
+                                        "nodeType": "VariableDeclaration",
+                                        "scope": 43,
+                                        "src": "561:13:0",
+                                        "stateVariable": false,
+                                        "storageLocation": "default",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_struct$_inStruct2_$59_storage_ptr",
+                                            "typeString": "struct structTestcase.inStruct2"
+                                        },
+                                        "typeName": {
+                                            "contractScope": null,
+                                            "id": 41,
+                                            "name": "inStruct2",
+                                            "nodeType": "UserDefinedTypeName",
+                                            "referencedDeclaration": 59,
+                                            "src": "561:9:0",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_struct$_inStruct2_$59_storage_ptr",
+                                                "typeString": "struct structTestcase.inStruct2"
+                                            }
+                                        },
+                                        "value": null,
+                                        "visibility": "internal"
+                                    }
+                                ],
+                                "name": "struct3",
+                                "nodeType": "StructDefinition",
+                                "scope": 60,
+                                "src": "536:45:0",
+                                "visibility": "public"
+                            },
+                            {
+                                "constant": false,
+                                "id": 45,
+                                "name": "s3",
+                                "nodeType": "VariableDeclaration",
+                                "scope": 60,
+                                "src": "587:10:0",
+                                "stateVariable": true,
+                                "storageLocation": "default",
+                                "typeDescriptions": {
+                                    "typeIdentifier": "t_struct$_struct3_$43_storage",
+                                    "typeString": "struct structTestcase.struct3"
+                                },
+                                "typeName": {
+                                    "contractScope": null,
+                                    "id": 44,
+                                    "name": "struct3",
+                                    "nodeType": "UserDefinedTypeName",
+                                    "referencedDeclaration": 43,
+                                    "src": "587:7:0",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_struct$_struct3_$43_storage_ptr",
+                                        "typeString": "struct structTestcase.struct3"
+                                    }
+                                },
+                                "value": null,
+                                "visibility": "internal"
+                            },
+                            {
+                                "canonicalName": "structTestcase.inStruct1",
+                                "id": 52,
+                                "members": [
+                                    {
+                                        "constant": false,
+                                        "id": 51,
+                                        "name": "var_byte",
+                                        "nodeType": "VariableDeclaration",
+                                        "scope": 52,
+                                        "src": "674:19:0",
+                                        "stateVariable": false,
+                                        "storageLocation": "default",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_array$_t_array$_t_bytes1_$3_storage_$1_storage_ptr",
+                                            "typeString": "bytes1[3][1]"
+                                        },
+                                        "typeName": {
+                                            "baseType": {
+                                                "baseType": {
+                                                    "id": 46,
+                                                    "name": "byte",
+                                                    "nodeType": "ElementaryTypeName",
+                                                    "src": "674:4:0",
+                                                    "typeDescriptions": {
+                                                        "typeIdentifier": "t_bytes1",
+                                                        "typeString": "bytes1"
+                                                    }
+                                                },
+                                                "id": 48,
+                                                "length": {
+                                                    "argumentTypes": null,
+                                                    "hexValue": "33",
+                                                    "id": 47,
+                                                    "isConstant": false,
+                                                    "isLValue": false,
+                                                    "isPure": false,
+                                                    "kind": "number",
+                                                    "lValueRequested": false,
+                                                    "nodeType": "Literal",
+                                                    "src": "679:1:0",
+                                                    "subdenomination": null,
+                                                    "typeDescriptions": {
+                                                        "typeIdentifier": null,
+                                                        "typeString": null
+                                                    },
+                                                    "value": "3"
+                                                },
+                                                "nodeType": "ArrayTypeName",
+                                                "src": "674:7:0",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_array$_t_bytes1_$3_storage_ptr",
+                                                    "typeString": "bytes1[3]"
+                                                }
+                                            },
+                                            "id": 50,
+                                            "length": {
+                                                "argumentTypes": null,
+                                                "hexValue": "31",
+                                                "id": 49,
+                                                "isConstant": false,
+                                                "isLValue": false,
+                                                "isPure": false,
+                                                "kind": "number",
+                                                "lValueRequested": false,
+                                                "nodeType": "Literal",
+                                                "src": "682:1:0",
+                                                "subdenomination": null,
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": null,
+                                                    "typeString": null
+                                                },
+                                                "value": "1"
+                                            },
+                                            "nodeType": "ArrayTypeName",
+                                            "src": "674:10:0",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_array$_t_array$_t_bytes1_$3_storage_$1_storage_ptr",
+                                                "typeString": "bytes1[3][1]"
+                                            }
+                                        },
+                                        "value": null,
+                                        "visibility": "internal"
+                                    }
+                                ],
+                                "name": "inStruct1",
+                                "nodeType": "StructDefinition",
+                                "scope": 60,
+                                "src": "647:53:0",
+                                "visibility": "public"
+                            },
+                            {
+                                "canonicalName": "structTestcase.inStruct2",
+                                "id": 59,
+                                "members": [
+                                    {
+                                        "constant": false,
+                                        "id": 54,
+                                        "name": "var_bytes",
+                                        "nodeType": "VariableDeclaration",
+                                        "scope": 59,
+                                        "src": "732:15:0",
+                                        "stateVariable": false,
+                                        "storageLocation": "default",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_bytes_storage_ptr",
+                                            "typeString": "bytes"
+                                        },
+                                        "typeName": {
+                                            "id": 53,
+                                            "name": "bytes",
+                                            "nodeType": "ElementaryTypeName",
+                                            "src": "732:5:0",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_bytes_storage_ptr",
+                                                "typeString": "bytes"
+                                            }
+                                        },
+                                        "value": null,
+                                        "visibility": "internal"
+                                    },
+                                    {
+                                        "constant": false,
+                                        "id": 56,
+                                        "name": "var_string",
+                                        "nodeType": "VariableDeclaration",
+                                        "scope": 59,
+                                        "src": "757:17:0",
+                                        "stateVariable": false,
+                                        "storageLocation": "default",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_string_storage_ptr",
+                                            "typeString": "string"
+                                        },
+                                        "typeName": {
+                                            "id": 55,
+                                            "name": "string",
+                                            "nodeType": "ElementaryTypeName",
+                                            "src": "757:6:0",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_string_storage_ptr",
+                                                "typeString": "string"
+                                            }
+                                        },
+                                        "value": null,
+                                        "visibility": "internal"
+                                    },
+                                    {
+                                        "constant": false,
+                                        "id": 58,
+                                        "name": "is1",
+                                        "nodeType": "VariableDeclaration",
+                                        "scope": 59,
+                                        "src": "784:13:0",
+                                        "stateVariable": false,
+                                        "storageLocation": "default",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_struct$_inStruct1_$52_storage_ptr",
+                                            "typeString": "struct structTestcase.inStruct1"
+                                        },
+                                        "typeName": {
+                                            "contractScope": null,
+                                            "id": 57,
+                                            "name": "inStruct1",
+                                            "nodeType": "UserDefinedTypeName",
+                                            "referencedDeclaration": 52,
+                                            "src": "784:9:0",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_struct$_inStruct1_$52_storage_ptr",
+                                                "typeString": "struct structTestcase.inStruct1"
+                                            }
+                                        },
+                                        "value": null,
+                                        "visibility": "internal"
+                                    }
+                                ],
+                                "name": "inStruct2",
+                                "nodeType": "StructDefinition",
+                                "scope": 60,
+                                "src": "705:99:0",
+                                "visibility": "public"
+                            }
+                        ],
+                        "scope": 61,
+                        "src": "34:854:0"
+                    }
+                ],
+                "src": "0:889:0"
+            },
+            "id": 0
+        }
+    }
+}
