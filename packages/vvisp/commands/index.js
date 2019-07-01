@@ -1,5 +1,6 @@
 const compile = require('./compile');
 const console = require('./console');
+const test = require('./test');
 const deployContract = require('./deploy-contract');
 const deployService = require('./deploy-service');
 const flatten = require('./flatten');
@@ -13,5 +14,6 @@ module.exports = [
   deployService,
   flatten,
   genScript,
-  init
+  init,
+  test
 ];
