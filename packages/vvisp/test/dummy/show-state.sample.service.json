@@ -1,0 +1,24 @@
+{
+    "serviceName": "TestService",
+    "contracts": {
+
+        "shop": {
+            "path": "contracts/shop.sol"
+        },
+        "arrayOfStructTestcase": {
+            "path": "contracts/arrayOfStructTestcase.sol"
+        },
+        "arrayTestcase": {
+            "path": "contracts/arrayTestcase.sol"
+        },
+        "dynamicVarTestcase": {
+            "path": "contracts/dynamicVarTestcase.sol"
+        },
+        "elementTestcase": {
+            "path": "contracts/elementTestcase.sol"
+        },
+        "structTestcase": {
+            "path": "contracts/structTestcase.sol"
+        }
+    }
+}
