@@ -1,0 +1,56 @@
+**/node_modules
+**/package-lock.json
+
+.dockerignore
+Dockerfile
+
+*.swp
+*.swo
+
+# Logs
+logs
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+allFiredEvents
+scTopics
+
+# Coverage directory used by tools like istanbul
+coverage
+coverage.json
+coverageEnv
+
+# node-waf configuration
+.lock-wscript
+
+# Dependency directory
+node_modules
+
+# Debug log from npm
+npm-debug.log
+
+# local env variables
+.env
+
+# truffle build directory
+build/
+
+# lol macs
+.DS_Store/
+
+package-lock.json
+.idea
+
+contractApis
+state.vvisp.json
+service.vvisp.json
+vvisp-config.js
+example.json
+example
+
+.nyc_output
+sample/
+
