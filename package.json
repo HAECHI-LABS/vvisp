@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "lerna:bootstrap": "lerna bootstrap --hoist --no-ci",
+    "lerna:bootstrap": "lerna bootstrap --no-ci",
     "bootstrap": "npm install && npm run lerna:bootstrap",
     "test": "./scripts/test.sh",
     "ci": "./scripts/ci.sh",
