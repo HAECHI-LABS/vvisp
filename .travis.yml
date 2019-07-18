@@ -1,0 +1,16 @@
+language: node_js
+node_js:
+  - '11.12.0'
+
+sudo: false
+
+before_install:
+  - npm install -g ganache-cli
+  - npm run bootstrap
+  - rm packages/vvisp/package-lock.json
+  - rm packages/vvisp-utils/package-lock.json
+
+before_deploy:
+  - cd $TRAVIS_BUILD_DIR
+
+script: 'true'
