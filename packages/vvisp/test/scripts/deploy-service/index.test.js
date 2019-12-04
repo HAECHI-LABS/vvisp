@@ -11,7 +11,7 @@ const {
   Config,
   forIn,
   web3Store,
-  privateKeyToAddress
+  getAddress
 } = require('@haechi-labs/vvisp-utils');
 const path = require('path');
 const fs = require('fs-extra');
@@ -19,7 +19,7 @@ const Mitm = require('mitm');
 
 const config = Config.get();
 
-const SENDER = privateKeyToAddress(config.from);
+const SENDER = getAddress(config.from.privateKey);
 const SERVICE1 = path.join('./test/dummy/service1.json');
 const SERVICE2 = path.join('./test/dummy/service2.json');
 const STATE1 = path.join('./test/dummy/state1.json');

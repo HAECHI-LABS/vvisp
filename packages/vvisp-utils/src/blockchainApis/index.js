@@ -1,11 +1,11 @@
 const getContractFactory = require('./getContractFactory');
 const getTxCount = require('./getTxCount');
-const privateKeyToAddress = require('./privateKeyToAddress');
+const getAddress = require('./getAddress');
 const sendTx = require('./sendTx');
 
 module.exports = {
   getContractFactory,
   getTxCount,
-  privateKeyToAddress,
+  getAddress,
   sendTx
 };

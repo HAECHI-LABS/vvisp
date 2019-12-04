@@ -1,8 +1,8 @@
 const { DEFAULT_PLATFORM, ETHEREUM, KLAYTN } = require('../../constants');
 
-module.exports = function(privateKey, options = {}) {
+module.exports = function(from, options = {}) {
   const filterPrivateKey = require('../filterPrivateKey');
-  privateKey = filterPrivateKey(privateKey);
+  const privateKey = filterPrivateKey(from);
   switch (options.platform || DEFAULT_PLATFORM) {
     case ETHEREUM: {
       const web3 = require('../web3Store').get();

@@ -7,7 +7,7 @@ const {
   getCompiledContracts,
   web3Store,
   getPrivateKey,
-  privateKeyToAddress
+  getAddress
 } = require('../src');
 const path = require('path');
 const fs = require('fs-extra');
@@ -20,7 +20,8 @@ const ARRAY_INPUT_CONTRACT = path.join(
 );
 const NO_INPUT_CONTRACT = path.join(__dirname, '../contracts/SecondB.sol');
 const PRIV_KEY = getPrivateKey(testEnv.mnemonic);
-const SENDER = privateKeyToAddress(PRIV_KEY);
+console.log(PRIV_KEY);
+const SENDER = getAddress(PRIV_KEY);
 
 describe('# deploy test', function() {
   this.timeout(50000);
