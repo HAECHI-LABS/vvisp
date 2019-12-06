@@ -56,10 +56,70 @@ module.exports = async function(scriptPath, options) {
   } else {
     throw new Error('state.vvisp.json not set');
   }
+
+  console.log(getApiInfo(apis));
   var app = express();
 
+  app.get('/:contract/:func', async function(req, res) {
+    const abi = apis[req.params.contract].api.abi.filter(
+      a => a.name == req.params.func
+    );
+    if (abi.length == 0) {
+      console.log('WRONG function ' + req.params.func);
+      res.status(404).send({ message: 'Function no found' });
+    } else if (!abi[0].constant) {
+      console.log(abi);
+      console.log('WARNING non constant function was called through GET');
+      res.status(403).send({ message: "Can't write to blockchain using GET" });
+    } else {
+      const result = await call(
+        req.params.contract,
+        req.params.func,
+        req.query.args,
+        apis
+      );
+      res.send(
+        JSON.stringify({
+          result: result
+        })
+      );
+    }
+  });
+
+  app.post('/:contract/:func', async function(req, res) {
+    const abi = apis[req.params.contract].api.abi.filter(
+      a => a.name == req.params.func
+    );
+    if (abi.length == 0) {
+      console.log('WRONG function ' + req.params.func);
+      res.status(404).send({ message: 'Function no found' });
+    } else if (abi[0].constant) {
+      console.log(abi);
+      console.log('WARNING constant function was called through POST');
+      res.status(403).send({ message: "Can't READ blockchain using POST" });
+    } else {
+      const result = await call(
+        req.params.contract,
+        req.params.func,
+        req.query.args,
+        apis
+      );
+      console.log(result);
+      res.send(JSON.stringify({ result: result }));
+    }
+  });
+
+  app.get('/:contract', function(req, res) {
+    console.log(req.params);
+    const abi = apis[req.params.contract].api.abi;
+    const constant_abi = abi.filter(a => a.constant == true);
+    console.log(constant_abi);
+    res.send(JSON.stringify(constant_abi, '', 2));
+  });
+
   app.get('/', function(req, res) {
-    res.send('Hello World!');
+    console.log(req);
+    res.send('HHH');
   });
 
   app.listen(3000, function() {
@@ -106,25 +166,19 @@ async function register() {
  * @param {object} apis has an api of smart contracts
  * @param {object} options is a global option
  */
-async function call(args, apis, options) {
-  if (args.length < 2) {
-    console.log(
-      'invalid number of args: should be at least 2(contract name, method name), got {0}'.format(
-        args.length
-      )
-    );
-    return;
-  }
-
-  const contractKey = args[0];
-  const methodName = args[1];
+async function call(contractKey, methodName, args, apis, options) {
+  //const contractKey = args[0];
+  //const methodName = args[1];
 
   if (apis[contractKey] === undefined) {
     console.log('no {0} contract is exist'.format(args[0]));
     return;
   }
 
-  const params = args.slice(2, args.length).map(param => {
+  if (args == undefined) {
+    args = [];
+  }
+  const params = args.slice(0, args.length).map(param => {
     // convert array string to array
     // "[0x123, 0x234]" to ["0x123", "0x234"]
     if (param.startsWith('[') && param.endsWith(']')) {
@@ -139,11 +193,13 @@ async function call(args, apis, options) {
     return param;
   });
 
-  params.push({
-    gasLimit: options.config.gasLimit,
-    gasPrice: options.config.gasPrice,
-    platform: options.config.platform
-  });
+  if (options != undefined) {
+    params.push({
+      gasLimit: options.config.gasLimit,
+      gasPrice: options.config.gasPrice,
+      platform: options.config.platform
+    });
+  }
 
   const receiptFilter = [
     'transactionHash',
@@ -167,6 +223,7 @@ async function call(args, apis, options) {
     if (typeof receipt !== 'object') {
       // result of constant functions
       console.log(JSON.stringify(receipt, undefined, 2));
+      return receipt;
     } else if (Array.isArray(receipt.logs)) {
       // receipt is Receipt of transaction
       const events = parseLogs(receipt.logs, apis[contractKey].api['abi']);
