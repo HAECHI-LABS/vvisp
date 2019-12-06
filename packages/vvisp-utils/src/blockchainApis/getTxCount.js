@@ -7,8 +7,10 @@ module.exports = function(target, options = {}) {
       if (web3.utils.isAddress(target)) {
         return web3.eth.getTransactionCount(target);
       } else {
-        const getAddress = require('./getAddress');
-        return web3.eth.getTransactionCount(getAddress(target, options));
+        const privateKeyToAddress = require('./privateKeyToAddress');
+        return web3.eth.getTransactionCount(
+          privateKeyToAddress(target.privateKey, options)
+        );
       }
     }
     case KLAYTN: {
@@ -16,8 +18,10 @@ module.exports = function(target, options = {}) {
       if (caver.utils.isAddress(target)) {
         return caver.klay.getTransactionCount(target);
       } else {
-        const getAddress = require('./getAddress');
-        return caver.klay.getTransactionCount(getAddress(target, options));
+        const privateKeyToAddress = require('./privateKeyToAddress');
+        return caver.klay.getTransactionCount(
+          privateKeyToAddress(target.privateKey, options)
+        );
       }
     }
     default:

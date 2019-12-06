@@ -6,6 +6,12 @@ const _ = require('lodash');
 const { getSTDInput, parseLogs } = require('@haechi-labs/vvisp-utils');
 const { STATE_FILE } = require('../config/Constant');
 
+/*
+ * express related imports
+ * */
+
+var express = require('express');
+
 if (!String.prototype.format) {
   String.prototype.format = function() {
     const args = arguments;
@@ -50,6 +56,15 @@ module.exports = async function(scriptPath, options) {
   } else {
     throw new Error('state.vvisp.json not set');
   }
+  var app = express();
+
+  app.get('/', function(req, res) {
+    res.send('Hello World!');
+  });
+
+  app.listen(3000, function() {
+    console.log('Example app listening on port 3000!');
+  });
 };
 
 function getArgs(func, functionAbi) {

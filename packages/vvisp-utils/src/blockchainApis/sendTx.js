@@ -1,7 +1,7 @@
 const { DEFAULT_PLATFORM, ETHEREUM, KLAYTN } = require('../../constants');
 
 module.exports = async function(_toAddr, _value, _from, options) {
-  const getAddress = require('./getAddress');
+  const privateKeyToAddress = require('./privateKeyToAddress');
   const getTxCount = require('./getTxCount');
 
   const DEFAULT_GAS_LIMIT = 6721975;
@@ -10,7 +10,8 @@ module.exports = async function(_toAddr, _value, _from, options) {
   return main(_toAddr, _value, _from, options);
 
   async function main(_toAddr, _value, _from, options) {
-    const fromAddr = getAddress(_from, options);
+    console.log(_from);
+    const fromAddr = privateKeyToAddress(_from.privateKey, options);
     const txCount = options.txCount || (await getTxCount(fromAddr, options));
 
     // construct the transaction data
@@ -24,10 +25,10 @@ module.exports = async function(_toAddr, _value, _from, options) {
       data: options.data || '0x'
     };
 
-    return sendSigned(txData, _from, options);
+    return sendSigned(txData, _from.privateKey, options);
   }
 
-  async function sendSigned(txData, from, options) {
+  async function sendSigned(txData, privKey, options) {
     if (typeof privKey === 'string' && privKey.slice(0, 2) === '0x') {
       privKey = privKey.slice(2);
     }

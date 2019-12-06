@@ -8,7 +8,7 @@ const DEFAULT_NETWORK = 'development';
 
 const getConfigRoot = require('./getConfigRoot');
 const getPrivateKey = require('./getPrivateKey');
-const getAddress = require('./blockchainApis/getAddress');
+const privateKeyToAddress = require('./blockchainApis/privateKeyToAddress');
 const filterPrivateKey = require('./filterPrivateKey');
 const forIn = require('./forIn');
 
@@ -59,12 +59,14 @@ function Config() {
             'WARNING: plain text private key store is not recommended'
           );
           return {
-            address: getAddress(value.privateKey),
+            address: privateKeyToAddress(value.privateKey),
             privateKey: value.privateKey
           };
         } else if (typeof value === 'object' && value.type === 'mnemonic') {
           return {
-            address: getAddress(getPrivateKey(value.mnemonic, value.index)),
+            address: privateKeyToAddress(
+              getPrivateKey(value.mnemonic, value.index)
+            ),
             privateKey: getPrivateKey(value.mnemonic, value.index)
           };
         } else if (typeof value === 'object' && value.type === 'external') {

@@ -14,4 +14,4 @@ const register = commander =>
     })
     .addNetworkOption();
 
-module.exports = { name, signature, descrition, register, server };
+module.exports = { name, signature, description, register, server };

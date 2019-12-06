@@ -1,12 +1,12 @@
 module.exports = async function(
   { interface: abi, bytecode },
-  privateKey,
+  from,
   arguments,
   options
 ) {
   const filterPrivateKey = require('./filterPrivateKey');
   const { getContractFactory } = require('./blockchainApis');
-  privateKey = filterPrivateKey(privateKey);
+  from.privateKey = filterPrivateKey(from.privateKey);
 
   if (arguments && arguments.length === undefined) {
     // it means arguments is not array
@@ -51,5 +51,7 @@ module.exports = async function(
     data: deployData
   };
 
-  return sendTx(null, 0, privateKey, options);
+  //TODO need to change this to adapt external signer
+  console.log(from);
+  return sendTx(null, 0, from, options);
 };
