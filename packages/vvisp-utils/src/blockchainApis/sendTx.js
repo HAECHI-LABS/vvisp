@@ -10,8 +10,7 @@ module.exports = async function(_toAddr, _value, _from, options) {
   return main(_toAddr, _value, _from, options);
 
   async function main(_toAddr, _value, _from, options) {
-    console.log(_from);
-    const fromAddr = privateKeyToAddress(_from.privateKey, options);
+    const fromAddr = _from.address; //privateKeyToAddress(_from.privateKey, options);
     const txCount = options.txCount || (await getTxCount(fromAddr, options));
 
     // construct the transaction data
@@ -25,6 +24,7 @@ module.exports = async function(_toAddr, _value, _from, options) {
       data: options.data || '0x'
     };
 
+    //TODO: change to get external signer
     return sendSigned(txData, _from.privateKey, options);
   }
 

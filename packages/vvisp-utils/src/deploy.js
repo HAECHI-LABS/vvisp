@@ -51,7 +51,5 @@ module.exports = async function(
     data: deployData
   };
 
-  //TODO need to change this to adapt external signer
-  console.log(from);
   return sendTx(null, 0, from, options);
 };
