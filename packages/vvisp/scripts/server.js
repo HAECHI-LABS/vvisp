@@ -85,11 +85,9 @@ module.exports = async function(scriptPath, options) {
         args,
         apis
       );
-      res.send(
-        JSON.stringify({
-          result: result
-        })
-      );
+      res.json({
+        result: result
+      });
     }
   });
 
@@ -112,19 +110,19 @@ module.exports = async function(scriptPath, options) {
         apis
       );
       console.log(result);
-      res.send(JSON.stringify({ result: result }));
+      res.json({ result: result });
     }
   });
 
   app.get('/:contract', function(req, res) {
     console.log(req.params);
     const abi = apis[req.params.contract].api.abi;
-    res.send(JSON.stringify(abi, '', 2));
+    res.json(abi);
   });
 
   app.get('/', function(req, res) {
     console.log(req);
-    res.send(JSON.stringify(apis));
+    res.json(apis);
   });
 
   app.listen(port, function() {
