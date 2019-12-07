@@ -8,6 +8,7 @@ const register = commander =>
   commander
     .command(signature, { noHelp: true })
     .usage('[script-api-path] [options]')
+    .option('-l, --listen <port>', 'specify port to listen')
     .description(description)
     .action((...args) => {
       server(...args).catch(e => console.log(e));

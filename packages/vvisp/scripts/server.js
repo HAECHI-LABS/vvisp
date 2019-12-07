@@ -45,6 +45,8 @@ const defaultStateFile = STATE_FILE;
 module.exports = async function(scriptPath, options) {
   options = require('./utils/injectConfig')(options);
 
+  const port = options.listen || '3000';
+  console.log(port);
   let rawApis = setApi(scriptPath, options);
   if (rawApis === undefined || rawApis === '') {
     return;
@@ -125,8 +127,8 @@ module.exports = async function(scriptPath, options) {
     res.send(JSON.stringify(apis));
   });
 
-  app.listen(3000, function() {
-    console.log('Example app listening on port 3000!');
+  app.listen(port, function() {
+    console.log(`Example app listening on port ${port}!`);
   });
 };
 
