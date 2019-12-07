@@ -59,11 +59,16 @@ module.exports = async function(scriptPath, options) {
 
   console.log(getApiInfo(apis));
   var app = express();
+  app.use(express.json());
 
   app.get('/:contract/:func', async function(req, res) {
     const abi = apis[req.params.contract].api.abi.filter(
       a => a.name == req.params.func
     );
+
+    const args =
+      req.query.args == undefined ? [] : JSON.parse('[' + req.query.args + ']');
+    console.log(args);
     if (abi.length == 0) {
       console.log('WRONG function ' + req.params.func);
       res.status(404).send({ message: 'Function no found' });
@@ -75,7 +80,7 @@ module.exports = async function(scriptPath, options) {
       const result = await call(
         req.params.contract,
         req.params.func,
-        req.query.args,
+        args,
         apis
       );
       res.send(
@@ -101,7 +106,7 @@ module.exports = async function(scriptPath, options) {
       const result = await call(
         req.params.contract,
         req.params.func,
-        req.query.args,
+        req.body.arg,
         apis
       );
       console.log(result);
@@ -112,14 +117,12 @@ module.exports = async function(scriptPath, options) {
   app.get('/:contract', function(req, res) {
     console.log(req.params);
     const abi = apis[req.params.contract].api.abi;
-    const constant_abi = abi.filter(a => a.constant == true);
-    console.log(constant_abi);
-    res.send(JSON.stringify(constant_abi, '', 2));
+    res.send(JSON.stringify(abi, '', 2));
   });
 
   app.get('/', function(req, res) {
     console.log(req);
-    res.send('HHH');
+    res.send(JSON.stringify(apis));
   });
 
   app.listen(3000, function() {
@@ -171,13 +174,14 @@ async function call(contractKey, methodName, args, apis, options) {
   //const methodName = args[1];
 
   if (apis[contractKey] === undefined) {
-    console.log('no {0} contract is exist'.format(args[0]));
+    console.log('no {0} contract is exist'.format(contractKey));
     return;
   }
 
   if (args == undefined) {
     args = [];
   }
+  console.log(args);
   const params = args.slice(0, args.length).map(param => {
     // convert array string to array
     // "[0x123, 0x234]" to ["0x123", "0x234"]
@@ -240,6 +244,7 @@ async function call(contractKey, methodName, args, apis, options) {
       const result = JSON.parse(JSON.stringify(receipt, receiptFilter));
       result.logs = logs;
       console.log(JSON.stringify(result, undefined, 2));
+      return result;
     } else {
       // multiple constant return values
       const result = JSON.parse(JSON.stringify(receipt, null));

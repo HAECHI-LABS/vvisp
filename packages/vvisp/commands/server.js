@@ -7,7 +7,7 @@ const description = 'run rest api server to execute contract functions';
 const register = commander =>
   commander
     .command(signature, { noHelp: true })
-    .usage('[script-api-path]')
+    .usage('[script-api-path] [options]')
     .description(description)
     .action((...args) => {
       server(...args).catch(e => console.log(e));
