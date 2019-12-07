@@ -5,7 +5,7 @@ const deployService = require('./deploy-service');
 const flatten = require('./flatten');
 const genScript = require('./gen-script.js');
 const init = require('./init');
-
+const server = require('./server.js');
 module.exports = [
   compile,
   console,
@@ -13,5 +13,6 @@ module.exports = [
   deployService,
   flatten,
   genScript,
-  init
+  init,
+  server
 ];

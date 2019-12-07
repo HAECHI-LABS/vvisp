@@ -9,7 +9,7 @@ module.exports = function(target, options = {}) {
       } else {
         const privateKeyToAddress = require('./privateKeyToAddress');
         return web3.eth.getTransactionCount(
-          privateKeyToAddress(target, options)
+          privateKeyToAddress(target.privateKey, options)
         );
       }
     }
@@ -20,7 +20,7 @@ module.exports = function(target, options = {}) {
       } else {
         const privateKeyToAddress = require('./privateKeyToAddress');
         return caver.klay.getTransactionCount(
-          privateKeyToAddress(target, options)
+          privateKeyToAddress(target.privateKey, options)
         );
       }
     }

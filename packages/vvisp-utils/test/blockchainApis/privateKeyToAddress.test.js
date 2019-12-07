@@ -3,8 +3,10 @@ chai.should();
 
 const { privateKeyToAddress } = require('../../src');
 
-const SAMPLE_PRIVATE_KEY =
-  '8bb0722ff8cb8161da257dc2d3712a17db1753d1de2d8b6b27b0e4636d9899f6';
+const SAMPLE_PRIVATE_KEY = {
+  type: 'privateKey',
+  privateKey: '8bb0722ff8cb8161da257dc2d3712a17db1753d1de2d8b6b27b0e4636d9899f6'
+};
 
 describe('# privateKeyToAddress test', function() {
   before(function() {
@@ -35,8 +37,12 @@ describe('# privateKeyToAddress test', function() {
     });
 
     it('should return different outputs with different inputs', function() {
-      const DIFFERENT_PRIVATE_KEY =
-        '8bb0722ff8cb8161da257dc2d3712a17db1753d1de2d8b6b27b0e4636d9899f7';
+      const DIFFERENT_PRIVATE_KEY = {
+        type: 'privateKey',
+        privateKey:
+          '8bb0722ff8cb8161da257dc2d3712a17db1753d1de2d8b6b27b0e4636d9899f7'
+      };
+
       const return1 = privateKeyToAddress(this.privateKey);
       const return2 = privateKeyToAddress(DIFFERENT_PRIVATE_KEY);
       return1.should.not.equal(return2);

@@ -8,6 +8,7 @@ const DEFAULT_NETWORK = 'development';
 
 const getConfigRoot = require('./getConfigRoot');
 const getPrivateKey = require('./getPrivateKey');
+const privateKeyToAddress = require('./blockchainApis/privateKeyToAddress');
 const filterPrivateKey = require('./filterPrivateKey');
 const forIn = require('./forIn');
 
@@ -50,27 +51,61 @@ function Config() {
     compilers: {},
 
     from: {
+      //returns address
       get: function() {
         const value = self._values['from'];
-        if (typeof value === 'string') {
-          return value;
-        } else if (typeof value === 'object' && value !== null) {
-          return getPrivateKey(value.mnemonic, value.index);
+        if (typeof value === 'object' && value.type === 'privateKey') {
+          console.log(
+            'WARNING: plain text private key store is not recommended'
+          );
+          return {
+            address: privateKeyToAddress(value.privateKey),
+            privateKey: value.privateKey
+          };
+        } else if (typeof value === 'object' && value.type === 'mnemonic') {
+          return {
+            address: privateKeyToAddress(
+              getPrivateKey(value.mnemonic, value.index)
+            ),
+            privateKey: getPrivateKey(value.mnemonic, value.index)
+          };
+        } else if (typeof value === 'object' && value.type === 'external') {
+          //change to get it from clef
+          return {
+            address: value.address
+          };
         } else {
           throw new Error(`from is not set properly, got ${value}`);
         }
       },
       set: function(value) {
         if (typeof value === 'string') {
-          self._values['from'] = filterPrivateKey(value);
+          console.log(
+            'WARNING: plain text private key store is not recommended'
+          );
+          self._values['from'] = {
+            type: 'privateKey',
+            privateKey: filterPrivateKey(value)
+          };
           return;
         } else if (typeof value === 'object' && value !== null) {
-          if (typeof value.mnemonic === 'string') {
-            self._values['from'] = value;
+          if (value.type == 'mnemonic') {
+            self._values['from'] = {
+              type: 'mnemonic',
+              mnemonic: value.mnemonic,
+              index: value.index
+            };
+          } else if (value.type == 'external') {
+            self._values['from'] = {
+              type: 'external',
+              url: value.url,
+              options: value.options
+            };
             return;
           }
+        } else {
+          throw new TypeError(`${JSON.stringify(value)} is invalid key format`);
         }
-        throw new TypeError(`${JSON.stringify(value)} is invalid key format`);
       }
     },
     platform: {

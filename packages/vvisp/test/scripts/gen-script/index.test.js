@@ -12,7 +12,8 @@ const {
   Config,
   forIn,
   web3Store,
-  privateKeyToAddress
+  getAddress,
+  getPrivateKey
 } = require('@haechi-labs/vvisp-utils');
 const { TEST, DEFAULT_CONFIG_FILE } = require('../../../config/Constant');
 const VVISP_CONFIG_PATH = path.join('./', DEFAULT_CONFIG_FILE);
@@ -27,9 +28,9 @@ const ROOT = path.join('./contractApis');
 const exampleApiUserPath = path.join('./exampleApiUser.js');
 
 const config = Config.get();
-
-const PRIV_KEY = config.from;
-const SENDER = privateKeyToAddress(PRIV_KEY);
+const FROM = config.from;
+const PRIV_KEY = FROM.privateKey;
+const SENDER = FROM.address;
 
 describe('# gen-script process test', function() {
   this.timeout(50000);

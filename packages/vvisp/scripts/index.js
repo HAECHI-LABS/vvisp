@@ -5,7 +5,7 @@ const deployContract = require('./deploy-contract');
 const init = require('./init');
 const flatten = require('./flatten');
 const console = require('./console');
-
+const server = require('./server');
 module.exports = {
   genScript,
   compile,
@@ -13,5 +13,6 @@ module.exports = {
   deployContract,
   init,
   flatten,
+  server,
   console
 };
